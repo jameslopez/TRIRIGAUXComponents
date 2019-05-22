@@ -1,0 +1,332 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../tricore-url/tricore-url.html">
+<link rel="import" href="../triplat-icon/ibm-icons.html">
+<link rel="import" href="../triblock-toast/triblock-toast.html">
+
+
+<!--
+A custom element for downloading documents from the Document Manager.
+ 
+     <triplat-document-download document-id="[[document._id]]" 
+     	document-name="[[document.name]]"
+     	document-file-name="[[document.fileName]]">
+     </triplat-document-download>
+
+### Displaying a different download icon
+
+By default, the download icon is determined by the extension of the document file name. You can override it by using the icon property:
+
+    <triplat-document-download document-id="[[document._id]]" 
+    	document-name="[[document.name]]"
+    	icon="ibm:download-import">
+     </triplat-document-download>
+
+### Showing error notifications
+
+When the show-error property is used, the component displays a toast error message if the download fails.
+
+Example:
+
+    <triplat-document-download document-id="[[document._id]]" 
+    	document-name="[[document.name]]" 
+    	document-file-name="[[document.fileName]]" show-error>
+     </triplat-document-download>
+
+### Styling
+
+Custom property                                 | Description                                              | Default
+------------------------------------------------|----------------------------------------------------------|--------------------------------------
+`--triplat-document-download-icon`              | Mixin applied to the download icon                       | {}
+`--triplat-document-download-name`              | Mixin applied to the document name                       | {}
+
+@demo demo/index.html
+-->
+<dom-module id="triplat-document-download">
+	<template>
+		<style >
+			:host {
+				font-family: var(--tri-font-family);
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+			
+			.icon {
+				width: 46px;
+				height: 46px;
+				@apply --triplat-document-download-icon;
+			}
+			
+			.name {
+				@apply --triplat-document-download-name;
+			}
+		</style>
+		
+		<tricore-url id="tricoreUrl"></tricore-url>
+		<iron-ajax id="ajax"></iron-ajax>
+
+		<paper-icon-button primary class="icon" icon="[[_computeIcon(icon, documentFileName)]]" 
+			title="download [[documentName]]" aria-label$="download [[documentName]]" on-tap="_handleDownloadTap" disabled="[[disabled]]">
+		</paper-icon-button>
+		<template is="dom-if" if="[[documentName]]">
+			<div class$="[[_computeDocumentNameClass(disabled)]]" on-tap="_handleDownloadTap">[[documentName]]</div>
+		</template>
+		
+		<triblock-toast id="toast" type="error" duration="[[errorDuration]]"></triblock-toast>
+	</template>
+	<script>
+
+		Polymer({
+			is: "triplat-document-download",
+		
+			/**
+			 * Fired when the download of a document fails.
+			 *
+			 * @event download-error
+			 */
+					
+			behaviors: [
+				Polymer.IronControlState
+			],
+
+			properties : {
+				/**
+				 * ID of the document to be downloaded.
+				 */
+				documentId: {
+					type: String
+				},
+							
+				/**
+				 * The name of the document to be downloaded. It is displayed next to the download icon.
+				 */
+				documentName: {
+					type: String
+				},
+							
+				/**
+				 * The file name of the document to be downloaded. It is used to determine the download icon.
+				 */
+				documentFileName: {
+					type: String,
+					value: ""
+				},
+
+				/**
+				 * The name of the icon to be used as the download icon, regardless of the document file name extension.
+				 * If this property is not specified, the displayed icon is based on the document file name extension.
+				 */
+				icon: {
+					type: String,
+					value: ""
+				},
+
+				/**
+				 * If true, this element shows an error notification if the download of a document fails.
+				 */
+				showError: {
+					type: Boolean,
+					value: false
+				},
+				
+				/**
+				 * The duration in milliseconds that the error notification is visible to the user.
+				 */
+				errorDuration: {
+					type: Number,
+					value: 5000
+				},
+				
+				/**
+				 * Becomes true when the download of a document fails.
+				 */
+				errored: {
+					type: Boolean,
+					value: false,
+					readOnly: true,
+					notify: true
+				},
+				
+				/**
+				 * An object that contains the error when the download fails.
+				 * It is an object that contains two attributes: 
+				 * - cause: A string that identifies the cause of the error. It can have two values: NO_PERMISSION or NO_DOCUMENT.
+				 * - translatedMessage: The error message translated to the current user language. 
+				 */
+				error: {
+					type: Object,
+					readOnly: true,
+					notify: true,
+					observer: "_handleErrorChanged"
+				},
+				
+				_translatedMessages: {
+					type: Object,
+					value: function () {
+						var __dictionary__noPermission = "User does not have permission to download the document.";
+						var __dictionary__noDocument = "Document id is empty.";
+						var _messages = {};
+						_messages["NO_PERMISSION"] = __dictionary__noPermission;
+						_messages["NO_DOCUMENT"] = __dictionary__noDocument;
+						return _messages;
+					}
+				},
+				
+				_isSafari: {
+					type: Boolean,
+					value: function() {
+						var matchesSafari = /Safari/.test(navigator.userAgent);
+						var matchesChrome = /Chrome/.test(navigator.userAgent);
+						return matchesSafari && !matchesChrome;
+					}
+				}
+			},
+
+			/**
+			 * Downloads the latest revision of the document identified by the documentId property.
+			 * It returns a promise that is rejected if the download fails.
+			 */
+			download: function() {
+				this._setError(null);
+				if (!this.documentId) {
+					return this._showError("NO_DOCUMENT");
+				}
+				var downloadContentUrl = this._computeDownloadContentUrl(this.documentId);
+				/* Safari does not allow to open a popup asynchronously, If it is Safari Browser
+				 * it will bypass the security verification before downloading the document. 
+				 * The security check will be enforced on the download request.
+				 * if the user does not have permission to download it, the download will fail and the user will not receive an error message.
+				 */
+				if (this._isSafari) {
+					window.open(downloadContentUrl);
+					return Promise.resolve();
+				}
+				return this.hasPermission().then(function(hasPermission) {
+					if (hasPermission) {
+						
+						window.open(downloadContentUrl);
+						return Promise.resolve();
+					} else {
+						return this._showError("NO_PERMISSION");
+					}
+				}.bind(this));
+			},
+			
+			_computeDownloadContentUrl: function(documentId) {
+					if (!documentId) {
+						return "";
+					} else {
+						return this.$.tricoreUrl.getUrl("/WebProcess.srv?objectId=410000&actionId=410014&documentID=" + documentId);
+					}
+				},
+			
+			/**
+			 * Checks if the current user has permission to download the document identified by the documentId property.
+			 * It returns a promise that resolves to a Boolean value.
+			 */
+			hasPermission: function() {
+				if (!this.documentId) {
+					return Promise.resolve(false);
+				}
+				var ajax = this.$.ajax;
+				ajax.method = "GET";
+				ajax.url = this.$.tricoreUrl.getUrl("/p/document/" + this.documentId + "/permission");
+				ajax.params = {action:"download"};
+
+				var request = ajax.generateRequest();
+				return request.completes
+					.then(function() {
+						if (request.response) {
+							return request.response.hasPermission;
+						}
+						return false;
+					}.bind(this))
+					.catch(function() {
+						return false;
+					}.bind(this));
+			},
+				
+			_handleDownloadTap: function(e) {
+				if (this.disabled) {
+					return;
+				}
+				this.download().catch(function(error) {});
+			},
+
+			_showError: function(key) {
+				var translatedMessage = this._translatedMessages[key];
+				if (this.showError) {
+					var toast = this.$.toast;
+					var __dictionary__downloadFailed = "Download failed";
+					toast.title = __dictionary__downloadFailed;
+					toast.text = translatedMessage;
+					toast.open();
+				}
+				this._setError({cause: key, translatedMessage: translatedMessage});
+				this.fire("download-error", this.error);
+				return Promise.reject(this.error);
+			},
+			
+			_computeIcon: function(icon, documentFileName) {
+				if (icon) {
+					return icon;
+				}
+				if (!documentFileName) {
+					return "ibm:file";
+				}
+				var lastIndex = documentFileName.lastIndexOf('.');
+				if (lastIndex == -1) {
+					return "ibm:file";
+				}
+				var fileNameExtension = documentFileName.substring(lastIndex+1).toLowerCase();
+				switch(fileNameExtension) {
+					case "pdf":
+						return "ibm:fileextension";
+					case "gif": case "jpg": case "jpeg":
+					case "ico":	case "bmp":	case "png":
+					case "svg":	case "tif":	case "tiff":
+						return "ibm:picturefile";
+					case "mpg": case "mp4":	case "mpeg":
+					case "avi":	case "flv":	case "swf":
+					case "wmv":	case "mp4":	case "qt":
+						return "ibm:videofile";
+					case "wav":	case "wma":	case "aiff":
+					case "mp3":	case "mpa":	case "aac":
+					case "oga":
+						return "ibm:musicfile";
+					case "zip":	case "rar":	case "arj":
+					case "gz":	case "tgz":
+						return "ibm:compressed";
+					case "ppt":	case "pps":	case "pptx":
+					case "odg":	case "odp":	case "ppsx":
+					case "otp":
+						return "ibm:presentationfile";
+					case "txt":	case "doc":	case "docx":
+					case "odt":	case "pages":
+						return "ibm:document";
+					default:
+						return "ibm:file";
+				}
+			},
+			
+			_handleErrorChanged: function(e) {
+				this._setErrored(this.error != null);
+			},
+			
+			_computeDocumentNameClass: function(disabled) {
+				var className = "name";
+				if (!disabled) {
+					className += " tri-link";
+				}
+				return className;
+			}
+		});
+	</script>
+</dom-module>

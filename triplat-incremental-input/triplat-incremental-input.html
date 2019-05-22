@@ -1,0 +1,582 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016-2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../triplat-icon/ibm-icons-glyphs.html">
+<link rel="import" href="../triblock-scroll-field-into-view-behavior/triblock-scroll-field-into-view-behavior.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<!--
+A component that provides a counter. The component includes an input box with increase and decrease icons. 
+The value can be typed directly in the input box or it can be increased and decreased by selecting the icons. The default step is 1, but this value can be configured. 
+The value must be a positive number and can be set to accept numbers within a range. 
+ 
+<div style="background-color:#FFFFCC">
+    <div style="padding:20px;">
+        <b>Note:</b> The layout of the component (label, input and icons) should be defined outside of the component by custom CSS.
+    </div>
+</div>
+
+Example of a simple counter with no maximum. 
+
+    <triplat-incremental-input 
+    	label="Attendance"
+    	increase-aria-label="Increase Attendance"
+    	decrease-aria-label="Decrease Attendance"
+    	value="{{data.attendance}}"></triplat-incremental-input>
+
+Example of a counter that represents minutes, with a range of 0 to 59, and a step of 15. 
+When the user clicks on the icons, the value is increased or decreased by 15, and loops around the range (so the icons are not disabled when reaching min or max).
+For example, clicking on the decrease icon, the value will be changed from "0" to "45" (as if the user clicks 15 times to decrease the value with step "1").
+
+    <triplat-incremental-input 
+    	label="Minutes"
+    	increase-aria-label="Increase Minutes"
+    	decrease-aria-label="Decrease Minutes"
+    	value="0"
+    	min="0"
+    	max="59"
+    	step="15"
+    	loop></triplat-incremental-input>
+
+Example of a counter with a range of 1 to 9999, flex validation, and error message. Any invalid value is not enforced. Instead, the value is marked as invalid and 
+the error message is displayed.  
+
+    <triplat-incremental-input 
+    	class="attendance"
+    	label="Attendance"
+    	error-message="1 to 9999"
+    	flex-validation
+    	increase-aria-label="Increase Attendance"
+    	decrease-aria-label="Decrease Attendance"
+    	value="{{data.attendance}}"
+    	min="1"
+    	max="9999"></triplat-incremental-input>
+
+Example of using custom label. In order for an element to be considered as a label, it must have the `label` attribute.
+
+    <triplat-incremental-input 
+    	increase-aria-label="Increase Seconds"
+    	decrease-aria-label="Decrease Seconds"
+    	value="0"
+    	min="0"
+    	max="60"
+    	step="10"
+    	loop>
+			<iron-icon label icon="image:timer-10"></iron-icon>
+			<span label>Seconds</span>
+    </triplat-incremental-input>
+
+<div style="background-color:#FFFFCC">
+    <div style="padding:20px;">
+        <b>Note:</b> The `label` property value will be overridden when using a custom `label`. 
+    </div>
+</div>
+
+If you want to display the component in a vertical layout, use the `--triplat-increment-input-main` mixin and apply a vertical layout. Also enable `reverse-icons` so that the icon orientation is correct.
+
+### Styling
+
+The following custom properties are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triplat-increment-input-main` | Mixin applied to the main div used for setting the layout of the label and the counter| `{}`
+`--triplat-increment-input-counter` | Mixin applied to the counter div used for setting the layout of the icons and input| `{}`
+`--triplat-increment-input-label` | Mixin applied to the incremental label | `{font-size: .75em; color: var(--tri-secondary-color);}`
+`--triplat-increment-input-paper` | Mixin applied to the paper input | `{text-align: center; padding-left: 4px; padding-right: 4px;}`
+`--triplat-duration-period-counter-icon` | Mixin applied to the decrease and increase icons | `{height: 44px; width: 44px; padding: 6px; color: var(--tri-primary-color); background-color: white;}`
+`--triplat-increment-input-counters-only-value` | Mixin applied to the counters only display value | `{}`
+
+
+@demo demo/index.html
+-->
+<dom-module id="triplat-incremental-input">
+	<template>
+	<style include="iron-flex iron-flex-alignment">
+
+   	 	.main{
+    			@apply --triplat-increment-input-main; 
+   	 	}
+
+		.incremental-label{
+			font-size: .85em;
+			color: var(--tri-secondary-color);
+    			@apply --triplat-increment-input-label; 
+		}
+			
+		.incremental-counter{
+    			@apply --triplat-increment-input-counter; 
+		}
+			
+	    paper-input {
+	        text-align: center;
+	     	padding-left: 4px;
+	     	padding-right: 4px;
+    			@apply --triplat-increment-input-paper; 
+
+			--paper-input-container-underline: {
+				z-index: 1;
+			};
+	    }
+
+		paper-icon-button {
+	    		height: 44px;
+	    		width: 44px; 
+	    		padding: 6px;
+	    		color: var(--tri-actionable-color, var(--tri-primary-color));
+	    		background-color: var(--tri-actionable-color-contrast);
+	    		@apply --triplat-duration-period-counter-icon; 
+	    	}
+
+		:host([reverse-icons]) paper-icon-button {
+			transform: rotate(90deg);
+		}
+		
+		.counters-only-value {
+			font-size: 28px;
+			@apply --triplat-increment-input-counters-only-value;
+		}
+
+	</style>
+
+   	<div class="main">
+   		<div hidden$="[[showLabelUnder]]">
+   			<span class="incremental-label">{{label}}<content id="labelContent" select="[label]"></content></span>
+   		</div>
+   		<div class="incremental-counter">
+   			
+   			<template is="dom-if" if="{{!reverseIcons}}">
+	    		<paper-icon-button icon="ibm-glyphs:back" disabled$="[[_disableDecrementButton(loop, value, readonly)]]" on-tap="decreaseValue" aria-label$="[[decreaseAriaLabel]]" ></paper-icon-button>
+   			</template>
+   			<template is="dom-if" if="{{reverseIcons}}">
+    			<paper-icon-button icon="ibm-glyphs:back" disabled$="[[_disableIncrementButton(loop, value, readonly)]]" on-tap="increaseValue" aria-label$="[[increaseAriaLabel]]"></paper-icon-button>
+   			</template>
+
+	    	<paper-input id="input"
+	    		invalid="[[invalid]]"
+    			value="{{_displayValue(value, minDigits)}}" 
+    			on-change="_handleEdit" 
+    			on-input="_handleEdit" 
+    			allowed-pattern="[[_computeAllowedPattern(preventNegative)]]" 
+    			prevent-invalid-input
+    			error-message="[[errorMessage]]"
+    			readonly$="[[readonly]]"
+    			no-label-float
+    			hidden$="[[countersOnly]]"
+    			tri-scroll-into-view>
+    		</paper-input>
+		
+		<span class="counters-only-value" hidden$="[[!countersOnly]]">[[_displayValue(value, minDigits)]]</span>
+
+   		<div hidden$="[[!showLabelUnder]]">
+   			<span class="incremental-label">{{label}}<content id="labelContent" select="[label]"></content></span>
+   		</div>
+
+   			<template is="dom-if" if="{{!reverseIcons}}">
+	    		<paper-icon-button icon="ibm-glyphs:expand-open" disabled$="[[_disableIncrementButton(loop, value, readonly)]]" on-tap="increaseValue" aria-label$="[[increaseAriaLabel]]"></paper-icon-button>
+   			</template>
+   			<template is="dom-if" if="{{reverseIcons}}">
+	    		<paper-icon-button icon="ibm-glyphs:expand-open" disabled$="[[_disableDecrementButton(loop, value, readonly)]]" on-tap="decreaseValue" aria-label$="[[decreaseAriaLabel]]" ></paper-icon-button>
+   			</template>
+
+   		</div>
+   	</div>
+        
+	</template>
+</dom-module>
+<script>
+
+	Polymer({
+		is: "triplat-incremental-input",
+		
+		behaviors: [
+			TriBlockScrollFieldIntoViewBehavior
+		],
+
+		/**
+		 * Fired whenever the user changes the input value, either by selecting the increase or decrease icon, or by typing in the input field.
+		 *
+		 * @event triplat-incremental-input-change-by-user
+		 */
+
+		properties: {
+
+			/**
+			 * Numeric value for the incremental input field. 
+			 */
+	  		value: {
+	  			type: Number,
+	  			notify: true
+	  		},
+
+			/*
+			 * Indicates invalid input (when using flexValidation).
+			 */
+			invalid: {
+				type: Boolean,
+				notify: false,
+			},
+
+			/*
+			 * Error message to be displayed when input is invalid (not a positive number, < min, or > max).
+			 */
+			errorMessage: {
+				type: String,
+				value: ""
+			},
+
+	  		/**
+	  		  * String value to be used for the incremental label.
+	  		  */
+			label: String,
+			
+			/**
+	  		  * Show the label underneath the value instead of above the value. Use this only when the component is vertical.
+	  		  */
+			showLabelUnder: {
+				type: Boolean,
+				value: false
+			},
+
+			/*
+			 * String value to be used for the ARIA label of the increase icon.
+			 */
+			increaseAriaLabel: String,
+
+			/*
+			 * String value to be used for the ARIA label of the decrease icon.
+			 */
+			decreaseAriaLabel: String,
+
+			/*
+			 * Optional minimum allowed for a value when a value is decreased. If a value is smaller than min, the value will immediately be changed to min (unless flexValidation is true).
+			 */
+			min: {
+				type: Number,
+				value: 0
+			},
+
+			/*
+			 * Optional maximum allowed for a value when a value is increased. If a value is greater than max, the value will immediately be changed to max (unless flexValidation is true).
+			 */
+			max: {
+				type: Number
+			},
+
+			/*
+			 * Prevent user from typing in '-'. This will be automatically set to true if minimum is set to zero or above.
+			 */
+			preventNegative: {
+				type: Boolean
+			},
+
+			/*
+			 * Optional minimum number of digits when displaying a value. If a value length is smaller than the minimum digits number, preceding zeros will be added to the value.
+			 */
+			minDigits: {
+				type: Number,
+				value: 0
+			},
+
+			/*
+			 * Optional loop when a value is increased or decreased (between min and max like a spinner wheel). Requires max value.
+			 */
+			loop: {
+				type: Boolean,
+				value: false
+			},
+
+			/*
+			 * Optional flex validation. If this option is selected, any invalid entered value is not forced into min or max.
+			 * Instead, the input is marked as invalid.
+			 */
+			flexValidation: {
+				type: Boolean,
+				value: false
+			},
+
+			/*
+			 * Optional reverse order of the increase and decrease icons. By default, the decrease icon displays first. Enable this property if you are planning planning to layout the icons and input vertically.
+			 */
+			reverseIcons: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false
+			},
+
+			/*
+			 * Amount to add or subtract when increasing or decreasing a value.
+			 */
+			step: {
+				type: Number,
+				value: 1
+			},
+			
+			/*
+			 * Value to indicate that the component is read-only.
+			 */
+			readonly: {
+				type: Boolean,
+				value: false
+			},
+			
+			/*
+			 * The user can edit the values with the period counters only. The input will be read-only.
+			 */
+			countersOnly: {
+				type: Boolean,
+				value: false
+			}
+		},
+		
+		get paperInputElement() {
+			return this.$.input;
+		},
+
+		ready: function(){
+			//initialize preventNegative base on the minimum setting
+			if(this.preventNegative == undefined && this.min != undefined && this.min >= 0) {
+				this.set("preventNegative", true);
+			}
+			
+        	//check init value and set validation.
+       		this._initValidation();
+       		if(Polymer.dom(this.$$('#labelContent')).getDistributedNodes().length >0){
+				this.label=" ";
+			}
+		},
+
+		_computeAllowedPattern: function(preventNegative) {
+			return preventNegative? "[0-9]":"[0-9-]";
+		},
+		
+		_displayValue: function(value, minDigits){
+			//display value includes preceding zeros, if needed.
+			return this._handleDigits();
+		},
+
+		/**
+		  * Increase the value by a given step.
+		  * If max value is set, value cannot exceed it.
+		  * If loop is set and value exceeds max, then set the value to min.
+		  */
+		increaseValue: function(){
+			var newValue = Number(this.min);
+			
+			if(isNaN(this.value)){
+				//Initial none numeric value can exist with flexValidation. Therefore, when user click the icon we value is set to minimum.
+			} else {
+				newValue = Number(this.value);
+				var numSteps = Number(this.step);
+
+				if(this.max != null) {
+					if(this.loop){
+						//number of times to increase value by 1 (as if user click increase icon numSteps times)
+						for (var i=0; i<numSteps; i++) {
+							newValue = newValue + 1;
+							if(newValue > this.max){
+								//higher then max, set to min and continue to increase from the min value
+								newValue = Number(this.min);
+							}						
+						}
+					} else {
+						newValue = newValue + numSteps;
+
+						if (newValue > this.max) {
+							//value no bigger then max
+							newValue = Number(this.max);
+						}
+						if (newValue < this.min) {
+							//value no smaller then min (can happen with flexValidation)
+							newValue = Number(this.min);
+						}
+					}
+				} else {
+					//there is no max limit
+					newValue = newValue + numSteps;
+				}
+			}
+			
+			//update value
+			this.value = newValue;
+			
+			if(this.invalid == true) {
+				this.invalid = false;
+			}
+
+			this.fire("triplat-incremental-input-change-by-user", {"value": this.value});
+		},
+
+		/**
+		  * Decrease the value by a given step.
+		  * Value cannot be smaller than min.
+		  * If loop is set and value is smaller than min, then set the value to max.
+		  */
+		decreaseValue: function(){
+			var newValue = Number(this.min);
+			
+			if(isNaN(this.value)){
+				//Initial none numeric value can exist with flexValidation. Therefore, when user click the icon value is set to minimum.
+			} else {
+				newValue = Number(this.value);
+				var numSteps = Number(this.step);
+
+				if(this.max != null && this.loop) {
+					//number of times to reduce value by 1 (as if user click decrease icon numSteps times)
+					for (var i=0; i<numSteps; i++) {
+						newValue = newValue - 1;
+						if(newValue < this.min){
+							//lower then min, set to max and continue to reduce from the max value
+							newValue = Number(this.max);
+						}						
+					}
+					
+					if(newValue > this.max) {
+						//value no bigger then max (can happen with flexValidation)
+						newValue = Number(this.max);
+					}
+				} else {
+					newValue = newValue - numSteps;
+					
+					if (newValue < this.min) {
+						//value no smaller then min
+						newValue = Number(this.min);
+					}
+					if (this.max != null && newValue > this.max){
+						//value no bigger then max (can happen with flexValidation)
+						newValue = Number(this.max);
+					}
+				}
+			}
+
+			//update value
+			this.value = newValue;
+
+			if(this.invalid == true) {
+				this.invalid = false;
+			}
+
+			this.fire("triplat-incremental-input-change-by-user", {"value": this.value});
+		},
+
+		_disableDecrementButton: function(loop, value, readonly) {
+			if (readonly) return true;
+			if (loop) return false;
+
+			var value = Number(value);
+			if (isNaN(value)) return true;
+			if (value <= Number(this.min)) return true;
+
+			return false;
+		},
+
+		_disableIncrementButton: function(loop, value, readonly) {
+			if (readonly) return true;
+			if (loop) return false;
+
+			var value = Number(value);
+			if (isNaN(value)) return true;
+			if (value >= Number(this.max)) return true;
+
+			return false;
+		},
+
+		_initValidation: function(){
+			if(this.flexValidation == true) {
+				this._handleFlexValidation();
+			} else {
+				this._handleForceValidation();
+			}
+		},
+
+		_handleEdit: function(e){
+			if(this._isNumber(e.target.value)){
+				this.value = Number(e.target.value);
+			} else {
+				this.value = e.target.value;
+			}
+			if(this.flexValidation == true) {
+				this._handleFlexValidation();
+			} else {
+				this._handleForceValidation();
+			}
+
+			this.fire("triplat-incremental-input-change-by-user", {"value": this.value});
+		},
+
+		_handleFlexValidation: function(){
+			var numberValue = Number(this.value);
+			if(isNaN(numberValue) 
+				|| this.value < this.min 
+				|| (this.max != null && this.value > this.max)) {
+					//invalid value mark invalid
+					this.invalid = true;
+			} else {
+					this.invalid = false;
+			}
+		},
+
+		_handleForceValidation: function(){
+			var numberValue = parseInt(this.value);
+			if(isNaN(numberValue)) {
+				//value not a number, set value to the min
+				this.value = this.min;
+			} else {
+				//Set typed value as numeric instead of string.
+				//It also handle the case of value contains mix of letter and number, set to number value
+				if(this.value != numberValue) {
+					this.value = numberValue;
+				}
+			}
+
+			if(this.value < this.min) {
+				this.value = Number(this.min);
+			} else if(this.max != null && this.value > this.max) {
+				this.value = Number(this.max);
+			}
+		},
+
+		_handleDigits: function(){
+			var formattedValue =  this.value;
+			
+			if(this.minDigits < 1 || !this._isNumber(this.value) || Number(this.value)<0){
+				return formattedValue;
+			}
+
+			var stringValue = '' + Number(this.value);//without preceding zeros
+			var stringOriginalValue = '' + this.value;//with preceding zeros, if exist
+			
+			var valueLength = stringValue.length;
+			if(valueLength < this.minDigits){
+				var digitsToAdd = this.minDigits - valueLength;
+				var leadingZeros = "";
+				for (var i=0; i<digitsToAdd; i++) {
+					leadingZeros = leadingZeros + "0";
+				};
+				
+				var newValue = leadingZeros + Number(this.value);
+				if(newValue != stringOriginalValue) {
+					//update value only if different
+					formattedValue = newValue;
+				}
+			} else {
+				if(stringOriginalValue.length > valueLength) {
+					formattedValue = stringValue; //remove preceding zeros if length is more then minDigits
+				}
+			}
+			
+			return formattedValue;
+		},
+
+		_isNumber: function(value) {
+			var numberValue = parseInt(value);
+			return !isNaN(numberValue);
+		}
+		
+	});
+</script>

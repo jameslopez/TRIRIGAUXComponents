@@ -1,0 +1,95 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script>
+	/**
+	 * `TriLazyLoadingBehavior` is a utility for lazy-loading resources.
+	 * 
+	 *	To lazy-load a resource, you must do the following:
+	 *
+	 *	- Do not import the resource using `<link rel="import">` tag.
+	 *	- When you want to load the resource, call the `loadResource` function and pass in the instance of the resource to load in the DOM and its filename.
+	 *	
+	 * 				
+	 *	Example:
+	 *
+	 *		<!-- <link rel="import" href="resource-to-load.html"> -->
+	 *		<dom-module id="my-module">
+	 *			<template>
+	 *				<resource-to-load id="myResource"></resource-to-load>
+	 *				<triplat-graphic id="myGraphic"></triplat-graphic>
+	 *			</template>
+	 *		</dom-module>
+	 *		<script>
+	 *			...
+	 *		    attached: function() {
+	 *				Polymer.RenderStatus.afterNextRender(this, function(){
+	 *					this.loadResource(this.$.myResource, 
+	 *										"resource-to-load.html");
+	 *					this.loadResource(this.$.myGraphic, 
+     *										"../triplat-graphic/triplat-graphic.html");
+	 *				});
+	 *			}
+	 *		<script>
+	 * 
+	 *	The `resource-to-load` and `triplat-graphic` will be loaded after the `my-module` is loaded.
+	 *
+	 *	### Vulcanized Application
+	 *	If you vulcanized the application and at the same time lazy-load a resource, you will need to separate the import links of the lazy-loaded resource so it will not result in the following error: `A type with that name is already registered.`
+	 *	To prevent the error, do not import a reference in the lazy-loaded resource, separate it into its own import file, and import that file into the main app view file so that those references will be included in the vulcanized file.
+	 *
+	 *
+	 *	Example in resource-to-load.html:
+	 *
+	 *		<!-- This is a lazy-loaded resource, do not import resources here, 
+	 *			 instead create a separate file. -->
+	 *		<dom-module id="resource-to-load">
+	 *			<template>
+	 *				<other-comp>My lazy-loaded component.</other-comp>
+	 *			</template>
+	 *		</dom-module>
+	 *	
+	 *	
+	 *	Example in resource-to-load-imports.html:
+	 *
+	 *		<!-- Create a new file to hold the imports. -->
+	 *		<link rel="import" href="other-comp.html">
+	 *
+	 *		
+	 *	Example in my-app-view.html to vulcanize:
+	 *
+	 *		<link rel="import" href="resource-to-load-imports.html">
+	 *
+	 *
+	 * @polymerBehavior
+	 */
+	TriLazyLoadingBehavior = { 
+
+		/**
+		 * Loads the resource by importing it imperatively.
+		 *
+		 * @param {HTMLElement} resourceInstance The instance of the resource to load in the DOM. 
+		 * @param {string} resourceFilename The filename of the resource to load.
+		 * @return {Object} Promise object after the resource is loaded.
+		 */	
+		 loadResource: function(resourceInstance, resourceFilename) {
+			return new Promise(function(resolve) {
+				if (!Polymer.isInstance(resourceInstance)) {
+					this.importHref(this.resolveUrl(resourceFilename),
+						function() {
+							resolve();
+						},
+						function() {
+							console.error("Error loading " + resourceFilename + ".");
+						},
+						false
+					);
+				} else {
+					resolve();
+				}
+			}.bind(this));
+		},
+  };
+</script>

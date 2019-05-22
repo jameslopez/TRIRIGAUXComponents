@@ -1,0 +1,36 @@
+<!-- IBM Confidential‌ - OCO Source Materials‌ - (C) COPYRIGHT IBM CORP. 2017 - The source code for this program is not published or otherwise‌ divested of its trade secrets, irrespective of what has been‌ deposited with the U.S. Copyright Office. -->
+
+<script>
+	Polymer({
+		is: "triplat-word-highlight",
+
+		extends: "span",
+
+		properties: {
+			value: {
+				type: String,
+				value: ""
+			},
+
+			searchValue: {
+				type: String,
+				value: ""
+			}
+		},
+
+		observers: ["_handleValueChanged(value, searchValue)"],
+
+		_handleValueChanged: function(value, searchValue) {
+			var text = "";
+			if (searchValue == null) {
+				searchValue = "";
+			}
+			if (value != null) {
+				var regex = new RegExp('(' + searchValue + ')','i');
+				text = value.replace(regex, "<strong>$1</strong>");
+			}
+			Polymer.dom(this).innerHTML = text;		
+		}
+		
+	});
+ </script>

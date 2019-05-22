@@ -1,0 +1,22 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script>
+	/**
+	 * `TriBlockNavLayoutBehavior` detects `iron-pages` component used as `page` in the container and sets the `iron-pages-id` property of the `nav` component based from the `id` of the `iron-pages`. 
+	 *
+	 * @polymerBehavior
+	 */
+	TriBlockNavLayoutBehavior = {
+		
+		attached: function() {
+			var page = Polymer.dom(this).querySelector("[page]");
+			var nav = Polymer.dom(this).querySelector("[nav]");
+			if (page && page.tagName == "IRON-PAGES") {
+				nav.ironPagesId = page.id;
+			}
+		}
+	};
+</script>

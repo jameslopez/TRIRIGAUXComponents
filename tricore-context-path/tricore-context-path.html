@@ -1,0 +1,63 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-meta/iron-meta.html">
+
+<!--
+A component used to initialize and get the server's context path.
+
+     <tricore-context-path set-path="/dev"></tricore-context-path>
+
+     <tricore-context-path get-path="{{contextPath}}"></tricore-context-path>
+
+@demo demo/index.html
+-->
+<dom-module id="tricore-context-path">
+	<template>
+		<iron-meta id="meta" type="tri" key="contextPath"></iron-meta>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+		
+		is: "tricore-context-path",
+
+		properties: {
+			
+			/**
+			 * Property retrieve the current context path. This will not work if the 
+			 * context has not yet been initialized.
+			 */
+			getPath: {
+				type: String,
+				notify: true,
+				readOnly: true
+			},
+
+			/*
+			 * Property to set the current context path. Usually this should 
+			 * be used on the top entry.
+			 */
+			setPath: {
+				type: String
+			}
+
+		},
+
+		ready: function() {
+			var contextPathInputElement = document.querySelector("#contextPath");
+			var newContextPath = null;
+			if (contextPathInputElement) {
+				newContextPath = contextPathInputElement.getAttribute("value");
+			}
+			if (newContextPath && newContextPath.length > 0 && newContextPath.slice(newContextPath.length-1, newContextPath.length) == "/") {
+				newContextPath = newContextPath.slice(0, newContextPath.length-1);
+			}
+
+			this._setGetPath(newContextPath);
+		}
+
+	});
+</script>

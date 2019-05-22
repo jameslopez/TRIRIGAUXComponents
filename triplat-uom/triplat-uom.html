@@ -1,0 +1,177 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<link rel="import" href="../triplat-accessibility-behavior/triplat-accessibility-behavior.html">
+
+<link rel="import" href="triplat-uom-behavior.html">
+
+<!--
+The triplat-uom is a custom element for displaying unit-of-measure (UOM) information such as symbol, value, and abbreviation.
+
+<div style="background-color:#FFFFCC">
+	<div style="padding:20px;">
+		<b>Note:</b> The triplat-uom component does not support currency UOM at this time.
+	</div>
+</div>
+
+		<triplat-uom uom="{{uom}}" uom-list="{{uom-list}}" display="symbol|uom|abbr"/>
+
+### Displaying UOM as a drop down list   
+
+	The uom-value property can be used to display UOM values as drop down list against a number with UOM field in the datasource. See triplat-number-input for more detail.
+	
+<div style="background-color:#FFFFCC">
+	<div style="padding:20px;">
+		<b>Note:</b> Only use uom-value and uom-list to implement drop down list. The display property will be ignored and will always display in uom.
+	</div>
+</div>
+	 
+		<triplat-uom label="Unit" uom-value="{{datasourse.numberFieldWithUom.uom}}" uom-list="{{uom-list}}"/>
+		
+
+### Styling
+
+<div style="background-color:#FFFFCC">
+	<div style="padding:20px;">
+		<b>Deprecated:</b> Custom property `--triplat-uom-style` is deprecated, instead use `--triplat-uom-info`.
+	</div>
+</div>
+
+The following custom properties are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triplat-uom-info` | Style for the UOM information to display | `{}`
+`--triplat-uom-dropdown` | Style for the UOM dropdown | `{}`
+`--triplat-uom-dropdown-content` | Style for the UOM dropdown content | `{}`
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="triplat-uom">
+	<style>
+
+		#triUom {
+			@apply --triplat-uom-style;
+			@apply --triplat-uom-info;
+		}
+
+		.triplat-uom-dropdown {
+			@apply --triplat-uom-dropdown;
+		}
+		
+		.dropdown-content {
+			@apply --triplat-uom-dropdown-content;
+		}
+
+	</style>
+	<template>
+		<template is="dom-if" if="[[_showString(uom)]]">
+			<span id="triUom">{{getUomInfo(uom, uomList, display)}}</span>
+		</template>
+		<template is="dom-if" if="[[!_showString(uom)]]" notifyDomChange>
+			<paper-dropdown-menu id="dropdownMenu" class="triplat-uom-dropdown" label="[[label]]" on-iron-overlay-canceled="_handleOverlayCancel" opened="{{_menuOpened}}" aria-label$="[[label]]" tabindex="0">
+				<paper-listbox class="dropdown-content" selected="{{uomValue}}" attr-for-selected="name">
+					<template is="dom-repeat" items="{{uomList}}" >
+						<paper-item name="{{item._UOM_Value}}">{{item._UOM_Display_Value}}</paper-item>
+					</template>
+				</paper-listbox>
+			</paper-dropdown-menu>
+		</template>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+		is: "triplat-uom",
+
+		behaviors: [
+			TriPlatAccessibilityBehavior,
+			TriPlatUomBehavior
+		],
+
+		properties: {
+			/**
+			  * Optional. If omitted, displays the value of the UOM.  If exists, the value can be any of the following: uom, symbol, abbr.
+			  *	Use 'uom' to display the value of the UOM in the language of the current user (e.g. "square-feet").  
+			  *	Use 'symbol' to display the currency symbol of the UOM if it is of type Currency.
+			  * Use 'abbr' to display the abbreviation of the UOM (e.g. ft2).
+			  *
+			  **/
+			display: {
+				type: String,
+				value: "uom"
+			},
+
+			/**
+			 * String value to be used for the drop down list label.
+			 **/
+			label: {
+				type: String,
+				value: null
+			},
+
+			/**
+			  * Unit-of-Measure value, typically from the datasource field (e.g. "Metric Ton CO2", "square-feet").
+			  **/
+			uom: {
+				type: String,
+				notify: true,
+				value: null
+			},
+
+			/**
+			  * Unit-of-Measure datasource which contains the value specified in uom. If the uom value is an
+			  * area, then this should be a UOM datasource that represents Area. 
+			  **/
+			uomList: {
+				type: Object,
+				value: null
+			},
+
+			/**
+			  *  Show all the Unit-of-Measure as an editable drop down list. 
+			  **/
+			uomValue:{
+				type: String,
+				value: null,
+				notify: true
+			},
+
+			_menuOpened: {
+				type: Boolean,
+				observer: "_setAriaExpanded"
+			}
+		},
+
+		listeners: {
+			"dom-change": "_setAriaExpanded"
+		},
+
+		_showString: function(uom) {
+			return uom ? true : false;
+		},
+
+		attached: function() {
+			this.setAttribute("role" , "application");
+		},
+
+		_handleOverlayCancel: function(e) {
+			e.stopPropagation();
+		},
+
+		_setAriaExpanded: function() {
+			if (this.$$("#dropdownMenu")) {
+				this.setAriaProperty(this.$$("#dropdownMenu"), this._menuOpened, "expanded")
+			}
+		}
+	});
+</script>

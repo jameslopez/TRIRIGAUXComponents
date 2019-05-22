@@ -1,0 +1,576 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-input-container.html">
+<link rel="import" href="../paper-input/paper-input-error.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="triplat-calendar.html">
+<link rel="import" href="triplat-date-picker-behavior.html">
+<link rel="import" href="../triplat-icon/triplat-icon.html">
+<link rel="import" href="../triplat-date-utilities/triplat-date-utilities.html">
+<link rel="import" href="../triplat-input-container-behavior/triplat-input-container-behavior.html">
+<link rel="import" href="../triblock-scroll-field-into-view-behavior/triblock-scroll-field-into-view-behavior.html">
+<script src="../jsTimezoneDetect/jstz.min.js"></script>
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/builds/moment-timezone-with-data-2010-2020.js"></script>
+<script src="../moment-jdateformatparser/moment-jdateformatparser.min.js"></script>
+<script src="../moment/min/locales.min.js"></script>
+
+<!--
+A component that provides an input box with a calendar icon. Clicking on the icon 
+brings up a calendar and allows you to select a date from the calendar.
+
+     <triplat-date-picker value="{{value}}"></triplat-date-picker>
+
+Note: The pop-up calendar will be centered when opened on a mobile device. 
+
+Example of using custom label. In order for an element to be considered as a label, it must have the `label` attribute.
+
+    <triplat-datetime-picker>
+      <iron-icon label icon="icons:perm-contact-calendar"></iron-icon>
+    </triplat-datetime-picker>
+
+Note: The 'label' property value will be overridden when using a custom 'label'. 
+
+### Styling
+
+The following custom properties are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triplat-date-picker-width` | Width of the input field | `100%`
+`--triplat-date-picker-header-bg-color` | Background color for the header | `--tri-primary-color-40`
+`--triplat-date-picker-header-sec-bg-color` | Secondary background color for the header | `--tri-primary-color-30`
+`--triplat-date-picker-weekday-color` | Color for the weekday column header | `--ibm-gray-60`
+`--triplat-date-picker-cancel-button` | Mixin applied to the cancel button | `{}`
+`--triplat-date-picker-done-button` | Mixin applied to the done button | `{}`
+`--triplat-date-picker-selected-bg-color` | Color of the background for a selected day or year | `--tri-primary-color-30`
+`--triplat-date-picker-disabled-color` | Color of the disabled days | `--ibm-gray-50`
+`--triplat-date-picker-landscape-bg-color` | Color of the background in landscape mode | `--tri-primary-color-40`
+`--triplat-date-picker-icon-size` | Size of the calendar icon | `24px`
+`--triplat-date-picker-icon-color` | Color of the component icons | `--tri-primary-icon-button-color`
+`--triplat-date-picker-icon` | Mixin applied to the picker icon | `{}`
+
+See `Polymer.PaperInputContainer` for a list of custom properties that can be used to style the paper-input element contained within this element.
+
+### Utilities
+
+See `triplat-date-utilites` for more API docs.
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="triplat-date-picker">
+	<style include="iron-flex iron-flex-alignment">
+
+	paper-icon-button {
+            padding: 0px;
+            height: var(--triplat-date-picker-icon-size, 24px);
+            width: var(--triplat-date-picker-icon-size, 24px);
+            --iron-icon-fill-color: var(--triplat-date-picker-icon-color, --tri-primary-icon-button-color);
+            bottom:3px;
+            @apply(--triplat-date-picker-icon);
+	}
+
+	paper-input {
+		width: var(--triplat-date-picker-width);
+	}
+
+	paper-dialog {
+		position: fixed;
+		width: 60%;
+		margin: 0px;		
+	}
+
+	.__triPlatDatePickerCalendar{
+		top: var(--tri-date-picker-calendar-position-top);
+		left: var(--tri-date-picker-calendar-position-left);
+		position: var(--tri-date-picker-calendar-position);
+	}
+
+	#content {
+		display:none;
+	}
+	</style>
+	<template>
+		<iron-media-query query="max-width: 414px" query-matches="{{phone}}"></iron-media-query>
+		<paper-input-container hidden="{{_readonlyNoDisabledNoLabel(disabled,readonly,label)}}"
+  			class="flex" 
+  			on-change="_directEdit"
+  			invalid="[[_invalid]]"
+  			aria-label$="[[label]]" 
+  			always-float-label$="[[alwaysFloatLabel]]"
+  			disabled$="[[disabled]]"
+  			no-label-float$="[[noLabelFloat]]">
+  			<label id="[[_labelId]]" for$="[[_inputId]]">[[label]]<content id="labelContent" select="[label]"></content></label>
+  			<input is="iron-input" 
+  				id="[[_inputId]]"
+  				aria-labelledby$="[[_labelId]]"
+  				pattern$="[[_datetimePattern]]" 
+  				readonly$="[[readonly]]"
+  				disabled$="[[disabled]]"
+	  			bind-value$="{{formatDate(value, displayFormat)}}"
+	  			on-input="_fireInputChanged"
+	  			tri-scroll-into-view>
+			<template is="dom-if" if="{{_notDisabledReadonly(disabled,readonly)}}">
+			  	<paper-icon-button
+		  			suffix 
+		  			icon="ibm:calendar" 
+		  			id="picker" 
+		  			on-tap="_openTriCalendar" 
+		  			aria-label$="{{_setPickerAriaLabel(label)}}">
+		  		</paper-icon-button>
+		  	</template>
+	  		<paper-input-error>[[_hightLighted]]</paper-input-error>
+  		</paper-input-container>
+		<template is="dom-if" if="{{_readonlyNoDisabledNoLabel(disabled,readonly,label)}}">
+			<span>{{formatDate(value, displayFormat)}}</span>
+		</template>
+		<template is="dom-if" if="{{_notDisabledReadonly(disabled,readonly)}}">
+			<triplat-calendar id="calendar" class="__triPlatDatePickerCalendar"
+				no-cancel-on-esc-key="{{_noCancelOnEscKey}}"
+				no-cancel-on-outside-click="{{_noCancelOnOutsideClick}}"
+				header="{{header}}" 
+				current-date="{{_convertToDateObject(_dateValue)}}" 
+				initiated-date ="{{_initiatedDate}}" 
+				disallow-past-dates$="{{disallowPastDates}}"
+				disallow-weekends$="{{disallowWeekends}}"
+				restrict-to-date-list$="{{restrictToDateList}}"
+				valid-date-list="{{validDateList}}"
+				confirm-buttons="{{confirmButtons}}"
+				on-calendar-date-selected="_getDateTime"
+				disable-select-year$="{{disableSelectYear}}"
+				on-iron-overlay-opened="_openCalendar"
+				on-iron-overlay-closed="_closeCalendar">
+			</triplat-calendar>
+		</template>
+		<paper-dialog id="directentryerror" no-cancel-on-outside-click role="alertdialog">
+			<h2>Invalid value: <span>{{_enteredDateValue}}</span></h2>
+			<div>{{_errorMsg}}</div>
+		    <div class="buttons">
+		        <paper-button id="triCloseButton" dialog-dismiss>Close</paper-button>
+		    </div>
+
+		</paper-dialog>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+	  is: "triplat-date-picker",
+
+	  /**
+       * Fired when the date-picker value changes.
+       *
+       * @event date-picker-change
+       */
+
+       /**
+       * Fired when the date-picker input changes due to user interaction.
+       *
+       * @event date-picker-user-change
+       */
+
+       /**
+       * Fired every time the value is typed into the date-picker input field.
+       *
+       * @event date-picker-input-change
+       */
+
+	  behaviors: [ 
+			Polymer.TriPlatDatePickerBehavior,
+			TriDateUtilities,
+			TriplatInputContainerBehavior,
+			TriBlockScrollFieldIntoViewBehavior
+	  ],
+	  	
+	  listeners: {
+			'calendar-date-selected': '_calendarDateSelected'
+	  },
+
+	  properties: {
+
+			/**
+			 * The ISO date format 
+			 */
+	  		value: {
+	  			type: String,
+	  			notify: true,
+	  			observer: "_valueChanged"
+	  		},
+
+	  		/**
+	  		 * Representation of the value as a java.util.Date object
+	  		 */
+	  		_dateValue: {
+	  			type: Date,
+	  			observer: "_dateValueChanged"
+	  		},
+
+	  		/**
+	  		  * Flag indicating whether to display a block above the calendar containing
+	  		  * the day of the week, month, day, and year of the currently selected value.<br>
+	  		  * <b>true</b> means display the header above the calendar.<br>
+	  		  * <b>false</b> means just display the calendar without the header block.<br>
+	  		  */
+	  		header: {
+	  			type: Boolean,
+	  			value: false
+	  		},
+
+	  		/**
+	  		  * String value to be used for the label.
+	  		  */
+	  		label: {
+	  			type: String,
+	  			value: null
+	  		},
+
+	  		/** 
+	  		  * Boolean value to indicate that this is a disabled date value input field. Show
+	  		  * the value, but not the date picker. The value will be grayed out and not editable.
+	  		  * The value will be underlined to indicate it is an input field.
+	  		  */
+	  		disabled: {
+	  			type: Boolean,
+	  			value: false
+	  		},
+
+	  		/** 
+	  		  * Boolean value to indicate that this is a readonly date value. Show
+	  		  * the value, but not the date picker.
+	  		  */
+	  		readonly: {
+	  			type: Boolean,
+	  			value: false
+	  		}, 
+
+	  		/** 
+	  		  * Boolean value to indicate that a null date should be considered as invalid.
+	  		  */
+	  		nullDateInvalid: {
+	  			type: Boolean,
+	  			value: false
+	  		}, 
+
+	  		/**
+	  		  * String value that is null when no error exists or it contains the current error
+	  		  * message if the existing value is invalid.
+	  		  */
+	  		_errorMsg: {
+	  			type: String,
+	  			value: null,
+	  			notify: true
+	  		},
+
+	  		_militaryTime: {
+	  			type: Object,
+	  			value: true
+	  		},
+
+	  		_currentTimeZone:{
+	  			type: String
+	  		},
+
+	  		_initiatedDate:{
+	  			type: Boolean
+	  		},
+
+	  		_datetimeInvlidmsg:{
+	  			type: String
+	  		},
+
+	  		_datetimePattern:{
+	  			type: String
+	  		},
+	  		_enteredDateValue:{
+	  			type: String
+	  		},
+
+	  		/**
+	  		  * Flag indicating whether to display "Ok" and "Cancel" buttons in the calendar.<br>
+	  		  */
+	  		confirmButtons:{
+	  			type: Boolean,
+	  			value: false
+	  		},
+
+	  		/**
+	  		  * Flag indicating whether to disable weekends and make them become gray color and unselectable in the calendar.<br>
+	  		  */
+	  		disallowWeekends: {
+		      	type: Boolean,
+		      	value: false
+		    },
+		    /**
+			  * Flag that indicates whether to allow the user to select any date, or just select dates 
+			  * in the future. If this is specified, then only dates in the future, excluding today, will be able 
+			  * to be selected.
+			  **/
+		    disallowPastDates:{
+		    	type: Boolean,
+		      	value: false
+		    },
+
+		    /**
+			  * Date format strings
+		     */
+		    displayFormat: {
+		    	type: String,
+		    	value: "MM/DD/YYYY"
+		    },
+
+		    _noCancelOnOutsideClick:{
+		    	type: Boolean,
+		    	value: false
+		    },
+
+		    _noCancelOnEscKey:{
+		    	type: Boolean,
+		    	value: false
+		    }, 
+		    /**
+			  * Flag that indicates whether the date that the user enters is a valid date.<br/>
+			  * <b>true</b> means the date picker field appears in red underline color.
+			  **/
+		    _invalid: {
+		    	type: Boolean,
+		    	value: false,
+		    	reflectToAttribute: true
+		    }, 
+		    _isoDateLength: {
+		    	type: Number,
+		    	value: (moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ")).length
+		    },
+		    /**
+		     * Returns the length of a datetime using the UTC time zone.
+		     * For example "2016-06-08T23:30:00.000Z" is a datetime with the UTC timezone.
+		     */
+		    _isoUTCDateLength: {
+		    	type: Number,
+		    	value: ("YYYY-MM-DDTHH:mm:ss.SSSZ").length
+		    },
+		    /**
+			  * Flag that indicates whether to allow the message to alert when the user enters an invalid date.
+			  **/
+		    disableErrorMsg: {
+		    	type: Boolean,
+		    	value: false
+		    },
+		    /**
+	  		  * Set to true to always float the label.
+	  		  */
+		    alwaysFloatLabel: {
+		    	type: Boolean,
+		    	value: false
+		    },
+
+		    /**
+			  * Set to true to disable the floating label.
+			  **/
+		    noLabelFloat: {
+		    	type: Boolean,
+		    	value: false
+		    },
+
+		    /**
+			  * Set to true to disable select year.
+			  **/
+		    disableSelectYear: {
+		    	type: Boolean,
+		    	value: false
+		    },
+
+		    _userValueChange: {
+		    	type: String,
+		    	observer: "_fireUserChanged"
+		    }, 
+
+		    _lang: String,
+	  },
+
+	  _calendarDateSelected: function() {
+    		this.set("_errorMsg" , null);
+	  },
+
+	  /* Neither disabled nor readonly flag were set
+	  */
+	  _notDisabledReadonly: function(disabled,readonly) {
+	  	return !disabled && !readonly;
+	  },
+
+	  /* readonly flag was set, but disabled was not set
+	  */
+	  _readonlyNoDisableLabel: function(disabled,readonly, label) {
+	  	return !disabled && readonly && label;
+	  },
+
+	  _readonlyNoDisabledNoLabel: function(disabled,readonly,label) {
+	  	return !disabled && readonly && !label;
+	  },
+
+	  _dateValueChanged: function() {
+	  	this._initiatedDate = false;
+	  	if(this._calendarIconIsTapped) {
+	  		this._calendarIconIsTapped = false; 
+	  		return;
+	  	}
+	  	if (this._dateValue) {
+	  		this.set("value", moment(this._dateValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ"));
+	  	}
+	  },
+
+	  /**
+	    * Handle user directly entering a new value into the input field
+	    * without using the calendar.
+	    */
+	  _directEdit: function(e) {
+	  	this.set("_errorMsg" , null);
+	  	var newDate = this._convertStringToDate(e.target.value, this.nullDateInvalid);
+	  	if (this._errorMsg === null) {
+	  		this._directEditRestrictedDateCheck(newDate);
+	  	}
+		if (this._errorMsg===null) {
+			if (newDate === null) {
+				this._invalid = false;
+				this.set("value", null);
+				
+			} else {
+				this._invalid = false;
+				this.set("value", newDate);				
+				this.currentTime = newDate;
+
+			}
+		} else {
+			this._invalid = true;
+			if(!this.disableErrorMsg){
+				this.$.directentryerror.style.top = this.getBoundingClientRect().top + "px";
+				this.$.directentryerror.style.left = this.getBoundingClientRect().left + "px";
+				this.$.directentryerror.toggle();
+			}
+		}
+		this._userValueChange = this.value;
+	  }, 
+
+	  _openTriCalendar: function(){
+	  	this._calendarIconIsTapped = true; 
+	  	var withoutTimeIndex, dateString, dateObj;
+        if(this.value){
+        	withoutTimeIndex = this.value.indexOf("T");
+	        dateString = this.value.substring(0, withoutTimeIndex);
+	        dateObj =  new Date(moment(dateString).format("YYYY-MM-DDTHH:mm:ss.SSSZ"));
+	        if (!this._isDateObject(dateObj)) {
+		        // For Arabic (and perhaps other languages), format("YYYY-MM-DDTHH:mm:ss.SSSZ") does not work, so use toISOString()
+		        dateObj =  new Date(moment(dateString).toISOString());
+		    }
+	  		
+        } else{
+        	dateObj = null;
+        }
+        this.set("_dateValue", dateObj);
+	  	
+
+	  	this.openTriCalendar(this.$$("#picker"), this.$$("#calendar"), this.phone, this.header);
+	  },
+
+	  created: function(){
+	  	this._currentTimeZone = jstz.determine().name();
+	  	this._handleLocale();
+	  },
+
+	  attached: function(){
+	  	this.timeZone = this.timeZone ? this.timeZone : this._currentTimeZone;
+	  	this.allowPastDates = true;
+	  	this._initiatedDate = this.value ? true : false;
+	  	this._handleCustomLabel();
+	  },
+
+	  _handleLocale: function(){
+	  	var lang = document.querySelector('html').getAttribute("lang") || 'en';
+	  	//TODO to remove this later when have a better way/implementation to handle mock user.
+	  	this._lang = (lang === "mock-USER") ? "en" : lang;
+	  	moment.locale('en');
+	  },
+
+	  _getDateTime: function(e){
+	  	var calendarDatetime = e.detail.datetime;
+	  	this._calendarIconIsTapped = false;
+	  	moment.locale('en');
+	  	this.set("_dateValue", moment(new Date(calendarDatetime)));
+	  	this._invalid = false;
+	  	this._userValueChange = this.value;
+	  },
+	  
+	  _setPickerAriaLabel: function(val){
+        if (!val) {
+           return "";
+        }
+
+		return "Select " + val;
+ 	  },
+
+ 	  _closeCalendar: function(e){
+			this.$$("#calendar")._resetCalendar();
+			this.$$("#"+this._inputId).focus();
+			this._calendarState = false;
+ 	  },
+
+ 	  _openCalendar: function(){
+	  	this._calendarState = true;
+	  	this._handleBrowserResize();
+	  },
+
+	  _convertToDateObject: function(val){
+	  	if(val){
+	  		return moment(val).toDate();
+	  	}
+	  	return "";
+	  },
+
+	  _valueChanged:function(){ 
+  		this.fire("date-picker-change", {date: this.value});
+	  },
+	  
+	  /**
+	    * Handle clear value from the input field.
+	    */
+	  clearDateValue: function(){
+        this.value = null ? "" : null;
+	  	this.$$('input').bindValue = null;
+	  	this.$.directentryerror.close();
+	  	this._invalid = false;
+	  	this._userValueChange = this.value;
+	  },
+
+	 _handleCustomLabel: function(){
+		if(Polymer.dom(this.$$('#labelContent')).getDistributedNodes().length >0){
+			this.label=" ";
+		}
+	  },
+
+	  _handleBrowserResize: function(){
+	  	var self = this;
+	  	window.onresize = function(){
+	  		self._openInMobileDevice(self.$$("#calendar"));
+	  	} 
+	  },
+
+	  _fireInputChanged: function(){
+	  	this.fire('date-picker-input-change');
+	  },
+
+	  // This event get fired when user edit or input a new date string value in the field and tab out
+	  // or click on the date from the calendar 
+	  _fireUserChanged: function(){
+	  	this.fire('date-picker-user-change', {value: this.value});
+	  },
+	});
+</script>

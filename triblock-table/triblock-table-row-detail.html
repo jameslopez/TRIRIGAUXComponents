@@ -1,0 +1,115 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+
+<!--
+
+`triblock-table-row-detail` defines the metadata necessary to create an expandable detail section beneath each row in the table.  Including `triblock-table-row-detail` is optional.  When included, an icon will appear on each row allowing the user to expand and collapse the detail section.
+
+To add a row-detail section, provide a `template` inside `triblock-table-row-detail`.
+
+Example:
+
+```html
+<triblock-table data="{{data}}">
+	<triblock-table-column title="Employee ID" property="_id"></triblock-table-column>
+	<triblock-table-column title="Name" property="name"></triblock-table-column>
+	<triblock-table-column title="Status" property="status" type="STRING_WITH_ID"></triblock-table-column>
+	<triblock-table-row-detail>
+		<template>
+			<div>First name: {{item.first}}</div>
+			<div>Last name: {{item.last}}</div>
+			<div>Contact information:</div>
+			<div>E-mail: {{item.email}}</div>
+			<div>Phone #: {{item.phone}}</div>
+		</template>
+	</triblock-table-row-detail>
+</triblock-table>
+```
+
+Row-detail templates should bind to template models of the following structure:
+
+```js
+{
+	item: {},        // user data corresponding to data[index]
+	index: 0,        // index in the data array
+	tabIndex: -1,    // a dynamically generated tabIndex 
+									 // for focus management (managed by internal iron-list)
+}
+```
+
+-->
+<dom-module id="triblock-table-row-detail">
+
+	<script>
+		Polymer({
+			is: "triblock-table-row-detail",
+
+			behaviors: [ Polymer.Templatizer ],
+			
+			/**
+			 * Return the template to be used for each row-detail section
+			 */
+			get _detailTemplate() {
+				var template = this.queryEffectiveChildren('template');
+				return template;
+			},
+
+			/**
+			 * Stamp a new template instance for the given stampBindingKey. (See Polymer.Templatizer)
+			 */
+			_createTemplateInstance: function(stampBindingKey) {
+				if (!this._templatized) {
+					// this row-detail section hasn't been templatized yet (a.k.a. first call to this method) - templatize it
+
+					// in Polymer.Templatizer, _instanceProps defines what local properties are to be used when stamping instances of the template
+					this._instanceProps = {};
+					this._instanceProps[this.bindIndexAs] = true;
+					this._instanceProps[this.bindItemAs] = true;
+					this._instanceProps.tabIndex = true;
+
+					// templatize this component
+					var template = this._detailTemplate;
+					this.templatize(template);
+				}
+
+				// create template instance
+				var instance = this.stamp(stampBindingKey);
+
+				// keep track of all template instances created by this component
+				if (!this._rowDetailInstances) this._rowDetailInstances = [];
+				this._rowDetailInstances.push(instance);
+
+				return instance;
+			},
+
+			/* The following methods are used in Polymer.Templatizer */
+			_forwardParentProp: function(prop, value) {
+				if (this._rowDetailInstances) {
+					this._rowDetailInstances.forEach(function(instance) {
+						instance[prop] = value;
+					}, this);
+				}
+			},
+			_forwardParentPath: function(path, value) {
+				if (this._rowDetailInstances) {
+					this._rowDetailInstances.forEach(function(instance) {
+						instance.notifyPath(path, value, true);
+					}, this);
+				}
+			},
+			_forwardInstanceProp: function(templateInstance, prop, value) {
+				if (prop == this.bindItemAs) {
+					templateInstance._rowDetail.set("rowData", value);
+				}
+			},
+			_forwardInstancePath: function(templateInstance, path, value) {
+				if (path.indexOf(this.bindItemAs+".") === 0) {
+					templateInstance._rowDetail.notifyPath("rowData."+path.slice(this.bindItemAs.length+1), value);
+				}
+			}
+		});
+	</script>
+
+</dom-module>
