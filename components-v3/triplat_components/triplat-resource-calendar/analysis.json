@@ -1,0 +1,1169 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A custom component that displays calendar resources using the [FullCalendar API](http://fullcalendar.io/).\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.\n  </div>\n</div>\n\n\t <triplat-resource-calendar id=\"resourceCalendar\"\n\t  resources=\"{{spaceResources}}\" \n\t  booking-resource=\"{{bookingRoom}}\"\n\t  initial-date=\"{{initialDate}}\">\n\t</triplat-resource-calendar>\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n  <b>Note:</b> The resource events in the calendar are displayed based on the browser time zone, not the time zone specified in the user profile. \n  </div>\n</div>\n### Styling\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-resource-calendar-bg-color`    | Calendar background color             | `rgb(241, 241, 241)`\n`--triplat-resource-calendar-header-text-color`    | Calendar header text color             | `--tri-primary-content-color`\n`--triplat-resource-calendar-circled-date-text-color`    | Circled date text color              | `rgb(255, 255, 255)`\n`--triplat-resource-calendar-circled-date-bg-color`    | Circled date background color             | `--tri-primary-color-30`\n`--triplat-resource-calendar-prev-next-icons-color`    | Previous and next icons color            | `--tri-primary-content-color`\n`--triplat-resource-calendar-today-button-color`    | Go To Today button color            | `--tri-primary-button-background-color`\n`--triplat-resource-calendar-resource-busy-unavailable`    | Resource busy unavailable color             | `#B5B1B0`\n`--triplat-resource-calendar-resource-busy`    | Resource busy color             | `#FF0000`\n`--triplat-resource-calendar-resource-busy-tentative`    | Resource busy tentative color             | `#FF5733`\n`--triplat-resource-calendar-booking-resource`    | Booking resource color             | `rgb(29, 54, 73)`\n`--triplat-resource-calendar-today-bg-color`    | Calendar today's background color             | `rgb(252, 248, 227)`\n`--triplat-resource-calendar-booking-resource-opacity`    | The opacity of booking resource             | `1`\n`--triplat-resource-calendar-booked-resource-opacity`    | The opacity of resource busy tentative and resource busy unavailable             | `0.3`\n`--triplat-resource-calendar-height`    |   The height of the calendar timeframe. By default, the height is calculated based on the browser's height.           |",
+      "summary": "",
+      "path": "triplat-resource-calendar.js",
+      "properties": [
+        {
+          "name": "resources",
+          "type": "Array | null | undefined",
+          "description": "An array of resource objects that will be displayed on the calendar. See the triplat-query plugin `triplat-query-resource-calendar` for more information.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 280,
+              "column": 3
+            },
+            "end": {
+              "line": 283,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handleISOtoFCalendarEventformat\"",
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "initialDate",
+          "type": "string | null | undefined",
+          "description": "The initial date displayed when the calendar first loads.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 288,
+              "column": 3
+            },
+            "end": {
+              "line": 291,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handleInitialDateChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "bookingResource",
+          "type": "Object | null | undefined",
+          "description": "A booking resource object that will be displayed on the calendar.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 296,
+              "column": 3
+            },
+            "end": {
+              "line": 298,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "detailedDateRange",
+          "type": "boolean | null | undefined",
+          "description": "Flag indicating whether to display date range in detail (e.g. Mar 27 - Apr 02, 2016).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 303,
+              "column": 3
+            },
+            "end": {
+              "line": 306,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_militaryTime",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value indicate the displayed time-text in military time format on the vertical axis of the calendar.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 311,
+              "column": 3
+            },
+            "end": {
+              "line": 314,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "timeDisplayFormat",
+          "type": "string | null | undefined",
+          "description": "The time-text display format on the vertical axis of the calendar. The time-text displays AM/PM or Military Time format based on the datetime format.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 319,
+              "column": 3
+            },
+            "end": {
+              "line": 323,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_timeDisplayFormatChanged\"",
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"MM/DD/YYYY hh:mm a\""
+        },
+        {
+          "name": "_daysOfWeek",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 325,
+              "column": 3
+            },
+            "end": {
+              "line": 336,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "[\"S\",\"M\",\"T\",\"W\",\"T\",\"F\",\"S\"]"
+        },
+        {
+          "name": "_businessHours",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 338,
+              "column": 3
+            },
+            "end": {
+              "line": 341,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_disallowWeekend",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 343,
+              "column": 3
+            },
+            "end": {
+              "line": 346,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_height",
+          "type": "number | null | undefined",
+          "description": "The height of the calendar timeframe. By default, this property is unset and the calendar timeframe height is calculated based on the browser's height.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 351,
+              "column": 3
+            },
+            "end": {
+              "line": 354,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_persistContentHeight\"",
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "selectable",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to enable columns to be selectable in the calendar.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 359,
+              "column": 3
+            },
+            "end": {
+              "line": 362,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_resources",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 364,
+              "column": 3
+            },
+            "end": {
+              "line": 366,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_initialDate",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 368,
+              "column": 3
+            },
+            "end": {
+              "line": 371,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_calendar",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 3
+            },
+            "end": {
+              "line": 373,
+              "column": 20
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "showTodayButton",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to show a button beside the date range which can be clicked to go to today's date.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 378,
+              "column": 3
+            },
+            "end": {
+              "line": 381,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "timeZone",
+          "type": "string | null | undefined",
+          "description": "String value to be used for the time zone.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 3
+            },
+            "end": {
+              "line": 389,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_timeZoneChanged\"",
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 392,
+              "column": 5
+            },
+            "end": {
+              "line": 401,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "today",
+          "description": "Moves the calendar to the today's date.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 406,
+              "column": 2
+            },
+            "end": {
+              "line": 410,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "goToDate",
+          "description": "Moves the calendar to a specific date.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 416,
+              "column": 2
+            },
+            "end": {
+              "line": 422,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "date",
+              "type": "String",
+              "description": "The string representation of the ISO date string (e.g. 1970-01-15T22:19:41.000-08:00)."
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "refreshCalendar",
+          "description": "Refreshes the calendar.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 427,
+              "column": 2
+            },
+            "end": {
+              "line": 430,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_next",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 432,
+              "column": 5
+            },
+            "end": {
+              "line": 436,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_previous",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 438,
+              "column": 5
+            },
+            "end": {
+              "line": 442,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleUpdateCalendar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 444,
+              "column": 5
+            },
+            "end": {
+              "line": 450,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newDate"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleInitialDateChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 452,
+              "column": 5
+            },
+            "end": {
+              "line": 454,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "val"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_constructCalendar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 456,
+              "column": 5
+            },
+            "end": {
+              "line": 495,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleTodayColorChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 497,
+              "column": 5
+            },
+            "end": {
+              "line": 500,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getLang",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 502,
+              "column": 5
+            },
+            "end": {
+              "line": 508,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getRTL",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 510,
+              "column": 5
+            },
+            "end": {
+              "line": 517,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_handleFirstLastDays",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 519,
+              "column": 5
+            },
+            "end": {
+              "line": 525,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "days"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_initializeComponentStyles",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 527,
+              "column": 5
+            },
+            "end": {
+              "line": 542,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setCalendarHeight",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 544,
+              "column": 5
+            },
+            "end": {
+              "line": 551,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "heightInString"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_UpdateCalendarResource",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 553,
+              "column": 5
+            },
+            "end": {
+              "line": 575,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleBookingResource",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 577,
+              "column": 5
+            },
+            "end": {
+              "line": 583,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleResourceOpacity",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 585,
+              "column": 5
+            },
+            "end": {
+              "line": 590,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handlePersistCustomCalendar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 592,
+              "column": 5
+            },
+            "end": {
+              "line": 595,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeFCdays",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 597,
+              "column": 5
+            },
+            "end": {
+              "line": 600,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_persistContentHeight",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 602,
+              "column": 5
+            },
+            "end": {
+              "line": 611,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_fireStartEndEvents",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 613,
+              "column": 5
+            },
+            "end": {
+              "line": 617,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newStart"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleISOtoFCalendarEventformat",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 619,
+              "column": 5
+            },
+            "end": {
+              "line": 638,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "resources"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getDaysOfWeek",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 640,
+              "column": 5
+            },
+            "end": {
+              "line": 673,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "date"
+            }
+          ]
+        },
+        {
+          "name": "_computeDisplayDateRange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 675,
+              "column": 5
+            },
+            "end": {
+              "line": 705,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            }
+          ]
+        },
+        {
+          "name": "_isMobileDevice",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 707,
+              "column": 5
+            },
+            "end": {
+              "line": 721,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_setTranslation",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 723,
+              "column": 5
+            },
+            "end": {
+              "line": 741,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handlePaperIconButtonBiDi",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 743,
+              "column": 5
+            },
+            "end": {
+              "line": 748,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_timeDisplayFormatChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 750,
+              "column": 5
+            },
+            "end": {
+              "line": 761,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "format"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_timeZoneChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 763,
+              "column": 5
+            },
+            "end": {
+              "line": 765,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 64,
+          "column": 12
+        },
+        "end": {
+          "line": 766,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "resources",
+          "description": "An array of resource objects that will be displayed on the calendar. See the triplat-query plugin `triplat-query-resource-calendar` for more information.",
+          "sourceRange": {
+            "start": {
+              "line": 280,
+              "column": 3
+            },
+            "end": {
+              "line": 283,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "initial-date",
+          "description": "The initial date displayed when the calendar first loads.",
+          "sourceRange": {
+            "start": {
+              "line": 288,
+              "column": 3
+            },
+            "end": {
+              "line": 291,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "booking-resource",
+          "description": "A booking resource object that will be displayed on the calendar.",
+          "sourceRange": {
+            "start": {
+              "line": 296,
+              "column": 3
+            },
+            "end": {
+              "line": 298,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "detailed-date-range",
+          "description": "Flag indicating whether to display date range in detail (e.g. Mar 27 - Apr 02, 2016).",
+          "sourceRange": {
+            "start": {
+              "line": 303,
+              "column": 3
+            },
+            "end": {
+              "line": 306,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "time-display-format",
+          "description": "The time-text display format on the vertical axis of the calendar. The time-text displays AM/PM or Military Time format based on the datetime format.",
+          "sourceRange": {
+            "start": {
+              "line": 319,
+              "column": 3
+            },
+            "end": {
+              "line": 323,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "selectable",
+          "description": "Set to true to enable columns to be selectable in the calendar.",
+          "sourceRange": {
+            "start": {
+              "line": 359,
+              "column": 3
+            },
+            "end": {
+              "line": 362,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "show-today-button",
+          "description": "Set to true to show a button beside the date range which can be clicked to go to today's date.",
+          "sourceRange": {
+            "start": {
+              "line": 378,
+              "column": 3
+            },
+            "end": {
+              "line": 381,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "time-zone",
+          "description": "String value to be used for the time zone.",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 3
+            },
+            "end": {
+              "line": 389,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "calendar-loaded",
+          "description": "Fired after the calendar is initially loaded.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "calendar-resource-end-date",
+          "description": "Fired when the user navigates to a different week, it returns the last date of that week.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "calendar-resource-start-date",
+          "description": "Fired when the user navigates to a different week, it returns the first date of that week.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-resource-calendar"
+    }
+  ]
+}

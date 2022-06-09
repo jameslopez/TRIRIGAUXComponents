@@ -1,0 +1,97 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016-2019 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+  <title>triplat-resource-calendar demo</title>
+
+  <script src="../../@webcomponents/webcomponentsjs/webcomponents-loader.js" async></script>
+  <script type="module" src="../triplat-resource-calendar.js" crossorigin="use-credentials"></script>
+  <script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js" crossorigin="use-credentials"></script>
+  <script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js" crossorigin="use-credentials"></script>
+  <script type="module" src="../../@polymer/paper-styles/color.js" crossorigin="use-credentials"></script>
+  <script type="module" src="../../triplat-theme/triplat-theme.js" crossorigin="use-credentials"></script>
+
+  <style is="custom-style" include="demo-pages-shared-styles">
+    .vertical-section-container {
+      max-width: 800px;
+    }
+    paper-button {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    #demoCal{
+      --triplat-resource-calendar-height: 500px;
+    }
+
+  </style>
+</head>
+<body unresolved>
+  <div class="vertical-section-container centered">
+    <h3>The calendar can be set to display a today button, and display detailed date range.</h3>
+    <demo-snippet class="centered-demo">
+      <template>
+       <triplat-resource-calendar
+          id="demoCal"
+       		show-today-button
+       		detailed-Date-Range
+       ></triplat-resource-calendar>
+      </template>
+    </demo-snippet>
+
+    <h3>The calendar can be styled using custom properties. The example below shows the calendar's background color, today's date highlight color and text, the previous and next icon buttons, the calendar height, and header text all styled.</h3>
+    <demo-snippet class="centered-demo">
+      <template>
+       <triplat-resource-calendar id="styledCalendar"
+       		resources="[[demoData]]" 
+       ></triplat-resource-calendar>
+
+        <style is="custom-style">
+          	#styledCalendar {
+      				--triplat-resource-calendar-bg-color: var(--tri-primary-color);
+      				--triplat-resource-calendar-circled-date-text-color:var(--tri-primary-color);
+      				--triplat-resource-calendar-circled-date-bg-color:var(--tri-primary-light-color);
+      				--triplat-resource-calendar-prev-next-icons-color:#000000;
+      				--triplat-resource-calendar-header-text-color:#ffffff;
+              --triplat-resource-calendar-height: 500px;
+          	}
+        </style>
+      </template>
+    </demo-snippet>
+     <script type="module">
+         import {TriDateUtilities, importJsPromise} from '../../triplat-date-utilities/triplat-date-utilities.js';
+         window.addEventListener('WebComponentsReady', function() {
+            importJsPromise.then(() => {
+            var todayTimeIsoStart = TriDateUtilities.toDateIsoString(new Date().getTime());
+            var todayTimeIsoEnd = TriDateUtilities.toDateIsoString(new Date().getTime() + 1 *60*60*1000);
+            var tomorrowTimeIsoStart = TriDateUtilities.toDateIsoString(new Date().getTime() + 24 *60*60*1000);
+            var tomorrowTimeIsoEnd = TriDateUtilities.toDateIsoString(new Date().getTime() + 26 *60*60*1000);
+
+            var styledCalendar = document.querySelector('#styledCalendar'),
+                demoData = [
+                              {
+                                _FreeBusyType: "BUSY_UNAVAILABLE",
+                                _Start_Datetime: todayTimeIsoStart,
+                                _End_Datetime: todayTimeIsoEnd
+                              },
+                              {
+                                _FreeBusyType: "BUSY_UNAVAILABLE",
+                                _Start_Datetime: tomorrowTimeIsoStart,
+                                _End_Datetime: tomorrowTimeIsoEnd 
+                              },
+                            ];
+            styledCalendar.resources = demoData;
+            });
+          });
+      </script>
+  </div>
+  
+</body>
+</html>

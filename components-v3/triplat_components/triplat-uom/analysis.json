@@ -1,0 +1,517 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "The triplat-uom is a custom element for displaying unit-of-measure (UOM) information such as symbol, value, and abbreviation.\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n\t<b>Note:</b> The triplat-uom component does not support currency UOM at this time.\n  </div>\n</div>\n\n\t<triplat-uom uom=\"{{uom}}\" uom-list=\"{{uom-list}}\" display=\"symbol|uom|abbr\"/>\n\n### Displaying UOM as a drop down list   \n\n  The uom-value property can be used to display UOM values as drop down list against a number with UOM field in the datasource. See triplat-number-input for more detail.\n  \n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n\t<b>Note:</b> Only use uom-value and uom-list to implement drop down list. The display property will be ignored and will always display in uom.\n  </div>\n</div>\n   \n\t<triplat-uom label=\"Unit\" uom-value=\"{{datasourse.numberFieldWithUom.uom}}\" uom-list=\"{{uom-list}}\"/>\n\t\n\n### Styling\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n\t<b>Deprecated:</b> Custom property `--triplat-uom-style` is deprecated, instead use `--triplat-uom-info`.\n  </div>\n</div>\n\nThe following custom properties are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-uom-info` | Style for the UOM information to display | `{}`\n`--triplat-uom-dropdown` | Style for the UOM dropdown | `{}`\n`--triplat-uom-dropdown-content` | Style for the UOM dropdown content | `{}`\n`--triplat-uom-dropdown-icon-fill-color` | Color for the dropdown icon | `var(--tri-secondary-color)`",
+      "summary": "",
+      "path": "triplat-uom.js",
+      "properties": [
+        {
+          "name": "display",
+          "type": "string | null | undefined",
+          "description": "Optional. If omitted, displays the value of the UOM.  If exists, the value can be any of the following: uom, symbol, abbr.\nUse 'uom' to display the value of the UOM in the language of the current user (e.g. \"square-feet\").\nUse 'symbol' to display the currency symbol of the UOM if it is of type Currency.\nUse 'abbr' to display the abbreviation of the UOM (e.g. ft2).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 126,
+              "column": 3
+            },
+            "end": {
+              "line": 129,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"uom\""
+        },
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "String value to be used for the drop down list label.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 134,
+              "column": 3
+            },
+            "end": {
+              "line": 137,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "uom",
+          "type": "string | null | undefined",
+          "description": "Unit-of-Measure value, typically from the datasource field (e.g. \"Metric Ton CO2\", \"square-feet\").",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 142,
+              "column": 3
+            },
+            "end": {
+              "line": 146,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "uomList",
+          "type": "Object | null | undefined",
+          "description": "Unit-of-Measure datasource which contains the value specified in uom. If the uom value is an\narea, then this should be a UOM datasource that represents Area.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 152,
+              "column": 3
+            },
+            "end": {
+              "line": 155,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "uomValue",
+          "type": "string | null | undefined",
+          "description": "Show all the Unit-of-Measure as an editable drop down list.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 160,
+              "column": 3
+            },
+            "end": {
+              "line": 164,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "_menuOpened",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 166,
+              "column": 3
+            },
+            "end": {
+              "line": 169,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_setAriaExpanded\"",
+              "attributeType": "Boolean"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "getUomInfo",
+          "description": "Retrieves the information of a UOM based from the type of information to display.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-uom-behavior.js",
+            "start": {
+              "line": 27,
+              "column": 1
+            },
+            "end": {
+              "line": 47,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "uom",
+              "type": "string",
+              "description": "The unit-of-measure associated with this number (e.g. square-feet)."
+            },
+            {
+              "name": "uomList",
+              "type": "array",
+              "description": "An array of unit-of-measure object for a specific type (e.g. Area, Carbon Emission)."
+            },
+            {
+              "name": "display",
+              "type": "string",
+              "description": "Type of information to retrieve for display: uom | symbol | abbr.\n\t\t\t\t\t\tUse 'uom' to display the value of the UOM in the language of the current user (e.g. \"square-feet\").\n\t\t\t\t\t\tUse 'symbol' to display the currency symbol of the UOM if it is of type Currency.\n\t\t\t\t\t\tUse 'abbr' to display the abbreviation of the UOM (e.g. ft2)."
+            }
+          ],
+          "return": {
+            "type": "string",
+            "desc": "The information to display from the UOM."
+          },
+          "inheritedFrom": "TriPlatUomBehavior"
+        },
+        {
+          "name": "_getUomValue",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-uom-behavior.js",
+            "start": {
+              "line": 49,
+              "column": 1
+            },
+            "end": {
+              "line": 62,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "uomValues"
+            },
+            {
+              "name": "uom"
+            }
+          ],
+          "inheritedFrom": "TriPlatUomBehavior"
+        },
+        {
+          "name": "_showString",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 176,
+              "column": 5
+            },
+            "end": {
+              "line": 178,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "uom"
+            }
+          ]
+        },
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 180,
+              "column": 5
+            },
+            "end": {
+              "line": 182,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleOverlayCancel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 184,
+              "column": 5
+            },
+            "end": {
+              "line": 186,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setAriaExpanded",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 188,
+              "column": 5
+            },
+            "end": {
+              "line": 192,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 66,
+          "column": 9
+        },
+        "end": {
+          "line": 193,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "display",
+          "description": "Optional. If omitted, displays the value of the UOM.  If exists, the value can be any of the following: uom, symbol, abbr.\nUse 'uom' to display the value of the UOM in the language of the current user (e.g. \"square-feet\").\nUse 'symbol' to display the currency symbol of the UOM if it is of type Currency.\nUse 'abbr' to display the abbreviation of the UOM (e.g. ft2).",
+          "sourceRange": {
+            "start": {
+              "line": 126,
+              "column": 3
+            },
+            "end": {
+              "line": 129,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "label",
+          "description": "String value to be used for the drop down list label.",
+          "sourceRange": {
+            "start": {
+              "line": 134,
+              "column": 3
+            },
+            "end": {
+              "line": 137,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "uom",
+          "description": "Unit-of-Measure value, typically from the datasource field (e.g. \"Metric Ton CO2\", \"square-feet\").",
+          "sourceRange": {
+            "start": {
+              "line": 142,
+              "column": 3
+            },
+            "end": {
+              "line": 146,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "uom-list",
+          "description": "Unit-of-Measure datasource which contains the value specified in uom. If the uom value is an\narea, then this should be a UOM datasource that represents Area.",
+          "sourceRange": {
+            "start": {
+              "line": 152,
+              "column": 3
+            },
+            "end": {
+              "line": 155,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "uom-value",
+          "description": "Show all the Unit-of-Measure as an editable drop down list.",
+          "sourceRange": {
+            "start": {
+              "line": 160,
+              "column": 3
+            },
+            "end": {
+              "line": 164,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "uom-changed",
+          "description": "Fired when the `uom` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "uom-value-changed",
+          "description": "Fired when the `uomValue` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-uom"
+    }
+  ],
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "Use `TriPlatUomBehavior` to get support for retrieving information of a UOM.",
+          "summary": "",
+          "path": "triplat-uom-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "getUomInfo",
+              "description": "Retrieves the information of a UOM based from the type of information to display.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 27,
+                  "column": 1
+                },
+                "end": {
+                  "line": 47,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "uom",
+                  "type": "string",
+                  "description": "The unit-of-measure associated with this number (e.g. square-feet)."
+                },
+                {
+                  "name": "uomList",
+                  "type": "array",
+                  "description": "An array of unit-of-measure object for a specific type (e.g. Area, Carbon Emission)."
+                },
+                {
+                  "name": "display",
+                  "type": "string",
+                  "description": "Type of information to retrieve for display: uom | symbol | abbr.\n\t\t\t\t\t\tUse 'uom' to display the value of the UOM in the language of the current user (e.g. \"square-feet\").\n\t\t\t\t\t\tUse 'symbol' to display the currency symbol of the UOM if it is of type Currency.\n\t\t\t\t\t\tUse 'abbr' to display the abbreviation of the UOM (e.g. ft2)."
+                }
+              ],
+              "return": {
+                "type": "string",
+                "desc": "The information to display from the UOM."
+              }
+            },
+            {
+              "name": "_getUomValue",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 49,
+                  "column": 1
+                },
+                "end": {
+                  "line": 62,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "uomValues"
+                },
+                {
+                  "name": "uom"
+                }
+              ]
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 11,
+              "column": 13
+            },
+            "end": {
+              "line": 64,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriPlatUomBehavior",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,408 @@
+/*
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017-2019 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+*/
+import { html } from "../@polymer/polymer/lib/utils/html-tag.js";
+
+import { Polymer } from "../@polymer/polymer/lib/legacy/polymer-fn.js";
+import { assertParametersAreDefined } from "../tricore-util/tricore-util.js";
+
+/* 
+
+A component that provides a date-time countdown. It displays the remaining days, 
+hours, minutes, and seconds.
+
+> **Caution: This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.**
+
+### Examples
+
+Example of a simple usage:
+```html
+<triplat-countdown 
+	label="[[labelText]]" 
+	deadline="[[deadlineDate]]" 
+	timezone="[[timezone]]">
+</triplat-countdown>
+```
+
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--countdown-container` | Mixin applied to the external container | `{}`
+`--countdown` | Mixin applied to the countdown | `{}`
+`--countdown-days` | Mixin applied to the days text | `{}`
+`--countdown-hours` | Mixin applied to the hours text | `{}`
+`--countdown-minutes` | Mixin applied to the minutes text | `{}`
+`--countdown-seconds` | Mixin applied to the seconds text | `{}`
+`--countdown-expired` | Mixin applied to the expired container | `{}`
+`--countdown-expired-text` | Mixin applied to the expired text | `{}`
+
+*/
+Polymer({
+    _template: html`
+		<style include="tristyles-theme">
+
+
+			.container {
+				@apply --layout-horizontal;
+				@apply --layout-wrap;
+				text-align: center;
+
+				@apply --countdown-container;
+			}
+
+			.countdown {
+				@apply --countdown;
+			}
+
+			.countdown-days {
+				@apply --countdown-days;
+			}
+
+			.countdown-hours {
+				@apply --countdown-hours;
+			}
+
+			.countdown-minutes {
+				@apply --countdown-minutes;
+			}
+
+			.countdown-seconds {
+				@apply --countdown-seconds;
+			}
+
+			.expired {
+				@apply --countdown-expired;
+			}
+
+			.expired-text {
+				@apply --countdown-expired-text;
+			}
+
+		
+		</style>
+
+		<div class="container" hidden\$="[[!deadline]]">
+			<div class="countdown" hidden\$="[[!_computeShowCountdown(isExpired, countdown.total)]]">
+				<span hidden\$="[[!label]]">[[label]]</span> <span class="countdown-days" hidden\$="[[!_showDays]]">[[countdown.daysText]]:</span><span class="countdown-hours" hidden\$="[[!_showHours]]">[[countdown.hoursText]]:</span><span class="countdown-minutes" hidden\$="[[!_showMinutes]]">[[countdown.minutesText]]:</span><span class="countdown-seconds" hidden\$="[[!_showSeconds]]">[[countdown.secondsText]]</span>
+			</div>
+
+			<div class="expired" hidden\$="[[!_computeShowExpired(isExpired, countdown.total)]]">
+				<span class="expired-text">[[expiredText]]</span>
+			</div>
+		</div>
+	`,
+
+    is: "triplat-countdown",
+
+    properties: {
+
+		/**
+		  * String value to be used as a label for the countdown field.
+		  */
+		label: String,
+
+		/** 
+		  * Boolean value to indicate if the logging method is active.
+		  * The logging method logs messages in the browser console.
+		  */
+		loggingEnabled: {
+			type: Boolean,
+			value: false
+		},
+
+		/** 
+		  * Boolean value to indicate that this is a disabled countdown. Show
+		  * the countdown numbers as zeros.
+		  */
+		disabled: {
+			type: Boolean,
+			value: false
+		},
+
+		/** 
+		  * Boolean value to indicate that it should wait before initializing 
+		  * the countdown.
+		  */
+		waiting: {
+			type: Boolean,
+			value: false
+		},
+
+		/**
+		  * String value to be used as the countdown name.
+		  */
+		name: {
+			type: String,
+			value: null
+		},
+
+		/**
+		  * Date value to be used as a deadline. Used for the component to 
+		  * calculate the amount of time between the current date and the date
+		  * it will be counting down.
+		  */
+		deadline: {
+			type: Date,
+		},
+
+		/**
+		  * Number value in milliseconds to determine the amount of time to wait 
+		  * before calling a new countdown checker.
+		  */
+		interval: {
+			type: Number,
+			value: 1000
+		},
+
+		/**
+		  * String value to indicate the user time zone.
+		  */
+		timezone:  {
+			type: String,
+		},
+
+		/**
+		  * Date value to determine the amount of time to wait before activating
+		  * the countdown.
+		  */
+		waitUntil: {
+			type: Date,
+			value: null
+		},
+
+		/**
+		  * Countdown object.
+		  */
+		countdown: {
+			type: Object,
+			notify: true,
+			value: {
+				'name': '',
+				'total': -1,
+				'days': 0,
+				'daysText': "0",
+				'hours': 0,
+				'hoursText': "00",
+				'minutes': 0,
+				'minutesText': "00",
+				'seconds': 0,
+				'secondsText': "00",},
+		},
+
+		/** 
+		  * Boolean value to indicate that the countdown is expired.
+		  */
+		isExpired: {
+			type: Boolean,
+			value: false,
+			notify: true,
+			computed: "_computeIsExpired(deadline, countdown, disabled)"
+		},
+
+		/**
+		  * String value to be used as the expired text.
+		  */
+		expiredText: {
+			type: String,
+			value: "Expired!",
+		},
+
+		_showDays: {
+			type: Boolean,
+			value: false
+		},
+
+		_showHours: {
+			type: Boolean,
+			value: true
+		},
+
+		_showMinutes: {
+			type: Boolean,
+			value: true
+		},
+
+		_showSeconds: {
+			type: Boolean,
+			value: true
+		},
+
+		_waitHandle: Object
+
+	},
+
+    observers: [
+		"_initCountdown(deadline, timezone, disabled, waiting)",
+	],
+
+    detached: function() {
+		this._cancelWait();
+	},
+
+    _computeShowCountdown: function(isExpired) {
+	    if (!assertParametersAreDefined(arguments)) {
+		    return;
+		}
+
+		if (isExpired == undefined)
+			return false;
+
+		return !isExpired;
+	},
+
+    _computeShowExpired: function(isExpired) {
+	    if (!assertParametersAreDefined(arguments)) {
+		    return;
+		}
+
+		if (isExpired == undefined)
+			return false;
+
+		return isExpired;
+	},
+
+    _computeIsExpired: function(deadline, countdown, disabled) {
+	    if (!assertParametersAreDefined(arguments)) {
+		    return;
+		}
+
+		if (countdown.total == -1)
+			return undefined;
+
+		var isExpired = !disabled && deadline && countdown && countdown.total < 1;
+
+		if (isExpired) {
+			this._logInfo("countdown" + (this.name ? " [" + this.name + "]" : "") + " has expired");
+		}
+
+		return isExpired;
+	},
+
+    _initCountdown: function(deadline, timezone, disabled, waiting) {
+	    if (!assertParametersAreDefined(arguments)) {
+		    return;
+		}
+
+		if ((!disabled || !waiting) && deadline && timezone) {
+			this._countdown();
+		}
+	},
+
+    _countdownWaitWakeUp: function() {
+		this._logInfo("countdown" + (this.name ? " [" + this.name + "]" : "") + " waking up");
+
+		// this should trigger the _initCountdown based on bindings
+		this.async(function() {
+			this.set("waiting", false);
+		});
+	},
+
+    _cancelWait: function() {
+		var waitHandle = this._waitHandle;
+		if (waitHandle) {
+			this.cancelAsync(waitHandle);
+		}
+	},
+
+    _countdown: function() {
+		var disabled = this.disabled;
+		if (disabled) {
+			this._logInfo("countdown" + (this.name ? " [" + this.name + "]" : "") + " is disabled");
+			return;
+		}
+
+		var deadline = this.deadline;
+		var timezone = this.timezone;
+		var waitUntil = this.waitUntil;
+
+		if (this.waiting) {
+			this._logInfo("countdown" + (this.name ? " [" + this.name + "]" : "") + " is waiting");
+			return;
+		}
+
+		if (deadline) {
+			var deadlineMS = Date.parse(deadline);
+			var nowDT = new Date();
+			var nowMS = nowDT.getTime();
+
+			var waitUntilDT = waitUntil ? Date.parse(waitUntil) : null;
+			if (waitUntilDT && nowMS <= waitUntilDT) {
+				var waitPeriodMS = waitUntilDT-nowMS;
+				this._logInfo("countdown" + (this.name ? " [" + this.name + "]" : "") + " waiting for " + (waitPeriodMS / 1000) + " seconds");
+
+				var waitHandle = this.async(function() {
+					this._countdownWaitWakeUp();
+				}, waitPeriodMS);
+
+				this.set("_waitHandle", waitHandle);
+
+				this.waiting = true;
+
+				var countdown = this._getCountdown(deadlineMS, nowDT);
+				this.set("countdown", countdown);
+			} else {
+				var countdown = this._getCountdown(deadlineMS, nowDT);
+				if (countdown.total > 0) {
+					this.async(function() {
+						this._countdown();
+					}, this.interval);
+				} else {
+					this._logInfo("countdown" + (this.name ? " [" + this.name + "]" : "") + " has run out");
+
+					countdown = {
+						'name': this.name,
+						'total': 0,
+						'days': 0,
+						'daysText': "0",
+						'hours': 0,
+						'hoursText': "00",
+						'minutes': 0,
+						'minutesText': "00",
+						'seconds': 0,
+						'secondsText': "00",};
+				}
+
+				this.set("countdown", countdown);
+			}
+		} else {
+			this._logInfo("countdown" + (this.name ? " [" + this.name + "]" : "") + " deadline is not set");
+		}
+	},
+
+    _getCountdown: function(deadlineDT, nowDT) {
+		var remaining = deadlineDT - nowDT;
+		var seconds = Math.floor((remaining / 1000) % 60);
+		var minutes = Math.floor((remaining / 1000 / 60) % 60);
+		var hours = Math.floor((remaining / (1000 * 60 * 60)) % 24);
+		var days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+
+		this.set("_showDays", days > 0);
+		this.set("_showHours", days > 0 || hours > 0);
+		this.set("_showMinutes", days > 0 || hours > 0 || minutes > 0);
+		this.set("_showSeconds", days > 0 || hours > 0 || minutes > 0 || seconds > 0);
+
+		return {
+			'name': this.name,
+			'total': remaining,
+			'days': days,
+			'daysText': "" + days,
+			'hours': hours,
+			'hoursText': "" + (hours < 10 ? "0" : "") + hours,
+			'minutes': minutes,
+			'minutesText': "" + (minutes < 10 ? "0" : "") + minutes,
+			'seconds': seconds,
+			'secondsText': "" + (seconds < 10 ? "0" : "") + seconds
+		};
+	},
+
+    _logInfo: function(msg) {
+		if (this.loggingEnabled) {
+			console.log(msg);
+		}
+	}
+});

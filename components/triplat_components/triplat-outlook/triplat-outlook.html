@@ -1,0 +1,873 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<!--
+A component that enable UX add-in custom outlook application to communicate with Outlook appointment, get and set its properties.
+## Example
+          <triplat-outlook
+                appointment-id="{{apptId}}"
+                refresh="6000"
+                start-date="{{startDate}}"
+                end-date="{{endDate}}"
+                subject="{{subject}}"
+                location="{{location}}"
+                location-emails="{{locationEmail}}"
+                required-attendees="{{requiredAttendees}}"
+                optional-attendees="{{optionalAttendees}}"
+                is-all-day-event="{{isAllDayEvent}}"
+                current-user-name = "{{displayName}}"
+                current-user-email-address ="{{emailAddress}}">
+            </triplat-outlook>
+
+            appointment Id: <span>{{apptId}}</span><br/>
+
+            <triplat-datetime-picker value="{{startDate}}" label="start Date"></triplat-datetime-picker><br/>
+            <triplat-datetime-picker value="{{endDate}}" label="end Date"></triplat-datetime-picker><br/>
+
+            <paper-input value="{{location}}" label="location"></paper-input><br/>
+
+            <template is="dom-repeat" items="{{requiredAttendees}}">
+                required attendess email: <span>{{item.emailAddress}}</span><br/>
+                dispaly name: <span>{{item.displayName}}</span><br/>
+            </template>
+### Add required attendees 
+
+        <triplat-outlook id="outlook"></triplat-outlook>
+        <paper-button on-tap="{{addRequiredAttendees}}">AddRequiredAttendees</paper-button>
+        ...
+
+        <scritp>
+          Polymer({
+          ...
+          
+          addRequiredAttendees: function(){
+              var emails = ['abc@us.ibm.com', 'jjohnson@us.ibm.com', 'def@swg.onmicrosoft.com', 'hig@swg.onmicrosoft.com'];  
+              this.$.outlook.addRequiredAttendees();
+          }
+
+          });
+        </script>
+### Set resource location and emails
+        <triplat-outlook id="outlook"></triplat-outlook>
+        <paper-button on-tap="{{setLocation}}">Set location</paper-button>
+        ...
+
+        <scritp>
+          Polymer({
+          ...
+          
+          setLocation: function(){
+              var locationName = "UX conference room";
+              var roomEmails = ['abc@us.ibm.com', 'jjohnson@us.ibm.com', 'def@swg.onmicrosoft.com', 'hig@swg.onmicrosoft.com'];  
+              this.$.outlook.setLocation(locationName, roomEmails);
+          }
+
+          });
+        </script>
+
+-->
+<script>
+(function () {
+   // 'use strict';
+    var jqueryScript = document.createElement('script');
+        jqueryScript.type = 'text/javascript';
+        jqueryScript.id = 'jqueryScript';
+        jqueryScript.src = '//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js';
+        document.querySelector('head').appendChild(jqueryScript);
+    var officeScript = document.createElement('script');
+        officeScript.type = 'text/javascript';
+        officeScript.id = 'officeScript';
+        officeScript.src = '//appsforoffice.microsoft.com/lib/1/hosted/office.js';
+        document.querySelector('head').appendChild(officeScript);
+
+    Polymer({
+
+        is: "triplat-outlook",
+
+        properties: {
+
+            /**
+              * The amount of time (in milliseconds) to how often the add-in properties pull information from outlook and EWS 
+              *
+              **/
+            refresh:{
+                type: Number,
+                value: 2000 
+            },
+
+            /**
+              * ID of the calendar item, this id look the same across appointment series (iCalUID) 
+              *
+              **/
+            uid: {
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * Unique strings generated
+              *
+              **/
+            userInterfaceId:{
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * An ID of an appointment. Identifies a specific item in the Exchange store. Id is case-sensitive; therefore, comparisons between Ids must be case-sensitive or binary.
+              *
+              **/
+            appointmentId: {
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * Identifies a specific version of an item.
+              *
+              **/
+            changeKey: {
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * Start datetime of the appointment in ISO date string
+              * Note: change in start date value will alter the isAllDayEvent to false.
+              **/
+            startDate: {
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * End datetime of the appointment in ISO date string
+              * Note: change in start date value will alter the isAllDayEvent to false.
+              **/
+            endDate: {
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * Subject of the appointment
+              *
+              **/
+            subject: {
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+            },
+
+            /**
+              * Location of the appointment
+              *
+              **/
+            location: {
+                type: String,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * Location email of the appointment
+              *
+              **/
+            locationEmails:{
+                type: Array,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+            },
+
+            /**
+              * Property return an object that contains array of attendees (rooms).
+              * Each attendee contains a mailbox object and response type.  
+              * Each mailbox object contains attendee's name, email address, mailbox type, and routing type.
+              **/
+            resources:{
+                type: Object,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true,
+             
+            },
+
+             /**
+              * Flag that indicate whether the appointment is an all day event or not
+              *
+              **/
+            isAllDayEvent: {
+                type: Boolean,
+                reflectToAttribute: true,
+                notify: true,
+                readOnly: true
+            },
+
+            /**
+              * Property returns an array that contains an EmailAddressDetails object, the object that contains emailAddress and displayName properties for each required attendee to the meeting.
+              **/
+            requiredAttendees: {
+                type: Array,
+                notify:true, 
+                readOnly: true
+            },
+
+            /**
+              * Property returns an array that contains an EmailAddressDetails object, the object that contains emailAddress and displayName properties for for each optional attendee to the meeting.
+              **/
+            optionalAttendees: {
+                type: Array,
+                notify: true,
+                readOnly: true
+            },
+
+            /**
+              * Current user profile display name
+              **/
+            currentUserName:{
+                type: String,
+                notify: true,
+                readOnly: true
+            },
+
+            /**
+              * Current user profile email address
+              **/
+            currentUserEmailAddress: {
+                type: String,
+                notify: true,
+                readOnly: true
+            },
+
+           /**
+              * Current user profile time zone in IANA/OLson Time Zone Database
+              **/
+            currentUserTimeZone: {
+                type: String,
+                notify: true,
+                readOnly: true
+            },
+
+            /**
+              * If true, the error messages print to the console
+              **/
+            debug: {
+              type: Boolean,
+              value: false,
+            },
+
+            _isUpdatedProperty:{
+                type: Boolean,
+                value: false
+            },
+
+            _mailbox: Object, 
+
+            /**
+              * Time zone in Microsoft Windows Time Zone Database
+              **/
+            _msTimeZone: {
+                type: String
+            },
+
+            /**
+              * Time zone in IANA/OLson Time Zone Database
+              **/
+            _ianaTimeZone: {
+              type: String
+            },
+
+        },
+
+        attached : function() {   
+            this._initializeOffice();  
+            this._setUserInterfaceId(this._getUserInterfaceId());     
+        },
+
+        _outlookPropsChanged: function(oldVal, newVal){
+           return oldVal === newVal ? false : true;
+        },
+
+        _initializeOffice: function(){
+            var self = this;
+            var init = function (reason) {
+                this._mailbox = Office.context.mailbox;
+                var item = this._mailbox.item;
+                if (!item) {
+                    if(self.debug) console.log("item is undefined");
+                    return;
+                }
+                self._updateAddInContent(item);
+
+             };
+
+             //The initialize function must be run each time a new page is loaded
+             try {
+                Office.initialize = init;
+             }catch(e){
+                if(this.debug) console.log(e);
+                setTimeout(function(){
+                    self._initializeOffice();
+                }, 100);
+             }
+        },
+
+        _officeLoaded: function(){
+            try {
+                var _office = Office.context.mailbox;
+                return true;
+            }catch (e){
+                return false;
+            }
+        },
+
+        _updateAddInContent: function(item){
+                this._getCurrentUserName();
+                this._getCurrentUserEmailAddress();
+                this._getCurrentUserTimeZone();
+            var self = this;     
+            var interval = setInterval(function () {
+                self._getLocation(item);
+                self._getSubject(item);
+                self._getRequiredAttendees(item);
+                self._getOptionalAttendees(item);
+                self._getApptId(item);
+            }, this.refresh); 
+           
+        },
+
+        _getApptId: function (item) {
+            var self = this;
+            var apptId;
+            if(!this.initiated){ 
+                try {
+                    //Saves the current appointment as a draft and 
+                    //returns the item id via the callback method.
+                    item.saveAsync(function (asyncResult) {
+                        if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+                            if(self.debug) console.log(asyncResult.error);
+                        } else {
+                            apptId = asyncResult.value;
+                            self._setAppointmentId(apptId);
+                            
+                            //Send a requet to the Exchange server
+                            self._sendRequest(apptId);
+                        }
+                    });
+                } catch (e) {
+                    if(this.debug) console.log(e.message);
+                }
+                this.initiated = true;
+            }else{
+                //Send a requet to the Exchange server
+                item.saveAsync();
+                this._sendRequest(this.appointmentId);
+            }
+            
+        },
+
+    _getSubjectRequest: function (id) {
+        // Return a GetItem operation request for the subject of the specified item. 
+        var result =
+         '<?xml version="1.0" encoding="utf-8"?>' +
+         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
+         '               xmlns:xsd="http://www.w3.org/2001/XMLSchema"' +
+         '               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"' +
+         '               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">' +
+         '  <soap:Header>' +
+         '    <RequestServerVersion Version="Exchange2013" xmlns="http://schemas.microsoft.com/exchange/services/2006/types" soap:mustUnderstand="0" />' +
+         '  </soap:Header>' +
+         '  <soap:Body>' +
+         '    <GetItem xmlns="http://schemas.microsoft.com/exchange/services/2006/messages">' +
+         '      <ItemShape>' +
+         '        <t:BaseShape>AllProperties</t:BaseShape>' +
+         '        <t:AdditionalProperties>' +
+         '            <t:FieldURI FieldURI="item:Subject"/>' +
+         '            <t:FieldURI FieldURI="item:StoreEntryId"/>' +
+         '        </t:AdditionalProperties>' +
+         '      </ItemShape>' +
+         '      <ItemIds><t:ItemId Id="' + id + '"/></ItemIds>' +
+         '    </GetItem>' +
+         '  </soap:Body>' +
+         '</soap:Envelope>';
+        return result;
+    },
+
+    _getUpdateResourcesRequest: function (id, changekey, resourceEmails) {
+        var attendeesEmails = "";
+        if (resourceEmails.length > 0){
+           for( var i = 0; i < resourceEmails.length; i++){
+                attendeesEmails +=
+                
+                '                          <t:Attendee>' +
+                '                            <t:Mailbox>' +
+                '                              <t:EmailAddress>'+resourceEmails[i]+'</t:EmailAddress>' +
+                '                            </t:Mailbox>' +
+                '                          </t:Attendee>';
+           }
+        }else{
+            return;
+        }
+
+        var result = 
+        
+        '<?xml version="1.0" encoding="utf-8"?>' +
+        '    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"' +
+        '           xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '      <soap:Header>' +
+        '        <t:RequestServerVersion Version="Exchange2013" />' +
+        '        <t:TimeZoneContext>' +
+        '          <t:TimeZoneDefinition Id="' + this._msTimeZone + '" />' +
+        '        </t:TimeZoneContext>' +
+        '      </soap:Header>' +
+        '      <soap:Body>' +
+        '        <m:UpdateItem MessageDisposition="SaveOnly" ConflictResolution="AlwaysOverwrite" SendMeetingInvitationsOrCancellations="SendToNone">' +
+        '          <m:ItemChanges>' +
+        '            <t:ItemChange>' +
+        '              <t:ItemId Id="' + id + '" ChangeKey="' + changekey + '" />' +
+        '              <t:Updates>' +
+        '                <t:SetItemField>' +
+        '                      <t:FieldURI FieldURI="calendar:Resources" />' +
+        '                      <t:CalendarItem>' +
+        '                        <t:Resources>' +
+                                        attendeesEmails+
+        '                        </t:Resources>' +
+        '                      </t:CalendarItem>' +
+        '                    </t:SetItemField>' +                 
+        '              </t:Updates>' +
+        '            </t:ItemChange>' +
+        '          </m:ItemChanges>' +
+        '        </m:UpdateItem>' +
+        '      </soap:Body>' +
+        '    </soap:Envelope> ';  
+
+        return result;
+    },
+
+
+    _sendRequest: function (apptId) {
+        var self = this;
+        /* Office.context.mailbox.makeEwsRequetAsync method is used for make a EWS requet to the Exchange server that  hosts the user's mailbox.
+         * Calls getSubjectRequest to get the SOAP request for the selected item, then passes the SOAP request and the callback method,  
+         * callback, to makeEwsRequestAsync to get the subject of the specified item.
+        */
+        Office.context.mailbox.makeEwsRequestAsync(self._getSubjectRequest(apptId), self._requestCallback.bind(self));
+    },
+
+    _requestCallback: function (asyncResult) {
+        if(asyncResult.status == Office.AsyncResultStatus.Failed){
+             if(this.debug) console.log(asyncResult.error);
+             return;
+        }
+        //Parse XML SOAP resonse to DOM.
+        var result = $.parseXML(asyncResult.value);
+        if(this._outlookPropsChanged(this.changeKey, this._getChangeKey(result))) this._setChangeKey(this._getChangeKey(result));
+        if(this._outlookPropsChanged(this.isAllDayEvent, this._getIsAllDayEvent(result))) this._setIsAllDayEvent(this._getIsAllDayEvent(result));
+        if(this._outlookPropsChanged(this.uid, this._getUID(result))) this._setUid(this._getUID(result));
+        this._setResources(this._getResources(result));
+        this._setLocationEmails(this._getLocationEmails());      
+        if(this._outlookPropsChanged(this.startDate, this._getStartDate(result))) this._setStartDate(this._getStartDate(result));
+        if(this._outlookPropsChanged(this.endDate, this._getEndDate(result))) this._setEndDate(this._getEndDate(result));
+    },
+
+    /**
+        * Update the appointment resources.<br/>
+        * @param {array} resourceEmails The array representation of the resources emails (e.g. ["johnsmith@ux.ibm.com", "dowJim@ux.ibm.com"]).
+        */
+    setAppointmentResources: function(resourceEmails){
+        var self = this;
+        Office.context.mailbox.makeEwsRequestAsync(self._getUpdateResourcesRequest(self.appointmentId, self.changeKey, resourceEmails), function(asyncResult){
+            if(asyncResult.status == Office.AsyncResultStatus.Failed){
+                 if(self.debug) console.log(asyncResult.error);
+                 return;
+            }
+            self._syncEws();
+        });
+    },
+
+    _getChangeKey: function(node){
+      var tagNam = "ItemId";
+      var attribute = "ChangeKey";
+      return this._getElementAttribute(node, tagNam, attribute);
+    },
+
+    _getLocationEmails: function(){
+        var locationEmails = [];
+        if (Object.keys(this.resources).length >0){
+            for (var i = 0; i < this.resources.attendees.length; i++) {
+                locationEmails.push(this.resources.attendees[i].mailbox.emailAddress);
+            }
+        }
+        return locationEmails;
+    },
+
+    _getUID: function (node) {
+        var tagNam = "UID";
+        return this._getElementTextContent(node, tagNam);
+    },
+
+    _getIsAllDayEvent: function (node) {
+      var tagNam = "IsAllDayEvent";
+      var isAllDayEvent = this._getElementTextContent(node, tagNam);
+      if(isAllDayEvent === "true"){
+        return true;
+      }else{
+        return false;
+      }
+      
+    },
+
+    _getSubject: function (item) {
+        var self = this;
+        var subject;
+        try {
+            item.subject.getAsync(function (asyncResult) {
+                if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+                    if(self.debug) console.log(asyncResult.error);
+                } else {
+                    subject = asyncResult.value;
+                    if(self._outlookPropsChanged(self.subject, subject)) self.subject = subject;
+                }
+            });
+        } catch (e) {
+            if(this.debug) console.log(e.message);
+        }
+
+    },
+    /**
+        * Set appointment subject.<br/>
+        * @param {string} subject The string representation of the appointment subject (e.g. All hands meeting).
+        */
+    setSubject: function (subject){
+        try{
+            Office.context.mailbox.item.subject.setAsync(subject);
+            this._syncEws();
+        }catch(e){
+            if(this.debug) console.log(e);
+        }
+    },
+
+    _getLocation: function (item) {
+        var self = this;
+        var location;
+        try {
+            item.location.getAsync(function (asyncResult) {
+                if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+                    if(self.debug) console.log(asyncResult.error);
+                } else {
+                    location = asyncResult.value;
+                    if(self._outlookPropsChanged(self.location, location)) self._setLocation(location);
+                }
+            });
+        } 
+        catch(e){
+            if(this.debug) console.log(e.message);
+        }
+    },
+    /**
+        * Set appointment location.<br/>
+        * @param {string} location The string representation of the location name (e.g. conference room 2110).
+        * @param {array} locationEmails The array representation of the resources emails (e.g. ["johnsmith@ux.ibm.com", "dowJim@ux.ibm.com"]).
+        * Note: locationEmails array is optional.
+        */
+    setLocation: function(location, locationEmails){
+        if(location === this.location) return;
+        try {
+          Office.context.mailbox.item.location.setAsync(location);
+          this._syncEws();
+          if(locationEmails){
+              this.setAppointmentResources(locationEmails);
+          }
+        }
+        catch(e){
+          if(this.debug) console.log(e.message);
+        }
+    },
+
+
+    _getStartDate: function (node) {
+        var tagNam = "Start";
+        var startDate = this._getElementTextContent(node, tagNam);
+        var _startDate = moment(startDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        return moment(_startDate).tz(this._ianaTimeZone).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+    },
+
+     /**
+        * Set appointment start date.<br/>
+        * @param {string} date The ISO date string format (e.g. 1970-01-15T22:19:41.000-08:00).
+        */
+    setStartDate: function (date) {
+      if(this.isAllDayEvent) return;
+        try{
+          //handle different time zone
+          var convertedMomentDate = moment(date).tz(this._ianaTimeZone);
+          var convertedDate = new Date(convertedMomentDate.year(), convertedMomentDate.month(), 
+                                        convertedMomentDate.date(), convertedMomentDate.hour(), 
+                                        convertedMomentDate.minute(), convertedMomentDate.second());
+
+            Office.context.mailbox.item.start.setAsync(convertedDate);
+            this._syncEws();
+        }catch(e){
+            if(this.debug) console.log(e);
+        }
+    },
+
+
+    _getEndDate: function (node) {
+        var tagNam = "End";
+        var endDate = this._getElementTextContent(node, tagNam);
+        var _endDate = moment(endDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        return moment(_endDate).tz(this._ianaTimeZone).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+    },
+
+    /**
+        * Set appointment end date.<br/>
+        * @param {string} date The ISO date string format (e.g. 1990-10-25T22:20:41.000-08:00).
+        */
+    setEndDate: function (date){
+        if(this.isAllDayEvent) return;
+        try{
+           //handle different time zone
+          var convertedMomentDate = moment(date).tz(this._ianaTimeZone);
+          var convertedDate = new Date(convertedMomentDate.year(), convertedMomentDate.month(), 
+                                        convertedMomentDate.date(), convertedMomentDate.hour(), 
+                                        convertedMomentDate.minute(), convertedMomentDate.second());
+            Office.context.mailbox.item.end.setAsync(convertedDate);
+            this._syncEws();
+        }catch(e){
+            if(this.debug) console.log(e);
+        }
+    },
+
+    _getRequiredAttendees: function(item){
+        var self = this;
+        var attendees=[];
+        try {
+            item.requiredAttendees.getAsync(function (asyncResult) {
+                if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+                    if(self.debug) console.log(asyncResult.error);
+                } else {
+                    attendees = asyncResult.value;
+                    self._setRequiredAttendees(attendees);
+                }
+            });
+        } catch (e) {
+            if(this.debug) console.log(e.message);
+        }
+    },
+
+    /**
+        * Add required attendees.<br/>
+        * @param {array} attendees The array representation of the resources emails (e.g. ["johnsmith@ux.ibm.com", "dowJim@ux.ibm.com"]).
+        */
+    addRequiredAttendees: function (attendees){
+        if(!attendees || !attendees.length > 0){
+            return;
+        }
+        try{           
+            Office.context.mailbox.item.requiredAttendees.addAsync( attendees );
+            this._syncEws();
+        }catch(e){
+            console.log(e);
+        }
+    },
+
+    _getOptionalAttendees: function(item){
+        var self = this;
+        var attendees=[];
+        try {
+            item.optionalAttendees.getAsync(function (asyncResult) {
+                if (asyncResult.status == Office.AsyncResultStatus.Failed) {
+                    if(self.debug) console.log(asyncResult.error);
+                } else {
+                    attendees = asyncResult.value;
+                    self._setOptionalAttendees(attendees);
+                }
+            });
+        } catch (e) {
+            if(this.debug) console.log(e.message);
+        }
+    },
+
+    /**
+        * Add optinal attendees.<br/>
+        * @param {array} attendees The array representation of the resources emails (e.g. ["johnsmith@ux.ibm.com", "dowJim@ux.ibm.com"]).
+        */
+    addOptionalAttendees: function (attendees){
+        if(!attendees || !attendees.length > 0){
+            return;
+        }
+        try{
+            Office.context.mailbox.item.optionalAttendees.addAsync( attendees );
+            this._syncEws();
+        }catch(e){
+            if(self.debug) console.log(e);
+        }
+    },
+
+    _getCurrentUserName: function(){
+        this._setCurrentUserName(Office.context.mailbox.userProfile.displayName);
+    },
+
+    _getCurrentUserEmailAddress: function(){
+        this._setCurrentUserEmailAddress(Office.context.mailbox.userProfile.emailAddress);
+    },
+
+    _getCurrentUserTimeZone: function(){
+        this._msTimeZone = Office.context.mailbox.userProfile.timeZone;
+        this._ianaTimeZone = this._mapTimeZone(this._msTimeZone);
+        this._setCurrentUserTimeZone(this._ianaTimeZone);
+    },
+
+    _getResources: function (node) {
+        var resources = {};
+        var self = this;
+
+        var resourcesElement = this._getElements(node, "Resources")[0];
+        if (!resourcesElement) {
+            return resources;
+        }
+        resources.attendeeElements = this._getElements(resourcesElement, "Attendee");
+        resources.attendees = [];
+        for (var i = 0; i < resources.attendeeElements.length; i++) {
+            resources.attendees.push({
+                mailboxElement: this._getElements(resources.attendeeElements[i], "Mailbox"),
+                responseType: this._getElementTextContent(resources.attendeeElements[i], "ResponseType"), 
+                mailbox: {
+                    name: this._getElementTextContent(resources.attendeeElements[i], "Name"),
+                    emailAddress: this._getElementTextContent(resources.attendeeElements[i], "EmailAddress"),
+                    routingType: this._getElementTextContent(resources.attendeeElements[i], "RoutingType"),
+                    mailboxType: this._getElementTextContent(resources.attendeeElements[i], "MailboxType"),   
+                },
+            });
+            // Return email address that its routing type is SMTP only (based on legacy add-in logic)
+            if (resources.attendees[i].mailbox.routingType !== 'SMTP') {
+                resources.attendees[i].mailbox.emailAddress = "";
+            }
+         }     
+        resources.count = resources.attendees.length;
+        return resources;
+    },
+
+    _getUserInterfaceId: function () {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    },
+
+    /*
+     * Detect which browser and its version that the user is using 
+     */
+    _isChromeOrEdge: function () {
+       var userAgent = window.navigator.userAgent;
+
+        // Check IE 10 because the Outlook 2013 thick client is using it
+        var microsoftIE = userAgent.indexOf('MSIE ');
+        if (microsoftIE > 0) {
+            // IE 10 or older. 
+            return false;
+        }
+
+        var microsoftTrident = userAgent.indexOf('Trident/');
+        if (microsoftTrident > 0) {
+            // IE 11 
+            return false;
+        }
+
+        var isFirefox = userAgent.toLowerCase().indexOf('firefox') > -1;
+        if (isFirefox > 0){
+            //Firefox
+            return false;
+        }
+
+        var microsoftEdge = userAgent.indexOf('Edge/');
+        if (microsoftEdge > 0) {
+            // Edge (IE 12+) => return false
+            return false;
+        }
+
+        // Chrome and other browsers
+        return true;
+    },
+
+    _syncEws: function(){
+      Office.context.mailbox.item.saveAsync();
+    },
+
+
+    _handle_t_prefixTagName: function(tagName){
+      //IE 11 and older or Firefox required t: prefix of the tag name
+      if(this._isChromeOrEdge()){
+        return tagName;
+      }
+      else{
+        return "t:" + tagName;
+      }
+    },
+
+    _hasTagName: function(node, tagName){
+      return node.getElementsByTagName(this._handle_t_prefixTagName(tagName)) ? true : false;
+    },
+
+    _getElements: function(node, tagName){
+      return node.getElementsByTagName(this._handle_t_prefixTagName(tagName));
+    },
+
+    _getElementTextContent: function(node, tagName){
+      if (!(this._hasTagName(node, tagName))) return;
+      try {
+        return this._getElements(node, tagName)[0].textContent;
+      }catch(e){
+        if(this.debug) console.log(e.message);
+      }  
+    },
+
+    _getElementAttribute: function(node, tagName, attr){
+      if (!(this._hasTagName(node, tagName))) return;
+      try {
+        return this._getElements(node, tagName)[0].getAttribute(attr);
+        } catch (e) {
+            if(this.debug) console.log(e.message);
+        }
+    },
+    /*
+     * Map Microsoft time zone ID to TZ or IANA time zone ID 
+     */
+    _mapTimeZone: function (timezone) {
+      var request = new XMLHttpRequest();
+      request.open("GET", "/dev/oai/time-zone.xml", false);
+      request.send();
+      var node = request.responseXML;
+      var mapZoneNodes = node.getElementsByTagName("mapZone");
+      for (var i = 0; i < mapZoneNodes.length; i++){
+          if(mapZoneNodes[i].getAttribute('other') === timezone){
+            return mapZoneNodes[i].getAttribute('type');
+            
+          }
+      }
+      return "undefined time zone";
+    } 
+
+
+    });
+
+})();
+    
+</script>

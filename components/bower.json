@@ -1,0 +1,22 @@
+{
+  "name": "components",
+  "version": "0.0.0",
+  "authors": [
+    "Chris Jones <chris@balln.net>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+  	"font-roboto": "PolymerElements/font-roboto-local",
+    "iron-elements": "PolymerElements/iron-elements",
+    "paper-elements": "PolymerElements/paper-elements",
+    "neon-animation": "PolymerElements/neon-animation",
+    "platinum-elements": "PolymerElements/platinum-elements",
+    "google-web-components": "GoogleWebComponents/google-web-components",
+    "gold-elements": "PolymerElements/gold-elements",
+    "polymer": "Polymer/polymer#^1.0.0",
+    "moment": "~2.10.6",
+    "moment-timezone": "~0.4.0",
+    "jsTimezoneDetect": "~1.0.5",
+    "moment-jdateformatparser":"~1.0.0"
+  }
+}

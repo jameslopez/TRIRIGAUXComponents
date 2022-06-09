@@ -1,0 +1,2944 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "",
+      "summary": "",
+      "path": "triplat-ds-context.js",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string | null | undefined",
+          "description": "The data source name.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 24,
+              "column": 2
+            },
+            "end": {
+              "line": 26,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "contextId",
+          "type": "Object | null | undefined",
+          "description": "An object that holds a context ID or an array of context IDs. Use an array of context IDs only with the parent data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 31,
+              "column": 2
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_index",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 35,
+              "column": 2
+            },
+            "end": {
+              "line": 37,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_initIndex",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 46,
+              "column": 1
+            },
+            "end": {
+              "line": 54,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_initContextId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 56,
+              "column": 1
+            },
+            "end": {
+              "line": 64,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 66,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "The data source name.",
+          "sourceRange": {
+            "start": {
+              "line": 24,
+              "column": 2
+            },
+            "end": {
+              "line": 26,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "context-id",
+          "description": "An object that holds a context ID or an array of context IDs. Use an array of context IDs only with the parent data source.",
+          "sourceRange": {
+            "start": {
+              "line": 31,
+              "column": 2
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-ds-context-changed",
+          "description": "Fired when the context changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-ds-context"
+    },
+    {
+      "description": "",
+      "summary": "",
+      "path": "triplat-ds-instance.js",
+      "properties": [
+        {
+          "name": "instanceId",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 20,
+              "column": 2
+            },
+            "end": {
+              "line": 25,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_handleInstanceIdChanged\"",
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_handleInstanceIdChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 29,
+              "column": 1
+            },
+            "end": {
+              "line": 31,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "instanceId"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 33,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "instance-id",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 20,
+              "column": 2
+            },
+            "end": {
+              "line": 25,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-ds-instance-changed",
+          "description": "Fired when the instance Id changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-ds-instance"
+    },
+    {
+      "description": "triplat-ds is a component that is used to access data source on the TRIRIGA server.\n\n### Declaring Examples\n\nThe below examples will use this data source structure:\n\n\t - people (multiple records)\n\t\t  - spacesForPerson (multiple records)\n\t\t\t   - assetsForSpace (multiple records)\n\t - assetsForPerson (multiple records)\n\nExample of accessing a top level data source. This will retrieve the data in the people data source.\n\n\t <triplat-ds id=\"peopleDs\" name=\"people\" data=\"{{people}}\"></triplat-ds>\n\nExample of accessing a child data source. This will retrieve all the spaces for a single person.\n\n\t <triplat-ds name=\"spacesForPerson\" data=\"{{spacesForPerson}}\">\n\t\t  <triplat-ds-context name=\"people\" \n\t\t\t\t\tcontext-id=\"{{person._id}}\"></triplat-ds-context>\n\t </triplat-ds>\n\nExample of accessing a deeper child data source. This will retrieve all the assets for a space.\n\n\t <triplat-ds name=\"assetsForSpace\" data=\"{{assetsForSpace}}\">\n\t\t  <triplat-ds-context name=\"people\" \n\t\t\t\t\tcontext-id=\"{{person._id}}\"></triplat-ds-context>\n\t\t  <triplat-ds-context name=\"spacesForPerson\" \n\t\t\t\t\tcontext-id=\"{{space._id}}\"></triplat-ds-context>\n\t </triplat-ds>\n\nExample of accessing a single record of a multiple record data source. This will retrieve only \none space record with the ID specified in the triplat-ds-instance tag.\n\n\t <triplat-ds name=\"spacesForPerson\" data=\"{{spacesForPerson}}\">\n\t\t  <triplat-ds-context name=\"people\" \n\t\t\t\t\tcontext-id=\"{{person._id}}\"></triplat-ds-context>\n\t\t  <triplat-ds-instance instance-id=\"{{space._id}}\"></triplat-ds-instance>\n\t </triplat-ds>\n\nExample of accessing a top level data source with a different context. This will retrieve all assets \nfor a single person. This data source would probably be a query data source that has a $$RECORDID$$ filter \nusing a supplied person ID.\n\n\t <triplat-ds name=\"assetForPerson\" data=\"{{assetForPerson}}\" ignore-app-context>\n\t\t  <triplat-ds-context context-id=\"{{person._id}}\"></triplat-ds-context>\n\t </triplat-ds>\n\nExample of accessing a child data source for several context IDs. This will retrieve all of the spaces for the selected people. Both BUSINESS_OBJECT and QUERY data source types support \nmultiple context IDs. For BUSINESS_OBJECT type the data source will include related association. If QUERY type is used, the  data source query would probably have a $$RECORDID$$ filter using a supplied person ID.\nWhen providing several context IDs for the parent data source, a single request is sent to the server. The server executes the request against\neach of the context IDs and returns the appended results. Be advised that the number of context IDs should be limited because the server executes the \nquery for each context ID. Also, data source pagination should not be used with multiple context IDs.\n\n\t <triplat-ds name=\"spacesForPeople\" data=\"{{spacesForPeople}}\">\n\t\t  <triplat-ds-context name=\"people\" \n\t\t\t\t\tcontext-id=\"{{selectedPeople}}\"></triplat-ds-context>\n\t </triplat-ds>\n\n\n### Update Examples\n\nExample of creating a record in a data source. This will create a single person record for the people data \nsource. It will also fire the \"create\" action. This will also append the new record to the end of the data \nsource because we specified CLIENT refresh type.\n\n\t // create a single person\n\t var newPerson = {firstName: \"Pete\", lastName: \"Carroll\"};\n\t this.$.peopleDs.createRecord(newPerson, TriPlatDs.RefreshType.CLIENT, \n\t\t \"actions\", \"create\");\n\nExample of creating multiple people.\n\n\t // create multiple people records\n\t var newPeople = [\n\t\t {firstName: \"Pete\", lastName: \"Carroll\"}, \n\t\t {firstName: \"Marshawn\", lastName: \"Lynch\"}\n\t ];\n\t this.$.peopleDs.createRecord(newPeople, TriPlatDs.RefreshType.CLIENT, \n\t\t \"actions\", \"create\");\n\nExample of deleting a record in a data source. This will delete that record from the data source and trigger the \naction BEFORE the delete is done. You can also pass in an array of ID's to delete multiple records.\n\n\t // find the person to delete\n\t var personToDelete = this._findPersonToDelete() // this is just an example\n\t this.$.peopleDs.deleteRecord(personToDelete._id, TriPlatDs.RefreshType.CLIENT, \n\t\t \"actions\", \"delete\");\n\nExample of updating an existing record in the data source. This finds a record in the data source, makes a change \nto it, then sends the updated data to the server. We can also pass an array of instance ID's to update multiple \nrecords.\n\n\t // get a handle to a record that you want to update\n\t var personToUpdate = this._findPersonToUpdate();\n\n\t // make a change to the person record\n\t personToUpdate.firstName = \"changed name\";\n\n\t // now that the change was made to the record in the data source\n\t // we just need to tell the data source which record to send to \n\t // the server.\n\t this.$.peopleDs.updateRecord(personToUpdate._id, TriPlatDs.RefreshType.CLIENT, \n\t\t \"actions\", \"update\");\n\nExample of performing an action on an existing record in the data source. This finds a person in the data source, \nthen sends the data to the server to perform the action. Optionally, we can pass workflow parameters for the key and value to the workflow that is been executed.\nThe key is the same parameter name as is defined in the workflow itself. The value can be a single instance ID, an array of instance IDs, \nan object with the '_id' property that holds the instance ID, or an array of objects that each have the '_id' property.\n\n\t // get a handle to a person record you want to move\n\t var personToUpdate = this._findPersonToUpdate();\n\n\t // Example of defining workflow parameters instance IDs values\n\t // space (a single instance ID)\n\t var spaceForPerson = 15843402; \n\t // assets (an array of instance IDs)\n\t var assetsForSpace = [15855623, 15860809, 15820111, 15860895]; \n\t // department (a single object with '_id' property)\n\t var department = {_id:15820333, name:\"Accounting\", \n\t\t\t\t\t   description:\"Accounting department\"}; \n\t // contracts (an array of objects with '_id' properties)\n\t var contracts = [{_id:15820111}, {_id:15860895}]; \n\n\t // create a workflow parameters map for the key and value\n\t var wfParams = {};\n\t wfParams.space = spaceForPerson;\n\t wfParams.assets = assetsForSpace;\n\t wfParams.department = department;\n\t wfParams.contracts = contracts;\n\n\t // we just need to tell the data source which record to send to \n\t // the server and optionally pass the workflow parameters.\n\t this.$.peopleDs.performAction(personToUpdate._id, TriPlatDs.RefreshType.BOTH, \n\t\t \"actions\", \"move\", wfParams);\n\nExample of adding an existing record to a data source. This can also be thought of as \"associating\" records. We can \nalso pass an array of records to be added here.  You can specify an action here also, but this is an example of how actions\nare optional.\n\n\t // get the person to add to the data source\n\t var personToAdd = this._findPersonToAdd();\n\t this.$.peopleDs.addRecord(personToAdd, TriPlatDs.RefreshType.CLIENT);\n\nExample of removing an existing record from a data source. This can also be thought of as \"de-associating\" records. We can \nalso pass an array of records to be removed here.  You can specify an action here also, but this is an example of how actions\nare optional.\n\n\t // get the person to add to the data source\n\t var personToRemove = this._findPersonToRemove();\n\t this.$.peopleDs.removeRecord(personToRemove, TriPlatDs.RefreshType.CLIENT);\n\n### Reusing Components\n\nYou can declare the same data source in multiple areas of your application. If the data source is accessing the same information,\nit will be shared across all instances.\n\nTake this example:\n\n\t <triplat-ds id=\"peopleDs1\" name=\"people\" data=\"{{people}}\"></triplat-ds>\n\t <triplat-ds id=\"peopleDs2\" name=\"people\" data=\"{{people}}\"></triplat-ds>\n\nEven though we are declaring two data sources for the same info, only one request will be made to the server. Also any changes to\none of the data sources will automatically be reflected in the other.\n\n### Refreshing\n\nAll methods take a refresh type argument that allows you to control how the data source is updated because of the action.\n\nRefreshType | Description\n------------|------------\nTriPlatDs.RefreshType.NONE | No refresh will be done.\nTriPlatDs.RefreshType.SERVER | The server will return the FULL data source on completion of the action.\nTriPlatDs.RefreshType.CLIENT | The client will attempt to update the model value with what was supplied in the method call.\nTriPlatDs.RefreshType.BOTH | Both server and client strategies will be applied.\n\n### Retrieving the total number of results without the data\n\nYou can retrieve the total number of results of a multiple records query data source without retrieving the data. To do that, declare the data source with <b>count-only</b>. The server will return the query total size without the data.\nWhen you need the data, change the data source <b>countOnly</b> property to false and the data will be loaded.\nThis is useful when several data sources are loaded at once but only the total number of results of a data source is needed at that point.\n  \nExample:\n\n\t<triplat-ds id=\"employeesDS\" name=\"employees\" data=\"{{employeesData}}\" \n\t  count-only query-total-size=\"{{employeesTotalSize}}\">\n\t</triplat-ds>\n\t\n\t...\n\n\tgetEmployeesData: function(){\n\t\tthis.$.employeesDS.countOnly = false; \n\t},\n\n### Retrieving metadata of fields in Datasource\n\nYou can retrieve metadata of the fields in Datasource. Only default value and size defined in Data Modeler is accessible at this point, and supports both primary and non primary data sources.  \nOther metadata will be added in future.\n\nExample:\n\n\t<triplat-ds metadata=\"{{myCustomDsFields}}\" include-metadata id=\"peopleDs1\" name=\"people\" data=\"{{people}}\"></triplat-ds>\n  \nIf triNameTX is the Field Name of one of the fields in datasource, it's default value (if defined in Data Modeler) can be accessed in html context:\n\n\t<paper-input label=\"Size\" value=\"{{myCustomDsFields.fieldMetaData.triFirstNameTX.size}}\"></paper-input>\n\t<paper-input label=\"Default Value\" value=\"{{myCustomDsFields.fieldMetaData.triFirstNameTX.defaultValue}}\"></paper-input>\n   \nor in Javascript context as:\n\n\tvalidateField: function(){\n\t  alert(\"Input value of size\" + this.myCustomDsFields.fieldMetaData.triFirstNameTX.size + \" is not allowed\"); \n\t},\n\nNote: Only Text, List, Number, Date and Datetime fields are supported at this time. Support for other field types will be added later.     \n\t\n\n### Paging, Filtering and Sorting\n\nSee triplat-query documentation for detail.\n\n### Best Practices\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n  <b>Note:</b> You may want to refer to the `triplat-query` documentation page if you're not sure how to differentiate client-side and server-side filtering. The following best practices assume that you have some prior knowledge of data sources, queries, filters, and pagination.\n  </div>\n</div>\n#### 1. Think about the way you want to manage data.\nHandling large data sets (100k+) will become slow because of the resources loaded onto the network. If that is the case, you should try \nrethinking your design to make sure you really need that much data loaded at once and <b>you are willing to accept a slower performance</b>.\n\n<b>Server-side filters</b> can help you.\nIf your data is big enough, you should consider using <b>server-side</b> filters and <b>paginate</b> the data.\nUse filters to fine-tune the data set, which reduces the number of records handled by the query and processed, and only get the data that is necessary for your application. This improves the execution time on the server.\n\nUse <b>pagination</b> to only retrieve a subset of the filtered data (not all at once). This is useful when displaying data in the page, rendering a small set of records at a time and displaying more records when needed.\nThere are two ways to paginate data: traditional pagination (triplat-query-page) and scrolling pagination (triplat-query-scroll-page).\nSee examples of a server query with traditional pagination and a server query with scrolling pagination in the triplat-query documentation.\n\n#### 2. Loading data.\nBy default, the data source retrieves the data when the page is loaded. You can avoid initial loading by setting the data source to <b>disable</b>. \nWhen you need the data, change the data source <b>disable</b> property to false and the data will be loaded. This is useful when several pages are loaded at once but not all of the data sources are needed at that point.\n\nExample:\n\t\n\t<triplat-ds id=\"spaceDs\" name=\"space\" data=\"{{space}}\" disable>\n\t</triplat-ds>\n\t\n\t...\n\n\tloadSpaceDS: function() {\n\t\tthis.$.spaceDs.disable = false;\n\t}\n\n#### 3. Data sources and defined fields. \nThe data source should only define fields that are necessary for the application. \nWhile the number of fields and field types should not impact the performance with a small data set, it can decrease performance with a large data set. \nRetrieving large data sets (100k+) with tens of fields for each record will slow performance.\n\n#### 4. Defining data source reports   . \nBe careful when you define a report for your data source query and tune it up for best performance. Add filters when possible. Be aware of joined tables.",
+      "summary": "",
+      "path": "triplat-ds.js",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string | null | undefined",
+          "description": "The data source name that will be retrieved.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 413,
+              "column": 2
+            },
+            "end": {
+              "line": 417,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "includeMetadata",
+          "type": "boolean | null | undefined",
+          "description": "A flag to enable the data source from requesting field metadata properies set in Data Modeler.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 422,
+              "column": 2
+            },
+            "end": {
+              "line": 426,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "metadata",
+          "type": "Object | null | undefined",
+          "description": "The data object to which the metadata of the fields in data source values can be bound.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 431,
+              "column": 2
+            },
+            "end": {
+              "line": 435,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "queryMetadata",
+          "type": "Object | null | undefined",
+          "description": "The data object which the query metadata will be set after calling getQueryMetadata().",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 440,
+              "column": 2
+            },
+            "end": {
+              "line": 444,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "data",
+          "type": "Object | null | undefined",
+          "description": "The data object to which the data source values can be bound.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 449,
+              "column": 2
+            },
+            "end": {
+              "line": 453,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "transitionInfo",
+          "type": "Object | null | undefined",
+          "description": "The transition information object provides information about the available state transition actions and sub actions for the current state of the record.<br>\nIf the data source type is BUSINESS_OBJECT for a single record, then this transition information is populated for that record.\nIf the data source type is BUSINESS_OBJECT or QUERY for multiple records, then this transition information is populated for a given record from that data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 460,
+              "column": 3
+            },
+            "end": {
+              "line": 464,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "filteredData",
+          "type": "Object | null | undefined",
+          "description": "When using a triplat-query that does not paginate, this is\npopulated with the filtered and sorted values.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 470,
+              "column": 2
+            },
+            "end": {
+              "line": 474,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "type": "Object | null | undefined",
+          "description": "Used to access the currently applied query if a\ntriplat-query is used.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 485,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_handleQueryChanged\"",
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "disable",
+          "type": "boolean | null | undefined",
+          "description": "A flag to disable the retrieval of records.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 490,
+              "column": 2
+            },
+            "end": {
+              "line": 496,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_onDisableChanged\"",
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "manual",
+          "type": "boolean | null | undefined",
+          "description": "A flag to prevent the data source from requesting data when the context or the query changes.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 501,
+              "column": 2
+            },
+            "end": {
+              "line": 504,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "appendPage",
+          "type": "boolean | null | undefined",
+          "description": "When using a paginated query, this flag will tell you whether\nthe pages will append to the result or not.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 510,
+              "column": 2
+            },
+            "end": {
+              "line": 514,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "queryTotalSize",
+          "type": "number | null | undefined",
+          "description": "This will give you the total number of results of a multiple records query data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 519,
+              "column": 2
+            },
+            "end": {
+              "line": 523,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "loading",
+          "type": "boolean | null | undefined",
+          "description": "A flag that can be used to be notified when this data\nsource is requesting data from the server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 529,
+              "column": 2
+            },
+            "end": {
+              "line": 534,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "context",
+          "type": "string | null | undefined",
+          "description": "Can be used to get the context path for this data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 539,
+              "column": 2
+            },
+            "end": {
+              "line": 544,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_handleContextStringChanged\"",
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "parentContext",
+          "type": "string | null | undefined",
+          "description": "Can be used to get the parent path for this data source\nwhen an instance is specified.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 550,
+              "column": 2
+            },
+            "end": {
+              "line": 554,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "ignoreAppContext",
+          "type": "boolean | null | undefined",
+          "description": "Use this flag to tell the data source you will providing\nyour own application instance ID instead of using the ID\nconfigured in metadata.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 561,
+              "column": 2
+            },
+            "end": {
+              "line": 565,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "forceServerFiltering",
+          "type": "boolean | null | undefined",
+          "description": "Use this flag to indicate that you want server-side filtering\neven though pagination is not being used.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 571,
+              "column": 2
+            },
+            "end": {
+              "line": 574,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "reserveIncludeUnavailable",
+          "type": "boolean | null | undefined",
+          "description": "This flag should only be used when the query called by the data source is of type RESERVE.\nUse this flag to indicate that you want both available and unavailable resources.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 580,
+              "column": 2
+            },
+            "end": {
+              "line": 583,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_serverFiltering",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 585,
+              "column": 2
+            },
+            "end": {
+              "line": 588,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_container",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 590,
+              "column": 2
+            },
+            "end": {
+              "line": 594,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_contexts",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 596,
+              "column": 2
+            },
+            "end": {
+              "line": 600,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_instanceId",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 602,
+              "column": 2
+            },
+            "end": {
+              "line": 604,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "_hasInstance",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 606,
+              "column": 2
+            },
+            "end": {
+              "line": 608,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_hasQuery",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 610,
+              "column": 2
+            },
+            "end": {
+              "line": 614,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_isQueryPaginated",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 616,
+              "column": 2
+            },
+            "end": {
+              "line": 620,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_registered",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 622,
+              "column": 2
+            },
+            "end": {
+              "line": 627,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_offlineMode",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 629,
+              "column": 2
+            },
+            "end": {
+              "line": 631,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "countOnly",
+          "type": "boolean | null | undefined",
+          "description": "Use this flag to indicate that you only want to retrieve the total number of results of a multiple records query data source without retrieving the data.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 636,
+              "column": 2
+            },
+            "end": {
+              "line": 642,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_onCountOnlyChanged\"",
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_getBoFieldsMetaData",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 656,
+              "column": 4
+            },
+            "end": {
+              "line": 676,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 678,
+              "column": 4
+            },
+            "end": {
+              "line": 709,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "detached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 711,
+              "column": 4
+            },
+            "end": {
+              "line": 717,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "refresh",
+          "description": "Refreshes the data for this data source and returns a promise that can be used to be notified when the request is complete.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 724,
+              "column": 1
+            },
+            "end": {
+              "line": 728,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onGetComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 731,
+              "column": 1
+            },
+            "end": {
+              "line": 733,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onGetError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 736,
+              "column": 1
+            },
+            "end": {
+              "line": 738,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "getQueryMetadata",
+          "description": "Get the query metadata for this data source and returns a promise that can be used to be notified when the request is complete.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 745,
+              "column": 1
+            },
+            "end": {
+              "line": 749,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onGetQueryMetadataComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 752,
+              "column": 1
+            },
+            "end": {
+              "line": 754,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onGetQueryMetadataError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 757,
+              "column": 1
+            },
+            "end": {
+              "line": 759,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "createRecord",
+          "description": "Creates a record for this data source and returns a promise that can be used to be notified when the request is complete.\nIf wfParameters parameter is not provided in the createRecord(), then the return promise only includes the created record ID(s). Otherwise,\nthe return promise includes the created record ID(s) and action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 777,
+              "column": 1
+            },
+            "end": {
+              "line": 799,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "data",
+              "type": "(Object | Array)",
+              "description": "The data that will be created."
+            },
+            {
+              "name": "refreshType",
+              "type": "TriPlatDs.RefreshType",
+              "description": "(Optional) The refresh type used to refresh after the operation."
+            },
+            {
+              "name": "actionGroup",
+              "type": "String",
+              "description": "(Optional) The action group name for triggering an action with this operation."
+            },
+            {
+              "name": "action",
+              "type": "String",
+              "description": "(Optional) The action name for triggering an action with this operation."
+            },
+            {
+              "name": "wfParameters",
+              "type": "Map.<String, Object>",
+              "description": "(Optional) The workflow parameters map for the key and value.\nEach key-and-value pair represents a workflow parameter.\nThe key is the workflow parameter name.\nThe value can be a single instance ID, an array of instance IDs, an object with the '_id' property that holds the instance ID, or an array of objects that each have the '_id' property."
+            },
+            {
+              "name": "appContext"
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onCreateComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 802,
+              "column": 1
+            },
+            "end": {
+              "line": 804,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "detail"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onCreateError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 807,
+              "column": 1
+            },
+            "end": {
+              "line": 809,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "deleteRecord",
+          "description": "Deletes a record for this data source and returns a promise that can be used to be notified when the request is complete.\nThe return promise includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 826,
+              "column": 1
+            },
+            "end": {
+              "line": 847,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "instanceId",
+              "type": "(Number | Array)",
+              "description": "The ID(s) to be deleted."
+            },
+            {
+              "name": "refreshType",
+              "type": "TriPlatDs.RefreshType",
+              "description": "(Optional) The refresh type used to refresh after the operation."
+            },
+            {
+              "name": "actionGroup",
+              "type": "String",
+              "description": "(Optional) The action group name for triggering an action with this operation."
+            },
+            {
+              "name": "action",
+              "type": "String",
+              "description": "(Optional) The action name for triggering an action with this operation."
+            },
+            {
+              "name": "wfParameters",
+              "type": "Map.<String, Object>",
+              "description": "(Optional) The workflow parameters map for the key and value.\nEach key-and-value pair represents a workflow parameter.\nThe key is the workflow parameter name.\nThe value can be a single instance ID, an array of instance IDs, an object with the '_id' property that holds the instance ID, or an array of objects that each have the '_id' property."
+            },
+            {
+              "name": "appContext"
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onDeleteComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 850,
+              "column": 1
+            },
+            "end": {
+              "line": 852,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onDeleteError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 855,
+              "column": 1
+            },
+            "end": {
+              "line": 857,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "updateRecord",
+          "description": "Updates a record for this data source and returns a promise that can be used to be notified when the request is complete.\nThe return promise includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 876,
+              "column": 1
+            },
+            "end": {
+              "line": 902,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "instanceId",
+              "type": "(Number | Array)",
+              "description": "(Optional) The ID(s) to be updated. Can be omitted if this is a single\nrecord datasource."
+            },
+            {
+              "name": "refreshType",
+              "type": "TriPlatDs.RefreshType",
+              "description": "(Optional) The refresh type used to refresh after the operation.\nDefaults to TriPlat.RefreshType.NONE."
+            },
+            {
+              "name": "actionGroup",
+              "type": "String",
+              "description": "(Optional) The action group name for triggering an action with this operation."
+            },
+            {
+              "name": "action",
+              "type": "String",
+              "description": "(Optional) The action name for triggering an action with this operation."
+            },
+            {
+              "name": "wfParameters",
+              "type": "Map.<String, Object>",
+              "description": "(Optional) The workflow parameters map for the key and value.\nEach key-and-value pair represents a workflow parameter.\nThe key is the workflow parameter name.\nThe value can be a single instance ID, an array of instance IDs, an object with the '_id' property that holds the instance ID, or an array of objects that each have the '_id' property."
+            },
+            {
+              "name": "appContext"
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onUpdateComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 905,
+              "column": 1
+            },
+            "end": {
+              "line": 907,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onUpdateError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 910,
+              "column": 1
+            },
+            "end": {
+              "line": 912,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "performAction",
+          "description": "Performs an action on one or more records in this data source and returns a promise that can be used to be notified when the request is complete.\nThe return promise includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 931,
+              "column": 1
+            },
+            "end": {
+              "line": 957,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "instanceId",
+              "type": "(Number | Array)",
+              "description": "(Optional) The ID(s) to fire actions on. Can be omitted if this is a single\nrecord datasource."
+            },
+            {
+              "name": "refreshType",
+              "type": "TriPlatDs.RefreshType",
+              "description": "(Optional) The refresh type used to refresh after the operation.\nDefaults to TriPlat.RefreshType.NONE."
+            },
+            {
+              "name": "actionGroup",
+              "type": "String",
+              "description": "(Optional) The action group name for triggering an action with this operation."
+            },
+            {
+              "name": "action",
+              "type": "String",
+              "description": "(Optional) The action name for triggering an action with this operation."
+            },
+            {
+              "name": "wfParameters",
+              "type": "Map.<String, Object>",
+              "description": "(Optional) The workflow parameters map for the key and value.\nEach key-and-value pair represents a workflow parameter.\nThe key is the workflow parameter name.\nThe value can be a single instance ID, an array of instance IDs, an object with the '_id' property that holds the instance ID, or an array of objects that each have the '_id' property."
+            },
+            {
+              "name": "appContext"
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onPerformActionComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 960,
+              "column": 1
+            },
+            "end": {
+              "line": 962,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onPerformActionError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 965,
+              "column": 1
+            },
+            "end": {
+              "line": 967,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "addRecord",
+          "description": "Adds a record to this data source and returns a promise that can be used to be notified when the request is complete.\nThe return promise includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 984,
+              "column": 1
+            },
+            "end": {
+              "line": 1005,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "data",
+              "type": "(Object | Array)",
+              "description": "The records to be added to this data source."
+            },
+            {
+              "name": "refreshType",
+              "type": "TriPlatDs.RefreshType",
+              "description": "(Optional) The refresh type used to refresh after the operation."
+            },
+            {
+              "name": "actionGroup",
+              "type": "String",
+              "description": "(Optional) The action group name for triggering an action with this operation."
+            },
+            {
+              "name": "action",
+              "type": "String",
+              "description": "(Optional) The action name for triggering an action with this operation."
+            },
+            {
+              "name": "wfParameters",
+              "type": "Map.<String, Object>",
+              "description": "(Optional) The workflow parameters map for the key and value.\nEach key-and-value pair represents a workflow parameter.\nThe key is the workflow parameter name.\nThe value can be a single instance ID, an array of instance IDs, an object with the '_id' property that holds the instance ID, or an array of objects that each have the '_id' property."
+            },
+            {
+              "name": "appContext"
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onAddComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1008,
+              "column": 1
+            },
+            "end": {
+              "line": 1010,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onAddError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1013,
+              "column": 1
+            },
+            "end": {
+              "line": 1015,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "removeRecord",
+          "description": "Removes a record from this data source and returns a promise that can be used to be notified when the request is complete.\nThe return promise includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1032,
+              "column": 1
+            },
+            "end": {
+              "line": 1053,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "data",
+              "type": "(Object | Array)",
+              "description": "The records to be removed from this data source."
+            },
+            {
+              "name": "refreshType",
+              "type": "TriPlatDs.RefreshType",
+              "description": "(Optional) The refresh type used to refresh after the operation."
+            },
+            {
+              "name": "actionGroup",
+              "type": "String",
+              "description": "(Optional) The action group name for triggering an action with this operation."
+            },
+            {
+              "name": "action",
+              "type": "String",
+              "description": "(Optional) The action name for triggering an action with this operation."
+            },
+            {
+              "name": "wfParameters",
+              "type": "Map.<String, Object>",
+              "description": "(Optional) The workflow parameters map for the key and value.\nEach key-and-value pair represents a workflow parameter.\nThe key is the workflow parameter name.\nThe value can be a single instance ID, an array of instance IDs, an object with the '_id' property that holds the instance ID, or an array of objects that each have the '_id' property."
+            },
+            {
+              "name": "appContext"
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_onRemoveComplete",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1056,
+              "column": 1
+            },
+            "end": {
+              "line": 1058,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onRemoveError",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1061,
+              "column": 1
+            },
+            "end": {
+              "line": 1063,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_initContext",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1065,
+              "column": 4
+            },
+            "end": {
+              "line": 1103,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleQueryChangedEvent",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1105,
+              "column": 4
+            },
+            "end": {
+              "line": 1109,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleQueryChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1111,
+              "column": 4
+            },
+            "end": {
+              "line": 1114,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "query"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleChildDsContextChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1116,
+              "column": 4
+            },
+            "end": {
+              "line": 1137,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleChildDsInstanceChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1139,
+              "column": 4
+            },
+            "end": {
+              "line": 1148,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleContextChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1150,
+              "column": 4
+            },
+            "end": {
+              "line": 1187,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleContextStringChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1189,
+              "column": 4
+            },
+            "end": {
+              "line": 1196,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newValue"
+            },
+            {
+              "name": "oldValue"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onDisableChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1198,
+              "column": 4
+            },
+            "end": {
+              "line": 1204,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "disable"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onCountOnlyChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1206,
+              "column": 4
+            },
+            "end": {
+              "line": 1213,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newValue"
+            },
+            {
+              "name": "oldValue"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_unregister",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1215,
+              "column": 4
+            },
+            "end": {
+              "line": 1221,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "context"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_doUpdateDsIfNeeded",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1223,
+              "column": 4
+            },
+            "end": {
+              "line": 1256,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_applyQuery",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1258,
+              "column": 4
+            },
+            "end": {
+              "line": 1273,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setDsData",
+          "description": "Called by triplat-ds-container-behavior",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1276,
+              "column": 1
+            },
+            "end": {
+              "line": 1278,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "data"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setDsTransitionInfo",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1280,
+              "column": 4
+            },
+            "end": {
+              "line": 1282,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "transitionInfo"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setDsDataInternal",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1284,
+              "column": 4
+            },
+            "end": {
+              "line": 1288,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "data"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setDsQueryMetadata",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1290,
+              "column": 1
+            },
+            "end": {
+              "line": 1292,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "data"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_notifyDsDataAppended",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1294,
+              "column": 4
+            },
+            "end": {
+              "line": 1308,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "records"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleDataChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1310,
+              "column": 4
+            },
+            "end": {
+              "line": 1327,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_notifyDsDataChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1329,
+              "column": 4
+            },
+            "end": {
+              "line": 1337,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_canFindInstanceIdForUpdate",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1339,
+              "column": 4
+            },
+            "end": {
+              "line": 1347,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_isNumber",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1349,
+              "column": 4
+            },
+            "end": {
+              "line": 1352,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ]
+        },
+        {
+          "name": "_isNumberOrArray",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1354,
+              "column": 4
+            },
+            "end": {
+              "line": 1362,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ]
+        },
+        {
+          "name": "_getUpdateInstanceIdArguments",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1364,
+              "column": 4
+            },
+            "end": {
+              "line": 1383,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "args"
+            }
+          ]
+        },
+        {
+          "name": "_getInstanceIdFromArgs",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1385,
+              "column": 4
+            },
+            "end": {
+              "line": 1395,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "args"
+            }
+          ]
+        },
+        {
+          "name": "_getRefreshTypeFromArgs",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1397,
+              "column": 4
+            },
+            "end": {
+              "line": 1409,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "args"
+            }
+          ]
+        },
+        {
+          "name": "_getActionArgsFromArgs",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1411,
+              "column": 4
+            },
+            "end": {
+              "line": 1430,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "args"
+            }
+          ]
+        },
+        {
+          "name": "_getWFParametersMap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1432,
+              "column": 4
+            },
+            "end": {
+              "line": 1480,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "wfParameters"
+            }
+          ]
+        },
+        {
+          "name": "_dsInfoChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1482,
+              "column": 4
+            },
+            "end": {
+              "line": 1488,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "queryTotalSize"
+            },
+            {
+              "name": "dataLength"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getContextIdsFromObject",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1490,
+              "column": 4
+            },
+            "end": {
+              "line": 1522,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "contextIdObject"
+            }
+          ]
+        },
+        {
+          "name": "_getHierarchyPath",
+          "description": "Called by triplat-ds-offline",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1525,
+              "column": 1
+            },
+            "end": {
+              "line": 1534,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getModelAndView",
+          "description": "Called by triplat-ds-offline",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1537,
+              "column": 1
+            },
+            "end": {
+              "line": 1539,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getDSContext",
+          "description": "Called by triplat-ds-offline",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1542,
+              "column": 1
+            },
+            "end": {
+              "line": 1549,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "instanceId"
+            }
+          ]
+        },
+        {
+          "name": "_getDSPath",
+          "description": "Called by triplat-ds-offline",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1552,
+              "column": 1
+            },
+            "end": {
+              "line": 1564,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getOfflineMode",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1566,
+              "column": 4
+            },
+            "end": {
+              "line": 1574,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 289,
+          "column": 8
+        },
+        "end": {
+          "line": 1575,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "The data source name that will be retrieved.",
+          "sourceRange": {
+            "start": {
+              "line": 413,
+              "column": 2
+            },
+            "end": {
+              "line": 417,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "include-metadata",
+          "description": "A flag to enable the data source from requesting field metadata properies set in Data Modeler.",
+          "sourceRange": {
+            "start": {
+              "line": 422,
+              "column": 2
+            },
+            "end": {
+              "line": 426,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "metadata",
+          "description": "The data object to which the metadata of the fields in data source values can be bound.",
+          "sourceRange": {
+            "start": {
+              "line": 431,
+              "column": 2
+            },
+            "end": {
+              "line": 435,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "query-metadata",
+          "description": "The data object which the query metadata will be set after calling getQueryMetadata().",
+          "sourceRange": {
+            "start": {
+              "line": 440,
+              "column": 2
+            },
+            "end": {
+              "line": 444,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "data",
+          "description": "The data object to which the data source values can be bound.",
+          "sourceRange": {
+            "start": {
+              "line": 449,
+              "column": 2
+            },
+            "end": {
+              "line": 453,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "transition-info",
+          "description": "The transition information object provides information about the available state transition actions and sub actions for the current state of the record.<br>\nIf the data source type is BUSINESS_OBJECT for a single record, then this transition information is populated for that record.\nIf the data source type is BUSINESS_OBJECT or QUERY for multiple records, then this transition information is populated for a given record from that data source.",
+          "sourceRange": {
+            "start": {
+              "line": 460,
+              "column": 3
+            },
+            "end": {
+              "line": 464,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "filtered-data",
+          "description": "When using a triplat-query that does not paginate, this is\npopulated with the filtered and sorted values.",
+          "sourceRange": {
+            "start": {
+              "line": 470,
+              "column": 2
+            },
+            "end": {
+              "line": 474,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "query",
+          "description": "Used to access the currently applied query if a\ntriplat-query is used.",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 485,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "disable",
+          "description": "A flag to disable the retrieval of records.",
+          "sourceRange": {
+            "start": {
+              "line": 490,
+              "column": 2
+            },
+            "end": {
+              "line": 496,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "manual",
+          "description": "A flag to prevent the data source from requesting data when the context or the query changes.",
+          "sourceRange": {
+            "start": {
+              "line": 501,
+              "column": 2
+            },
+            "end": {
+              "line": 504,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "append-page",
+          "description": "When using a paginated query, this flag will tell you whether\nthe pages will append to the result or not.",
+          "sourceRange": {
+            "start": {
+              "line": 510,
+              "column": 2
+            },
+            "end": {
+              "line": 514,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "query-total-size",
+          "description": "This will give you the total number of results of a multiple records query data source.",
+          "sourceRange": {
+            "start": {
+              "line": 519,
+              "column": 2
+            },
+            "end": {
+              "line": 523,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "loading",
+          "description": "A flag that can be used to be notified when this data\nsource is requesting data from the server.",
+          "sourceRange": {
+            "start": {
+              "line": 529,
+              "column": 2
+            },
+            "end": {
+              "line": 534,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "context",
+          "description": "Can be used to get the context path for this data source.",
+          "sourceRange": {
+            "start": {
+              "line": 539,
+              "column": 2
+            },
+            "end": {
+              "line": 544,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "parent-context",
+          "description": "Can be used to get the parent path for this data source\nwhen an instance is specified.",
+          "sourceRange": {
+            "start": {
+              "line": 550,
+              "column": 2
+            },
+            "end": {
+              "line": 554,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "ignore-app-context",
+          "description": "Use this flag to tell the data source you will providing\nyour own application instance ID instead of using the ID\nconfigured in metadata.",
+          "sourceRange": {
+            "start": {
+              "line": 561,
+              "column": 2
+            },
+            "end": {
+              "line": 565,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "force-server-filtering",
+          "description": "Use this flag to indicate that you want server-side filtering\neven though pagination is not being used.",
+          "sourceRange": {
+            "start": {
+              "line": 571,
+              "column": 2
+            },
+            "end": {
+              "line": 574,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "reserve-include-unavailable",
+          "description": "This flag should only be used when the query called by the data source is of type RESERVE.\nUse this flag to indicate that you want both available and unavailable resources.",
+          "sourceRange": {
+            "start": {
+              "line": 580,
+              "column": 2
+            },
+            "end": {
+              "line": 583,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "count-only",
+          "description": "Use this flag to indicate that you only want to retrieve the total number of results of a multiple records query data source without retrieving the data.",
+          "sourceRange": {
+            "start": {
+              "line": 636,
+              "column": 2
+            },
+            "end": {
+              "line": 642,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "ds-add-complete",
+          "description": "Fired after an add is complete.\nThe event detail includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-add-error",
+          "description": "Fired if an add results in an error.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-create-complete",
+          "description": "Fired after a create is complete.\nIf wfParameters parameter is not provided in the createRecord(), then the event detail only includes the created record ID(s). Otherwise,\nthe event detail includes the created record ID(s) and action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-create-error",
+          "description": "Fired if a create results in an error.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-delete-complete",
+          "description": "Fired after a delete is complete.\nThe event detail includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-delete-error",
+          "description": "Fired if a delete results in an error.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-get-complete",
+          "description": "Fired after a get or refresh is complete.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-get-error",
+          "description": "Fired if a get or refresh results in an error.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-perform-action-complete",
+          "description": "Fired after a perform action is complete.\nThe event detail includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-perform-action-error",
+          "description": "Fired if a perform action results in an error.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-remove-complete",
+          "description": "Fired after a remove is complete.\nThe event detail includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-remove-error",
+          "description": "Fired if a remove results in an error.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-update-complete",
+          "description": "Fired after an update is complete.\nThe event detail includes action information such as the action group, action, and workflow parameters map.\nThe workflow parameters map includes parameters that are sent to the server (wfParameters) and parameters that are returned by the workflow (if any exist).",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "ds-update-error",
+          "description": "Fired if an update results is an error.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "include-metadata-changed",
+          "description": "Fired when the `includeMetadata` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "metadata-changed",
+          "description": "Fired when the `metadata` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "query-metadata-changed",
+          "description": "Fired when the `queryMetadata` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "data-changed",
+          "description": "Fired when the `data` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "transition-info-changed",
+          "description": "Fired when the `transitionInfo` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "filtered-data-changed",
+          "description": "Fired when the `filteredData` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "query-changed",
+          "description": "Fired when the `query` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "append-page-changed",
+          "description": "Fired when the `appendPage` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "query-total-size-changed",
+          "description": "Fired when the `queryTotalSize` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "loading-changed",
+          "description": "Fired when the `loading` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "context-changed",
+          "description": "Fired when the `context` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "parent-context-changed",
+          "description": "Fired when the `parentContext` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-ds"
+    }
+  ]
+}

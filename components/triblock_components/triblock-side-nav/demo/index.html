@@ -1,0 +1,281 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<!doctype html>
+<html>
+<head>
+
+	<title>triblock-side-nav Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../paper-styles/demo-pages.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+	<link rel="import" href="../../iron-pages/iron-pages.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+ 	
+	<link rel="import" href="../triblock-side-nav.html">
+	<link rel="import" href="../triblock-side-nav-item.html">
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+
+	
+	<style is="custom-style" include="demo-pages-shared-styles">
+		#container {
+	        max-width: 800px;
+	    }
+	</style>
+</head>
+<body unresolved>
+	<div id="container" class="vertical-section-container centered">
+ 		<h2>Sample <code>triblock-side-nav</code></h2>
+		<span>You can navigate items with keyboard arrow keys.</span>
+ 
+		<h4>Plain <code>triblock-side-nav</code></h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-side-nav>
+				<triblock-side-nav-item 
+					id="activityNav" 
+					icon="activity" 
+					label="Activity">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="adminNav" 
+					icon="admin" 
+					label="Admin">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="applicationNav"
+					icon="applications" 
+					label="Application">
+				</triblock-side-nav-item>
+			</triblock-side-nav>
+	        </template>
+	      </demo-snippet>
+
+		<h4>Selected (default <code>id</code>)</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-side-nav selected="adminNav">
+				<triblock-side-nav-item 
+					id="activityNav" 
+					icon="activity" 
+					label="Activity">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="adminNav" 
+					icon="admin" 
+					label="Admin">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="applicationNav" 
+					icon="applications" 
+					label="Application">
+				</triblock-side-nav-item>
+			</triblock-side-nav>
+	        </template>
+	      </demo-snippet>
+
+		<h4>Selected (<code>attr-for-selected</code>)</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-side-nav selected="applicationNav" attr-for-selected="nav-id">
+				<triblock-side-nav-item 
+					nav-id="activityNav" 
+					icon="activity" 
+					label="Activity">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					nav-id="adminNav" 
+					icon="admin" label="Admin">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					nav-id="applicationNav" 
+					icon="applications" 
+					label="Application">
+				</triblock-side-nav-item>
+			</triblock-side-nav>
+	        </template>
+	      </demo-snippet>
+
+		<h4><code>badge-max-number</code> for badges</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-side-nav badge-max-number="99">
+				<triblock-side-nav-item 
+					id="activityNavBadge" 
+					icon="activity" 
+					label="Activity" 
+					badge-max-number="50" 
+					badge-number="60">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="adminNavBadge" 
+					icon="admin" 
+					label="Admin" 
+					badge-number="70">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="applicationNavBadge" 
+					icon="applications" 
+					label="Application" 
+					badge-number="80">
+				</triblock-side-nav-item>
+			</triblock-side-nav>
+	        </template>
+	      </demo-snippet>
+	
+		<h4>Default <code>iron-pages-id</code></h4>
+		<demo-snippet>
+		<template>
+			<style is="custom-style">
+				.container {
+					@apply(--layout-flex);
+					@apply(--layout-horizontal);
+				}
+				#myIronPages {
+					position:relative;
+					@apply(--layout-flex);
+					@apply(--layout-vertical);
+					@apply(--layout-center-justified);
+					background-color: #f5f5f5;
+				}
+				#sideNav {
+					position:relative;
+				}
+				section {
+					@apply(--layout-horizontal);
+					@apply(--layout-center-justified);
+				}
+			</style>
+			<div class="container">
+				<triblock-side-nav id="sideNav" iron-pages-id="myIronPages" selected="activityNavIron">
+					<triblock-side-nav-item 
+						id="activityNavIron" 
+						iron-page-id="activityPage" 
+						icon="activity" 
+						label="Activity">
+					</triblock-side-nav-item>
+					<triblock-side-nav-item 
+						id="adminNavIron" 
+						iron-page-id="adminPage" 
+						icon="admin" 
+						label="Admin">
+					</triblock-side-nav-item>
+					<triblock-side-nav-item 
+						id="applicationNavIron" 
+						iron-page-id="applicationPage" 
+						icon="applications" 
+						label="Application">
+					</triblock-side-nav-item>
+				</triblock-side-nav>
+				<iron-pages id="myIronPages">
+					<section id="activityPage">
+						<span>Activity Page</span>
+					</section>
+					<section id="adminPage">
+						<span>Administrator Page</span>
+					</section>
+					<section id="applicationPage">
+						<span>Application Page</span>
+					</section>
+				</iron-pages>
+			</div>
+		</template>
+		</demo-snippet>
+	
+		<h4>Icon as badge</h4>
+		<div style="background-color:#FFFFCC">
+		    <div style="padding:20px;">
+		        <b>Note:</b> Styling the icon on the badge, currently only works for IBM icon set.
+		    </div>
+		</div>
+		<br>
+	    <demo-snippet>
+	        <template>
+	        <style is="custom-style">
+				triblock-side-nav-item[badge-icon="warning"] {
+    				--triblock-side-nav-item-badge-icon-color: var(--ibm-yellow-20) !important;
+     			}
+				triblock-side-nav-item[badge-icon="close"] {
+    				--triblock-side-nav-item-badge-icon-color: red !important;
+     			}
+   			</style>
+			<triblock-side-nav>
+				<triblock-side-nav-item 
+					id="activityNav" 
+					badge-icon="warning"
+					icon="activity" 
+					label="Activity">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="adminNav" 
+					badge-icon="close"
+					icon="admin" 
+					label="Admin">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="applicationNav" 
+					icon="applications" 
+					label="Application">
+				</triblock-side-nav-item>
+			</triblock-side-nav>
+	        </template>
+	      </demo-snippet>
+
+		<h4>Disabled navigation item</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-side-nav badge-max-number="99">
+				<triblock-side-nav-item 
+					id="activityNavBadge" 
+					icon="activity" 
+					label="Activity" 
+					badge-max-number="50" 
+					badge-number="60">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="adminNavBadge" 
+					icon="admin" 
+					label="Admin" 
+					badge-number="70"
+					disabled>
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="applicationNavBadge" 
+					icon="applications" 
+					label="Application" 
+					badge-number="80">
+				</triblock-side-nav-item>
+			</triblock-side-nav>
+	        </template>
+	      </demo-snippet>	
+
+		<h4>Icons only</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-side-nav>
+				<triblock-side-nav-item 
+					id="activityNavBadge" 
+					icon="activity">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="adminNavBadge" 
+					icon="admin">
+				</triblock-side-nav-item>
+				<triblock-side-nav-item 
+					id="applicationNavBadge" 
+					icon="applications">
+				</triblock-side-nav-item>
+			</triblock-side-nav>
+	        </template>
+	      </demo-snippet>		      
+	      
+	</div>
+</body>
+</html>

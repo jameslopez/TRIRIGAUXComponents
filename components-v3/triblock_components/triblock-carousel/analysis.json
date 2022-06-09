@@ -1,0 +1,684 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-carousel` is a component that displays and cycles through a sequence of elements or slides for a specified duration. \n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.\n  </div>\n</div>\n\n  Example:\n\n  ```html\n  <triblock-carousel>\n\t<div>Item 1</div>\n\t<div>Item 2</div>\n\t<div>Item 3</div>  \n  </triblock-carousel>\n  ```\n  \n  The order of the carousel items can be arranged by assigning a number to the `sequence` attribute. Any carousel items without a number assigned to the `sequence` attribute will be set to 0 by default. \n\n  Example:\n  \n  ```html\n  <triblock-carousel>\n\t<div sequence=\"3\">Item 1</div>\n\t<div sequence=\"2\">Item 2</div>\n\t<div sequence=\"1\">Item 3</div>  \n  </triblock-carousel>\n  ```\n\n  ### Styling\n\n  The following custom properties and mixins are available for styling:\n\n  Custom property | Description | Default\n  ----------------|-------------|----------\n  `--triblock-carousel-buttons-color` | The carousel buttons color | `--tri-primary-content-label-color`\n  `--triblock-carousel-back-button` | The carousel Back button | `{}`\n  `--triblock-carousel-next-button` | The carousel Next button | `{}`\n  `--triblock-carousel-content-container` | The carousel content container | `{}`\n  `--triblock-carousel-dot-indicator-container` | The carousel dot indicator container | `{display: flex; align-items: center; justify-center: center;}`\n  `--triblock-carousel-dot-indicator` | The carousel dot indicator | `{}`\n  `--triblock-carousel-dot-indicator-selected-color` | The carousel dot indicator selected color | `--tri-primary-content-label-color`",
+      "summary": "",
+      "path": "triblock-carousel.js",
+      "properties": [
+        {
+          "name": "_selectedIndex",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 217,
+              "column": 3
+            },
+            "end": {
+              "line": 221,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_selectedIndexChanged\"",
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "showScrollButtons",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to show the carousel slide Back and Next buttons.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 225,
+              "column": 3
+            },
+            "end": {
+              "line": 228,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "slideDuration",
+          "type": "number | null | undefined",
+          "description": "The duration (in milliseconds) of the slide movement.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 233,
+              "column": 3
+            },
+            "end": {
+              "line": 237,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "2000"
+        },
+        {
+          "name": "autoSlideDuration",
+          "type": "number | null | undefined",
+          "description": "The auto play duration for each slide (in milliseconds).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 242,
+              "column": 3
+            },
+            "end": {
+              "line": 245,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "8000"
+        },
+        {
+          "name": "disableAutoSlide",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to disable auto slide.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 250,
+              "column": 3
+            },
+            "end": {
+              "line": 253,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_disableClickToSlide",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 255,
+              "column": 3
+            },
+            "end": {
+              "line": 258,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_hideDotIndicators",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to hide the carousel dot indicators.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 263,
+              "column": 3
+            },
+            "end": {
+              "line": 266,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_dir",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 268,
+              "column": 3
+            },
+            "end": {
+              "line": 268,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 273,
+              "column": 5
+            },
+            "end": {
+              "line": 280,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setAutoSlide",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 282,
+              "column": 5
+            },
+            "end": {
+              "line": 287,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleSingleCarouselitem",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 289,
+              "column": 5
+            },
+            "end": {
+              "line": 297,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "slideNext",
+          "description": "Slide to the next item.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 302,
+              "column": 2
+            },
+            "end": {
+              "line": 317,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "slideBack",
+          "description": "Slide to the previous item.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 322,
+              "column": 2
+            },
+            "end": {
+              "line": 337,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_resetAutoSlide",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 339,
+              "column": 5
+            },
+            "end": {
+              "line": 344,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleOldSlide",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 346,
+              "column": 5
+            },
+            "end": {
+              "line": 352,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "selectedItem"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_slideOutAnimation",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 354,
+              "column": 5
+            },
+            "end": {
+              "line": 371,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "animationName"
+            },
+            {
+              "name": "node"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_slideInAnimation",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 5
+            },
+            "end": {
+              "line": 384,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "animationName"
+            },
+            {
+              "name": "node"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectedIndexChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 5
+            },
+            "end": {
+              "line": 391,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_keyPressed",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 393,
+              "column": 5
+            },
+            "end": {
+              "line": 397,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_indicatorTapped",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 399,
+              "column": 5
+            },
+            "end": {
+              "line": 401,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_interactWithIndicator",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 403,
+              "column": 5
+            },
+            "end": {
+              "line": 413,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_animationFinished",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 415,
+              "column": 5
+            },
+            "end": {
+              "line": 422,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_itemsChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 424,
+              "column": 5
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "items"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_orderSlideSequences",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 434,
+              "column": 5
+            },
+            "end": {
+              "line": 442,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleSlideAnimations",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 444,
+              "column": 5
+            },
+            "end": {
+              "line": 460,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newIndex"
+            },
+            {
+              "name": "oldIndex"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_disableCarouselIndicators",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 462,
+              "column": 5
+            },
+            "end": {
+              "line": 464,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 71,
+          "column": 12
+        },
+        "end": {
+          "line": 465,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "show-scroll-buttons",
+          "description": "Set to true to show the carousel slide Back and Next buttons.",
+          "sourceRange": {
+            "start": {
+              "line": 225,
+              "column": 3
+            },
+            "end": {
+              "line": 228,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "slide-duration",
+          "description": "The duration (in milliseconds) of the slide movement.",
+          "sourceRange": {
+            "start": {
+              "line": 233,
+              "column": 3
+            },
+            "end": {
+              "line": 237,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "auto-slide-duration",
+          "description": "The auto play duration for each slide (in milliseconds).",
+          "sourceRange": {
+            "start": {
+              "line": 242,
+              "column": 3
+            },
+            "end": {
+              "line": 245,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "disable-auto-slide",
+          "description": "Set to true to disable auto slide.",
+          "sourceRange": {
+            "start": {
+              "line": 250,
+              "column": 3
+            },
+            "end": {
+              "line": 253,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-carousel"
+    }
+  ]
+}

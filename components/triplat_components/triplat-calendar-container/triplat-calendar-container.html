@@ -1,0 +1,319 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+
+<link rel="import" href="triplat-calendar-container-behavior.html">
+<link rel="import" href="../triplat-date-picker/triplat-calendar.html">
+<link rel="import" href="../triplat-date-utilities/triplat-date-utilities.html">
+
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/builds/moment-timezone-with-data-2010-2020.js"></script>
+<script src="../moment-jdateformatparser/moment-jdateformatparser.min.js"></script>
+<script src="../moment/min/locales.min.js"></script>
+<!--
+A component that provides a calendar. Clicking on a date selects the date. 
+
+     <triplat-calendar-container value="{{value}}"></triplat-calendar-container>
+
+### Styling
+
+The following custom properties are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triplat-calendar-container-border` | The border of the calendar| 1px solid #ccc
+@demo demo/index.html
+-->
+
+<dom-module id="triplat-calendar-container">
+	<style>
+
+	#picker{
+		background: #FFFFFF;
+		overflow:hidden;
+		display: inline-block;
+		border: var(--triplat-calendar-container-border, 1px solid #ccc);
+	}
+
+	triplat-calendar#calendar{
+		position: static !important;
+	}
+
+	</style>
+	<template>
+
+		<iron-media-query query="(min-width: 1280px)" query-matches="{{_mqWide}}"></iron-media-query>
+		<iron-media-query query="(max-height: 550px) and (min-width: 1280px)" query-matches="{{_mqWideLandscape}}"></iron-media-query>
+		<iron-media-query query="(max-width: 1279px) and (min-width: 800px)" query-matches="{{_mqMedium}}"></iron-media-query>
+		<iron-media-query query="(max-height: 550px) and (max-width: 1279px) and (min-width: 800px)" query-matches="{{_mqMediumLandscape}}"></iron-media-query>
+		<iron-media-query query="(max-width: 799px)" query-matches="{{_mqSmall}}"></iron-media-query>
+		<iron-media-query query="(max-height: 550px) and (max-width: 799px)" query-matches="{{_mqSmallLandscape}}"></iron-media-query>
+
+		<div id="picker" class="">
+			<triplat-calendar
+				id="calendar"
+				header="{{_header}}"
+				disabled$="{{disabled}}"
+				current-date="{{_dateValue}}"
+				disallow-past-dates$="{{disallowPastDates}}"
+				disallow-weekends$="{{disallowWeekends}}"
+				restrict-to-date-list$="{{restrictToDateList}}"
+				valid-date-list="{{validDateList}}"
+				no-cancel-on-esc-key="{{_noCancelOnEscKey}}"
+				no-cancel-on-outside-click="{{_noCancelOnOutsideClick}}"
+				width-of-parent="{{_widthOfParent}}"
+				triplat-calendar-container>
+			</triplat-calendar>
+		</div>
+
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+	  is: "triplat-calendar-container",
+
+	  behaviors: [ Polymer.TriCompCalendarContainerBehavior, Polymer.IronResizableBehavior, TriDateUtilities ],
+
+	  listeners: {
+			"iron-resize": "_onIronResize"
+	  },
+
+	  properties: {
+
+			/**
+			 * The value for this element. It follows the ISO date string format "YYYY-MM-DDTHH:mm:ss.SSSZ". By default, the value is set to the current date.
+			 */
+	  		value: {
+	  			type: String,
+	  			value: moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+	  			notify: true,
+	  			observer: "_valueChanged"
+	  		},
+
+	  		/**
+	  		 * Representation of the value as a java.util.Date object
+	  		 */
+	  		_dateValue: {
+	  			type: Date,
+	  			observer: "_dataValueChanged"
+	  		},
+
+			/**
+			  * A flag that indicates whether to allow the user to select any date, or just select dates 
+			  * in the future. If this is specified, then only dates in the future, excluding today, will be able 
+			  * to be selected.
+			  **/
+			disallowPastDates : {
+				type: Boolean,
+				value: false
+			},
+
+			/**
+			  * A flag that indicates whether to allow the user to select dates that are on the weekend,
+			  * Saturday or Sunday.
+			  **/
+			disallowWeekends : {
+				type: Boolean,
+				value: false
+			},
+
+			/**
+	  		  * Flag indicating whether to hide the header block above the calendar containing
+	  		  * the day of the week, month, day, and year of the currently selected value.<br>
+	  		  * <b>true</b> means hide the header block above the calendar.<br>
+	  		  */
+	  		hideHeader: {
+	  			type: Boolean,
+	  			value: false,
+	  			observer: '_hideHeaderChanged'
+	  		},
+
+	  		_header:{
+	  			type: Boolean,
+	  			value: true
+	  		},
+
+			/**
+			  * A flag that indicates whether validDateList is specified and needs to be processed.
+			  **/
+			restrictToDateList : {
+				type: Boolean,
+				value: false
+			},
+
+			/**
+			  * An array of java.util.Date objects that will be allowed to be selected. If not specified, 
+			  * then any date not otherwise disallowed (depending on disallowPastDates, disallowWeekends) will be allowed to be selected.
+			  **/
+			validDateList : {
+				type: Array,
+				value: null
+			},
+
+			/**
+			  * A flag that indicates whether to use a discrete size based on the device screen size, 
+			  * or to fit within the width of the parent node. 
+			  */ 
+			fitWidthToParent: {
+				type: Boolean,
+				value: false
+			},
+
+			/* A property, used in conjunction with fitWidthToParent. This property is only used 
+			 * when fitWidthToParent is 'true' to communicate to the child elements that the 
+			 * parent has been resized.
+			 */
+			_widthOfParent: {
+				type: Number,
+				value: null,
+				notify: true
+			},
+
+	  		_noCancelOnOutsideClick:{
+		    	type: Boolean,
+		    	value: true
+		    },
+
+		    _noCancelOnEscKey:{
+		    	type: Boolean,
+		    	value: true
+		    },
+
+		    _mqWide: {
+		    	type: Boolean,
+		    	observer: "_onMqWide"
+		    },
+
+		    _mqWideLandscape: {
+		    	type: Boolean,
+		    	observer: "_onMqWideLandscape"
+		    },
+
+		    _mqMedium: {
+		    	type: Boolean,
+		    	observer: "_onMqMedium"
+		    },
+
+		    _mqMediumLandscape: {
+		    	type: Boolean,
+		    	observer: "_onMqMediumLandscape"
+		    },
+
+		    _mqSmall: {
+		    	type: Boolean,
+		    	observer: "_onMqSmall"
+		    },
+
+		    _mqSmallLandscape: {
+		    	type: Boolean,
+		    	observer: "_onMqSmallLandscape"
+		    },
+
+	  },
+
+	  attached: function(){
+	  	this._openTriCalendar();
+	  },
+
+	  _onIronResize: function() {
+		if (this.fitWidthToParent) {
+	  		var newParentWidth = this.parentNode.clientWidth;
+	  		if (newParentWidth > 0) {
+		  		this.$.picker.style.width = newParentWidth;
+	  			this._widthOfParent = newParentWidth;
+	  		}
+	  	}
+	  },
+
+	  _dataValueChanged: function(){
+	  	if (this.valueChanged) {
+	  		this.valueChanged = false;
+	  		return;
+	  	}
+	  	if (this._dateValue) {
+	  		this.set("value", moment(this._dateValue).format("YYYY-MM-DDTHH:mm:ss.SSSZ"));
+	  	}
+	  },
+
+	  _valueChanged: function(){
+	  	this.valueChanged = true;
+	  	var withoutTimeIndex, dateString, dateObj;
+	  	if(this.value){
+        	this.value = String(this.value);
+        	if(this.value.replace(/[^T]/g, "").length > 0){
+        		withoutTimeIndex = this.value.indexOf("T");
+	        	dateString = this.value.substring(0, withoutTimeIndex);
+	        	dateObj =  new Date(moment(dateString).format("YYYY-MM-DDTHH:mm:ss.SSSZ"));
+   		        if (!this._isDateObject(dateObj)) {
+			        // For Arabic (and perhaps other languages), format("YYYY-MM-DDTHH:mm:ss.SSSZ") does not work, so use toISOString()
+			        dateObj =  new Date(moment(dateString).toISOString());
+		        	if(!this._isDateObject(dateObj)){
+		        		dateObj =  new Date(dateString);
+	    	    		if (!this._isDateObject(dateObj)) {
+						   dateObj = null; 
+						}
+					}
+	        	}
+        	}else{
+        		dateObj = null;
+        	}
+        	
+        } else{
+        	dateObj = null;
+        }
+        this.set("_dateValue", dateObj);
+	  },
+
+	  _onMqWide: function() {
+	  	if (!this.fitWidthToParent) {
+	  		this.$.picker.width = "766px";
+	  	}
+	  },
+	  _onMqWideLandscape: function() {
+	  	if (!this.fitWidthToParent) {
+	  		this.$.picker.width = "866px";
+	  	}
+	  },
+
+	  _onMqMedium: function() {
+	  	if (!this.fitWidthToParent) {
+	  		this.$.picker.width = "574px";
+	  	}
+	  },
+	  _onMqMediumLandscape: function() {
+	  	if (!this.fitWidthToParent) {
+	  		this.$.picker.width = "674px";
+	  	}
+	  },
+
+	  _onMqSmall: function() {
+	  	if (!this.fitWidthToParent) {
+	  		this.$.picker.width = "383px";
+	  	}
+	  },
+	  _onMqSmallLandscape: function() {
+	  	if (!this.fitWidthToParent) {
+	  		this.$.picker.width = "483px";
+	  	}
+	  },
+
+	  _openTriCalendar: function(){
+	  	this.openTriCalendar(this.$$("#picker"), this.$$("#calendar"));
+	  },
+
+	  _hideHeaderChanged: function() {
+	  	this._header = this.hideHeader ? false : true;
+	  }
+
+	});
+
+</script>

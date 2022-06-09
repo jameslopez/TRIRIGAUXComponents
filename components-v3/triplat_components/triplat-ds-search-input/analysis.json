@@ -1,0 +1,1273 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A styled input box that has a search icon and a clear button.\n\n\t <triplat-ds-search-input value=\"{{searchValue}}\" placeholder=\"Search people\">\n\t </triplat-ds-search-input>\n\nThere is also an enhanced search input, which provides new functionalities. In order to use it, refer to this following code. Make sure you are defining proper \"aliases\" and \"append-filters\" properties. They are required for the enhanced search input. The \"max-header-children\" property is optional (Default is 3).\n\n\t <triplat-ds-search-input value=\"{{searchValue}}\" placeholder=\"Search people\"\n\t\taliases=\"{{aliases}}\" append-filters=\"{{appendFilters}}\" \n\t\tmax-header-children=\"2\"></triplat-ds-search-input>\n\nThe `aliases` object provides the alias for a header as well as the data source that will be used to get results from. A stringwithid property should be defined if a header refers to a STRING_WITH_ID field. Example:\n\n\t aliases: {\n\t\ttype: Object,\n\t\tvalue: function(){\n\t\t\tvar _aliases = {};\n\t\t\t_aliases[\"name\"] = {alias: \"Full Name\", datasource: \"EmployeeNameHeader\"};\n\t\t\t_aliases[\"title\"] = {alias: \"Title\", datasource: \"EmployeeTitleHeader\"};\n\t\t\t_aliases[\"orgName\"] = {alias: \"Org Name\", datasource: \"EmployeeOrgHeader\"};\n\t\t\t_aliases[\"functionalRole\"] = {alias: \"Role\", datasource: \"EmployeeFRoleHeader\", stringwithid: true};\n\t\t\treturn _aliases;\n\t\t}\n\t}\n\nThe data source property refers to a data source created on the server, using the `Model Designer`. In the example above, there should be 4 data sources created by \nthe application developer, named as \"EmployeeNameHeader\", \"EmployeeTitleHeader\" and so on. The triplat-ds-search-input component will create a triplat-ds component with \npagination for each alias data source. As mentioned above, the <b>max-header-children</b> property defines the maximum number of records that will be displayed under each \nheader. When the user clicks on the <b>Show More</b>, the component will retrieve the first set of 50 records for the header. The user can use the scrollbar to retrieve the \nnext set of records for the header.\n\n### Best Practices\n\n#### 1. Use <b>aliases</b> wisely for fine-tuned user search.\nMake sure the <b>aliases</b> object contains only the properties or columns you would like to search against. This way, you will create useful headers and \nincrease performance significantly.\n\nLimit the number of headers for your search. Each header corresponds to a data source report, so more headers will result in more reports that will run during \nsearch. This means more load on the server and more network traffic. We recommend <b>no more than 6 headers</b> defined for any triplat-ds-search-input. \n\n#### 2. Identify the optimum <b>max-header-children</b> number for your use case.\nEnsure you're using the property according to your needs. Consider the most common screen size so that you can provide a friendly user experience with \nminimal user scroll actions. Also, define a smaller number to give a faster performance when searching. Keep in mind that you will always have the <b>Show More</b> \noption if there are more records than the number you define for <b>max-header-children</b> so that the user will still have control over all records for a header.\n\n#### 3. Defining data source reports.\nBe careful when you define a report for your data source and tune it for optimum performance. Add filters when possible. Be aware of joined tables.\n\n### Accessibility\n\nUser can use keyboard keys to interact with the search dropdown.\n\n  - Press the `Down Arrow` key to navigate to the next item.\n  - Press the `Up Arrow` key to navigate to the previous item.\n  - Press the `Tab` key navigate to the next header or action.\n  - Press the `Space` or `Enter` keys to tap on the current item or action.\n  - Press the `Esc` key to close the dropdown.\n\n\n### Styling\n\nThe following custom properties and mixins are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-ds-search-input-font-size` | Font size of the field | `14px`\n`--triplat-ds-search-input-primary-text-color` | Primary text color | `white`\n`--triplat-ds-search-input-border-color` | Input border bottom color | `--tri-primary-color`\n`--triplat-ds-search-input-border-height` | Input border bottom height | `2px`\n`--triplat-ds-search-input-search-icon-color` | Input search icon color | `--tri-primary-content-label-color`\n`--triplat-ds-search-input-clear-icon-color` | Input clear icon color | `--tri-primary-content-label-color`\n`--triplat-ds-search-input-filter-background-color` | Background color of a filter element | `--ibm-neutral-2`\n`--triplat-ds-search-input-filter-text-color` | Text color of a filter element | `--tri-primary-content-color`\n`--triplat-ds-search-input-operator-equals-icon-color` | Operator equals color | `--tri-primary-color`\n`--triplat-ds-search-input-filter-operator-background-color` | Operator background color of a filter element | `--tri-primary-color`\n`--triplat-ds-search-input-filter-remove-icon-color` | Remove icon color of a filter element | `--tri-primary-content-label-color`\n`--triplat-ds-search-input-dropdown-header-background-color` | Background color of a header in the dropdown | `--tri-primary-color-60`\n`--triplat-ds-search-input-dropdown-header-text-color` | Text color of a header in the dropdown | `--tri-primary-light-color`\n`--triplat-ds-search-input-dropdown-item-background-color` | Background color of an item in the dropdown | `--tri-primary-color`\n`--triplat-ds-search-input-dropdown-item-border-color` | Border color of an item in the dropdown | `--tri-primary-color-40`\n`--triplat-ds-search-input-hover-border-color` | Border color when hovering over an item in the dropdown | `white`\n`--triplat-ds-search-input-dropdown-footer-background-color` | Background color of the footer in the dropdown | `--tri-primary-dark-color`\n`--triplat-ds-search-input-dropdown-footer-deselect-text-color` | Text color of the 'deselect all' option in the dropdown | `--tri-primary-light-color`\n`--triplat-ds-search-input-filters-icon-color` | Filters icon color | `--tri-primary-color`\n`--triplat-ds-search-input-expand-filters-number-color` | Filters number color | `--ibm-orange-50`\n`--triplat-ds-search-input-expand-filters-icon-color` | Expand filters icon color | `--tri-primary-color`\n`--triplat-ds-search-input-close-filters-icon-color` | Close filters icon color | `--tri-primary-color`\n`--triplat-ds-search-input-expand-filters-remove-icon-color` | Remove filter icon color | `--tri-primary-color`\n`--triplat-ds-search-input-expand-filters-background-color` | Background color of a filter in the expand filters container | `--tri-primary-color-10`\n`--triplat-ds-search-input-dropdown-footer-deselect-text-color` | Text color of the 'deselect all' option in the dropdown | `--tri-primary-light-color`\n`--triplat-ds-search-input` | Mixin applied to the search input | `{}`\n`--triplat-ds-search-input-filter-elements-container` | Mixin applied to the filter elements container | `{}`\n`--triplat-ds-search-input-dropdown-header` | Mixin applied to a header in the dropdown | `{}`\n`--triplat-ds-search-input-dropdown-item` | Mixin applied to an item in the dropdown | `{}`\n`--triplat-ds-search-input-dropdown-footer-container` | Mixin applied to the footer container in the dropdown | `{}`\n`--triplat-ds-search-input-expand-filters-container` | Mixin applied to the expand filters container | `{}`\n\nStyling the button in the dropdown footer is also possible. Refer to the 3rd party `--paper-button` mixin.",
+      "summary": "",
+      "path": "triplat-ds-search-input.js",
+      "properties": [
+        {
+          "name": "value",
+          "type": "string | null | undefined",
+          "description": "This is a string value representing what the user is typing into the search box.\nThis does not include any previously defined filters.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 374,
+              "column": 2
+            },
+            "end": {
+              "line": 378,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "placeholder",
+          "type": "string | null | undefined",
+          "description": "Label to display when no search value has been entered. The default value is 'Type to search'",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 383,
+              "column": 2
+            },
+            "end": {
+              "line": 386,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_placeholderChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "searchIconPrecede",
+          "type": "boolean | null | undefined",
+          "description": "Flag to indicate that you want the search icon precede the input field.\nIf not specified, the icon will succeed the input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 392,
+              "column": 2
+            },
+            "end": {
+              "line": 395,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "aliases",
+          "type": "Object | null | undefined",
+          "description": "This object holds information about the headers in the\nsearch menu. If an alias is not provided for any of the\navailable fields in a data source, that field will be skipped\nfrom the display.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 403,
+              "column": 2
+            },
+            "end": {
+              "line": 408,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_aliasesChanged\"",
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "{}"
+        },
+        {
+          "name": "maxHeaderChildren",
+          "type": "number | null | undefined",
+          "description": "Maximum number of children under each header in\nthe search input dropdown.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 2
+            },
+            "end": {
+              "line": 417,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "3"
+        },
+        {
+          "name": "delay",
+          "type": "number | null | undefined",
+          "description": "The amount of delay between the time (milliseconds) a single letter is typed,\nand the time the dropdown show results.\n\nThis delay is needed so we can wait a bit after presenting the results list in\nthe dropdown. This way we can achieve better performance, skipping searchs against\nsingle letters.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 427,
+              "column": 2
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "300"
+        },
+        {
+          "name": "appendFilters",
+          "type": "Array | null | undefined",
+          "description": "This array represents all filters that will be\nautomatically created into the \"triplat-ds\" or\n\"triplat-query\". The same binding should exist in the\n\"triplat-query\" element associated to this search.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 440,
+              "column": 2
+            },
+            "end": {
+              "line": 444,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "[]"
+        },
+        {
+          "name": "_value",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 446,
+              "column": 2
+            },
+            "end": {
+              "line": 450,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handleInternalValueChanged\"",
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_placeholder",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 452,
+              "column": 2
+            },
+            "end": {
+              "line": 455,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_filters",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 457,
+              "column": 2
+            },
+            "end": {
+              "line": 460,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "[]"
+        },
+        {
+          "name": "_showClear",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 462,
+              "column": 2
+            },
+            "end": {
+              "line": 466,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_mobileView",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 468,
+              "column": 2
+            },
+            "end": {
+              "line": 472,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_filtersOpen",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 474,
+              "column": 2
+            },
+            "end": {
+              "line": 478,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_selectedTotal",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 484,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "_focusedByKeyboard",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 486,
+              "column": 2
+            },
+            "end": {
+              "line": 490,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_initialSetup",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 492,
+              "column": 2
+            },
+            "end": {
+              "line": 496,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_currentOperator",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 498,
+              "column": 2
+            },
+            "end": {
+              "line": 503,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"contains\""
+        },
+        {
+          "name": "_universalFilterIndex",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 781,
+              "column": 4
+            },
+            "end": {
+              "line": 788,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 517,
+              "column": 4
+            },
+            "end": {
+              "line": 521,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 523,
+              "column": 4
+            },
+            "end": {
+              "line": 526,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleInputKeyDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 528,
+              "column": 4
+            },
+            "end": {
+              "line": 533,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setupChildren",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 535,
+              "column": 4
+            },
+            "end": {
+              "line": 543,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_aliasesChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 545,
+              "column": 4
+            },
+            "end": {
+              "line": 550,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_placeholderChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 552,
+              "column": 4
+            },
+            "end": {
+              "line": 554,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setupPlaceholder",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 556,
+              "column": 4
+            },
+            "end": {
+              "line": 561,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getProperPlaceholder",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 563,
+              "column": 4
+            },
+            "end": {
+              "line": 570,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ]
+        },
+        {
+          "name": "_handleContextChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 572,
+              "column": 4
+            },
+            "end": {
+              "line": 575,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeHidden",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 577,
+              "column": 4
+            },
+            "end": {
+              "line": 579,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "index"
+            }
+          ]
+        },
+        {
+          "name": "_handleActionKeyDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 581,
+              "column": 4
+            },
+            "end": {
+              "line": 587,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clearSearch",
+          "description": "Clears all filters and values in the search input. It will also refresh\nthe list of records associated to this component.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 593,
+              "column": 1
+            },
+            "end": {
+              "line": 595,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_clearSearch",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 597,
+              "column": 4
+            },
+            "end": {
+              "line": 605,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 607,
+              "column": 4
+            },
+            "end": {
+              "line": 612,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleInternalValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 614,
+              "column": 4
+            },
+            "end": {
+              "line": 626,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFiltersSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 628,
+              "column": 4
+            },
+            "end": {
+              "line": 644,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_controlView",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 646,
+              "column": 4
+            },
+            "end": {
+              "line": 663,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleMobileView",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 665,
+              "column": 4
+            },
+            "end": {
+              "line": 679,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "isIronResizeEvent"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_resetFiltersState",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 681,
+              "column": 4
+            },
+            "end": {
+              "line": 685,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "placeholder"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFilterDelete",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 687,
+              "column": 4
+            },
+            "end": {
+              "line": 690,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFilterDeleteFromOverlay",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 692,
+              "column": 4
+            },
+            "end": {
+              "line": 696,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_doFilterDelete",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 698,
+              "column": 4
+            },
+            "end": {
+              "line": 709,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filter"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_filtersChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 711,
+              "column": 4
+            },
+            "end": {
+              "line": 735,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 737,
+              "column": 4
+            },
+            "end": {
+              "line": 739,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filter"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 741,
+              "column": 4
+            },
+            "end": {
+              "line": 753,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filterOut"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleUniversalSearch",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 755,
+              "column": 4
+            },
+            "end": {
+              "line": 772,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeUniversalFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 774,
+              "column": 4
+            },
+            "end": {
+              "line": 779,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openFiltersMenu",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 790,
+              "column": 4
+            },
+            "end": {
+              "line": 796,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_closeFiltersMenu",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 798,
+              "column": 4
+            },
+            "end": {
+              "line": 803,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFiltersOverlayCancel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 805,
+              "column": 4
+            },
+            "end": {
+              "line": 807,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "restoreFilters",
+          "description": "Restores a previous state of the search input. It will create filter containers in the field again\nand will refresh the list of records.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 816,
+              "column": 1
+            },
+            "end": {
+              "line": 833,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filters",
+              "type": "Array",
+              "description": "The filters we want to restore in this component.\nUsually, it is the \"append-filters\" value stored before we clear the search."
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 117,
+          "column": 8
+        },
+        "end": {
+          "line": 834,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "This is a string value representing what the user is typing into the search box.\nThis does not include any previously defined filters.",
+          "sourceRange": {
+            "start": {
+              "line": 374,
+              "column": 2
+            },
+            "end": {
+              "line": 378,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "placeholder",
+          "description": "Label to display when no search value has been entered. The default value is 'Type to search'",
+          "sourceRange": {
+            "start": {
+              "line": 383,
+              "column": 2
+            },
+            "end": {
+              "line": 386,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "search-icon-precede",
+          "description": "Flag to indicate that you want the search icon precede the input field.\nIf not specified, the icon will succeed the input field.",
+          "sourceRange": {
+            "start": {
+              "line": 392,
+              "column": 2
+            },
+            "end": {
+              "line": 395,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "aliases",
+          "description": "This object holds information about the headers in the\nsearch menu. If an alias is not provided for any of the\navailable fields in a data source, that field will be skipped\nfrom the display.",
+          "sourceRange": {
+            "start": {
+              "line": 403,
+              "column": 2
+            },
+            "end": {
+              "line": 408,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "max-header-children",
+          "description": "Maximum number of children under each header in\nthe search input dropdown.",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 2
+            },
+            "end": {
+              "line": 417,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "delay",
+          "description": "The amount of delay between the time (milliseconds) a single letter is typed,\nand the time the dropdown show results.\n\nThis delay is needed so we can wait a bit after presenting the results list in\nthe dropdown. This way we can achieve better performance, skipping searchs against\nsingle letters.",
+          "sourceRange": {
+            "start": {
+              "line": 427,
+              "column": 2
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "append-filters",
+          "description": "This array represents all filters that will be\nautomatically created into the \"triplat-ds\" or\n\"triplat-query\". The same binding should exist in the\n\"triplat-query\" element associated to this search.",
+          "sourceRange": {
+            "start": {
+              "line": 440,
+              "column": 2
+            },
+            "end": {
+              "line": 444,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "value-changed",
+          "description": "Fired when the `value` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "append-filters-changed",
+          "description": "Fired when the `appendFilters` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-ds-search-input"
+    }
+  ]
+}

@@ -1,0 +1,360 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-popup` is a pop-up component that handles the responsive pop-up display on the small screen width and the large screen width. The component implements `triBlockViewResponsiveBehavior` and `paperDialogBehavior`. Similar to `paper-dialog`, the component pops up at the center of the page by default. However, when the component is opened in the small screen width, the component covers the whole page. \n\n  Example:\n\n  ```html\n  <triblock-popup>\n\t<h2>Header</h2>\n\t<div class=\"body\">\n\t  Lorem ipsum...\n\t</div>  \n  </triblock-popup>\n  ```\n\n  The following custom properties and mixins are available for styling:\n\n  Custom property | Description | Default\n  ----------------|-------------|----------\n  `--triblock-popup-background-color` | Pop-up background color |  --tri-primary-content-background-color\n  `--triblock-popup` | Mixin applied to the pop-up | `{}`\n  `--triblock-popup-close-button` | Mixin applied to the pop-up close button | `{}`",
+      "summary": "",
+      "path": "triblock-popup.js",
+      "properties": [
+        {
+          "name": "lastNode",
+          "type": "Object | null | undefined",
+          "description": "The last node inside the popup that can receive focus.\nIt is used to cycle the focus from the last node to the first node when `with-backdrop` or `modal` is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 3
+            },
+            "end": {
+              "line": 117,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "title",
+          "type": "string | null | undefined",
+          "description": "The title that will be displayed in the `triblock-app-layout` component banner label when the `smallScreenWidth` property is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 122,
+              "column": 3
+            },
+            "end": {
+              "line": 125,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "manualClose",
+          "type": "boolean | null | undefined",
+          "description": "Set to true, will prevent the popup from close when the application is implemented `triblock-app-layout-banner-popup-behavior` behavior. It can be used to handle the banner back button when is clicked.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 3
+            },
+            "end": {
+              "line": 133,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_focusableNodes",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 148,
+              "column": 5
+            },
+            "end": {
+              "line": 166,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 141,
+              "column": 5
+            },
+            "end": {
+              "line": 146,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "openPopup",
+          "description": "Open the pop-up.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 171,
+              "column": 2
+            },
+            "end": {
+              "line": 177,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onSmallScreenChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 179,
+              "column": 5
+            },
+            "end": {
+              "line": 189,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openOnSmallScreen",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 191,
+              "column": 5
+            },
+            "end": {
+              "line": 201,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openOnNotSmallScreen",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 203,
+              "column": 5
+            },
+            "end": {
+              "line": 212,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleChomeiOS",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 214,
+              "column": 5
+            },
+            "end": {
+              "line": 221,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "closePopup",
+          "description": "Close the pop-up.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 226,
+              "column": 2
+            },
+            "end": {
+              "line": 228,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_popupClosed",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 230,
+              "column": 5
+            },
+            "end": {
+              "line": 237,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addDisablePopupMoveClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 239,
+              "column": 5
+            },
+            "end": {
+              "line": 251,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 50,
+          "column": 12
+        },
+        "end": {
+          "line": 252,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "last-node",
+          "description": "The last node inside the popup that can receive focus.\nIt is used to cycle the focus from the last node to the first node when `with-backdrop` or `modal` is true.",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 3
+            },
+            "end": {
+              "line": 117,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "title",
+          "description": "The title that will be displayed in the `triblock-app-layout` component banner label when the `smallScreenWidth` property is true.",
+          "sourceRange": {
+            "start": {
+              "line": 122,
+              "column": 3
+            },
+            "end": {
+              "line": 125,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "manual-close",
+          "description": "Set to true, will prevent the popup from close when the application is implemented `triblock-app-layout-banner-popup-behavior` behavior. It can be used to handle the banner back button when is clicked.",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 3
+            },
+            "end": {
+              "line": 133,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-popup"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+/*
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017-2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+*/
+import { TriBlockAppLayoutBannerBehavior } from "./triblock-app-layout-banner-behavior.js";
+
+/**
+ * Implement `triblock-app-layout-banner-iron-pages-behavior` on your main view element that that contains `triblock-app-layout`. This helps with configuration concerning the mobile page label and back button based on `iron-pages` behaviors. 
+ * @polymerBehavior
+ */
+export const TriBlockAppLayoutBannerIronPagesBehaviorImpl = {
+	/**
+	* Sets `showMobileBackButton` and `mobilePageLabel` properties based on custom event
+	* 
+	* @param {object} ironPages The `iron-pages` component (The child components must have `hasBackButton` and `pageLabel` properties or attributes).
+	*/
+	manageBannerOnIronPagesChange: function(ironPages) {
+		if (ironPages.selectedItem) {
+			var hasBackButton = ironPages.selectedItem.hasBackButton;
+			hasBackButton = !hasBackButton ? ironPages.selectedItem.hasAttribute("has-back-button") : hasBackButton;
+			var pageLabel = ironPages.selectedItem.pageLabel;
+			pageLabel = !pageLabel ? ironPages.selectedItem.getAttribute("page-label") : pageLabel;
+
+			this.set('showMobileBackButton', hasBackButton);
+			this.set('mobilePageLabel', pageLabel);
+		}
+	},
+
+	/**
+	* Navigates to the previous iron pages
+	* @param {object} ironPages The `iron-pages` component (The child components must have `hasBackButton` and `pageLabel` properties or attributes).
+	*/
+	navigateToPreviousIronPages: function(ironPages) {
+	   if(ironPages){
+			//Get the backTo of the selected item
+			var backTo = ironPages.selectedItem.backTo;
+			// For the component that doesn't have backTo property 
+			backTo = !backTo ? ironPages.selectedItem.getAttribute("back-to") : backTo;
+			if (backTo){
+				ironPages.selected = backTo;
+				this.manageBannerOnIronPagesChange(ironPages);
+			}else {
+				this._handleNoPreviousPage();
+			}
+	   }
+	},
+
+	_handleNoPreviousPage: function(){
+		console.warn("_handleNoPreviousPage method should be implemented. The method allows applying the logic when there is no previous page.");
+		return "";
+	},
+
+};
+
+export const TriBlockAppLayoutBannerIronPagesBehavior = [ TriBlockAppLayoutBannerBehavior, TriBlockAppLayoutBannerIronPagesBehaviorImpl ];

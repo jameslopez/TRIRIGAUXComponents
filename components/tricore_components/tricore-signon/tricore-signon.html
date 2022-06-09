@@ -1,0 +1,492 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2019 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-input/iron-input.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-input/paper-input-container.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="tricore-signon-message-dialog.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+
+<link rel="import" href="../triplat-login/triplat-login.html">
+
+<dom-module id="tricore-signon">
+	<style>
+		:host {
+			font-family: "Helvetica Neue";
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-center-justified);
+			
+		}
+		body {
+			background-color: #f5f5f5;
+		}
+		
+		@media (min-width: 500px) {
+			.container {
+				width: 400px;
+			}
+		}
+
+		@media (max-width: 499px) {
+			.container {
+				@apply(--layout-flex);
+				padding: 0px 30px;
+			}
+		}
+		
+		.button-container {
+			margin-top: 30px;
+		}
+		
+		.message {
+			border: 1px solid;
+			margin-right: 20px;
+			@apply(--layout-flex);
+			@apply(--layout);
+			@apply(--layout-horizontal);
+			@apply(--layout-center);
+			@apply(--layout-center-justified);
+		}
+		.error, .processing {
+			font-size: 13px;
+			padding-left: 2em;
+			padding-top: 2em;
+			font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+		}
+		.processing {
+			color: grey;
+		}
+		.error {
+			font-weight: bold;
+			color: red;
+			
+		}
+		#loginLogo{
+			position: relative;
+			padding-bottom: 1em;
+			background-repeat:no-repeat;
+		}
+		.loginLogo-ltr{
+			float: right;
+		}
+		.loginLogo-rtl{
+			float: left;
+		}
+		#loginTitle {
+			font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; 
+			font-weight: normal; 
+			font-size:40px; 
+			color: #6d6e70;
+			margin-bottom: 3em;
+		}
+		.loginTitle-ltr{
+			clear: left;
+		}
+		.loginTitle-rtl{
+			clear: right;
+		}
+		.loginButton{
+    		-webkit-appearance: none;
+  			-webkit-border-radius: 0;
+			margin-top: 20px;
+			color: #f0f1e2;
+			background-color:#003e68 ;
+			border:2px; 
+			width:80px; 
+			height:30px;
+			font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+		}
+		#footer{
+			height:100%;
+			width:100%;
+		}
+		#footerWrapper{
+			margin-top: 3em;
+			min-height:120px  !important;
+			width:100%;	
+		}
+		#footer{
+			background-color:#dddddd;
+			width:100%;
+			height:100%;
+			padding-top:5px;
+			padding-bottom:5em;
+			font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+			font-size:12px;
+			min-height: 100px;
+
+		}
+		#tririgaLegal{
+		    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+		    font-weight: normal;
+		    font-size: 10px;
+		    color: #999999;
+
+			margin-left: 15%;
+			margin-right: 15%;
+		}
+		#tririgaLegal a:link{ 
+			color: #999999;
+		}
+
+		paper-button {
+			font-size: small;
+			text-transform: none;
+			color: #003e68;
+			background-color : #ffffff;
+			border:2px solid #003e68;
+			font-weight: bold;
+			border-radius:0;
+			font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; 
+		}
+
+	    .msgButtonAffirm{
+	    	-webkit-appearance: none;
+  			-webkit-border-radius: 0;
+			color: #003e68;
+			background-color : #ffffff;
+			border:2px solid #003e68;
+			height:30px;
+			font-weight: bold;
+			font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; 
+		}
+
+		paper-input-container {
+			width: 60%;
+		}
+		paper-material {
+			margin-top: 2.5em;
+			padding: 2em;
+			background-repeat:no-repeat;
+		}
+
+		.container-ltr {
+			background-position:85% 90%;
+			background-image: url('images/login_background.png');
+		}
+		.container-rtl {
+			background-position:3% 90%;
+			background-image: url('images/login_background_rtl.png');
+		}
+
+		#loginInput input {
+			font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+			font-size:12px !important;
+		}
+
+		@media (min-height: 750px) {
+	      #footerWrapper{
+	        position: absolute;
+			bottom: 0 !important;
+	      }
+
+	    }
+
+	    #content {
+	    	margin: auto;
+	    	width: 464px;
+	    }
+
+	    @media (max-width: 414px) {
+		    #content {
+		    	margin: auto;
+		    	width: 414px;
+		    }
+		    #tririgaLegal{
+				margin-left: 5%;
+				margin-right: 5%;
+			}
+			.error {
+				padding-left: 0;
+			}
+
+			#loginTitle {
+				font-size:25px; 
+		   	}
+
+		   	paper-material {
+				background-size: 200px;
+			}
+
+			.loginButton{
+				margin-top: 0;
+			}
+
+			paper-input-container {
+				width: 50%;
+			}
+			#footerWrapper{
+				margin-top: 0;
+	      	}
+	      	paper-material{
+	      		margin-top: 0;
+	      	}
+
+	    }
+	    @media (max-width: 375px) {
+		    #content {
+		    	margin: auto;
+		    	width: 375px;
+		    }
+	    }
+
+	    @media (max-width: 325px) {
+		    #content {
+		    	margin: auto;
+		    	width: 320px;
+		    }
+		    #tririgaLegal{
+				margin-left: 5%;
+				margin-right: 5%;
+			}
+
+			paper-input-container {
+				width: 50%;
+			}
+
+			paper-button {
+				font-size: .7em;
+				padding: 0.5em 0.57em;
+			}
+	    }
+
+		@media only screen 
+			and (min-device-width : 768px) 
+			and (max-device-width : 1024px) 
+			{
+				 #content {
+				 	width: 768px;
+			    	
+			    }
+			    #footer{
+				    min-height: 120px;
+	      		}
+
+		      	paper-material{
+		      		margin: 5% 5% 5% 5%;
+		      		background-position:90% 120% !important;
+		      		background-size: 20em 30em;
+		      	}
+		      	#loginLogo{
+					position: relative;
+
+					background-repeat:no-repeat;
+				}
+
+				#loginInput input {
+					font-size:18px !important;
+				}
+				#loginInput label {
+					font-size:22px !important;
+				}
+				#loginTitle {
+					font-size: 50px;
+				}
+				.loginButton{
+					width:160px; 
+					height:60px;
+					font-size: 20px;
+				}
+				.error, .processing {
+					font-size: 13px;
+					padding-left: 2em;
+					padding-top: 3em;
+				}
+
+
+			}
+
+
+	</style>
+	<template>
+	<iron-media-query query="max-width: 414px" query-matches="{{phone}}"></iron-media-query>
+	<iron-media-query query="(min-device-width : 768px) and (max-device-width : 1024px)" query-matches="{{ipad}}"></iron-media-query>
+	<div id="content">
+	<paper-material id="container" z="1" elevation="5">
+		<form id="logonForm" action="javascript:">
+			<div class="layout vertial">
+				<img id="loginLogo" src="images/login_logo.png"/><br>
+				<h1 id="loginTitle">IBM TRIRIGA</h1>
+				<div id="loginInput">
+					<paper-input-container>
+						<label id="userName">User ID</label>
+						<input id="userNameElement" type="text" is="iron-input" bind-value="{{username}}" autofocus 
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-labelledby="userName" role="textbox" tabIndex="1" required>
+					</paper-input-container>
+					<paper-input-container>
+						<label id="password">Password</label>
+						<input id="passwordElement" type="password" is="iron-input" bind-value="{{password}}" aria-labelledby="password" role="textbox" tabIndex="2" required>
+					</paper-input-container>
+				</div>
+				<div class="layout horizontal button-container">
+						<input type="submit" tabIndex="3" value="Log In" title="Log In" class="loginButton" aria-labelledby="sign in">
+
+						<div class="flex layout vertical">
+							<template is="dom-if" if="{{loading}}">
+								<div class="processing">Logging in...</div>
+							</template>	
+							<template is="dom-if" if="{{!phone}}">
+								<template is="dom-if" if="{{unauthorize}}">
+									<div id="error" class="error">Invalid User ID or Password.</div>
+								</template>
+								<template is="dom-if" if="{{error}}">
+									<div id="error" class="error">Login failed</div>
+								</template>
+							</template>
+						</div>
+				</div>
+				<div>
+					<template is="dom-if" if="{{phone}}">
+						<template is="dom-if" if="{{unauthorize}}">
+							<div id="error" class="error">Invalid User ID or Password.</div>
+						</template>
+						<template is="dom-if" if="{{error}}">
+							<div id="error" class="error">Login failed</div>
+						</template>
+					</template>		
+				</div>
+				
+				<triplat-login 	id="loginControl" 
+						       	username="[[username]]"
+						       	password="[[password]]"
+								on-unauthorized="_handleUnauthorized"
+								on-already-logged="_handleAlreadyLogged"
+								on-error="_handleError">
+				</triplat-login>
+			</div>
+		
+		</form>
+	</paper-material>
+</div>	
+	<tricore-signon-message-dialog id="message" modal>
+	    <div id="dialogHeader">The user <span class="activeUser">{{userName}}</span> is already active.</div>
+	    <div id="dialogBody">
+	    	<div class="flex layout vertical">
+				<template is="dom-if" if="{{alreadySignOn}}">
+					<div class="">You may end the active session or click cancel to log in as another user.</div>
+				</template>
+			</div>
+	    </div>
+	    
+	    <div class="buttons">
+	    	<template is="dom-if" if="{{alreadySignOn}}">
+	        	<input id="forceSignOn" class="msgButtonAffirm"  type="button" on-tap="_handleForceSignOn" value="End Active Session"/>&nbsp;
+	        	<input id="closeDialog" class="msgButtonAffirm" type="button" on-tap="_closeDialog" value="Cancel" />
+	    	</template>
+	    </div>
+	</tricore-signon-message-dialog>
+
+	<div id="footerWrapper">
+		<div id='footer'>
+			<div id='tririgaLegal'>
+				<div>
+					<p style='margin:0px;margin-top:5px;' translate="no">
+					Licensed Materials - Property of IBM (c) Copyright IBM Corp. 1997, 2015  All Rights Reserved. IBM, the IBM logo, ibm.com and TRIRIGA are trademarks or registered trademarks of International Business Machines Corp., registered in many jurisdictions worldwide. Other product and service names might be trademarks of IBM or other companies. A current list of IBM trademarks is available on the Web at <a href="http://www.ibm.com/legal/copytrade.shtml">Copyright and trademark information</a>.
+					</p>
+				</div>
+				<div class="layout horizontal">
+					<table>
+						<tr>
+					    	<td>
+					    		<div class="flex1" style="padding-top:1em; padding-right:2em;">
+									<img src='images/csi_logo.png'/>
+								</div>
+					    	</td>
+					    	<td>
+					    		<div class="flex5">
+									<p translate="no" style='margin:0px;margin-top:5px;'>
+									<i>MasterFormat</i><sup>&reg;</sup> is produced jointly by CSI and Construction Specifications Canada (CSC). U.S. copyright is held by CSI and Canadian copyright by CSC. All Rights Reserved. For license information, contact CSI at csi@csinet.org. For more information on MasterFormat visit <a href="http://www.MasterFormat.com">www.MasterFormat.com</a>.
+									</p>
+								</div>		
+					    	</td>
+					  	</tr>
+					</table>	
+				</div>
+				<div class='clear'></div>
+				<div>
+					<p style='margin-top:0px;margin-top:5px;' translate="no">Portions copyright (C) Free Software Foundation, Inc 1991, 1999.</p>
+				</div>
+			</div> 
+		</div> 
+	</div>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+	
+		is: "tricore-signon",
+
+		listeners: {
+			"logonForm.submit": "_handleSignon"
+		},
+
+		attached: function() {
+			var bodyElement = document.querySelector('body');
+			bodyElement.style.cssText = "overflow-y:scroll;";
+			
+			var textDirectionValue = bodyElement.getAttribute('dir');
+			if(textDirectionValue==="rtl"){
+				this.$.loginLogo.classList.add('loginLogo-rtl');
+				this.$.loginTitle.classList.add('loginTitle-rtl');
+				this.$.container.classList.add('container-rtl');
+			} else {
+				this.$.loginLogo.classList.add('loginLogo-ltr');
+				this.$.loginTitle.classList.add('loginTitle-ltr');
+				this.$.container.classList.add('container-ltr');
+			}
+		},
+
+		ready: function(){
+			if (this.phone) {
+				this.$.container.setAttribute("elevation", "0");
+			}
+			if (this.ipad) {
+				this.$.container.setAttribute("elevation", "0");
+			}
+		},
+
+		_handleSignon: function() {
+			this.loading = true;
+			this.unauthorize = false;
+			this.error=false;
+			this.$.loginControl.login();
+		},
+
+		_handleForceSignOn: function(){
+			this.$.loginControl.forceLogin();
+		},
+
+		_handleUnauthorized: function(e) {
+			this.unauthorize = true;
+			this.loading = false;
+		},
+
+		_handleAlreadyLogged: function(e) {
+			this.$.message.open();
+			this.alreadySignOn = true;
+			this.loading = false;
+			this.async(
+				function() {
+					if(document.getElementById("forceSignOn")) {
+						document.getElementById("forceSignOn").focus();
+					}
+				},100);
+			
+		},
+
+		_handleError: function(e) {
+			this.error = true;
+			this.loading = false;
+		},
+
+		_closeDialog: function(){
+			this.$.message.close();
+		}
+	});
+</script>

@@ -1,0 +1,179 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../tricore-url/tricore-url.html">
+
+<script>
+  /*
+   * A behavior to support weather component.
+   * 
+   * @polymerBehavior
+   */
+  TriplatWeatherBehavior = {
+
+	    /*
+	     * Fired after retrieving The Weather Channel API license key from the server (property WEATHER_API_KEY).
+	     *
+	     * @event triplat-weather-apikey-update
+	     */
+
+	    /*
+	     * Fired a request to get the weather conditions automatically when auto flag is set and a location is provided.
+	     *
+	     * @event triplat-weather-generate-request
+	     */
+
+		properties:  {
+
+			_weatherApiKey: {
+				type: String
+			}
+
+		},
+
+		attached: function() {
+			this._getWeatherAPIKeyFromServer();
+		},	
+
+		/*
+		 * Retrieves The Weather Channel API license key from the server (property WEATHER_API_KEY).
+		 */
+		_getWeatherAPIKeyFromServer: function(){
+			var url = document.createElement("tricore-url");
+		 	var ajax = document.createElement("iron-ajax");
+			ajax.url = url.getUrl("/p/webapi/rest/v2/weather/licensekey");
+			ajax.addEventListener("response", this._updateWeatherAPIKey.bind(this));
+			ajax.addEventListener("error", function(err){
+				console.error("Error occurred while retrieving The Weather Channel API key from the server (property WEATHER_API_KEY).");	
+			});		
+			ajax.method = "GET";
+			ajax.contentType = "application/json";
+			ajax.generateRequest();
+		},
+		
+		_updateWeatherAPIKey: function(e) {
+			if(!e.detail.response.licensekey) {
+				console.warn("The Weather Channel API requires license key. Check TRIRIGAWEB.properties file (property WEATHER_API_KEY).");
+				return;
+			}
+			this.set("_weatherApiKey", e.detail.response.licensekey);	
+			this.fire("triplat-weather-apikey-update", e.detail.response.licensekey);
+		},
+
+		/*
+		 * Return The Weather Channel API license key that was retrieved from the server (property WEATHER_API_KEY).
+		 */
+		getWeatherAPIKey: function(){
+			return this._weatherApiKey;
+		},
+
+	    /*
+	     * Automatically requests the weather information when auto flag is set to true and a postal code and country are provided.
+	     */
+		initForPostalCode: function(auto, baseUrl, apiKey, language, units, postalAndCountryCode) {
+			if (!apiKey) {
+				return;
+			}
+
+			if (!auto) {
+				return;
+			}
+
+			if (!postalAndCountryCode) {
+				return;
+			}
+
+			this.fire("triplat-weather-generate-request");
+		},
+
+	    /*
+	     * Automatically requests the weather information when auto flag is set to true and a geocode is provided.
+	     */
+		initForLatAndLong: function(auto, baseUrl, apiKey, language, units, latAndLong) {
+			if (!apiKey) {
+				return;
+			}
+
+			if (!auto) {
+				return;
+			}
+
+			if (!latAndLong) {
+				return;
+			}
+
+			this.fire("triplat-weather-generate-request");
+		},
+
+		/* Return base weather URL for The Weather Company API.
+		 * The API supports requests by postal code or by geocode (latitude and longitude).
+		 */
+		getBaseWeatherUrl: function(baseUrl, postalAndCountryCode, latAndLong) {
+			var url = baseUrl + "/v1";
+
+			if (postalAndCountryCode) {
+				//Request by Postal Code
+				var postalURL = this._getPostalUrl(postalAndCountryCode)
+				if(!postalURL) {
+					return;
+				} else {
+					url += postalURL;
+				}
+			} else if(latAndLong) {
+				//Request by Geocode (Latitude & Longitude)
+				var geocodeURL = this._getGeocodeUrl(latAndLong)
+				if(!geocodeURL) {
+					return;
+				} else {
+					url += geocodeURL;
+				}
+			} else {
+				console.error("The Weather Channel API requires a location: postal code or geocode.");
+				return;
+			}
+
+			return url;
+		},
+
+		/* Return the postal code URL. For example location/30075:4:US.
+		 * The postal code of The Weather Company has a proprietary location type (4) with the following 
+		 * format: location/<postal code>:<location type>:<country code> 
+		 */
+		_getPostalUrl: function(postalAndCountryCode) {
+			if (postalAndCountryCode) {
+				//Request by Postal Code
+				var postalAndCountryCode = postalAndCountryCode.split(":");
+				if (postalAndCountryCode.length != 2) {
+					console.error("Invalid postalAndCountryCode value " + "[" + postalAndCountryCode + "]");
+					return null;
+				}
+
+				return "/location/" + postalAndCountryCode[0] + ":4:" + postalAndCountryCode[1];
+			}
+
+			return null;
+		},
+
+		/* Return the geocode URL (latitude and longitude). For example, /geocode/34.063/-84.217. 
+		 * Format: /geocode/<Latitude>/<Longitude>
+		 */
+		_getGeocodeUrl: function(latAndLong) {
+			if(latAndLong) {
+				//Request by Geocode (Latitude & Longitude)
+				var latAndLong = latAndLong.split(":");
+				if (latAndLong.length != 2) {
+					console.error("Invalid latAndLong value " + "[" + latAndLong + "]");
+					return null;
+				}
+
+				return "/geocode/" + latAndLong[0] + "/" + latAndLong[1];
+			}
+
+			return null;
+		},
+
+  };
+</script>

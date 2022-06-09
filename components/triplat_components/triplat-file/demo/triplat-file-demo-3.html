@@ -1,0 +1,201 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+
+<link rel="import" href="../triplat-file.html">
+
+<link rel="import" href="../../paper-material/paper-material.html">
+<link rel="import" href="../../marked-element/marked-element.html">
+
+<link rel="import" href="../../prism-element/prism-highlighter.html">
+
+<link rel="import" href="../../triplat-icon/ibm-icons.html">
+<link rel="import" href="../../triplat-icon/triplat-icon.html">
+
+<dom-module id="triplat-file-demo-3">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+            paper-material {
+                margin-top: 15px;
+                margin-bottom: 15px;
+                width: 550px;
+                height: 400px;
+                @apply(--layout-vertical);    
+            }
+
+            .markdown-html {
+                background-color: #eeeeee;
+                height:305px;
+                border-top-width: 2px;
+                border-top-style: solid;    
+                border-top-color: gray;
+                padding: 10px;
+                margin: 0;
+                font-size: 13px;
+                overflow: auto;
+            }
+
+            .markdown-html > pre {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            .fileIconLabel {
+                --triplat-icon-width: 18px;
+                --triplat-icon-height: 18px;
+                padding-bottom:4px;
+            }
+
+            div[label] {
+                color:red;
+            }
+
+            triplat-file {
+                --triplat-file-input-container: {
+                    @apply(--layout-flex-5);
+                };
+                --triplat-file-drop-area: {
+                    color: var(--ibm-green-50);
+                    border-color: var(--ibm-green-50);
+                    border-style: double;
+                    border-width: 3px;
+                    @apply(--layout-flex-3);
+                };
+                --triplat-file-hover-drop-area: {
+                    color: var(--ibm-red-50);
+                    border-color: var(--ibm-red-50);
+                    font-style: italic;
+                    text-decoration: underline;
+                };
+                --triplat-file-drop-area-text: {
+                    text-align: center;
+                };              
+                --triplat-file-download-link-color: var(--ibm-green-50);
+                --triplat-file-download-link: {
+                    font-style: italic;
+                    text-decoration: underline;
+                };
+                --triplat-file-button: {
+                    color: var(--ibm-green-50);
+                };
+                --triplat-file-error-notification: {
+                    @apply(--layout-center-center);
+                };
+                --triplat-file-error-notification-background-color: var(--tri-primary-light-color);
+                --triplat-file-error-notification-color: var(--tri-primary-content-color);
+
+                --triplat-file-progress-notification-background-color: var(--tri-primary-light-color);
+                --triplat-file-progress-notification-color: var(--ibm-green-50);
+                --triplat-file-progress-bar-active-color: var(--ibm-yellow-10);
+                --triplat-file-progress-container: {
+                    max-width: 95%;
+                };
+            }
+        </style>
+        <prism-highlighter></prism-highlighter>
+        <h3>Styling the triplat-file and using a download link</h3>
+        <paper-material elevation="1">
+            <triplat-file value="{{binaryField}}" show-download-link 
+                show-clear-button show-drop-area  
+                show-upload-progress-bar show-upload-error
+                always-float-label drop-text="Drop the file here">
+                <div label>
+                    <triplat-icon class="fileIconLabel" icon="file">
+                    </triplat-icon>
+                    <span>Binary Field</span>
+                </div>
+            </triplat-file>
+            
+            <marked-element markdown=[[_markdown]]>
+                <div class="markdown-html"></div>
+            </marked-element>
+        </paper-material>
+    </template>
+</dom-module>
+<script>
+    Polymer({
+
+        is: "triplat-file-demo-3",
+        
+        properties: {
+
+            binaryField: {
+                type: Object
+            },
+
+            _markdown: {
+                type: String,
+                value:
+                    '```html\n' +
+                    '<triplat-file value="{{binaryField}}" show-download-link\n' +
+                    '    show-clear-button show-drop-area\n' +
+                    '    show-upload-progress-bar show-upload-error\n' +
+                    '    always-float-label drop-text="Drop the file here">\n' +
+                    '\n' +
+                    '    <div label>\n' +
+                    '        <triplat-icon class="fileIconLabel" icon="file">\n' +
+                    '        </triplat-icon>\n' +
+                    '        <span>Binary Field</span>\n' +
+                    '    </div>\n' +
+                    '</triplat-file>\n' +
+                    '\n' +
+                    '<style>\n' +
+                    '    .fileIconLabel {\n' +
+                    '        --triplat-icon-width: 18px;\n' +
+                    '        --triplat-icon-height: 18px;\n' +
+                    '        padding-bottom:4px;\n' +
+                    '    }\n' +
+                    '\n' +
+                    '    div[label] {\n' +
+                    '        color:red;\n' +
+                    '    }\n' +
+                    '    \n' +
+                    '    triplat-file {\n' +
+                    '        --triplat-file-input-container: {\n' +
+                    '            @apply(--layout-flex-5);\n' +
+                    '        };\n' +
+                    '        --triplat-file-drop-area: {\n' +
+                    '            color: var(--ibm-green-50);\n' +
+                    '            border-color: var(--ibm-green-50);\n' +
+                    '            border-style: double;\n' +
+                    '            border-width: 3px;\n' +
+                    '            @apply(--layout-flex-3);\n' +
+                    '        };\n' +
+                    '        --triplat-file-hover-drop-area: {\n' +
+                    '            color: var(--ibm-red-50);\n' +
+                    '            border-color: var(--ibm-red-50);\n' +
+                    '            font-style: italic;\n' +
+                    '            text-decoration: underline;\n' +
+                    '        };\n' +
+                    '        --triplat-file-drop-area-text: {\n' +
+                    '            text-align: center;\n' +
+                    '        };              \n' +
+                    '        --triplat-file-download-link-color: var(--ibm-green-50);\n' +
+                    '        --triplat-file-download-link: {\n' +
+                    '            font-style: italic;\n' +
+                    '            text-decoration: underline;\n' +
+                    '        };\n' +
+                    '        --triplat-file-button: {\n' +
+                    '            color: var(--ibm-green-50);\n' +
+                    '        };\n' +
+                    '        --triplat-file-error-notification: {\n' +
+                    '            @apply(--layout-center-center);\n' +
+                    '        };\n' +
+                    '        --triplat-file-error-notification-background-color: var(--tri-primary-light-color);\n' +
+                    '        --triplat-file-error-notification-color: var(--tri-primary-content-color);\n' +
+                    '    \n' +
+                    '        --triplat-file-progress-notification-background-color: var(--tri-primary-light-color);\n' +
+                    '        --triplat-file-progress-notification-color: var(--ibm-green-50);\n' +
+                    '        --triplat-file-progress-bar-active-color: var(--ibm-yellow-10);\n' +
+                    '\n' +
+                    '        --triplat-file-progress-container: {\n' +
+                    '            max-width: 95%;\n' +
+                    '        };\n' +
+                    '    }\n' +
+                    '</style>\n' +
+                    '```'
+            }            
+        }
+    });
+</script>

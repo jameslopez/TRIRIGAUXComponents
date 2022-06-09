@@ -1,0 +1,182 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "triplat-change-tracker is a component to display warning message when user is exiting current page without saving modified data.\n\n### Example for setting up data tracking\n\nThis example has data source name 'employeeDS' and 'employee' as data name for the modified record.\n\nIn the custom element script block observer data -\n\n\t observers:[ \"myTrackChange(employee.*)\"],\n\t \n\t myTrackChange: function(value) {\n\t\t this.trackChange(\"employeeDS\", \"employee\", value);\n\t }\n\nTo customize message -\n\n\t <triplat-change-tracker message-label=\"My custom message...\">\n\t </triplat-change-tracker>\n\t \nTo disable warning message -\n\n\t <triplat-change-tracker disabled></triplat-change-tracker>\n\t \nTo programmatically clean the dirty page, use forceClean() method provided from triplat-change-tracker-behavior\n\n\t // javascript to clean dirty page status\n\t this.forceClean();\n\n### Styling\n\nThe following custom properties are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-change-tracker-ok-button` | Mixin applied to the ok button | `{}`\n`--triplat-change-tracker-cancel-button` | Mixin applied to the cancel button | `{}`",
+      "summary": "",
+      "path": "triplat-change-tracker.js",
+      "properties": [
+        {
+          "name": "disabled",
+          "type": "boolean | null | undefined",
+          "description": "Disable change tracking.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 99,
+              "column": 2
+            },
+            "end": {
+              "line": 102,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "messageLabel",
+          "type": "string | null | undefined",
+          "description": "Custom Confirmation Message",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 107,
+              "column": 2
+            },
+            "end": {
+              "line": 111,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"customMessageChanged\"",
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"Discard unsaved data?\""
+        },
+        {
+          "name": "_dialogPromise",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 113,
+              "column": 2
+            },
+            "end": {
+              "line": 117,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "customMessageChanged",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 120,
+              "column": 4
+            },
+            "end": {
+              "line": 123,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "message"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "detached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 125,
+              "column": 4
+            },
+            "end": {
+              "line": 127,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 50,
+          "column": 8
+        },
+        "end": {
+          "line": 128,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "disabled",
+          "description": "Disable change tracking.",
+          "sourceRange": {
+            "start": {
+              "line": 99,
+              "column": 2
+            },
+            "end": {
+              "line": 102,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "message-label",
+          "description": "Custom Confirmation Message",
+          "sourceRange": {
+            "start": {
+              "line": 107,
+              "column": 2
+            },
+            "end": {
+              "line": 111,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-change-tracker"
+    }
+  ]
+}

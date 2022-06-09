@@ -1,0 +1,46 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../paper-card/paper-card.html">
+
+<dom-module id="tricore-application-not-found-page">
+	<template>
+		<style>
+			:host {
+				@apply(--layout-fit);
+				@apply(--layout);
+				@apply(--layout-vertical);
+				@apply(--layout-center-center);
+			}
+
+			paper-card {
+				--paper-card-header: {
+					background-color: #AD1625;
+					font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+				};
+				--paper-card-header-color: white;
+			}
+
+			.card-content {
+				color: #464646;
+				font-size: 1.2em;
+				padding: 22px;
+				font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+			}
+		</style>
+		<paper-card heading="Application Not Found">
+			<div class="card-content">You don't have an application at this URL.<br/>Verify that you have entered the correct URL.</div>
+		</paper-card>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "tricore-application-not-found-page"
+
+	});
+</script>

@@ -1,0 +1,903 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-scroll-container` creates a horizontal scroll container controlled by arrow buttons.\nThe user can control the scroll by click and drag (or tap and swipe).\nThe scroll buttons will only be available when the content width is greater than the container width.\nThis component is based on `paper-tabs`.\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.\n  </div>\n</div>\n\nExample:\n```html\n<triblock-scroll-container>\n  <div>Content 1</div>\n  <div>Content 2</div>\n  <div>Content 3</div>\n</triblock-scroll-container>\n```\n\nThe `auto-height` property can be used to set the container height according to the content height:\n```html\n<triblock-scroll-container auto-height>\n  ...\n</triblock-scroll-container>\n```\n\nThe `scroller` property with two-way binding can be used to apply scroll pagination.\n```html\n<triblock-scroll-container scroller=\"{{scroller}}\">\n  ...\n</triblock-scroll-container>\n```\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding: 10px 20px;\">\n\t\t<p><b>Important:</b> When working with pagination, it's recommended to use a callback when \n\t\tthe data source \"get\" is completed (on-ds-get-complete). In the callback, call the \n\t\t`notifyResize` method to notify that the container has expanded, \n\t\tso the control buttons will be displayed.</p>\n\t</div>\n</div>\n\n------------------------------------------\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding: 10px 20px;\">\n\t<p><b>Important:</b> When adding child elements into this component, it's important that the children \n\tstay side by side, without spaces between them, like the margin. This is because when scrolling by \n\tclicking and dragging, if you click in a space between the child elements, the scroll effect \n\twill be affected.</p>\n\t<p><b>Solution:</b> If you need a space between the children (for visual purpose), add a padding \n\tin the direct children, and use grandchildren for visual styling. Since the direct children will have \n\ta padding, the granchildren will have a space between them.</p>\n\t<p>Example:</p>\n```html\n<triblock-scroll-container>\n  <div class=\"direct-child\">\n\t<div class=\"grandchild\">Content 1</div>\n  </div>\n  <div class=\"direct-child\">\n\t<div class=\"grandchild\">Content 2</div>\n  </div>\n  <div class=\"direct-child\">\n\t<div class=\"grandchild\">Content 3</div>\n  </div>\n</triblock-scroll-container>\n\n<style>\n  .direct-child {\n\tpadding: 10px;\n  }\n</style>\n```\n  </div>\n</div>\n------------------------------------------\n\n### Styling\nThe following custom properties and mixins are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-scroll-container-height` | Height of the container | `250px`\n`--triblock-scroll-container-left-arrow` | Position of the left control button | `1%`\n`--triblock-scroll-container-right-arrow` | Position of the right control button  | `1%`\n`--triblock-scroll-container-button-top` | Top position of the control button | `50%`\n`--triblock-scroll-container-button-height` | Height of the control button | `48px`\n`--triblock-scroll-container-button-width` | Width of the control button | `48px`\n`--triblock-scroll-container-button-padding` | Padding of the control button | `2px`\n`--triblock-scroll-container-button-background` | Background of the control button | `rgba(65, 120, 190, 0.7)`\n`--triblock-scroll-container-button-background-hover` | Background of the control button when hovering | `rgba(65, 120, 190, 0.9)`\n`--triblock-scroll-container-button-color` | Color of the icon inside the control button | `white`",
+      "summary": "",
+      "path": "triblock-scroll-container.js",
+      "properties": [
+        {
+          "name": "autoHeight",
+          "type": "boolean | null | undefined",
+          "description": "If true, the element's height will be set to fit the child's height.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 213,
+              "column": 1
+            },
+            "end": {
+              "line": 216,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "scroller",
+          "type": "Object | null | undefined",
+          "description": "Scroller container element object. This object is also used\nto data-bind with the triplat-query-scroll-page scroller attribute.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 222,
+              "column": 1
+            },
+            "end": {
+              "line": 225,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "iconLeft",
+          "type": "string | null | undefined",
+          "description": "The icon that will be displayed inside the left scroll button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 230,
+              "column": 1
+            },
+            "end": {
+              "line": 233,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"chevron-left\""
+        },
+        {
+          "name": "iconRight",
+          "type": "string | null | undefined",
+          "description": "The icon that will be displayed inside the right scroll button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 238,
+              "column": 1
+            },
+            "end": {
+              "line": 241,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"chevron-right\""
+        },
+        {
+          "name": "_step",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 243,
+              "column": 1
+            },
+            "end": {
+              "line": 246,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "10"
+        },
+        {
+          "name": "_holdDelay",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 248,
+              "column": 1
+            },
+            "end": {
+              "line": 251,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "1"
+        },
+        {
+          "name": "_leftHidden",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 253,
+              "column": 1
+            },
+            "end": {
+              "line": 256,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_rightHidden",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 258,
+              "column": 1
+            },
+            "end": {
+              "line": 261,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_previousItem",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 263,
+              "column": 1
+            },
+            "end": {
+              "line": 265,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_leftButton",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 267,
+              "column": 1
+            },
+            "end": {
+              "line": 269,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_leftButtonPressed",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 271,
+              "column": 1
+            },
+            "end": {
+              "line": 274,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_rightButton",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 276,
+              "column": 1
+            },
+            "end": {
+              "line": 278,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_rightButtonPressed",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 280,
+              "column": 1
+            },
+            "end": {
+              "line": 283,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_isBidi",
+          "type": "boolean | null | undefined",
+          "description": "True if BIDI is active",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 288,
+              "column": 1
+            },
+            "end": {
+              "line": 299,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_isChrome",
+          "type": "boolean | null | undefined",
+          "description": "True if the application is running on Chrome browser",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 304,
+              "column": 1
+            },
+            "end": {
+              "line": 313,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_isEdge",
+          "type": "boolean | null | undefined",
+          "description": "True if the application is running on Edge browser",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 318,
+              "column": 1
+            },
+            "end": {
+              "line": 325,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_itemContainerScrollSize",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 384,
+              "column": 2
+            },
+            "end": {
+              "line": 390,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 335,
+              "column": 2
+            },
+            "end": {
+              "line": 337,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "created",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 339,
+              "column": 2
+            },
+            "end": {
+              "line": 341,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 343,
+              "column": 2
+            },
+            "end": {
+              "line": 347,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeScrollButtonClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 349,
+              "column": 2
+            },
+            "end": {
+              "line": 363,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "button"
+            },
+            {
+              "name": "hideThisButton"
+            }
+          ]
+        },
+        {
+          "name": "_onContentSizingChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 365,
+              "column": 2
+            },
+            "end": {
+              "line": 371,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onIronSelect",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 2
+            },
+            "end": {
+              "line": 376,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onIronDeselect",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 378,
+              "column": 2
+            },
+            "end": {
+              "line": 382,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_scroll",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 392,
+              "column": 2
+            },
+            "end": {
+              "line": 395,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            },
+            {
+              "name": "detail"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_down",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 397,
+              "column": 2
+            },
+            "end": {
+              "line": 406,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_affectScroll",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 408,
+              "column": 2
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "dx"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onLeftScrollButtonDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 434,
+              "column": 2
+            },
+            "end": {
+              "line": 437,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onRightScrollButtonDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 439,
+              "column": 2
+            },
+            "end": {
+              "line": 442,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onScrollButtonUp",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 444,
+              "column": 2
+            },
+            "end": {
+              "line": 447,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_scrollToLeft",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 449,
+              "column": 2
+            },
+            "end": {
+              "line": 451,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_scrollToRight",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 453,
+              "column": 2
+            },
+            "end": {
+              "line": 455,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setAutoHeight",
+          "description": "=========================================================",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 462,
+              "column": 2
+            },
+            "end": {
+              "line": 472,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onLeftButtonDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 474,
+              "column": 2
+            },
+            "end": {
+              "line": 479,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onLeftButtonUp",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 481,
+              "column": 2
+            },
+            "end": {
+              "line": 484,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onRightButtonDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 486,
+              "column": 2
+            },
+            "end": {
+              "line": 491,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onRightButtonUp",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 493,
+              "column": 2
+            },
+            "end": {
+              "line": 496,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 106,
+          "column": 8
+        },
+        "end": {
+          "line": 497,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "auto-height",
+          "description": "If true, the element's height will be set to fit the child's height.",
+          "sourceRange": {
+            "start": {
+              "line": 213,
+              "column": 1
+            },
+            "end": {
+              "line": 216,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "scroller",
+          "description": "Scroller container element object. This object is also used\nto data-bind with the triplat-query-scroll-page scroller attribute.",
+          "sourceRange": {
+            "start": {
+              "line": 222,
+              "column": 1
+            },
+            "end": {
+              "line": 225,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "icon-left",
+          "description": "The icon that will be displayed inside the left scroll button.",
+          "sourceRange": {
+            "start": {
+              "line": 230,
+              "column": 1
+            },
+            "end": {
+              "line": 233,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "icon-right",
+          "description": "The icon that will be displayed inside the right scroll button.",
+          "sourceRange": {
+            "start": {
+              "line": 238,
+              "column": 1
+            },
+            "end": {
+              "line": 241,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "scroller-changed",
+          "description": "Fired when the `scroller` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-scroll-container"
+    }
+  ]
+}

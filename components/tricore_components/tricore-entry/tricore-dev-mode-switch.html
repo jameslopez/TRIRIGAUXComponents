@@ -1,0 +1,63 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../tricore-url/tricore-url.html">
+
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
+
+<dom-module id="tricore-dev-mode-switch">
+	<template>
+		<style>
+			.container {
+				@apply(--layout-flex);
+				@apply(--layout);
+				@apply(--layout-horizontal);
+				@apply(--layout-justified);
+			}
+		</style>
+		<tricore-url raw-url="/p/webapi/devmodeprops" bind-url="{{url}}"></tricore-url>
+		<iron-ajax auto url="{{url}}" on-response="_handleGetResposne"></iron-ajax>
+		<iron-ajax id="putAjax" url="{{url}}" content-type="application/json" method="PUT"></iron-ajax>
+		<div class="container">
+			<span>Development Mode</span>
+			<paper-toggle-button id="enabledDevModeButton" checked?="{{props}}" on-change="_handleEnabledChanged"></paper-toggle-button>
+		</div>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "tricore-dev-mode-switch",
+
+		properties: {
+
+			props: {
+				type: Object,
+				notify: true,
+				readOnly: false
+			}
+
+		},
+
+		_handleGetResposne: function(e) {
+			this.set("props", e.detail.response);
+			this.$.enabledDevModeButton.checked = this.props;
+		},
+
+		_handleEnabledChanged: function() {
+			this.set("props", this.$.enabledDevModeButton.checked);
+			this.$.putAjax.body = JSON.stringify(this.props);
+			this.$.putAjax.generateRequest();
+			if (this.$.enabledDevModeButton.checked) {
+				alert("You are now running in Development mode.  Individual view files will be loaded in the browser.");
+			} else {
+				alert("You are now running in Production mode.  The production file which is usually a vulcanized view file will be loaded in the browser.  Make sure the vulcanized view file is generated recently with the latest platform component and view file changes.");
+			}
+		}
+
+	});
+</script>

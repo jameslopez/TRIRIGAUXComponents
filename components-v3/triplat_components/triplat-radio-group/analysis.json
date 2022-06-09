@@ -1,0 +1,463 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "triplat-radio-group is a custom element that extends paper-radio-group. It accepts an input data list and displays it as radio buttons. Each object in the list contains string value property name. It returns the selected value. \nIf None option is selected the return value is null.\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.\n  </div>\n</div>\n\nExample:\n  \n\t <triplat-ds name=\"peopleDS\" data=\"{{data}}\"></triplat-ds>\n\t <triplat-ds name=\"personPrefixDS\" data=\"{{personPrefix}}\"></triplat-ds>\n  \n\t <triplat-radio-group \n\t   description=\"Prefixes options\" \n\t   value=\"{{data.triPrefixLI}}\" \n\t   select-src=\"{{personPrefix}}\"></triplat-radio-group>\n\n### Styling\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n\t\t<b>Deprecated:</b> The use of style and class properties to style the radio group is deprecated and will be removed in a future release. Use mixins instead. <br>\n\t\tCustom property `--triplat-radio-group-style` is deprecated, instead use `--triplat-radio-group`. <br>\n\t\tCustom property `--triplat-radio-button-style` is deprecated, instead use `--triplat-radio-button`. <br>\n\t</div>\n</div>\n\nMixins and style/class are mutually exclusive and using both will produce indeterminate results.\n\nThe following custom properties are available for styling:\n\nCustom property               | Description                                                    | Default\n------------------------------|----------------------------------------------------------------|----------\n`--triplat-radio-group` | Mixin applied to the paper-radio-group contained within this component | ``\n`--triplat-radio-group-item-padding` | The padding of the item | `4px`\n`--triplat-radio-button` | Mixin applied to the paper-radio-button contained within this component | ``\n`--triplat-radio-button-unchecked-background-color` | Radio button background color when the input is not checked | ``\n`--triplat-radio-button-unchecked-color` | Radio button color when the input is not checked | ``\n`--triplat-radio-button-unchecked-ink-color` | Selected/focus ripple color when the input is not checked | ``\n`--triplat-radio-button-checked-color` | Radio button color when the input is checked | ``\n`--triplat-radio-button-checked-ink-color` | Selected/focus ripple color when the input is checked | ``\n`--triplat-radio-button-size` | Size of the radio button | ``\n`--triplat-radio-button-label-color` | Label color | ``\n`--triplat-radio-button-label-spacing` | Spacing between the label and the button | ``",
+      "summary": "",
+      "path": "triplat-radio-group.js",
+      "properties": [
+        {
+          "name": "style",
+          "type": "string | null | undefined",
+          "description": "Style property to be applied to this element and its children",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 103,
+              "column": 2
+            },
+            "end": {
+              "line": 103,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "class",
+          "type": "string | null | undefined",
+          "description": "Class property to be applied to this element and its children",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 2
+            },
+            "end": {
+              "line": 108,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "value",
+          "type": "string | null | undefined",
+          "description": "String for the selected value bind to a data source field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 112,
+              "column": 2
+            },
+            "end": {
+              "line": 116,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "selectSrc",
+          "type": "Array | null | undefined",
+          "description": "List data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 121,
+              "column": 2
+            },
+            "end": {
+              "line": 125,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | null | undefined",
+          "description": "Disable input mode. Display value only.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 133,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "description",
+          "type": "string | null | undefined",
+          "description": "Description of the radio group (used for accessibility).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 139,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"radio group\""
+        },
+        {
+          "name": "removeNone",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to remove the \"None\" option.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 147,
+              "column": 2
+            },
+            "end": {
+              "line": 150,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_onRadioSelect",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 158,
+              "column": 4
+            },
+            "end": {
+              "line": 165,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computedValue",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 4
+            },
+            "end": {
+              "line": 172,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ]
+        },
+        {
+          "name": "_setStyle",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 174,
+              "column": 4
+            },
+            "end": {
+              "line": 176,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "style"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_resetClassMap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 178,
+              "column": 4
+            },
+            "end": {
+              "line": 182,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_cleanClassMap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 184,
+              "column": 4
+            },
+            "end": {
+              "line": 193,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_isNewClassInMap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 195,
+              "column": 4
+            },
+            "end": {
+              "line": 209,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newclass"
+            }
+          ]
+        },
+        {
+          "name": "_setClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 211,
+              "column": 4
+            },
+            "end": {
+              "line": 228,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "myclass"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 60,
+          "column": 8
+        },
+        "end": {
+          "line": 229,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "style",
+          "description": "Style property to be applied to this element and its children",
+          "sourceRange": {
+            "start": {
+              "line": 103,
+              "column": 2
+            },
+            "end": {
+              "line": 103,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "class",
+          "description": "Class property to be applied to this element and its children",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 2
+            },
+            "end": {
+              "line": 108,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "value",
+          "description": "String for the selected value bind to a data source field.",
+          "sourceRange": {
+            "start": {
+              "line": 112,
+              "column": 2
+            },
+            "end": {
+              "line": 116,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "select-src",
+          "description": "List data source.",
+          "sourceRange": {
+            "start": {
+              "line": 121,
+              "column": 2
+            },
+            "end": {
+              "line": 125,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "disabled",
+          "description": "Disable input mode. Display value only.",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 133,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "description",
+          "description": "Description of the radio group (used for accessibility).",
+          "sourceRange": {
+            "start": {
+              "line": 139,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "remove-none",
+          "description": "Set to true to remove the \"None\" option.",
+          "sourceRange": {
+            "start": {
+              "line": 147,
+              "column": 2
+            },
+            "end": {
+              "line": 150,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "value-changed",
+          "description": "Fired when the `value` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-radio-group"
+    }
+  ]
+}

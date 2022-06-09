@@ -1,0 +1,100 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-calendar-component Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+
+	<link rel="import" href="../triplat-calendar-container.html">
+
+	<link rel="import" href="../../triplat-date-utilities/triplat-date-utilities.html">
+
+	<style type="text/css">
+		body {
+			font-family: var(--tri-font-family);
+		}
+	</style>
+</head>
+<body>
+	<dom-module id="x-custom">
+
+		<template>
+			<div>Show a calendar where tomorrow is selected and the only valid selections are the two weekdays after tomorrow</div>
+			<div >
+				<div style="width:75%;height:75%">
+					<triplat-calendar-container
+								id="calendar"
+								disallow-weekends 
+								restrict-to-date-list="{{_onlyAllowValidMoveDates()}}"
+								valid-date-list="{{_validMoveDates()}}"
+								value="{{initialDay}}">
+					</triplat-calendar-container> 
+				</div>
+			</div>
+		</template>
+	</dom-module>
+	<script>
+    HTMLImports.whenReady(function() {
+		Polymer({
+
+			is: "x-custom",
+			behaviors: [TriDateUtilities],
+
+			properties : {
+				initialDay: {
+					type: Date,
+					value: function() { 
+							var today = new Date(); 
+							var val = today.getTime();
+							val = val + 86400000;
+							return this.toDateIsoString(val);
+						}
+				},
+				msPerDay: {
+					type: Number,
+					value: 86400000,
+					readOnly: true
+				}
+	            
+        	},
+
+			_onlyAllowValidMoveDates: function() {
+				return true;
+			},
+
+			_validMoveDates: function() {
+				msPerDay = 86400000;
+				var arr = [];
+				var today = new Date();
+				var tomorrow = today.getTime() + 86400000;
+
+				var nextWeekday = new Date(tomorrow + msPerDay);
+				while (nextWeekday.getDay() == 0 || nextWeekday.getDay() == 6) {
+					nextWeekday = new Date(nextWeekday.getTime() + msPerDay);
+				}
+				var nextNextWeekday = new Date(nextWeekday.getTime() + msPerDay);
+				while (nextNextWeekday.getDay() == 0 || nextNextWeekday.getDay() == 6) {
+					nextNextWeekday = new Date(nextNextWeekday.getTime() + msPerDay);
+				}
+
+				arr.push(nextWeekday); 
+				arr.push(nextNextWeekday); 
+				return arr;
+			}
+
+		});
+    });
+	</script>
+
+	<x-custom></x-custom>
+</body>
+</html>

@@ -1,0 +1,1557 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016-2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../paper-tooltip/paper-tooltip.html">
+
+<link rel="import" href="../iron-icons/hardware-icons.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-list/iron-list.html">
+
+<link rel="import" href="../triplat-accessibility-behavior/triplat-accessibility-behavior.html">
+<link rel="import" href="../triplat-icon/ibm-icons.html">
+
+<link rel="import" href="triblock-table-column.html">
+<link rel="import" href="triblock-table-row-detail.html">
+<link rel="import" href="triblock-table-cell-instance-manager.html">
+<link rel="import" href="triblock-table-row-detail-instance-manager.html">
+
+<!--
+
+`triblock-table` displays an array of data, specified by the `data` property, in a tabular layout.  
+
+<div style="background-color:#FFFFCC">
+    <div style="padding:20px;">
+ 		<b>Note:</b> It internally uses the `iron-list` component to manage the display of the rows in the table, so be aware of any known issues and limitations related to `iron-list` when implementing the `triblock-table`.
+ 	</div>
+</div>
+
+
+Use <a href="#triblock-table-column">`triblock-table-column`</a> to configure the displayed columns in the table.
+
+Use <a href="#triblock-table-row-detail">`triblock-table-row-detail`</a> to add an expandable section beneath each row.
+
+Example:
+
+```html
+<triblock-table data="{{data}}">
+	<triblock-table-column title="ID" property="_id"></triblock-table-column>
+	<triblock-table-column title="Name">
+		<template>
+			<div>{{item.last}}, {{item.first}}</div>
+		</template>
+	</triblock-table-column>
+	<triblock-table-column title="Status" property="status" type="STRING_WITH_ID"></triblock-table-column>
+	<triblock-table-row-detail>
+		<template>
+			<div>First name: {{item.first}}</div>
+			<div>Last name: {{item.last}}</div>
+			<div>Contact information:</div>
+			<div>E-mail: {{item.email}}</div>
+			<div>Phone #: {{item.phone}}</div>
+		</template>
+	</triblock-table-row-detail>
+</triblock-table>
+```
+
+This example renders a table with 3 columns, a row for each object in `data`, and an expandable section beneath each row.
+
+See the Demo page for more examples of the various properties and settings that are available.
+	
+	
+### Sizing triblock-table
+
+Since `triblock-table` is the `scrollTarget` for the internal `iron-list`, it must be explicitly sized. By "explicitly sized", we mean it either has an explicit CSS `height` property set via a class or inline style, or else is sized by other layout means (e.g. the `flex` or `fit` classes). See the `iron-list` documentation for further details.
+
+
+### Resizing
+
+When dynamically showing, hiding, or resizing a `triblock-table` (e.g. applying or removing `display: none;` on the element's CSS), the internal `iron-list` requires notification of this resize so it can recalculate the layout of the rows in the table.
+
+This notification is achieved by implementing `IronResizableBehavior` on the component hosting the `triblock-table` in question and calling `this.notifyResize();` after showing, hiding, or resizing the table. See the `iron-resizable-behavior` documentation for further details.
+
+
+### Accessibility
+
+The internal `iron-list` automatically manages the focus state for the rows in the table. It also provides a `tabIndex` property within the template scope that can be used for keyboard navigation. This `tabIndex` binding property is propagated into both `triblock-table-column` and `triblock-table-row-detail` templates for defining accessibility. See the `iron-list` documentation for further details.
+
+Example:
+
+```html
+<triblock-table data="{{data}}">
+	<triblock-table-column title="ID" property="_id"></triblock-table-column>
+	<triblock-table-column title="Name" property="name"></triblock-table-column>
+	<triblock-table-column title="Administrator?" property="isAdministrator">
+		<template>
+			<paper-checkbox 
+				tabindex$="[[tabIndex]]" 
+				checked="{{value}}">
+			</paper-checkbox>
+		</template>
+	</triblock-table-column>
+	<triblock-table-row-detail>
+		<template>
+			<div>Give [[item.name]] administrator privileges: 
+				<paper-checkbox 
+					tabindex$="[[tabIndex]]" 
+					checked="{{item.isAdministrator}}">
+				</paper-checkbox>
+			</div>
+		</template>
+	</triblock-table-row-detail>
+</triblock-table>
+```
+
+Additionally, the column headers of sortable columns are keyboard accessible, so keyboard-only users can modify the `sortProperty` and `sortDescending` of the table.
+	
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+#### Table styles
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triblock-table-background-color` | Background color applied to the table | `--tri-primary-content-background-color`
+`--triblock-table-color` | Color applied to the table | `--tri-primary-content-color`
+`--triblock-table-font-size` | Font size applied to the table | `14px`
+`--triblock-table-focus-outline-color` | Outline color when sortable header cell or row is focused | `--tri-primary-color-20`
+`--triblock-table` | Mixin applied to the host component | `{}`
+
+#### Header row styles
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triblock-table-header-background-color` | Background color applied to the table header | `--tri-primary-content-background-color`
+`--triblock-table-header-color` | Color applied to the table header | `--ibm-gray-50`
+`--triblock-table-header-sortable-color` | Color applied to sortable header cells | `--tri-primary-color`
+`--triblock-table-header-row-border-bottom-color` | Color applied to the bottom border of the header row | `--ibm-gray-30`
+`--triblock-table-header` | Mixin applied to the table header | `{}`
+`--triblock-table-header-sort-icon` | Mixin applied to the sort-icon in sortable columns | `{}`
+`--triblock-table-header-cell` | Mixin applied to each header cell | `{}`
+`--triblock-table-header-cell-label` | Mixin applied to the label in each header cell | `{}`
+
+#### Body row styles
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triblock-table-even-row-background-color` | Background color applied to even rows | `white`
+`--triblock-table-odd-row-background-color` | Background color applied to odd rows | `--ibm-neutral-2`
+`--triblock-table-row-hover-background-color` | Background color applied to rows when hovered | `--ibm-neutral-4`
+`--triblock-table-row-selected-background-color` | Background color applied to rows when selected | `--tri-primary-light-color`
+`--triblock-table-row-detail-divider-color` | Color applied to the border above the row-detail section when it is expanded | `--tri-primary-content-accent-color`
+`--triblock-table-row-container` | Mixin applied to the row and row-detail section container | `{}`
+`--triblock-table-row` | Mixin applied to the row | `{}`
+`--triblock-table-row-detail` | Mixin applied to the row-detail section | `{}`
+`--triblock-table-row-hover` | Mixin applied to the row when hovered | `{}`
+`--triblock-table-row-selected` | Mixin applied to the row when it is selected | `{}`
+`--triblock-table-cell` | Mixin applied to every table body cell | `{}`
+
+#### Column styles
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triblock-table-column-divider-color` | Color applied to column dividers | `--tri-primary-content-accent-color`
+`--triblock-table-column-divider` | Mixin applied to column dividers | `{}`
+`--triblock-table-column` | Mixin applied to each cell's column wrapper (including the header) | `{}`
+
+Go to <a href="#triblock-table-column">`triblock-table-column`</a> to see CSS variables for styling individual columns.
+
+#### Miscellaneous styles
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triblock-table-row-collapse-icon` | Mixin applied to each row expand/collapse icon | `{}`
+`--triblock-table-selection-checkbox` | Mixin applied to each multi-select checkbox | `{}`
+`--triblock-table-selection-radio-button` | Mixin applied to each single-select radio button | `{}`
+
+@demo demo/index.html
+-->
+<dom-module id="triblock-table">
+	
+	<template>
+		
+		<style>
+			:host {
+				display: block;
+				position: relative;
+				background-color: var(--triblock-table-background-color, --tri-primary-content-background-color);
+				color: var(--triblock-table-color, --tri-primary-content-color);
+				font-size: var(--triblock-table-font-size, 14px);
+				overflow: auto;
+
+				@apply(--triblock-table);
+			}
+			
+			div[table-header] {
+				@apply(--layout-vertical);
+				min-height: 0;
+			}
+			div[table-header][fixed-header] {
+				position: absolute;
+				z-index: 1;
+				width: 100%;
+			}
+			
+			div[header-row] {
+				@apply(--layout-horizontal);
+				background-color: var(--triblock-table-header-background-color, --tri-primary-content-background-color);
+				color: var(--triblock-table-header-color, --ibm-gray-50);
+				border-bottom: 1px solid var(--triblock-table-header-row-border-bottom-color, --ibm-gray-30);
+				
+				@apply(--triblock-table-header);
+			}
+
+			div[header-column]:not(:first-child):not([merge-with-previous-column])::before {
+				border-left: 1px solid var(--triblock-table-column-divider-color, --tri-primary-content-accent-color);
+				content: "";
+				position: absolute;
+				top: 9px;
+				height: 22px;
+				
+				@apply(--triblock-table-column-divider);
+			}
+			
+			div[header-cell] {
+				@apply(--layout-flex);
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+				box-sizing: border-box;
+				border: 1px solid transparent; /* reserve space for focus border */
+				height: 40px;
+				padding: 5px 10px 5px 9px;
+				margin-left: 1px;
+				min-width: 0;
+
+				@apply(--triblock-table-header-cell);
+			}
+			:host-context([dir="rtl"]) div[header-cell] {
+				padding-left: 10px;
+				padding-right: 9px;
+				margin-left: 0;
+				margin-right: 1px;
+			}
+
+			div[header-cell][sortable] {
+				cursor: pointer;
+				color: var(--triblock-table-header-sortable-color, --tri-primary-color);
+			}
+			div[header-cell][sortable]:hover {
+				text-decoration: underline;
+			}
+			div[header-cell][sortable]:focus {
+				outline: none;
+				border: 1px solid var(--triblock-table-focus-outline-color, --tri-primary-color-20);
+			}
+			
+			span[header-cell-label] {
+				flex-shrink: 1;
+				overflow: hidden;
+				min-width: 0;
+
+				@apply(--triblock-table-header-cell-label);
+			}
+			
+			iron-list[table-body] {
+				@apply(--layout-vertical);
+			}
+			
+			div[row-container] {
+				@apply(--layout-vertical);
+
+				@apply(--triblock-table-row-container);
+			}
+			div[row-container][index=even] {
+				background-color: var(--triblock-table-even-row-background-color, white);
+			}
+			div[row-container][index=odd] {
+				background-color: var(--triblock-table-odd-row-background-color, --ibm-neutral-2);
+			}
+			div[row-container][clickable]:hover {
+				cursor: pointer;
+				background-color: var(--triblock-table-row-hover-background-color, --ibm-neutral-4);
+
+				@apply(--triblock-table-row-hover);
+			}
+			div[row-container][clickable]:focus {
+				cursor: pointer;
+				outline: none;
+				background-color: var(--triblock-table-row-hover-background-color, --ibm-neutral-4);
+
+				@apply(--triblock-table-row-hover);
+			}
+			div[row-container][selected] {
+				cursor: pointer;
+				background-color: var(--triblock-table-row-selected-background-color, --tri-primary-light-color) !important;
+
+				@apply(--triblock-table-row-selected);
+			}
+			div[row-container]:focus {
+				outline-color: var(--triblock-table-focus-outline-color, --tri-primary-color-20);
+			}
+			
+			div[row] {
+				@apply(--layout-horizontal);
+				background-color: inherit;
+				flex-shrink: 0;
+
+				@apply(--triblock-table-row);
+			}
+			div[row][bolded-row] {
+				font-weight: bold;
+			}
+			
+			div[column] {
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+				background-color: inherit;
+				position: relative;
+				overflow: hidden;
+
+				@apply(--triblock-table-column);
+			}
+			div[column][hidden-by-screen-width] {
+				display: none !important;
+			}
+			div[column][hidden-by-col-prop] {
+				display: none !important;
+			}
+			div[column]:not([header-column])[merge-with-previous-column]:not(:first-child)::before {
+				border-left: 1px solid var(--triblock-table-column-divider-color, --tri-primary-content-accent-color);
+				content: "";
+				position: absolute;
+				top: 20px;
+				height: 24px;
+				
+				@apply(--triblock-table-column-divider);
+			}
+						
+			div[cell] {
+				@apply(--layout-flex);
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+				background-color: inherit;
+				overflow: hidden;
+				
+				@apply(--triblock-table-cell);
+			}
+			div[cell]:not([remove-default-cell-padding]):not([icon-cell]) {
+				height: 44px;
+				padding: 10px;
+			}
+			div[cell][remove-default-cell-padding] {
+				height: 64px;
+				padding: 0;
+			}
+			div[cell][icon-cell] {
+				@apply(--layout-center-justified);
+				height: 64px;
+				padding: 0;
+			}
+
+			.row-collapse {
+				flex-shrink: 0;
+				display: none;
+			}
+			.row-collapse[opened] {
+				display: block;
+			}
+
+			.row-collapse-icon {
+				height: 44px;
+				width: 44px;
+				padding: 6px;
+				cursor: pointer;
+				
+				@apply(--triblock-table-row-collapse-icon);
+			}
+			:host-context([dir="rtl"]) .row-collapse-icon {
+				transform: scaleX(-1);
+			}
+
+			.row-detail-container {
+				border-top: 1px solid var(--triblock-table-row-detail-divider-color, --tri-primary-content-accent-color);
+				
+				margin: 0 10px;
+				padding: 20px 0;
+				overflow: hidden;
+
+				@apply(--triblock-table-row-detail);
+			}
+			
+			.selection-checkbox {
+				--paper-checkbox-label-spacing: 0px;
+				--paper-checkbox-size: 24px;
+				--paper-checkbox-ink-size: 45px;
+
+				@apply(--triblock-table-selection-checkbox);
+			}
+
+			.selection-radio-button {
+				--paper-radio-button-label-spacing: 0px;
+				margin-bottom: 1px; /* offsetting weird 1px space above radio buttons being applied from within paper-radio-button */
+
+				@apply(--triblock-table-selection-radio-button);
+			}
+
+			.sort-icon {
+				--iron-icon-height: 16px;
+				--iron-icon-width: 16px;
+				flex-shrink: 0;
+
+				@apply(--triblock-table-header-sort-icon);
+			}
+			.sort-icon:not([column-title=""]) {
+				margin-left: 4px;
+			}
+			:host-context([dir="rtl"]) .sort-icon:not([column-title=""]) {
+				margin-left: 0;
+				margin-right: 4px;
+			}
+			.sort-icon.unsorted {
+				color: var(--ibm-gray-10);
+			}
+			.title-icon {
+				@apply --triblock-table-header-title-icon;
+			}
+		</style>
+
+		<div table-header id="tableHeader" role="rowgroup" fixed-header$="[[fixedHeader]]" hidden$="[[_isZero(data.length)]]">
+			<div header-row id="headerRow" role="row">
+				<!-- Content added programmatically -->
+			</div>
+		</div>
+
+		<iron-list table-body id="tableBodyList" role="rowgroup" items="{{_filteredIronListData}}">
+			<!-- iron-list template added programmatically -->
+		</iron-list>
+
+		<array-selector id="selector" items="{{data}}" selected="{{selected}}" multi="{{multiSelect}}" toggle></array-selector>
+
+		<div style="display:none">
+			<!-- Column templates (must be attached to DOM in order to access styling) -->
+			<content id="content"></content>
+		</div>
+
+	</template>
+
+	<script>
+		var TRIBLOCK_TABLE_COLUMN_COUNTER = 0;
+		function generateTriblockTableColumnId() {
+			return TRIBLOCK_TABLE_COLUMN_COUNTER++;
+		}
+
+		Polymer({
+			is: "triblock-table",
+
+			/**
+			 * Fired after an item is selected or deselected. For single-select, in addition to the row-select event fired for the newly selected item, an additional row-select event will be fired corresponding to the deselection of the previous selection, if any.
+			 *
+			 * @event row-select
+			 */
+
+			/**
+			 * Fired after a "tap" event occurs on a row. The row's data object is delivered as "event.detail.item", and the row's template model (used to update any property values in the row template) is delivered as "event.detail.model".
+			 *
+			 * @event row-tap
+			 */
+
+			hostAttributes: {
+				role: "grid"
+			},
+
+			behaviors: [
+				TriPlatAccessibilityBehavior
+			],
+
+			properties: {
+				/**
+				 * Always show the expandable row section in a table row, hide the row expand icon column.
+				 */
+				alwaysShowRowDetail: {
+					type: Boolean,
+					value: false
+				},
+				
+				/**
+				 * The name of the data-binding variable representing the row index.
+				 */
+				bindIndexAs: {
+					type: String,
+					value: "index"
+				},
+
+				/**
+				 * The name of the data-binding variable representing the row data object.
+				 */
+				bindItemAs: {
+					type: String,
+					value: "item"
+				},
+
+				/**
+				 * The name of the data-binding variable representing the row data value corresponding to the context column's `property`.
+				 */
+				bindValueAs: {
+					type: String,
+					value: "value"
+				},
+
+				/**
+				 * Boolean data property name that determines whether the row text should have bolded text. To negate the property value, prefix the property name with '!'.
+				 */
+				boldRowProperty: {
+					type: String,
+					value: ""
+				},
+
+				/**
+				 * Array containing tabular data to display in the table.  Tabular means each object in the array must have the same set of properties.
+				 */
+				data: {
+					type: Array
+				},
+
+				/**
+				 * Disable the default behavior of the column titles being used as the tooltip values for the column headers.  Regardless of this setting, the tooltip can be overwritten by specifying a `header-tooltip` on the individual column headers.
+				 */
+				disableDefaultTooltips: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * Disable the row hover styling.
+				 */
+				disableRowHoverStyling: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * Automatically expand the row on a row-tap event, if `triblock-table-row-detail` is present.
+				 */
+				expandOnRowTap: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * Fix the header row, but make the table body scrollable.
+				 */
+				fixedHeader: {
+					type: Boolean,
+					value: false,
+					observer: "_onFixedHeaderChange",
+					reflectToAttribute: true
+				},
+
+				/**
+				 * Add a numerical index to each row.
+				 */
+				indexed: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * List of all the media queries currently being tracked from this table
+				 */
+				_mediaQueryList: {
+					type: Array,
+					value: function() { return []; }
+				},
+
+				/**
+				 * When `true`, multiple items may be selected at once.  In this case, `selected` is an array of currently selected items.  When `false`, only one item may be selected at a time.
+				 */
+				multiSelect: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * Remove the row focusability and `:hover` styling.
+				 */
+				removeRowFocusAndHover: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * The DOM element that scrolls the content to be used for scrolling pagination.
+				 */
+				scroller: {
+					type: Object,
+					notify: true,
+					readOnly: true,
+					value: function() {
+						return this;
+					}
+				},
+
+				/**
+				 * Show checkboxes on the left of each row to allow selection.
+				 */
+				selectable: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * Boolean data property name that determines whether the row is selected.
+				 */
+				selectedProperty: {
+					type: String,
+					value: "selected"
+				},
+
+				/**
+				 * Automatically select the row on a row-tap event, if `selectable` is specified.
+				 */
+				selectOnRowTap: {
+					type: Boolean,
+					value: false
+				},
+
+				/**
+				 * Indicate that every column is sortable.
+				 */
+				sortable: {
+					type: Boolean,
+					value: false
+				},
+				
+				/**
+				 * Get/set the sorting direction.  Intended to be bound to the `desc` property of the `data` array in `triplat-query-sort`.
+				 */
+				sortDescending: {
+					type: Boolean,
+					value: false,
+					notify: true
+				},
+
+				/**
+				 * Get/set the data property name whose value determines the sorting order for the table.  Intended to be bound to the `name` property of the `data` array in `triplat-query-sort`.
+				 */
+				sortProperty: {
+					type: String,
+					value: "",
+					notify: true
+				},
+
+				/**
+				 * Get/set the data property type whose value determines the type of value being sorted.  Intended to be bound to the `type` property of the `data` array in `triplat-query-sort`.
+				 */
+				sortType: {
+					type: String,
+					value: "",
+					notify: true
+				},
+
+				/**
+				 * Callback function used to determine the aria-label value of each table row.
+				 */
+				rowAriaLabelCallback: {
+					type: Object
+				}
+			},
+
+			observers: [
+				"_onSortChange(sortProperty, sortDescending, sortType)",
+				"_onDataChange(data)"
+			],
+
+			attached: function() {
+				// set the initial sort column, if any (see `initialSort` property on `triblock-table-column`)
+				var initialSortCol = this.queryEffectiveChildren('triblock-table-column[initial-sort]');
+				if (initialSortCol) {
+					var initialSortProperty = initialSortCol.getAttribute("property");
+					if (initialSortProperty) this.set("sortProperty", initialSortProperty);
+					var initialSortDescending = initialSortCol.hasAttribute("default-sort-descending");
+					if (initialSortDescending) this.set("sortDescending", true);
+					var initialSortType = initialSortCol.getAttribute("type");
+					if (initialSortType) this.set("sortType", initialSortType);
+				}
+
+				// set the iron-list's scrollTarget to this
+				this.$.tableBodyList.scrollTarget = this;
+
+				// observe when children elements are added and removed from this component
+				Polymer.dom(this.$.content).observeNodes(function() {
+					// get the columns and row-detail sections that are passed in via light DOM and use them to initialize the table header and table row template (make sure we only do this once)
+					if (!this.initialized) {
+						this.debounce("initializeTriblockTable", function() {
+							var children = this.getEffectiveChildren();
+							var columns = children.filter(function(child) {
+								return child.tagName && child.tagName.toLowerCase() == "triblock-table-column";
+							});
+							this._columns = columns;
+							var rowDetail = children.find(function(child) {
+								return child.tagName && child.tagName.toLowerCase() == "triblock-table-row-detail";
+							});
+							this.async(function(){
+								this._rowDetail = rowDetail;
+								this._initializeMediaQueries(columns);
+								this._generateTableHeader(columns, rowDetail);
+								this._generateTableListTemplate(columns, rowDetail);
+								this.initialized = true;
+							}, 300);
+						});
+					}
+				}.bind(this));
+			},
+
+			_addOne: function(val) {
+				return parseInt(val) + 1;
+			},
+
+			_computeCollapseIcon: function(opened) {
+				return (opened) ? "hardware:keyboard-arrow-down" : "hardware:keyboard-arrow-right";
+			},
+
+			_computeHiddenByColProp: function(columnId) {
+				var col = this._columns.find(function(item) {
+					return item.getAttribute("column-id") == columnId;
+				});
+				return (col) ? col.hide : false;
+			},
+
+			_computeHiddenByScreenWidth: function(columnId) {
+				var col = this._columns.find(function(item) {
+					return item.getAttribute("column-id") == columnId;
+				});
+				if (col) {
+					var mediaQuery = window.matchMedia("(max-width: "+col.hideOnScreenWidth+")");
+					return mediaQuery.matches;
+				} else {
+					return false;
+				}
+			},
+
+			_computeRowIndex: function(val) {
+				return (val % 2 == 0) ? "even" : "odd";
+			},
+
+			/**
+			 * Returns `<div cell>` element for adding into the component DOM
+			 */
+			_createCellHTML: function() {
+				var cell = document.createElement("div");
+				cell.setAttribute("cell", "");
+				cell.classList.add("style-scope", "triblock-table");
+				return cell;
+			},
+
+			/**
+			 * Returns '<div column>` element for adding into the component DOM
+			 */
+			_createColumnHTML: function(columnId) {
+				var dummyContainerSoWeCanUseInnerHTML = document.createElement("div");
+				var dummyInnerHTMLString = "<div column role='gridcell'";
+				if (columnId) dummyInnerHTMLString += " hidden-by-screen-width$=[[_computeHiddenByScreenWidth('"+columnId+"')]] hidden-by-col-prop$=[[_computeHiddenByColProp('"+columnId+"')]]";
+				dummyInnerHTMLString += "></div>";
+				dummyContainerSoWeCanUseInnerHTML.innerHTML = dummyInnerHTMLString;
+				var column = dummyContainerSoWeCanUseInnerHTML.children[0];
+				column.classList.add("style-scope", "triblock-table");
+				return column;
+			},
+
+			/**
+			 * Returns `<div cell><span>{{defaultText}}</span></div>` for adding into the `iron-list` template
+			 */
+			_createDefaultTextCellHTML: function(defaultText) {
+				var span = document.createElement("span");
+				span.innerText = defaultText;
+				span.classList.add("style-scope", "triblock-table");
+
+				var cell = document.createElement("div");
+				cell.setAttribute("cell", "");
+				cell.classList.add("style-scope", "triblock-table");
+				cell.appendChild(span);
+
+				return cell;
+			},
+
+			/**
+			 * Returns `<div header-cell>` element for adding into the component DOM
+			 */
+			_createHeaderCellHTML: function() {
+				var headerCell = document.createElement("div");
+				headerCell.setAttribute("header-cell", "");
+				headerCell.classList.add("style-scope", "triblock-table");
+				return headerCell;
+			},
+
+			/**
+			 * Returns <div header-cell> element for a sortable column for adding into the component DOM
+			 */
+			_createHeaderCellSortableHTML: function() {
+				var headerCell = document.createElement("div");
+				headerCell.setAttribute("header-cell", "");
+				headerCell.setAttribute("sortable", "");
+				headerCell.setAttribute("tabindex", "0");
+				headerCell.classList.add("style-scope", "triblock-table");
+				this.listen(headerCell, "tap", "_onSortableHeaderCellTap");
+				this.listen(headerCell, "keypress", "_onSortableHeaderCellKeypress")
+
+				return headerCell;
+			},
+
+			/**
+			 * Returns `<div column header-column>` element for adding into the component DOM
+			 */
+			_createHeaderColumnHTML: function() {
+				var column = document.createElement("div");
+				column.setAttribute("column", "");
+				column.setAttribute("header-column", "");
+				column.setAttribute("role", "columnheader");
+				column.classList.add("style-scope", "triblock-table");
+				return column;
+			},
+
+			/**
+			 * Returns `<span header-cell-label>` element for adding into the component DOM
+			 */
+			_createHeaderCellLabelHTML: function() {
+				var label = document.createElement("span");
+				label.setAttribute("header-cell-label", "");
+				label.classList.add("style-scope", "triblock-table");
+				return label;
+			},
+
+			/**
+			 * Returns `<div cell icon-cell>` element for adding into the component DOM
+			 */
+			_createIconCellHTML: function() {
+				var cell = document.createElement("div");
+				cell.setAttribute("cell", "");
+				cell.setAttribute("icon-cell", "");
+				cell.classList.add("style-scope", "triblock-table");
+				return cell;
+			},
+
+			/**
+			 * Returns `<span>{{index}}</span>` element for adding into the `iron-list` template
+			 */
+			_createIndexSpanHTML: function() {
+				var span = document.createElement("span");
+				span.innerText = "{{_addOne(index)}}.";
+				span.classList.add("style-scope", "triblock-table");
+				return span;
+			},
+
+			/**
+			 * Returns `<div class="row-collapse" opened$='{{item.rowCollapseOpened}}'>` element for adding into the iron-list template
+			 */
+			_createIronCollapseHTML: function() {
+				var dummyContainerSoWeCanUseInnerHTML = document.createElement("div");
+				if (this.alwaysShowRowDetail)
+					dummyContainerSoWeCanUseInnerHTML.innerHTML = "<div opened></div>";	
+				else
+					dummyContainerSoWeCanUseInnerHTML.innerHTML = "<div opened$='{{item.rowCollapseOpened}}'></div>";
+				var collapse = dummyContainerSoWeCanUseInnerHTML.children[0];
+				collapse.classList.add("row-collapse", "style-scope", "triblock-table");
+				return collapse;
+			},
+
+			/**
+			 * Returns `<iron-icon class="row-collapse-icon">` element for adding into the `iron-list` template
+			 */
+			_createRowCollapseIconHTML: function() {
+				var dummyContainerSoWeCanUseInnerHTML = document.createElement("div");
+				dummyContainerSoWeCanUseInnerHTML.innerHTML = "<paper-icon-button primary icon='{{_computeCollapseIcon(item.rowCollapseOpened)}}' on-tap='_onRowCollapseTap' tabindex$='[[tabIndex]]'></paper-icon-button>";
+				var icon = dummyContainerSoWeCanUseInnerHTML.children[0];
+				icon.classList.add("row-collapse-icon", "style-scope", "triblock-table");
+				return icon;
+			},
+
+			/**
+			 * Returns `<div class="row-detail-container">` element for adding into the component DOM
+			 */
+			_createRowDetailContainerHTML: function() {
+				var div = document.createElement("div");
+				div.classList.add("row-detail-container", "style-scope", "triblock-table");
+				return div;
+			},
+
+			/**
+			 * Returns `<div row>` element for adding into the `iron-list` template
+			 */
+			_createRowHTML: function() {
+				var dummyContainerSoWeCanUseInnerHTML = document.createElement("div");
+				var innerHTMLString = "<div row role='row'";
+				if (this.boldRowProperty && this.boldRowProperty != "") {
+					var negateBoldRowProperty = false;
+					var boldRowProperty = this.boldRowProperty;
+					if (boldRowProperty.charAt(0) == '!') {
+						boldRowProperty = boldRowProperty.slice(1);
+						negateBoldRowProperty = true;
+					}
+					var negationChar = (negateBoldRowProperty) ? "!" : "";
+					innerHTMLString += " bolded-row$='[["+negationChar+"item."+boldRowProperty+"]]'";
+				}
+				innerHTMLString += "></div>";
+				dummyContainerSoWeCanUseInnerHTML.innerHTML = innerHTMLString;
+				var row = dummyContainerSoWeCanUseInnerHTML.children[0];
+				row.classList.add("style-scope", "triblock-table");
+				return row;
+			},
+
+			/**
+			 * Returns `<div row-container>` element for adding into the `iron-list` template
+			 */
+			_createRowContainerHTML: function() {
+				var dummyContainerSoWeCanUseInnerHTML = document.createElement("div");
+				var dummyInnerHTMLString = "<div row-container selected$='[[item."+this.selectedProperty+"]]' index$='{{_computeRowIndex(index)}}' on-tap='_onRowTap' on-keypress='_onRowTap'";
+
+				dummyInnerHTMLString += " aria-label$='[[_computeRowAriaLabel(item)]]'";
+
+				if (!this.removeRowFocusAndHover) dummyInnerHTMLString += " tabindex$='[[tabIndex]]'";
+				dummyInnerHTMLString += "></div>";
+				dummyContainerSoWeCanUseInnerHTML.innerHTML = dummyInnerHTMLString;
+				var row = dummyContainerSoWeCanUseInnerHTML.children[0];
+				if (!this.removeRowFocusAndHover) row.setAttribute("clickable", "");
+				row.classList.add("style-scope", "triblock-table");
+				return row;
+			},
+
+			/**
+			 * Returns `<paper-checkbox class="selection-checkbox" checked="{{selected}}">` element for adding into the `iron-list` template
+			 */
+			_createSelectionCheckboxHTML: function() {
+				var dummyContainerSoWeCanUseInnerHTML = document.createElement("div");
+				var innerHTMLString = "<paper-checkbox checked='{{item."+this.selectedProperty+"}}' noink tabindex$='[[tabIndex]]' on-tap='_onRowSelectCheckboxTap'></paper-checkbox>";
+				dummyContainerSoWeCanUseInnerHTML.innerHTML = innerHTMLString;
+				var checkbox = dummyContainerSoWeCanUseInnerHTML.firstElementChild;
+				checkbox.innerHTML = ""; // need to clear innerHTML since the contents of paper-checkbox will be applied when row template is stamped
+				checkbox.setAttribute("checked", "{{item."+this.selectedProperty+"}}"); // not sure why this line AND checked property specification above are BOTH necessary
+				checkbox.classList.add("selection-checkbox", "style-scope", "triblock-table");
+				return checkbox;
+			},
+
+			/**
+			 * Returns `<paper-radio-button checked="{{selected}}">` element for adding into the `iron-list` template
+			 */
+			_createSelectionRadioButtonHTML: function() {
+				var dummyContainerSoWeCanUseInnerHTML = document.createElement("div");
+				var innerHTMLString = "<paper-radio-button checked='{{item."+this.selectedProperty+"}}' noink tabindex$='[[tabIndex]]' on-tap='_onRowSelectRadioButtonTap'></paper-radio-button>";
+				dummyContainerSoWeCanUseInnerHTML.innerHTML = innerHTMLString;
+				var radio = dummyContainerSoWeCanUseInnerHTML.firstElementChild;
+				radio.innerHTML = ""; // need to clear innerHTML since the contents of paper-radio-button will be applied when row template is stamped
+				radio.setAttribute("checked", "{{item."+this.selectedProperty+"}}"); // not sure why this line AND checked property specification above are BOTH necessary
+				radio.classList.add("selection-radio-button", "style-scope", "triblock-table");
+				return radio;
+			},
+
+			/**
+			 * Returns `<iron-icon class="sort-icon">` element for adding into the component DOM
+			 */
+			_createSortIconHTML: function() {
+				var icon = document.createElement("iron-icon");
+				icon.classList.add("sort-icon", "style-scope", "triblock-table");
+				return icon;
+			},
+
+			/**
+			 * Returns `<iron-icon class="title-icon">` element for adding into the component DOM
+			 */
+			_createTitleIconHTML: function() {
+				var icon = document.createElement("iron-icon");
+				icon.classList.add("title-icon", "style-scope", "triblock-table");
+				return icon;
+			},
+
+			/**
+			 * Create the `<iron-list>` template by combining the `triblock-table-column` templates with some additional mark-up
+			 */
+			_generateTableListTemplate: function(columns, rowDetail) {
+				var rowHTML = this._createRowHTML();
+
+				// if this is an "indexed" table, include the index column
+				if (this.indexed) {
+					var indexSpanHTML = this._createIndexSpanHTML();
+
+					var iconCellHTML = this._createIconCellHTML();
+					iconCellHTML.appendChild(indexSpanHTML);
+
+					var columnHTML = this._createColumnHTML();
+					columnHTML.setAttribute("merge-with-previous-column", "");
+					columnHTML.setAttribute("style", "min-width: 45px; max-width: 45px; width: 45px;");
+					columnHTML.appendChild(iconCellHTML);
+
+					rowHTML.appendChild(columnHTML);					
+				}
+
+				// if there are row details specified, include the row-expand icon column and row details expandable section
+				if (rowDetail) {
+					if (!this.alwaysShowRowDetail) {
+						var iconHTML = this._createRowCollapseIconHTML();
+						var iconCellHTML = this._createIconCellHTML();
+						iconCellHTML.appendChild(iconHTML);
+
+						var columnHTML = this._createColumnHTML();
+						columnHTML.setAttribute("merge-with-previous-column", "");
+						columnHTML.setAttribute("style", "min-width: 45px; max-width: 45px; width: 45px;");
+						columnHTML.appendChild(iconCellHTML);
+
+						rowHTML.appendChild(columnHTML);
+					}
+
+					var rowDetailInstanceManager = document.createElement("triblock-table-row-detail-instance-manager");
+					rowDetailInstanceManager.rowData = "{{item}}";
+					rowDetailInstanceManager.index = "{{index}}";
+					rowDetailInstanceManager.tabIndex = "{{tabIndex}}";
+					rowDetail.bindItemAs = this.bindItemAs;
+					rowDetail.bindIndexAs = this.bindIndexAs;
+					rowDetailInstanceManager.bindIndexAs = this.bindIndexAs;
+					rowDetailInstanceManager.bindItemAs = this.bindItemAs;
+					var detailId = (new Date()).getTime();
+					rowDetailInstanceManager.detailId = detailId;
+					rowDetail.setAttribute("detail-id", detailId);
+
+					var rowDetailContainerHTML = this._createRowDetailContainerHTML();
+					rowDetailContainerHTML.appendChild(rowDetailInstanceManager);
+
+					var iconCollapseHTML = this._createIronCollapseHTML();
+					iconCollapseHTML.appendChild(rowDetailContainerHTML);
+				}
+				
+				// if this table is selectable, include the selections column
+				if (this.selectable) {
+					if (this.multiSelect) var selectionHTML = this._createSelectionCheckboxHTML();
+					else var selectionHTML = this._createSelectionRadioButtonHTML();
+
+					var iconCellHTML = this._createIconCellHTML();
+					iconCellHTML.appendChild(selectionHTML);
+
+					var columnHTML = this._createColumnHTML();
+					columnHTML.setAttribute("merge-with-previous-column", "");
+					columnHTML.setAttribute("style", "min-width: 45px; max-width: 45px; width: 45px;");
+					columnHTML.appendChild(iconCellHTML);
+
+					rowHTML.appendChild(columnHTML);
+				}
+
+				// add a column for each <triblock-table-column>
+				columns.forEach(function(col) {
+					var columnId;
+					if (col.columnId) {
+						columnId = col.columnId;
+					} else {
+						columnId = generateTriblockTableColumnId();
+						col.columnId = columnId;
+					}
+
+					var cellInstanceManager = document.createElement("triblock-table-cell-instance-manager");
+					cellInstanceManager.rowData = "{{item}}";
+					cellInstanceManager.index = "{{index}}";
+					cellInstanceManager.tabIndex = "{{tabIndex}}";
+					if (col._hasUserProvidedTemplate) {
+						col.bindIndexAs = this.bindIndexAs;
+						col.bindItemAs = this.bindItemAs;
+						col.bindValueAs = this.bindValueAs;
+						cellInstanceManager.bindIndexAs = this.bindIndexAs;
+						cellInstanceManager.bindItemAs = this.bindItemAs;
+						cellInstanceManager.bindValueAs = this.bindValueAs;
+					}
+					cellInstanceManager.property = col.property;
+					cellInstanceManager.defaultValue = col.defaultValue;
+					cellInstanceManager.columnId = columnId;
+					col.setAttribute("column-id", columnId);
+
+					var cellHTML = this._createCellHTML();
+					var bodyCellStyle = col._bodyCellStyle;
+					if (bodyCellStyle != "") cellHTML.setAttribute("style", bodyCellStyle);
+					if (col.removeDefaultCellPadding) cellHTML.setAttribute("remove-default-cell-padding", "");
+					cellHTML.appendChild(cellInstanceManager);
+
+					// if defaultText is specified, add a default text cell and include data-binding to determine whether to show the default text cell (empty cell value) or the column template cell (non-empty cell value)
+					if (col.defaultText != "") {
+						var defaultTextCellHTML = this._createDefaultTextCellHTML(col.defaultText);
+						if (bodyCellStyle != "") defaultTextCellHTML.setAttribute("style", bodyCellStyle);
+
+						defaultTextCellHTML.setAttribute("hidden", "{{!_isEmptyCellValue(item, '"+col.property+"')}}");
+						cellHTML.setAttribute("hidden", "{{_isEmptyCellValue(item, '"+col.property+"')}}");
+					}
+
+					var columnHTML = this._createColumnHTML(columnId);
+					if (col.mergeWithPreviousColumn) columnHTML.setAttribute("merge-with-previous-column", "");
+					var columnStyle = col._columnStyle;
+					columnHTML.setAttribute("style", columnStyle);
+					if (col.hideOnScreenWidth != "") {
+						columnHTML.setAttribute("hide-on-screen-width", col.hideOnScreenWidth);
+					}
+					columnHTML.appendChild(cellHTML);
+					if (defaultTextCellHTML) columnHTML.appendChild(defaultTextCellHTML);
+					columnHTML.setAttribute("column-id", columnId);
+
+					rowHTML.appendChild(columnHTML);
+				}.bind(this));
+
+				var rowContainerHTML = this._createRowContainerHTML();
+				rowContainerHTML.appendChild(rowHTML);
+				if (rowDetail) rowContainerHTML.appendChild(iconCollapseHTML);
+
+				var template = document.createElement("template");
+				template.content.appendChild(rowContainerHTML);
+
+				Polymer.dom(this.$.tableBodyList).appendChild(template);
+				this._tableBodyListTemplateGenerated = true;
+				
+				// now that the row template has been added to the <iron-list>, we can templatize the iron-list and initialize the `_filteredIronListData` that gets passed into iron-list's `items` property
+				this.$.tableBodyList._ensureTemplatized(); 
+				if (this.data) this.set("_filteredIronListData", this.data);
+				this.linkPaths("_filteredIronListData", "data");
+				this.linkPaths("data", "_filteredIronListData");
+				
+				// fix console error complaining about null parentProps when the iron-list template model is modified
+				this.async(function() {
+					if (!this.$.tableBodyList._parentProps) this.$.tableBodyList._parentProps = [];
+				});
+			},
+
+			/**
+			 * Initialize the table header row
+			 */
+			_generateTableHeader: function(columns, rowDetail) {
+				// clear the headerRow
+				Polymer.dom(this.$.headerRow).innerHTML = "";
+
+				// if this is an "indexed" table, include the index column
+				if (this.indexed) {
+					var headerColumnHTML = this._createHeaderColumnHTML();
+					headerColumnHTML.setAttribute("merge-with-previous-column", "");
+					headerColumnHTML.setAttribute("style", "min-width: 45px; max-width: 45px; width: 45px;");
+
+					Polymer.dom(this.$.headerRow).appendChild(headerColumnHTML);
+				}
+
+				// if there are row details specified, include the row-expand icon column
+				if (rowDetail && !this.alwaysShowRowDetail) {
+					var headerColumnHTML = this._createHeaderColumnHTML();
+					headerColumnHTML.setAttribute("merge-with-previous-column", "");
+					headerColumnHTML.setAttribute("style", "min-width: 45px; max-width: 45px; width: 45px;");
+
+					Polymer.dom(this.$.headerRow).appendChild(headerColumnHTML);
+				}
+
+				// if this table is selectable, include the selections column
+				if (this.selectable) {
+					var headerColumnHTML = this._createHeaderColumnHTML();
+					headerColumnHTML.setAttribute("merge-with-previous-column", "");
+					headerColumnHTML.setAttribute("style", "min-width: 45px; max-width: 45px; width: 45px;");
+
+					Polymer.dom(this.$.headerRow).appendChild(headerColumnHTML);
+				}
+
+				// add each column in the header row
+				columns.forEach(function(col) {
+					var columnId;
+					if (col.columnId) {
+						columnId = col.columnId;
+					} else {
+						columnId = generateTriblockTableColumnId();
+						col.columnId = columnId;
+					}
+
+					// set the title label or icon for this header column
+					if (col.titleIcon == "") {
+						var headerCellLabelHTML = this._createHeaderCellLabelHTML();
+						headerCellLabelHTML.textContent = col.title;
+					} else {
+						var titleIconHTML = this._createTitleIconHTML();
+						titleIconHTML.setAttribute("icon", col.titleIcon);
+					}
+
+					// add the sort icon if this column is sortable
+					var columnIsSortable = this._isColumnSortable(this.sortable, col.sortable);
+					if (columnIsSortable) {
+						var sortIconHTML = this._createSortIconHTML();
+						sortIconHTML.setAttribute("column-title", col.title);
+						if (col.property == this.sortProperty) sortIconHTML.setAttribute("icon", (this.sortDescending) ? "ibm:sort-descending" : "ibm:sort-ascending");
+						else {
+							sortIconHTML.setAttribute("icon", "ibm:sort");
+							sortIconHTML.classList.add("unsorted");
+						}
+					} 
+
+					// create the header cell
+					var headerCellHTML = (columnIsSortable) ? this._createHeaderCellSortableHTML() : this._createHeaderCellHTML();
+					headerCellHTML.setAttribute("data-property", col.property);
+					headerCellHTML.setAttribute("data-type", col.type);
+					headerCellHTML.setAttribute("data-reverse-sort", col.reverseSort);
+					var headerCellStyle = col._headerCellStyle;
+					if (headerCellStyle != "") headerCellHTML.setAttribute("style", headerCellStyle);
+					if (this._isColumnSortable(this.sortable, col.sortable)) headerCellHTML.setAttribute("sortable", "");
+					if (col.defaultSortDescending) headerCellHTML.setAttribute("default-sort-descending", "");
+					if (headerCellLabelHTML) headerCellHTML.appendChild(headerCellLabelHTML);
+					if (titleIconHTML) headerCellHTML.appendChild(titleIconHTML);
+					if (sortIconHTML) headerCellHTML.appendChild(sortIconHTML);
+
+					// create the column wrapper
+					var headerColumnHTML = this._createHeaderColumnHTML();
+					headerColumnHTML.setAttribute("column-id", columnId);
+					if (col.property == this.sortProperty) headerColumnHTML.setAttribute("aria-sort", (this.sortDescending) ? "descending" : "ascending");
+					if (col.mergeWithPreviousColumn) headerColumnHTML.setAttribute("merge-with-previous-column", "");
+					var columnStyle = col._columnStyle;
+					if (columnStyle != "") headerColumnHTML.setAttribute("style", columnStyle);
+					headerColumnHTML.appendChild(headerCellHTML);
+
+					// set the header tooltip if one is specified
+					if (col.headerTooltip && col.headerTooltip != "") {
+						headerColumnHTML.setAttribute("title", col.headerTooltip);
+					} else if (!this.disableDefaultTooltips) {
+						headerColumnHTML.setAttribute("title", col.title);
+					}
+
+					if (col.hideOnScreenWidth != "") {
+						// media queries in `mediaQueryList` will look for this attribute to show/hide the column on screen resize
+						headerColumnHTML.setAttribute("hide-on-screen-width", col.hideOnScreenWidth);
+
+						// initially show/hide this cell based on current screen width
+						var mediaQuery = window.matchMedia("(max-width: "+col.hideOnScreenWidth+")");
+						if (mediaQuery.matches) {
+							// hide this cell
+							headerColumnHTML.setAttribute("hidden-by-screen-width", "");
+						}
+					}
+					
+					if (col.hide) headerColumnHTML.setAttribute("hidden-by-col-prop", "");
+
+					Polymer.dom(this.$.headerRow).appendChild(headerColumnHTML);
+				}.bind(this));
+			},
+
+			_onFixedHeaderChange: function(fixedHeader) {
+				if (fixedHeader) {
+					// add scroll listener
+					this.listen(this, "scroll", "_updateFixedHeaderPosition");
+
+					// add padding above table body to push it below table header
+					this.$.tableBodyList.style.marginTop = "41px";
+				} else {
+					// remove scroll listener
+					this.unlisten(this, "scroll", "_updateFixedHeaderPosition");
+
+					// remove table body padding
+					this.$.tableBodyList.style.marginTop = "0px";
+				}
+			},
+
+			/**
+			 * Hide the necessary columns if the media query has been matched
+			 */
+			_onHideColumnAtScreenWidth: function(mediaQuery) {
+				var width = mediaQuery.media.match(/\(max-width: (.+)\)/)[1];
+				var matchingColumns = Polymer.dom(this.root).querySelectorAll("div[hide-on-screen-width='"+width+"']");
+				if (matchingColumns && matchingColumns.length > 0) {
+					if (mediaQuery.matches) {
+						// columns should be hidden
+						matchingColumns.forEach(function(col) {
+							col.setAttribute("hidden-by-screen-width", "");
+						});
+					} else {
+						// columns should be displayed
+						matchingColumns.forEach(function(col) {
+							col.removeAttribute("hidden-by-screen-width");
+						});
+					}
+				}
+			},
+
+			/**
+			 * Handler for `row-collapse-icon` tap event. Collapse/expand the row details section.
+			 */
+			_onRowCollapseTap: function(e) {
+				e.stopPropagation();
+				var item = e.model.item;
+				if (item.rowCollapseOpened) {
+					e.model.set("item.rowCollapseOpened", false);
+				} else {
+					e.model.set("item.rowCollapseOpened", true);
+				}
+				this.$.tableBodyList.updateSizeForItem(item);
+			},
+
+			/**
+			 * Handler for row's selection checkbox tap event.
+			 */
+			_onRowSelectCheckboxTap: function(e) {
+				e.stopPropagation();
+				var item = e.model.item;
+				if (item) {
+					var selected = e.currentTarget.checked;
+
+					// maintain `selected`
+					this.$.selector.select(item);
+
+					// fire row-select event
+					this.fire("row-select", {"item": item, "selected": selected});
+				}
+			},
+
+			/**
+			 * Handler for row's selection `radio-button` tap event.
+			 */
+			_onRowSelectRadioButtonTap: function(e) {
+				e.stopPropagation();
+				var item = e.model.item;
+				if (item) {
+					var isSelected = e.currentTarget.checked;
+
+					// remove previous selection
+					if (this.selected && this.selected != item) {
+						var selectedModel = this.$.tableBodyList._getModelFromItem(this.selected);
+						selectedModel.set("item."+this.selectedProperty, false);
+						this.fire("row-select", {"item": this.selected, "selected": false});
+					}
+
+					// maintain `selected`
+					this.$.selector.select(item);
+
+					// fire row-select event
+					this.fire("row-select", {"item": item, "selected": isSelected});
+				}
+			},
+
+			/**
+			 * Checker to verify if the "enter" key was pressed
+			 */
+			_isEnterKey: function(e) {
+				var key = e.which || e.keyCode;
+	
+				// 13 is enter
+				return (key === 13) ? true : false;
+			},
+
+			/**
+			 * Handler for row tap event
+			 */
+			_onRowTap: function(e) {
+				if (e.type == "keypress" && !this._isEnterKey(e)) {
+					return;
+				}
+
+				var rowModel = e.model;
+				var rowData = rowModel.item;
+				
+				if (this.expandOnRowTap) {
+					if (rowData.rowCollapseOpened) {
+						rowModel.set("item.rowCollapseOpened", false);
+					} else {
+						rowModel.set("item.rowCollapseOpened", true);
+					}
+					this.$.tableBodyList.updateSizeForItem(rowData);
+				}
+
+				if (this.selectable && this.selectOnRowTap) {
+					// if single-select, remove previous selection
+					if (!this.multiSelect && this.selected && this.selected != rowData) {
+						var oldSelectedModel = this.$.tableBodyList._getModelFromItem(this.selected);
+						oldSelectedModel.set("item."+this.selectedProperty, false);
+						this.fire("row-select", {"item": this.selected, "selected": false});
+					}
+
+					// maintain `selected`
+					this.$.selector.select(rowData);
+
+					// toggle current selection
+					var isSelected = Boolean(rowData[this.selectedProperty]);
+					var selectedModel = this.$.tableBodyList._getModelFromItem(rowData);
+					selectedModel.set("item."+this.selectedProperty, !isSelected);
+
+					// fire row-select event
+					this.fire("row-select", {"item": rowData, "selected": !isSelected});
+				}
+
+				this.fire("row-tap", {"item": rowData, "model": rowModel});
+			},
+
+			/**
+			 * Handle keypress event on header-cell
+			 */
+			_onSortableHeaderCellKeypress: function(e) {
+				if (e.key == "Enter" || e.key == " ") {
+					// when Enter or Spacebar is pressed, set sortProperty / cycle through sortDescending
+					var column = e.currentTarget;
+					var columnProperty = column.getAttribute("data-property");
+					var columnDefaultSortDescending = column.hasAttribute("default-sort-descending");
+					var columnType = column.getAttribute("data-type");
+					var columnReverseSort = (column.getAttribute("data-reverse-sort") == 'true');
+					if(columnReverseSort) columnDefaultSortDescending = !columnDefaultSortDescending;
+					if (this.sortProperty == columnProperty) {
+						if (this.sortDescending == !columnDefaultSortDescending) {
+							// reset search to no sort
+							this.set("sortProperty", "");
+							this.set("sortDescending", false);
+							this.set("sortType", "")
+						} else {
+							// switch sort direction
+							this.set("sortDescending", !columnDefaultSortDescending);
+						}
+					} else {
+						// new search column
+						this.set("sortProperty", columnProperty);
+						this.set("sortDescending", columnDefaultSortDescending);
+						this.set("sortType", columnType);
+					}
+					e.preventDefault();
+				}
+			},
+
+			/**
+			 * Handle tap event on header-cell
+			 */
+			_onSortableHeaderCellTap: function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				// set sortProperty / cycle through sortDescending
+				var column = e.currentTarget;
+				var columnProperty = column.getAttribute("data-property");
+				var columnDefaultSortDescending = column.hasAttribute("default-sort-descending");
+				var columnType = column.getAttribute("data-type");
+				var columnReverseSort = (column.getAttribute("data-reverse-sort") == 'true');
+				if(columnReverseSort) columnDefaultSortDescending = !columnDefaultSortDescending;
+				if (this.sortProperty == columnProperty) {
+					if (this.sortDescending == !columnDefaultSortDescending) {
+						// reset search to no sort
+						this.set("sortProperty", "");
+						this.set("sortDescending", false);
+						this.set("sortType", "")
+					} else {
+						// switch sort direction
+						this.set("sortDescending", !columnDefaultSortDescending);
+					}
+				} else {
+					// new search column
+					this.set("sortProperty", columnProperty);
+					this.set("sortDescending", columnDefaultSortDescending);
+					this.set("sortType", columnType);
+				}
+			},
+
+			/**
+			 * Set up media queries based on `triblock-table-column`'s `hide-on-screen-width` values
+			 */
+			_initializeMediaQueries: function(columns) {
+				if (columns && columns.length > 0) columns.forEach(function(col) {
+					var mediaQueryString = "(max-width: "+col.hideOnScreenWidth+")";
+					
+					var mediaQueryFound = false;
+					for (var i=0; i < this._mediaQueryList.length; i++) {
+						if (this._mediaQueryList[i].media == mediaQueryString) {
+							mediaQueryFound = true;
+							break;
+						}
+					}
+
+					if (!mediaQueryFound) {
+						var mediaQuery = window.matchMedia(mediaQueryString);
+						mediaQuery.addListener(this._onHideColumnAtScreenWidth.bind(this));
+						this.push("_mediaQueryList", mediaQuery);
+					}
+				}, this);
+			},
+
+			/**
+			 * Return true if this column is sortable
+			 */
+			_isColumnSortable: function(tableSortable, colSortable) {
+				return tableSortable || colSortable;
+			},
+
+			/**
+			 * Return true if `item[property]` is empty/blank
+			 */
+			_isEmptyCellValue: function(item, property) {
+				return item[property] == null || item[property] === "";
+			},
+
+			_isZero: function(val) {
+				return val == 0;
+			},
+
+			_onDataChange: function(data) {
+				// only update _filteredIronListData if the iron-list template has been initialized
+				if (this._tableBodyListTemplateGenerated) this.set("_filteredIronListData", data);
+			},
+
+			_onSortChange: function(sortProperty, sortDescending, sortType) {
+				this._updateSortIcons();
+			},
+
+			/**
+			 * Update the fixed header position based on current scroll position.
+			 */
+			_updateFixedHeaderPosition: function() {
+				var scrollTop = this.scrollTop;
+				this.$.tableHeader.style.top = scrollTop + "px";
+			},
+
+			/**
+			 * Update the table display based on current sort property and direction.
+			 */
+			_updateSortIcons: function() {
+				if (this.isAttached) this.debounce("updateSortIcons", function() {
+					// reset all columns
+					var sortIcons = Polymer.dom(this.$.tableHeader).querySelectorAll(".sort-icon");
+					if (sortIcons) sortIcons.forEach(function(icon) {
+						icon.setAttribute("icon", "ibm:sort");
+						icon.classList.add("unsorted");
+					});
+					var sortColumn = Polymer.dom(this.$.tableHeader).querySelector("div[header-column][aria-sort]");
+					if (sortColumn) sortColumn.removeAttribute("aria-sort");
+					
+					// Set a live area for screen readers
+					var liveArea = this.setAriaLiveContainer(this, "tableLiveArea", "polite");
+					if (liveArea) liveArea.innerHTML = "";
+
+					// set the current sort column
+					var newSortColumnIcon = Polymer.dom(this.$.tableHeader).querySelector('div[data-property="'+this.sortProperty+'"] .sort-icon');
+					if (newSortColumnIcon) {
+						var newSortColumn = newSortColumnIcon.parentElement;
+						var newSortColumnReverse = (newSortColumn.dataset.reverseSort == 'true');
+						var newSortColumnHeader = newSortColumn.parentElement;
+						if(newSortColumnReverse) {
+							newSortColumnIcon.setAttribute("icon", (this.sortDescending) ? "ibm:sort-ascending" : "ibm:sort-descending");
+							newSortColumn.setAttribute("aria-sort", (this.sortDescending) ? "ascending" : "descending");
+							newSortColumnHeader.setAttribute("aria-sort", (this.sortDescending) ? "ascending" : "descending");
+						} else {
+							newSortColumnIcon.setAttribute("icon", (this.sortDescending) ? "ibm:sort-descending" : "ibm:sort-ascending");
+							newSortColumn.setAttribute("aria-sort", (this.sortDescending) ? "descending" : "ascending");
+							newSortColumnHeader.setAttribute("aria-sort", (this.sortDescending) ? "descending" : "ascending");
+						}
+						newSortColumnIcon.classList.remove("unsorted");
+						while (!newSortColumn.hasAttribute("header-column")) newSortColumn = newSortColumn.parentElement;
+						
+						// Sorted by message for screen readers
+						var columnTitle = newSortColumnHeader.title;
+						if (columnTitle && columnTitle != "" && liveArea) {
+							var __dictionary__sortedByMessage = "Sorted by";
+							var __dictionary__ascending = "ascending";
+							var __dictionary__descending = "descending";
+							liveArea.innerHTML = __dictionary__sortedByMessage + " " + columnTitle + " " + ((this.sortDescending) ? __dictionary__ascending : __dictionary__descending);
+						}
+					}
+				});
+			},
+
+			_computeRowAriaLabel: function(item) {
+				if (this.rowAriaLabelCallback) {
+					return this.rowAriaLabelCallback(item);
+				} else {
+					return "";
+				}
+			}
+
+		});
+	</script>
+
+</dom-module>

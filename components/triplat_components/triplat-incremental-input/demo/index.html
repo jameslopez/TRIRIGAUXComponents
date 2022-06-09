@@ -1,0 +1,209 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>incremental-input Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+
+	<link rel="import" href="../triplat-incremental-input.html">
+
+	<style is="custom-style" include="iron-flex iron-flex-alignment" type="text/css">
+		body {
+			font-family: 'Roboto', 'Noto', sans-serif;
+		}
+
+		.info {
+			font-weight: bold;
+		}
+
+		.line {
+			padding-bottom: 30px;
+    			padding-left: 30px;
+    			padding-right: 30px;
+		}
+
+		triplat-incremental-input.attendance {
+
+			--triplat-increment-input-paper: { 
+				width: 60px;
+			};
+
+			--triplat-increment-input-main: { 
+				@apply --layout-vertical;
+				height: 75px;
+			};
+
+			--triplat-increment-input-counter: { 
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-start-justified;
+			};
+
+			--triplat-duration-period-counter-icon: {
+   				padding: 8px; 
+    				color: green;
+			};
+		}
+
+		triplat-incremental-input.timepicker {
+			--triplat-increment-input-label: {
+				padding-bottom: 5px;
+			};
+
+			--triplat-increment-input-paper: { 
+				width: 30px;
+				margin-top: -12px;
+    			margin-bottom: -5px;
+    		};
+
+			--triplat-increment-input-main: {
+				padding-right: 18px; 
+				padding-left: 18px; 
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+			};
+
+			--triplat-increment-input-counter: { 
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+			};
+		}
+		
+	</style>
+</head>
+<body>
+	<template is="dom-bind">
+		<div class="layout vertical line">
+			
+			<div class="line">
+				<span class="info"> Vertical display: </span>
+				<div class="layout horizontal">
+					<triplat-incremental-input 
+							class="timepicker"
+							label="Hours"
+							reverse-icons
+			    			increase-aria-label="Increase"
+			    			decrease-aria-label="Decrease"
+			    			value="0"
+							min="0"
+							max="23"
+							loop>
+					</triplat-incremental-input>
+
+					<triplat-incremental-input 
+							class="timepicker"
+							label="Minutes"
+							reverse-icons
+			    			increase-aria-label="Increase"
+			    			decrease-aria-label="Decrease"
+			    			value="0"
+							min="0"
+							max="59"
+							loop>
+					</triplat-incremental-input>
+
+					<triplat-incremental-input 
+							class="timepicker"
+							label="Seconds"
+							reverse-icons
+			    			increase-aria-label="Increase"
+			    			decrease-aria-label="Decrease"
+			    			value="0"
+							min="0"
+							max="59"
+							loop>
+					</triplat-incremental-input>
+
+					<triplat-incremental-input 
+							class="timepicker"
+							label="two digits"
+							reverse-icons
+							min-digits="2"
+			    			increase-aria-label="Increase"
+			    			decrease-aria-label="Decrease"
+			    			value="0"
+							min="0"
+							max="59"
+							loop>
+					</triplat-incremental-input>
+					<triplat-incremental-input 
+						class="timepicker"
+						reverse-icons
+						min-digits="2"
+		    				increase-aria-label="Increase"
+		    				decrease-aria-label="Decrease"
+		    				value="0"
+						min="0"
+						loop
+						counters-only
+						show-label-under>
+						<span label>counters only, custom label below</span>
+					</triplat-incremental-input>
+				</div>
+			</div>
+			<div class="line">
+				<span class="info"> Horizontal display: </span>
+				<triplat-incremental-input 
+						class="attendance"
+						label="Minutes (min 0, max 59, step 15, loop)"
+		    			increase-aria-label="Increase"
+		    			decrease-aria-label="Decrease"
+		    			value="0"
+						min="0"
+						max="59"
+						loop
+						step="15">
+				</triplat-incremental-input>
+
+				<triplat-incremental-input 
+						class="attendance"
+						label="Attendance (value -1, no loop, 1-9999)"
+		    			increase-aria-label="Increase"
+		    			decrease-aria-label="Decrease"
+		    			value="-1"
+						min="1"
+						max="9999"
+						error-message="1 to 9999">
+				</triplat-incremental-input>
+
+				<triplat-incremental-input 
+						class="attendance"
+						label="Attendance (value null, flexValidation, with error message)"
+						error-message="1 to 9999"
+						flex-validation
+		    			increase-aria-label="Increase"
+		    			decrease-aria-label="Decrease"
+		    			value="{{nullValue}}"
+						min="1"
+						max="9999">
+				</triplat-incremental-input>
+				
+				<triplat-incremental-input 
+						class="attendance"
+						label="Attendance (value -1, flexValidation, with error message, reverse icons, minimum digits of 3)"
+						error-message="1 to 9999"
+						flex-validation
+		    			increase-aria-label="Increase"
+		    			decrease-aria-label="Decrease"
+		    			min-digits="3"
+		    			value="-1"
+						min="1"
+						max="9999">
+				</triplat-incremental-input>
+
+			</div>
+
+	</template>
+</body>
+</html>

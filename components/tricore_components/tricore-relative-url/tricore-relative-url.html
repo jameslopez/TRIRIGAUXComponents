@@ -1,0 +1,79 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../tricore-context-path/tricore-context-path.html">
+
+<!--
+A component that will calculate a relative URL based off the url of the document.
+
+     <tricore-relative-url 
+       relative-url="demo.json" 
+       relative-data-host={{dataHost}} 
+       bind-url="{{url}}"></tricore-relative-url>
+
+@demo demo/index.html
+-->
+<dom-module id="tricore-relative-url"><template></template></dom-module>
+<script>
+	Polymer({
+
+		is: "tricore-relative-url",
+
+		properties: {
+
+			/**
+			 * The relative URL that will be used in calculating a real path.
+			 */
+			relativeUrl: {
+				type: String,
+				notify: false,
+				readOnly: false
+			},
+
+			/**
+			 * The data host to calculate the relative url from.
+			 */
+			relativeHost: {
+				type: Object,
+				notify: false,
+				readOnly: false,
+				value: function() {
+					return this.dataHost;
+				}
+			},
+
+			/**
+			 * Use the property to retrieve the calculated URL.
+			 */
+			bindUrl: {
+				type: String,
+				notify: true,
+				readOnly: true
+			}
+
+		},
+
+		observers: [
+			"_init(relativeUrl, relativeHost)"
+		],
+
+		_init: function(relativeUrl, relativeHost) {
+			var bindUrl = relativeHost.resolveUrl(relativeUrl);
+			if (bindUrl.indexOf("http") == 0) {
+				var match = bindUrl.match(/^(.*?)\/?([^\/]+\.[^\/]+)?$/);
+				if (match.length >= 1) {
+					bindUrl = match[1];
+				}
+			} else {
+				// this means that the relative url should come from the document
+				bindUrl = document.baseURI.match(/^(.*?)\/?([^\/]+\.[^\/]+)?$/)[1];
+				if (relativeUrl.length != 0) {
+					bindUrl += "/" + relativeUrl;
+				}
+			}
+			this._setBindUrl(bindUrl);
+		}
+
+	});
+</script>

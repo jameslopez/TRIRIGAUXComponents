@@ -1,0 +1,186 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<!doctype html>
+<html>
+<head>
+
+	<title>triblock-app-layout Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../paper-styles/demo-pages.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+	<link rel="import" href="../../iron-pages/iron-pages.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+	<link rel="import" href="../triblock-app-layout.html">
+	<link rel="import" href="../triblock-banner-button.html">
+	
+	
+	<style is="custom-style" include="demo-pages-shared-styles">
+		#container {
+	        max-width: 800px;
+	    }
+	    
+	    demo-snippet {
+	    	--demo-snippet-demo: {
+	    		position: relative;
+	    		height: 250px;
+	    	};
+	    }
+	    
+	    .smallDemo {
+	    	--demo-snippet-demo: {
+	    		position: relative;
+	    		height: 100px;
+	    	};
+	    }
+	    
+	</style>
+</head>
+<body unresolved>
+	<div id="container" class="vertical-section-container centered">
+		<h2>Sample <code>triblock-app-layout</code></h2>
+		
+		<h4><code>triblock-app-layout</code> with <code>iron-pages</code></h4>
+		<div style="font-size:12px">Resize the page until the banner buttons are moved to a mobile menu drawer.</div></br>
+    	<demo-snippet>
+        	<template>
+				<style is="custom-style">
+					iron-pages {
+						@apply(--layout-fit);
+						@apply(--layout-flex);
+						@apply(--layout-vertical);
+						@apply(--layout-center-justified);
+					}
+					section {
+						@apply(--layout-horizontal);
+						@apply(--layout-center-justified);
+					}
+				</style>        		
+				<triblock-app-layout app-label="My Application" iron-pages-id="pages">
+					<triblock-banner-button 
+						iron-page-id="homePage" home></triblock-banner-button>
+					<triblock-banner-button 
+						icon="ibm:table-tables" 
+						label="Reports" 
+						iron-page-id="reportsPage">
+					</triblock-banner-button>
+					<triblock-banner-button 
+						icon="ibm:world-globe" 
+						label="Watson Analytics" 
+						iron-page-id="watsonPage">
+					</triblock-banner-button>
+					<iron-pages id="pages" selected="0" content>
+						<section id="homePage">
+							<span>My Application Main Page</span>
+						</section>
+						<section id="reportsPage">
+							<span>Reports Page</span>
+						</section>
+						<section id="watsonPage">
+							<span>Watson Analytics Page</span>
+						</section>
+					</iron-pages>
+				</triblock-app-layout>	  
+			</template>
+		</demo-snippet>
+
+		<h4><code>triblock-app-layout</code> with custom application title</h4>
+    	<demo-snippet class="smallDemo">
+        	<template>
+				<triblock-app-layout>
+					<div app-title>
+						<span><b>My Custom Application Title</b></span>
+					</div>
+					<triblock-banner-button home></triblock-banner-button>
+					<div content>
+						<section>
+							<span>Content Area</span>
+						</section>
+					</div>
+				</triblock-app-layout>	  
+			</template>
+		</demo-snippet>		
+		
+		<h4><code>triblock-app-layout</code> with <code>responsive-width</code> set</h4>
+		<div style="font-size:12px">As you resize the page, the mobile menu drawer will appear "sooner" (if set larger than the default) or "later" (if set smaller) compared to the default responsive width setting of 600px.</div></br>
+    	<demo-snippet class="smallDemo">
+        	<template>
+				<triblock-app-layout responsive-width="800px">
+					<div app-title>
+						<span><b>The banner is so responsive</b></span>
+					</div>
+					<triblock-banner-button home></triblock-banner-button>
+					<div content>
+						<section>
+							<span>Content Area</span>
+						</section>
+					</div>
+				</triblock-app-layout>	  
+			</template>
+		</demo-snippet>
+
+		<h4><code>triblock-app-layout</code> with hidden Sign Out button</h4>
+    	<demo-snippet class="smallDemo">
+        	<template>
+				<triblock-app-layout hide-signout-button>
+					<div app-title>
+						<span><b>Where is the Sign Out button?</b></span>
+					</div>
+					<triblock-banner-button home></triblock-banner-button>
+					<div content>
+						<section>
+							<span>Content Area</span>
+						</section>
+					</div>
+				</triblock-app-layout>	  
+			</template>
+		</demo-snippet>		
+		
+		<h4><code>triblock-app-layout</code> with Back button</h4>
+    	<demo-snippet class="smallDemo">
+        	<template>
+				<triblock-app-layout show-mobile-back-button>
+					<div app-title>
+						<span><b>Resize the page to see the Back button</b></span>
+					</div>
+					<triblock-banner-button back></triblock-banner-button>
+					<triblock-banner-button home></triblock-banner-button>
+					<div content>
+						<section>
+							<span>Content Area</span>
+						</section>
+					</div>
+				</triblock-app-layout>	  
+			</template>
+		</demo-snippet>		
+		
+		<h4><code>triblock-app-layout</code> with Back button and page label</h4>
+    	<demo-snippet class="smallDemo">
+        	<template>
+				<triblock-app-layout show-mobile-back-button mobile-page-label="This is the page label">
+					<div app-title>
+						<span><b>Resize the page to see the Back button and page label</b></span>
+					</div>
+					<triblock-banner-button back></triblock-banner-button>
+					<triblock-banner-button home></triblock-banner-button>
+					<div content>
+						<section>
+							<span>Content Area</span>
+						</section>
+					</div>
+				</triblock-app-layout>	  
+			</template>
+		</demo-snippet>
+
+	</div>
+</body>
+</html>

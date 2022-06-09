@@ -1,0 +1,801 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that provides a calendar. Clicking on a date selects the date. \n\n\t<triplat-calendar-container value=\"{{value}}\"></triplat-calendar-container>\n\n### Styling\n\nThe following custom properties are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-calendar-container-border` | The border of the calendar| 1px solid #ccc",
+      "summary": "",
+      "path": "triplat-calendar-container.js",
+      "properties": [
+        {
+          "name": "value",
+          "type": "string | null | undefined",
+          "description": "The value for this element. It follows the ISO date string format \"YYYY-MM-DDTHH:mm:ss.SSSZ\". By default, the value is set to the current date.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 84,
+              "column": 5
+            },
+            "end": {
+              "line": 89,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_valueChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_dateValue",
+          "type": "Date | null | undefined",
+          "description": "Representation of the value as a java.util.Date object",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 94,
+              "column": 5
+            },
+            "end": {
+              "line": 97,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_dataValueChanged\"",
+              "attributeType": "Date"
+            }
+          }
+        },
+        {
+          "name": "disallowPastDates",
+          "type": "boolean | null | undefined",
+          "description": "A flag that indicates whether to allow the user to select any date, or just select dates\nin the future. If this is specified, then only dates in the future, excluding today, will be able\nto be selected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 104,
+              "column": 5
+            },
+            "end": {
+              "line": 107,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disallowWeekends",
+          "type": "boolean | null | undefined",
+          "description": "A flag that indicates whether to allow the user to select dates that are on the weekend,\nSaturday or Sunday.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 113,
+              "column": 5
+            },
+            "end": {
+              "line": 116,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "hideHeader",
+          "type": "boolean | null | undefined",
+          "description": "Flag indicating whether to hide the header block above the calendar containing\nthe day of the week, month, day, and year of the currently selected value.<br>\n<b>true</b> means hide the header block above the calendar.<br>",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 123,
+              "column": 5
+            },
+            "end": {
+              "line": 127,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_hideHeaderChanged\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_header",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 129,
+              "column": 5
+            },
+            "end": {
+              "line": 132,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "restrictToDateList",
+          "type": "boolean | null | undefined",
+          "description": "A flag that indicates whether validDateList is specified and needs to be processed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 137,
+              "column": 5
+            },
+            "end": {
+              "line": 140,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "validDateList",
+          "type": "Array | null | undefined",
+          "description": "An array of java.util.Date objects that will be allowed to be selected. If not specified,\nthen any date not otherwise disallowed (depending on disallowPastDates, disallowWeekends) will be allowed to be selected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 146,
+              "column": 5
+            },
+            "end": {
+              "line": 149,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "fitWidthToParent",
+          "type": "boolean | null | undefined",
+          "description": "A flag that indicates whether to use a discrete size based on the device screen size,\nor to fit within the width of the parent node.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 5
+            },
+            "end": {
+              "line": 158,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_widthOfParent",
+          "type": "number | null | undefined",
+          "description": "A property, used in conjunction with fitWidthToParent. This property is only used \nwhen fitWidthToParent is 'true' to communicate to the child elements that the\nparent has been resized.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 164,
+              "column": 5
+            },
+            "end": {
+              "line": 168,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "_noCancelOnOutsideClick",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 170,
+              "column": 5
+            },
+            "end": {
+              "line": 173,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_noCancelOnEscKey",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 175,
+              "column": 5
+            },
+            "end": {
+              "line": 178,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_mqWide",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 180,
+              "column": 5
+            },
+            "end": {
+              "line": 183,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onMqWide\"",
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_mqWideLandscape",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 185,
+              "column": 5
+            },
+            "end": {
+              "line": 188,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onMqWideLandscape\"",
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_mqMedium",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 190,
+              "column": 5
+            },
+            "end": {
+              "line": 193,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onMqMedium\"",
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_mqMediumLandscape",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 195,
+              "column": 5
+            },
+            "end": {
+              "line": 198,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onMqMediumLandscape\"",
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_mqSmall",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 200,
+              "column": 5
+            },
+            "end": {
+              "line": 203,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onMqSmall\"",
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_mqSmallLandscape",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 205,
+              "column": 5
+            },
+            "end": {
+              "line": 208,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onMqSmallLandscape\"",
+              "attributeType": "Boolean"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 212,
+              "column": 5
+            },
+            "end": {
+              "line": 214,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onIronResize",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 216,
+              "column": 5
+            },
+            "end": {
+              "line": 224,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_dataValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 226,
+              "column": 5
+            },
+            "end": {
+              "line": 234,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_valueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 236,
+              "column": 5
+            },
+            "end": {
+              "line": 263,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onMqWide",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 265,
+              "column": 5
+            },
+            "end": {
+              "line": 269,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onMqWideLandscape",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 271,
+              "column": 5
+            },
+            "end": {
+              "line": 275,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onMqMedium",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 277,
+              "column": 5
+            },
+            "end": {
+              "line": 281,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onMqMediumLandscape",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 283,
+              "column": 5
+            },
+            "end": {
+              "line": 287,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onMqSmall",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 289,
+              "column": 5
+            },
+            "end": {
+              "line": 293,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onMqSmallLandscape",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 295,
+              "column": 5
+            },
+            "end": {
+              "line": 299,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openTriCalendar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 301,
+              "column": 5
+            },
+            "end": {
+              "line": 303,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_hideHeaderChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 305,
+              "column": 5
+            },
+            "end": {
+              "line": 307,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 40,
+          "column": 9
+        },
+        "end": {
+          "line": 308,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The value for this element. It follows the ISO date string format \"YYYY-MM-DDTHH:mm:ss.SSSZ\". By default, the value is set to the current date.",
+          "sourceRange": {
+            "start": {
+              "line": 84,
+              "column": 5
+            },
+            "end": {
+              "line": 89,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "disallow-past-dates",
+          "description": "A flag that indicates whether to allow the user to select any date, or just select dates\nin the future. If this is specified, then only dates in the future, excluding today, will be able\nto be selected.",
+          "sourceRange": {
+            "start": {
+              "line": 104,
+              "column": 5
+            },
+            "end": {
+              "line": 107,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disallow-weekends",
+          "description": "A flag that indicates whether to allow the user to select dates that are on the weekend,\nSaturday or Sunday.",
+          "sourceRange": {
+            "start": {
+              "line": 113,
+              "column": 5
+            },
+            "end": {
+              "line": 116,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "hide-header",
+          "description": "Flag indicating whether to hide the header block above the calendar containing\nthe day of the week, month, day, and year of the currently selected value.<br>\n<b>true</b> means hide the header block above the calendar.<br>",
+          "sourceRange": {
+            "start": {
+              "line": 123,
+              "column": 5
+            },
+            "end": {
+              "line": 127,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "restrict-to-date-list",
+          "description": "A flag that indicates whether validDateList is specified and needs to be processed.",
+          "sourceRange": {
+            "start": {
+              "line": 137,
+              "column": 5
+            },
+            "end": {
+              "line": 140,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "valid-date-list",
+          "description": "An array of java.util.Date objects that will be allowed to be selected. If not specified,\nthen any date not otherwise disallowed (depending on disallowPastDates, disallowWeekends) will be allowed to be selected.",
+          "sourceRange": {
+            "start": {
+              "line": 146,
+              "column": 5
+            },
+            "end": {
+              "line": 149,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "fit-width-to-parent",
+          "description": "A flag that indicates whether to use a discrete size based on the device screen size,\nor to fit within the width of the parent node.",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 5
+            },
+            "end": {
+              "line": 158,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "value-changed",
+          "description": "Fired when the `value` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-calendar-container"
+    }
+  ]
+}

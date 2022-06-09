@@ -1,0 +1,267 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A utility component for displaying error messages up to 2 lines.\n\n\t <tricore-error \n\t   title=\"Security Warning\" \n\t   message_line1-label=\"You do not have permission to access this page.\" \n\t   message_line2-label=\"Contact your TRIRIGA administrator for assistance.\" \n\t   elevation=\"1\"></tricore-error>\n\nExample of including a sign in link. The \"Go back to Sign In.\" link will be displayed at the third line.\n\n\t <tricore-error \n\t   title=\"Security Warning\" \n\t   message_line1-label=\"You do not have permission to access this page.\" \n\t   message_line2-label=\"Contact your TRIRIGA administrator for assistance.\" \n\t   include-signin\n\t   elevation=\"1\"></tricore-error>",
+      "summary": "",
+      "path": "tricore-error.js",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string | null | undefined",
+          "description": "The title of the error message.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 79,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "message_line1Label",
+          "type": "string | null | undefined",
+          "description": "The first line of the error message.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 2
+            },
+            "end": {
+              "line": 87,
+              "column": 28
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "message_line2Label",
+          "type": "string | null | undefined",
+          "description": "The second line of the error message.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 92,
+              "column": 2
+            },
+            "end": {
+              "line": 92,
+              "column": 28
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "includeSignin",
+          "type": "boolean | null | undefined",
+          "description": "Optional. Boolean value to indicate whether to include a sign in link. The \"Go back to Sign In.\" link will be displayed at the third line.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 97,
+              "column": 2
+            },
+            "end": {
+              "line": 100,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "elevation",
+          "type": "string | null | undefined",
+          "description": "Whether or not the message panel is elevated. \"1\" for elevated and \"0\" for not elevated.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 105,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"1\""
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 113,
+              "column": 4
+            },
+            "end": {
+              "line": 116,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_signout",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 118,
+              "column": 4
+            },
+            "end": {
+              "line": 120,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 29,
+          "column": 8
+        },
+        "end": {
+          "line": 121,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "The title of the error message.",
+          "sourceRange": {
+            "start": {
+              "line": 79,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "message_line1-label",
+          "description": "The first line of the error message.",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 2
+            },
+            "end": {
+              "line": 87,
+              "column": 28
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "message_line2-label",
+          "description": "The second line of the error message.",
+          "sourceRange": {
+            "start": {
+              "line": 92,
+              "column": 2
+            },
+            "end": {
+              "line": 92,
+              "column": 28
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "include-signin",
+          "description": "Optional. Boolean value to indicate whether to include a sign in link. The \"Go back to Sign In.\" link will be displayed at the third line.",
+          "sourceRange": {
+            "start": {
+              "line": 97,
+              "column": 2
+            },
+            "end": {
+              "line": 100,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "elevation",
+          "description": "Whether or not the message panel is elevated. \"1\" for elevated and \"0\" for not elevated.",
+          "sourceRange": {
+            "start": {
+              "line": 105,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "tricore-error"
+    }
+  ]
+}

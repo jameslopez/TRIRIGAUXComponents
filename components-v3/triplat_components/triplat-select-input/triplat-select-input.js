@@ -1,0 +1,919 @@
+/*
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2019 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+*/
+import { html } from "../@polymer/polymer/lib/utils/html-tag.js";
+
+import { Polymer } from "../@polymer/polymer/lib/legacy/polymer-fn.js";
+import "../@polymer/polymer/polymer-legacy.js";
+import "../@polymer/iron-dropdown/iron-dropdown.js";
+import "../@polymer/iron-list/iron-list.js";
+import "../@polymer/iron-flex-layout/iron-flex-layout.js";
+import "../@polymer/iron-flex-layout/iron-flex-layout-classes.js";
+import "../@polymer/paper-input/paper-input-container.js";
+import "../@polymer/paper-input/paper-input-error.js";
+import "../@polymer/iron-input/iron-input.js";
+import "../@polymer/paper-listbox/paper-listbox.js";
+import "../@polymer/paper-item/paper-item.js";
+import "../@polymer/paper-styles/paper-styles.js";
+import "../@polymer/paper-icon-button/paper-icon-button.js";
+import "../triplat-icon/ibm-icons.js";
+import "../@polymer/iron-icons/iron-icons.js";
+import "../@polymer/paper-spinner/paper-spinner.js";
+import { TriplatInputContainerBehavior } from "../triplat-input-container-behavior/triplat-input-container-behavior.js";
+import { TriplatSelectInputScrollBehavior } from "./triplat-select-input-scroll-behavior.js";
+import { dom } from "../@polymer/polymer/lib/legacy/polymer.dom.js";
+import { TriDirBehavior } from "../tricore-dir-behavior/tricore-dir-behavior.js";
+import { IronResizableBehavior } from "../@polymer/iron-resizable-behavior/iron-resizable-behavior.js";
+
+/*
+The triplat-select-input is a custom element that is used to display selectable names of STRING_WITH_ID data type fields in the data source.
+It works with triplat-ds, triplat-query, triplat-query-filter and/or triplat-query-scroll-page to achieve filtering/pagination for selectable names.
+
+### Example of setting up STRING_WITH_ID data type for input in people module
+
+The following example will use these 3 data sources:
+
+  - <b>people</b> (BO, single) has 2 fields with STRING_WITH_ID
+	- triFunctionalRoleCL (classification field)
+	- triDelegateToTX     (locator field)
+  - <b>employees</b> (query, multiple) has single field
+	- name
+  - <b>functionalRoles</b> (query, multiple) has single field
+	- roleName
+	
+If you assume there are 100+ employee records in the data source, it is unnecessary to immediately display all 100+ records for selection.
+Pagination can be set up to control the lazy-loading record size. The following example shows a pagination of only 50 records.
+It also demonstrates using the "contains" operator for filtering.
+
+<div style="background-color:#FFFFCC">
+	<div style="padding:20px;">
+		<b>Note:</b> If you use pagination, it is important that the dropdown displays a scrollbar so users can scroll to the next set of records. The maximum height of 
+		the dropdown menu is calculated based on its content, position, and screen size. If the pagination size is small and the records fit the screen, 
+		then the scrollbar is not displayed. There are two ways to ensure that the scrollbar is displayed for small pagination sizes: (1) Set the queryScrollPageId 
+		property and the component will automatically reduce the dropdown height when needed. (2) Or use the custom property --triplat-select-input-dropdown-max-height 
+		to set a small dropdown height.
+	</div>
+</div>
+	
+	<triplat-ds name="people" data="{{data}}"></triplat-ds>
+	<triplat-ds name="employees" data="{{allEmployeeData}}">
+		<triplat-query>
+			<triplat-query-scroll-page scroller="[[employeeScroller]]" size="50">
+			</triplat-query-scroll-page>
+			<triplat-query-filter name="name" operator="contains" 
+								  value="{{searchEmployee}}" ignore-if-blank>
+			</triplat-query-filter>
+		</triplat-query>
+	</triplat-ds>
+	
+	<triplat-select-input label="Delegate To" 
+		select-src="{{allEmployeeData}}" 
+		value="{{data.triDelegateToTx}}"
+		search-value="{{searchEmployee}}"
+		scroller="{{employeeScroller}}">
+	</triplat-select-input>
+
+Example of a small pagination size of 10 records. The queryScrollPageId is set to ensure a scrollbar is displayed.
+
+	<triplat-ds name="people" data="{{data}}"></triplat-ds>
+	<triplat-ds name="employees" data="{{allEmployeeData}}">
+		<triplat-query>
+			<triplat-query-scroll-page 
+			  id="employeeScrollerPage" 
+			  scroller="[[employeeScroller]]" size="10">
+			</triplat-query-scroll-page>
+			<triplat-query-filter name="name" operator="contains" 
+								  value="{{searchEmployee}}" ignore-if-blank>
+			</triplat-query-filter>
+		</triplat-query>
+	</triplat-ds>
+	
+	<triplat-select-input label="Delegate To" 
+		select-src="{{allEmployeeData}}" 
+		value="{{data.triDelegateToTx}}"
+		search-value="{{searchEmployee}}"
+		scroller="{{employeeScroller}}"
+		query-scroll-page-id="employeeScrollerPage">
+	</triplat-select-input>
+
+If you assume that functional roles have less than 50 records, it is fine to immediately load all the records for selection.
+The following example shows no setup for triplat-query-scroll-page and it uses the 'filtered-data' attribute instead of the 'data' attribute in triplat-ds. 
+	
+	<triplat-ds name="functionalRoles" filtered-data="{{allFuncRolesData}}">
+		<triplat-query>
+			<triplat-query-filter name="roleName" operator="contains" 
+								  value="{{searchFuncRole}}" ignore-if-blank>
+			</triplat-query-filter>
+		</triplat-query>
+	</triplat-ds>
+	
+	<triplat-select-input label="Functional Role"
+		select-src="{{allFuncRolesData}}" 
+		value="{{data.triFunctionalRoleCL}}" 
+		value-name="roleName" 
+		search-value="{{searchFuncRole}}">
+	</triplat-select-input>
+
+triplat-select-input also has a clear-icon which is used to clear the value.
+
+Example of using a custom label. In order for an element to be considered as a label, it must have the `label` slot attribute.
+
+	<triplat-select-input
+		select-src="{{allFuncRolesData}}" 
+		value="{{data.triFunctionalRoleCL}}" 
+		value-name="roleName" 
+		search-value="{{searchFuncRole}}">
+		<iron-icon slot="label" icon="av:recent-actors"></iron-icon>
+		<span slot="label">Role</span>
+	</triplat-select-input>
+
+	<triplat-select-input
+		select-src="{{allFuncRolesData}}" 
+		value="{{data.triFunctionalRoleCL}}" 
+		value-name="roleName" 
+		search-value="{{searchFuncRole}}">
+		<div slot="label" class="span-label"><span class="required-asterisk">*</span>Role</div>
+	</triplat-select-input>
+
+The 'label' property value will be overridden when using a custom label. <br/>
+
+### Accessibility
+
+User can use keyboard keys to interact with the select dropdown.
+
+  - Press the `Down Arrow` key to navigate to the next item.
+  - Press the `Up Arrow` key to navigate to the previous item.
+  - Press the `Tab` key to navigate from the input, to the Clear icon (if is displayed), to the first item in the dropdown.
+  - Press the `Space` or `Enter` keys to tap on the current item or action.
+  - Press the `Esc` key to close the dropdown.
+
+### Styling
+
+
+The following custom properties and mixins are also available for styling:
+
+Custom property                                    | Description                                                            | Default
+---------------------------------------------------|------------------------------------------------------------------------|----------
+`--triplat-select-input-dropdown-margin-bottom`    | Margin bottom of the dropdown list                                     | `10px`
+`--triplat-select-input-dropdown-max-height`       | Maximum height of the dropdown list                                    | `none`
+`--triplat-select-input-clear-button`              | Mixin applied to the clear button                                      | `{}`
+`--triplat-select-input-input`                     | Mixin applied to the input field                                       | `{}`
+`--triplat-select-input-paper-item-min-height`     | Minimum height of the item                                             | `48px`
+`--triplat-select-input-paper-item`                | Mixin applied to the item                                              | `{}`
+`--triplat-select-input-paper-item-focused`        | Mixin applied to focused paper items                                   | `{}`
+`--triplat-select-input-margin-bottom-when-opened` | The size of the bottom margin applied when the dropdown is opened and the scrollElementIntoView is true | `0px`
+
+
+See `Polymer.PaperInputContainer` for a list of custom properties that can be used to style the paper-input element contained within this element.
+*/
+Polymer({
+	_template: html`
+		<style include="tristyles-theme">
+
+			:host {
+				display: block;
+				position: relative;
+			}
+
+			#dropdown {
+				/* iron-dropdown vertical-offset set the same value for top and bottom margins. For better control,
+				 * we set vertical-offset to zero, position the dialog under the input field, and reduce the bottom margin
+				* so more items are displayed in the dialog.
+				*/
+				margin-bottom: var(--triplat-select-input-dropdown-margin-bottom, 10px);
+
+				/* iron-dropdown allowOutsideScroll property fails to constrain scrolling on complex pages. Therefore, 
+				 * overwrite iron-dropdown fixed position setting and set the dropdown relative to its positionTarget element (input field).
+				 */
+				position: absolute !important;
+
+				/* iron-dropdown calculate the max-height for the dropdown base on the screen size. The dropdown scroll 
+				 * is set to auto, and will be displayed if the items size is bigger then the dropdown size.
+				 * If using scroll pagination with low number of records that fit the screen, the scroll will not be displayed.
+				 * In that case, App developer should set the dropdown max-height to be smaller then the height of the pagination records, to force scroll display.
+				 */
+				max-height: var(--triplat-select-input-dropdown-max-height, none);
+			}
+
+			.dropdown-content {
+				@apply --layout;
+				@apply --layout-vertical;
+				@apply --shadow-elevation-2dp;
+				margin-bottom: 20px;
+			}
+
+			#selectClear {
+				@apply --layout-horizontal;
+				position: relative;
+			}
+
+			#selectClear:focus {
+				outline: none;
+			}
+
+			.clearButton {
+				margin-top: 20px;
+				position: absolute;
+				bottom: 2px;
+				display: none;
+				@apply --triplat-select-input-clear-button;
+			}
+
+			:host([dir="rtl"]) .clearButton {
+				left: -9px;
+			}
+
+			:host([dir="ltr"]) .clearButton {
+				right: -9px;
+			}
+
+			iron-list {
+				@apply --layout-flex;
+			}
+
+			paper-listbox {
+				padding: 0px;
+			}
+
+			paper-item {
+				--paper-item: {
+					padding: 0px 16px;
+					cursor: pointer;
+					background-color: #ffffff;
+					@apply --triplat-select-input-paper-item;
+				};
+				--paper-item-min-height: var(--triplat-select-input-paper-item-min-height, 48px);
+				--paper-item-focused: {
+					@apply --triplat-select-input-paper-item-focused;
+				};
+			}
+
+			paper-item span {
+				pointer-events: none;
+			}
+
+			.item {
+				/*padding: 5px 10px;*/
+			}
+
+			paper-input-container input::-ms-clear {
+				display: none;
+			}
+
+			.loading-item {
+				@apply --layout-center-center;
+				pointer-events: none;
+				min-height: 60px;
+			}
+
+			.spacer-when-opened {
+				margin-bottom: var(--triplat-select-input-margin-bottom-when-opened, 0px);
+			}
+
+			paper-input-container input {
+				box-sizing: border-box;
+				padding-right: 25px;
+				@apply --triplat-select-input-input;
+			}
+			:host([dir="rtl"]) paper-input-container input {
+				padding-right: 0;
+				padding-left: 25px;
+			}
+
+			/* 
+				Sometimes, Safari browser displays, by default, an user icon on the right side of the input field. 
+				This is a problem for this component because the default icon visually conflicts with the X clear button.
+				This fix will hide the default "user icon".
+			*/
+			input::-webkit-contacts-auto-fill-button {
+				visibility: hidden;
+				display: none !important;
+				pointer-events: none;
+				position: absolute;
+				right: 0;
+			}
+
+			paper-input-container {
+				@apply --layout-flex;
+			}
+
+			input {
+				@apply --paper-input-container-shared-input-style;
+			}
+
+		</style>
+
+		<div id="selectClear">
+			<paper-input-container id="input" focused="{{focused}}" disabled\$="[[disabled]]" aria-label\$="{{label}}" auto-validate\$="[[autoValidate]]" always-float-label\$="[[alwaysFloatLabel]]" no-label-float\$="[[noLabelFloat]]" on-keydown="_keyDownInputHandler" invalid\$="{{invalid}}">
+				<label id="[[_labelId]]" for\$="[[_inputId]]" slot="label">
+					[[label]]<slot id="labelContent" name="label"></slot>
+				</label>
+				<iron-input id="[[_inputId]]" bind-value="{{_searchValue}}" slot="input">
+					<input aria-labelledby="[[_labelId]]" required\$="[[required]]" disabled\$="[[disabled]]" readonly\$="[[readonly]]" aria-label\$="{{label}}">
+				</iron-input>
+
+				<template is="dom-if" if="[[errorMessage]]">
+					<paper-input-error slot="input">[[errorMessage]]</paper-input-error>
+				</template>
+			</paper-input-container>
+
+			<paper-icon-button id="clearButton" class="clearButton" icon="icons:clear" on-tap="_clearValue" on-keydown="_keyDownClearHandler" disabled\$="[[disabled]]" aria-label="clear">
+			</paper-icon-button>
+		</div>
+		<div id="dropdownAnchor"></div>
+		<iron-dropdown id="dropdown" horizontal-align="left" vertical-align="top" vertical-offset="0">
+			<div role="alert" id="dropdownContent" class="dropdown-content" slot="dropdown-content">
+				<paper-listbox id="menu" role="listbox" aria-label\$="{{label}}" on-keydown="_keyDownMenuHandler">
+					<template id="itemsTemplate" is="dom-repeat" items="{{selectSrc}}">
+						<paper-item role="option" on-keypress="_keyPressHandler" on-tap="_onTapItem"><span>{{_computeItemValue(item)}}</span></paper-item>
+					</template>
+					<paper-item class="loading-item" role="option" hidden="[[!loading]]"><paper-spinner active=""></paper-spinner></paper-item>
+				</paper-listbox>
+			</div>
+		</iron-dropdown>
+	`,
+
+    is: "triplat-select-input",
+
+    behaviors: [
+	    TriplatInputContainerBehavior,
+	    TriplatSelectInputScrollBehavior,
+		TriDirBehavior,
+		IronResizableBehavior
+	],
+
+    /**
+	 * Fired after the dropdown list opens.
+	 *
+	 * @event select-input-list-open
+	 */
+
+	/**
+	 * Fired after the dropdown list closes.
+	 *
+	 * @event select-input-list-close
+	 */
+
+	/**
+	 * Fired after the input value changes. Contains the new value in event.detail.value.
+	 *
+	 * @event select-input-value-change 
+	 */
+
+	/**
+	* Fired when the input changes due to user interaction. Contains the new value in event.detail.value.
+	*
+	* @event select-input-value-user-change 
+	*/
+
+	properties: {
+		/*
+		 * Label for input field.
+		 */
+		label: {
+			type: String,
+			notify: false,
+			readOnly: false
+		},
+
+		/*
+		 * STRING_WITH_ID object for the currently selected value for the field. 
+		 * If the dropdown is open. then this value won't change until you select a new value.
+		 * This value will be null if there is no match.
+		 */
+		value: {
+			type: Object,
+			notify: true,
+			readOnly: false,
+			observer: "_onValueChanged"
+		},
+		
+		/*
+		 * Value name used in the STRING_WITH_ID object. This will specify the property of the STRING_WITH_ID object
+		 * that you want to set. Typically, STRING_WITH_ID contains 2 properties, "id" and "value", and you would want 
+		 * to set the valueName to "value".
+		 */
+		valueName: {
+			type: String,
+			notify: false,
+			readOnly: false
+		},
+
+		/*
+		 * String for filter/search. This is set to the value that is typed in the input field and is updated each
+		 * time a character is typed or removed. When selectSrc references a data source with a filter, this value can 
+		 * be used in that filter to produce typeahead filtering by data-binding this value with a
+		 * triplat-query-filter value attribute.
+		 */
+		searchValue: {
+			type: String,
+			notify: true,
+			readOnly: true
+		},
+
+		/*
+		 * Select data source. The values in this array are displayed in the dropdown box.
+		 * This array is also used to data-bind with the triplat-ds data attribute or filtered-data attribute.
+		 */
+		selectSrc: {
+			type: Array,
+			notify: false,
+			readOnly: false,
+			observer: "_onSelectSrcChanged"
+		},
+		
+		/*
+		 * Scroller container element object. This object is also used to data-bind with the triplat-query-scroll-page scroller attribute.
+		 */
+		scroller: {
+			type: Object,
+			notify: true,
+			readOnly: true
+		},
+		
+		/*
+		 * Query scroll page element ID that defines the scroller property. This ID is used to get the 
+		 * triplat-query-scroll-page size attribute to ensure that the scrollbar is displayed for a small pagination size.
+		 */
+		queryScrollPageId: {
+			type: String
+		},
+		
+		/** 
+		  * Boolean to indicate that this is a disabled input field. Show
+		  * the value, but not the clear button. The value will be grayed out and not editable.
+		  * The value will be underlined to indicate it is an input field.
+		  */
+		disabled: {
+			type: Boolean,
+			value: false
+		},
+
+		/** 
+		  * Boolean to indicate that this is a read-only value. Show
+		  * the value, but not the clear button.
+		  */
+		readonly: {
+			type: Boolean,
+			value: false
+		}, 
+
+
+		/**
+		 * Set to true to mark the input field as required.
+		 */
+		required: {
+		  type: Boolean,
+		  value: false
+		},
+
+		/**
+		 * The error message to display when the input value is invalid.
+		 */
+		errorMessage: {
+		  type: String
+		},
+
+		/**
+		 * Set to true to auto-validate the input value when it changes.
+		 */
+		autoValidate: {
+		  type: Boolean,
+		  value: false
+		},
+
+		/**
+		 * True if the input is invalid. This property is set automatically when the input value changes if auto-validating.
+		 */
+		invalid: {
+			type: Boolean,
+			value: false
+		},
+
+		/**
+		 * Set to true to scroll the selected input element into view (on focus). If scroll is available, it will align the element to the top of the browser window (if possible).
+		 * The scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.
+		 * If no scroll is available, you can set the size of the bottom margin using the <b>--triplat-select-input-margin-bottom-when-opened</b> 
+		 * CSS property to enable the scroll on the screen. That bottom margin will be applied only on mobile devices when the 
+		 * <b>scrollElementIntoView</b> is true. 
+		 */
+		scrollElementIntoView: {
+		  type: Boolean,
+		  value: false,
+		  observer: "_handleScrollElementIntoViewChange"
+		},
+
+		/**
+		 * Set to true to always float the floating label.
+		 */
+		alwaysFloatLabel: {
+			type: Boolean,
+			value: false
+		},
+
+		/**
+		 * Set to true to disable the floating label. The label disappears when the input value is not null.
+		 */
+		noLabelFloat: {
+			type: Boolean,
+			value: false
+		},
+
+		/**
+		 * The delay (in milliseconds) between the time a single letter is typed, 
+		 * and the time the dropdown shows results. This delay is needed so we can wait a bit after presenting the results list in 
+		 * the dropdown. This way, we can achieve better performance, skipping searches against single letters.
+		 */
+		delay: {
+			type: Number,
+			notify: false,
+			readOnly: false,
+			value: 300
+		},
+
+		/**
+		 * Set to true to indicate when a loading indicator is required
+		 */
+		loading: {
+			type: Boolean,
+			value: false,
+			observer: "_onLoadingChanged"
+		},
+
+		/**
+		 * Internally set to true to open the dropdown when the select source change.
+		 */
+		_openDropDownOnMenuChange: {
+		  type: Boolean,
+		  value: false
+		},
+
+		/**
+		 * Internally set to true to skip focus setting when closing the dropdown.
+		 */
+		 _skipSetFocusOnClose: {
+		  type: Boolean,
+		  value: false
+		},
+
+		/**
+		 * Internally set to true to to indicate the first time a data was loaded
+		 */
+		_firstLoading: {
+			type: Boolean,
+			value: false
+		}
+	},
+
+    observers: [
+		"_onFocusedChanged(focused)",
+		"_on_searchValueChanged(_searchValue)"
+	],
+
+    listeners: {
+		"iron-overlay-closed": "_onIronOverlayClosed",
+		"iron-overlay-opened": "_onIronOverlayOpened",
+		"iron-select": "_onIronSelect"
+	},
+
+    attached: function() {
+		// Instead of positionTarget to input and adding fixed top offset of 60px so dropdown is displayed under the input, we set it to 
+		// the DIV that is under the input, and let the iron-dropdown calculate its position (iron-dropdown CSS top is calculated base on positionTarget and vertical-offset).
+		this.$.dropdown.positionTarget = this.$.dropdownAnchor;
+		this.$.dropdown.focusTarget = this.$.input;
+		this._setScroller(this.$.dropdownContent);
+		if(dom(this.$$('#labelContent')).getDistributedNodes().length >0){
+			this.label=" ";
+		}
+	},
+
+    _computeItemValue: function(item) {
+		return (item == undefined)? "":item[this.valueName];
+	},
+
+    _onFocusedChanged: function(focused) {
+		if(this._isDisabledOrReadonly()) {
+			return;
+		}
+		
+		if (focused && (!this.$.dropdown.opened)) {
+			var searchValue = this._searchValue;
+			var value = (this.value)? this.value.value:null;
+			 if(searchValue && searchValue.length>0 && value && value.length>0 && searchValue.length==value.length && searchValue.indexOf(value)>-1) {
+				// Even if value is already set, we want to open dropdown and display all the available values to tell user this is a list
+				// values from drop down will be filetered on user's key stroke
+				this._on_searchValueChanged(""); //set search value includes: enable/disable clear icon, open dropdown
+				this.$.clearButton.style.display = "inline"; //display clear icon as there is a value
+			}else{
+				this.$.dropdown.resetFit();
+				this._on_searchValueChanged(""); //set search value includes: enable/disable clear icon, open dropdown
+			} 
+		}
+	},
+
+    _selectItem: function(selectedElement) {
+		this.$.dropdown.resetFit();
+		var selectedItem = this.$.itemsTemplate.itemForElement(selectedElement);
+		this._valueSelected = true;
+		this.$.menu.selected = -1;
+		this.$.dropdown.close();
+		this.fire('select-input-list-close');
+		this._internalSet = true;
+		// only set value when it has actually changed
+		if ((this.value == undefined || this.value.id == undefined || this.value.value == undefined) ||
+			(this.value.id != selectedItem._id && this.value.value != selectedItem[this.valueName])) {
+			this.set("value", {id: selectedItem._id, value: selectedItem[this.valueName]});
+		} else if(this._searchValue != selectedItem[this.valueName]) {
+			//if value did not change but search value change, then update the search value (input display value)
+			this.set("_searchValue", selectedItem[this.valueName]);
+		}
+		this._internalSet = false;
+	},
+
+    _onIronSelect: function(e) {	
+		this.async(function() {
+			var selectedElement = e.detail.item;
+			this._selectItem(selectedElement);
+			this._fireUserChanged();
+		}, 200);
+	},
+
+    _onSelectSrcChanged: function(selectSrc) {
+		if (!selectSrc) {
+			this.set("_firstLoading", false);
+			
+			// Reset the size of the dropdown
+			this.$.dropdown.resetFit();
+		}
+		
+		if(this._openDropDownOnMenuChange){
+			this._openDropDown();
+		}
+	},
+
+    _onValueChanged: function(value) {
+		this._internalSet = true;
+		if (value && (value.value!=null)) {
+			this.set("_searchValue", value.value);
+		} else {
+			this.set("_searchValue", "");
+		}
+		this._internalSet = false;
+		this.fire('select-input-value-change', {'value': (value ? value.value : "")});
+	},
+
+    _onIronOverlayClosed: function(e) {
+		if (!this._valueSelected) {
+			var canceled = e.detail.canceled;
+			if (canceled && this.searchValue && this.searchValue.length == 0) {
+				this.set("value", null);
+			} else {
+				if (this.value && (this.value.value!=null)) {
+					//string with id has value, update search value
+					this.set("_searchValue", this.value.value);
+				} else {
+					this.set("_searchValue", "");
+				}
+			}
+		}
+		this._valueSelected = false;
+		this._overlayClosed = true;
+		if (this.scrollElementIntoView) {
+			this.toggleClass("spacer-when-opened", false, this.$.dropdownAnchor);
+		}
+		if(this._skipSetFocusOnClose){
+			//do not set focus and allow tab to next/previous element in the page
+			this.set("_skipSetFocusOnClose", false);
+		} else {
+			//reset focus, so clicking of the input field again will open the dropdown
+			this._setFocus();
+		}
+	},
+
+    _onIronOverlayOpened: function(e) {
+		this._adjustScrollHeight();
+		this.notifyResize();
+	},
+
+    _adjustScrollHeight: function() {
+		//check if need to adjust menu height to guarantee scroller is displayed (to get next records)
+		if(this.scroller !=undefined && this.queryScrollPageId !=undefined){
+			var queryScrollPage = document.querySelector("#"+this.queryScrollPageId);
+			
+			if(queryScrollPage != undefined && this.$.menu.items !=undefined 
+				&& this.$.menu.items.length < queryScrollPage.totalSize){
+				var menuHeight = this.$.menu.getBoundingClientRect().bottom - this.$.menu.getBoundingClientRect().top;
+				var dropdownContentHeight = parseInt(this.$.dropdownContent.style.maxHeight);
+				if(menuHeight <= dropdownContentHeight){
+					//Make wrapper height a bit smaller then menu to insure scroller is displayed
+					this.$.dropdownContent.style.maxHeight = menuHeight - 10 + "px";
+				}
+			}
+		}
+	},
+
+    _on_searchValueChanged: function(_searchValue) {
+		if(_searchValue && _searchValue.length > 0 && !this._isDisabledOrReadonly()){
+			this.$.clearButton.style.display = "inline";
+		}else {
+			this.$.clearButton.style.display = "none";
+		}
+
+		var toOpenDropDown = (!this._internalSet && this._overlayClosed)? true:false;
+
+		if(toOpenDropDown){
+			//no delay in setting search value and opening dropdown dialog in that order so
+			//dropdown max-height calculation is done on the full set
+			if(this.searchValue !=  _searchValue){
+				//new search trigger new request, open dropdown on request results change
+				this._openDropDownOnMenuChange = true;
+				this._setSearchValue(_searchValue);
+			} else {
+				//open dropdown directly (no change means no request)
+				this._setSearchValue(_searchValue);
+				this._openDropDown();
+			}
+		} else {
+			if(_searchValue && _searchValue.length > 0 && 
+			   this.value && this.value.value != null && this.value.value == _searchValue){
+				this._setSearchValue(_searchValue);
+			} else {
+				//once dropdown already open (and sized), delay the search text 
+				if (this._delayHandle != undefined && this._delayHandle != null) {
+					this.cancelAsync(this._delayHandle);
+				}
+				this._delayHandle = this.async(function() {
+					this._setSearchValue(this._searchValue);
+				}, this._intDelay);
+			}
+		}
+
+		if(this._overlayClosed == undefined) {
+			this._overlayClosed = true;
+		}
+	},
+
+    _onLoadingChanged: function(value) {
+		var dropdownOpened = this.$.dropdown.opened;
+		
+		if (dropdownOpened && !value && this.selectSrc && !this._firstLoading) {
+			this.async(function() {
+				this.set("_firstLoading", true);
+				this.$.dropdown.resetFit();
+				this.$.dropdown.refit();
+				this._adjustScrollHeight();
+			}, 300);
+		}
+	},
+
+    get _intDelay() {
+		var intDelay = parseInt(this.delay);
+		return (intDelay > 200)? intDelay:200; //minimum search delay of 200 milliseconds to avoid sync results issues
+	},
+
+    _keyPressHandler: function(event) {
+		var code = event.keyCode;
+		// accept Enter (13) as select item
+		if (code == 13) {
+			var selectedElement = event.target;
+			this._selectItem(selectedElement);
+			this._fireUserChanged();
+			//console.log("_keyPressHandler selectedElement: " + selectedElement);
+		}
+		event.preventDefault();
+	},
+
+    _keyDownInputHandler: function(event) {
+		var code = event.keyCode;
+		if(this.$.dropdown.opened){
+			if(code==9 && event.shiftKey) {
+				// on the input field, accept shiftKey + TAB(9) as a move back to previouse TAB element in the page and therefore close the dropdown menu
+				this.set("_skipSetFocusOnClose", true);
+				this.$.dropdown.close();
+			} else if(code == 40 ||
+					(code == 9 && this.$.clearButton.style.display == "none")) {
+				// on the input field, accept Down Arrow (40) or TAB(9) without clear icon as a move to dropdown first item (menu.div.paper-item)
+				var firstItem = this.$.menu.firstElementChild.firstElementChild;
+				var hasSelectSrc = this.selectSrc ? (this.selectSrc.length > 0 ? true: false) : false;
+
+				if(firstItem != null && hasSelectSrc) {
+					firstItem.focus();
+					event.preventDefault();//dont move to next element
+				}
+			}
+		}
+	},
+
+    _keyDownMenuHandler: function(event) {
+		var code = event.keyCode;
+		if(code == 9) {
+			// on the menu, accept TAB(9) as a move to next TAB element in the page and therefore close the dropdown menu
+			this.set("_skipSetFocusOnClose", true);
+			this.$.dropdown.close();
+		}
+	},
+
+    _keyDownClearHandler: function(event) {
+		var code = event.keyCode;
+		if(code == 9 && this.$.dropdown.opened) {
+			// on the clear icon, when dropdown is displayed accept TAB(9) as a move to dropdown first item (menu.div.paper-item)
+			var firstItem = this.$.menu.firstElementChild.firstElementChild;
+			if(firstItem != null) {
+				firstItem.focus();
+				event.preventDefault();
+			}
+		}
+	},
+
+    _clearValue: function() {
+		this.$.dropdown.resetFit();
+		this._internalSet = true;
+		this.set("value", null);
+		this.set("_searchValue", "");
+		this._internalSet = false;
+		this._setFocus();
+		this._fireUserChanged();
+	},
+
+    _setFocus: function(){
+		this.$.selectClear.tabIndex = 0;
+		this.$.selectClear.focus();
+		this.$.selectClear.tabIndex = -1;
+	},
+
+    /* Return true if the component is disabled or readonly.
+	 */
+	_isDisabledOrReadonly: function() {
+		return this.disabled || this.readonly;
+	},
+
+    _openDropDown: function() {
+		if(!this.$.dropdown.opened && !this._isDisabledOrReadonly()){
+			var openDelay = 200;
+			if(this._isMobileDevice()){
+				//Mobile devices, such iPad, need more delay for scrollToTop and virtual keyboard
+				openDelay = 400;
+				if(this._isAndroidDevice()) {
+					//Android field keyboard and field scroll to to seem to be slower. Therefore, increase delay for Android to 
+					//allow more time for the virtual keyboard to be displayed and for the field to scroll to top before 
+					//dropdown is opened and positioned next to the field.
+					openDelay = 1000;
+				}
+				if(this.scrollElementIntoView){
+					this.toggleClass("spacer-when-opened", true, this.$.dropdownAnchor);
+					this.$.input.scrollIntoView(true); //On mobile devices, scrolls the page, if possible, and bring the current input element into a higher area of the screen.
+				}
+			}
+			
+			this.async(function() {
+				this.$.dropdownContent.style.width = this.offsetWidth + "px";
+				this.$.dropdown.open();
+				//this.$.dropdown.notifyResize(); commented out since it cause dialog to be center when leaving and returning to the page 
+				this.fire('select-input-list-open');
+				this._openDropDownOnMenuChange = false;
+				this._overlayClosed = false;
+			}, openDelay); //100 not enough in some cases for the search input to keep its focus
+		}
+	},
+
+    _isMobileDevice: function () {
+		if( navigator.userAgent.match(/Android/i)
+			 || navigator.userAgent.match(/webOS/i)
+			 || navigator.userAgent.match(/iPhone/i)
+			 || navigator.userAgent.match(/iPad/i)
+			 || navigator.userAgent.match(/iPod/i)
+			 || navigator.userAgent.match(/BlackBerry/i)
+			 || navigator.userAgent.match(/Windows Phone/i)
+		){
+			return true;
+		}
+		else {
+			return false;
+		}
+	},
+
+    _isAndroidDevice: function () {
+		return navigator.userAgent.match(/Android/i);
+	},
+
+    _handleScrollElementIntoViewChange: function(scrollElementIntoViewNew, scrollElementIntoViewOld) {
+		if (!scrollElementIntoViewNew) {
+			this.toggleClass("spacer-when-opened", false, this.$.dropdownAnchor);
+		}
+	},
+
+    /* This event get fired after user: 
+	 *  - select dropdown item
+	 *  - keypress arrow down to select item. 
+	 *  - click clear icon
+	 *  - keypress clear icon
+	 */
+	_fireUserChanged: function(){
+		this.fire('select-input-value-user-change', {'value': (this.value ? this.value.value : "")});
+	},
+
+    _onTapItem: function(event) {
+		event.preventDefault();
+	}
+});

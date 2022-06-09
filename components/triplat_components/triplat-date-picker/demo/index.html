@@ -1,0 +1,81 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-date-picker Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+
+	<link rel="import" href="../triplat-date-picker.html">
+
+	<style is="custom-style" include="iron-flex iron-flex-alignment" type="text/css">
+		body {
+			font-family: var(--tri-font-family);
+		}
+
+		div.line span.info {
+			align-self: flex-end;
+			margin: 0px 30px;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		.line {
+			padding: 0px;
+			margin: 0px;
+		}
+	</style>
+</head>
+<body>
+	<template is="dom-bind">
+		<div class="layout vertical line">
+			<div class="layout horizontal">
+				<span class="info"> Simple date picker: </span>
+				<triplat-date-picker></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date Picker with a label: </span>
+				<triplat-date-picker label="Start Date"></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date Picker with label and header: </span>
+				<triplat-date-picker label="Start Date" header="true"></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date Picker with label, header and initial value: </span>
+				<triplat-date-picker label="Back to the Future" header="true" value="2019-10-21T21:36:59.000-04:00"></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">&nbsp;</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date Picker with no label, readonly, and initial value (good for tables): </span>
+				<triplat-date-picker readonly value="2015-10-21T21:36:59.000-04:00"></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date Picker with label, readonly and initial value: </span>
+				<triplat-date-picker label="Can only read this date" readonly value="2015-10-21T21:36:59.000-04:00"></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date Picker with label, disabled and initial value: </span>
+				<triplat-date-picker label="Cannot write this date" disabled value="2015-10-21T21:36:59.000-04:00"></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date Picker with label, readonly, disabled, and initial value (disabled overrides readonly): </span>
+				<triplat-date-picker label="readonly and disabled" readonly disabled value="2015-10-21T21:36:59.000-04:00"></triplat-date-picker>
+			</div>
+			<div class="layout horizontal line">
+				<span class="info"> Date picker with confirm buttons: </span>
+				<triplat-date-picker confirm-buttons></triplat-date-picker>
+			</div>
+	</template>
+</body>
+</html>

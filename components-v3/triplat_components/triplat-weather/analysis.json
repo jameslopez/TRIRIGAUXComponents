@@ -1,0 +1,1852 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that retrieves the current weather information for a given location from The Weather Channel (TWC) using the TWC API.\nWeather observations are generated on demand from The Weather Channel Currents On Demand system.\nThe return observation object contains weather data such as temperatures, winds, and pressure.\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n  <b>Note:</b> The Weather Channel API requires a license and is constrained by the API Key entitlements. To use this component, update the TRIRIGAWEB.properties file and set The Weather Channel API license key in the WEATHER_API_KEY property.\n  </div>\n</div>\n\nExample of requesting the current weather conditions for postal code 30075 in the United States. \n\n\t<triplat-weather-current\n\t   auto\n\t   postal-and-country-code=\"30075:US\"\n\t   observation=\"{{observationCurrent}}\"></triplat-weather-current>\n\nExample of requesting the current weather conditions for a location specified by latitude and longitude. \n\n\t<triplat-weather-current\n\t   auto\n\t   lat-and-long=\"34.021944:-84.359167\"\n\t   observation=\"{{observationCurrent}}\"></triplat-weather-current>\n\nExample of displaying the current temperature and a phrase that describes the weather conditions.\n\n\t<div class=\"temps\">{{observationCurrent.imperial.temp}} Fahrenheit</div>\n\t<div class=\"blurb\">{{observationCurrent.phrase_32char}}</div>\n\n\t   \n### Units of measurement\n\nThe Weather Channel API supports the following units of measurement: e = English units, m = Metric units, and h = Hybrid units (UK).\nExample of requesting the current weather conditions with Metric units. The return observation includes temperatures in Celsius.  \n\n\t<triplat-weather-current\n\t   auto\n\t   postal-and-country-code=\"30075:US\"\n\t   units=\"m\"\n\t   observation=\"{{observationCurrent}}\"></triplat-weather-current>\n\n### Translation\n\nThe Weather Channel API handles the translation of phrases. A valid language must be passed along the request.\nExample of requesting the current weather conditions with the Spanish language. The return observation has phrases in Spanish.  \n\n\t<triplat-weather-current\n\t   auto\n\t   postal-and-country-code=\"30075:US\"\n\t   language=\"es-ES\"\n\t   observation=\"{{observationCurrent}}\"></triplat-weather-current>\n\n\nAs mentioned above, the return observation object includes many properties that describe the weather conditions. It also includes icon information such as icon codes and their associated weather phrases.  \n  \nSee The Weather Channel API documentation for more details about the current weather information and usage.",
+      "summary": "",
+      "path": "triplat-weather-current.js",
+      "properties": [
+        {
+          "name": "_weatherApiKey",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 31,
+              "column": 4
+            },
+            "end": {
+              "line": 33,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "auto",
+          "type": "boolean | null | undefined",
+          "description": "If location is provided, automatically request the weather conditions for this location.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 101,
+              "column": 2
+            },
+            "end": {
+              "line": 103,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "baseUrl",
+          "type": "string | null | undefined",
+          "description": "URL to The Weather Channel API.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 2
+            },
+            "end": {
+              "line": 111,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"https://api.weather.com\""
+        },
+        {
+          "name": "_apiKey",
+          "type": "string | null | undefined",
+          "description": "The Weather Channel API license key. The license key will be loaded from Tririga web properties file (WEATHER_API_KEY property).",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 116,
+              "column": 2
+            },
+            "end": {
+              "line": 119,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "language",
+          "type": "string | null | undefined",
+          "description": "The requested language. The Weather Channel API supports the translation of phrases based on the requested language.\nFor example, The Weather Channel API returns the phrase \"Cloudy\" for English en-US and \"Nublado\" for Spanish es-ES.\nSee The Weather Channel API documentation for valid languages.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 126,
+              "column": 2
+            },
+            "end": {
+              "line": 129,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"en-US\""
+        },
+        {
+          "name": "units",
+          "type": "string | null | undefined",
+          "description": "The unit of measure for the response. The following values are supported: e = English units, m = Metric units, and h = Hybrid units (UK).\nFor temperatures in Celsius, use Metric unites, and for temperatures in Fahrenheit, use English units.\nSee The Weather Channel API documentation for valid units of measurement.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 136,
+              "column": 2
+            },
+            "end": {
+              "line": 139,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"e\""
+        },
+        {
+          "name": "postalAndCountryCode",
+          "type": "string | null | undefined",
+          "description": "String that represents a location based on postal code and country code.\nFormat {postal code}:{country code}.\nSupported country postal codes: US (United States), GB (United Kingdom), FR (France), DE (Germany) , IT (Italy).\nFor example, 89178:US.\nSee The Weather Channel API documentation for valid country codes.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 148,
+              "column": 2
+            },
+            "end": {
+              "line": 150,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "latAndLong",
+          "type": "string | null | undefined",
+          "description": "String that represents a location based on geocode.\nFormat {latitude}:{longitude}.\nFor example, 36.0671730:-115.1616650.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 157,
+              "column": 2
+            },
+            "end": {
+              "line": 159,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "observation",
+          "type": "Object | null | undefined",
+          "description": "The return current weather observation object. It contains weather data such as temperatures, winds, and pressure.\nSee The Weather Channel API documentation for details about the current weather information.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 165,
+              "column": 2
+            },
+            "end": {
+              "line": 170,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 37,
+              "column": 3
+            },
+            "end": {
+              "line": 39,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_getWeatherAPIKeyFromServer",
+          "description": "Retrieves The Weather Channel API license key from the server (property WEATHER_API_KEY).",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 44,
+              "column": 3
+            },
+            "end": {
+              "line": 55,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_updateWeatherAPIKey",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 57,
+              "column": 3
+            },
+            "end": {
+              "line": 64,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "getWeatherAPIKey",
+          "description": "Return The Weather Channel API license key that was retrieved from the server (property WEATHER_API_KEY).",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 69,
+              "column": 3
+            },
+            "end": {
+              "line": 71,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "initForPostalCode",
+          "description": "Automatically requests the weather information when auto flag is set to true and a postal code and country are provided.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 76,
+              "column": 3
+            },
+            "end": {
+              "line": 93,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "baseUrl"
+            },
+            {
+              "name": "apiKey"
+            },
+            {
+              "name": "language"
+            },
+            {
+              "name": "units"
+            },
+            {
+              "name": "postalAndCountryCode"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "initForLatAndLong",
+          "description": "Automatically requests the weather information when auto flag is set to true and a geocode is provided.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 98,
+              "column": 3
+            },
+            "end": {
+              "line": 115,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "baseUrl"
+            },
+            {
+              "name": "apiKey"
+            },
+            {
+              "name": "language"
+            },
+            {
+              "name": "units"
+            },
+            {
+              "name": "latAndLong"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "getBaseWeatherUrl",
+          "description": "Return base weather URL for The Weather Company API.\nThe API supports requests by postal code or by geocode (latitude and longitude).",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 120,
+              "column": 3
+            },
+            "end": {
+              "line": 145,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "baseUrl"
+            },
+            {
+              "name": "postalAndCountryCode"
+            },
+            {
+              "name": "latAndLong"
+            }
+          ],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_getPostalUrl",
+          "description": "Return the postal code URL. For example location/30075:4:US.\nThe postal code of The Weather Company has a proprietary location type (4) with the following\nformat: location/<postal code>:<location type>:<country code>",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 151,
+              "column": 3
+            },
+            "end": {
+              "line": 164,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "postalAndCountryCode"
+            }
+          ],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_getGeocodeUrl",
+          "description": "Return the geocode URL (latitude and longitude). For example, /geocode/34.063/-84.217. \nFormat: /geocode/<Latitude>/<Longitude>",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 169,
+              "column": 3
+            },
+            "end": {
+              "line": 182,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "latAndLong"
+            }
+          ],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_updateAPIKey",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 184,
+              "column": 4
+            },
+            "end": {
+              "line": 186,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "generateRequest",
+          "description": "Request current weather information from The Weather Channel API.\nThe API supports requests by postal code or by geocode (latitude and longitude).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 191,
+              "column": 1
+            },
+            "end": {
+              "line": 210,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onResponse",
+          "description": "On response, set the current forecast provided by the weather API.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 214,
+              "column": 1
+            },
+            "end": {
+              "line": 218,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 220,
+              "column": 4
+            },
+            "end": {
+              "line": 222,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 67,
+          "column": 8
+        },
+        "end": {
+          "line": 223,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "auto",
+          "description": "If location is provided, automatically request the weather conditions for this location.",
+          "sourceRange": {
+            "start": {
+              "line": 101,
+              "column": 2
+            },
+            "end": {
+              "line": 103,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "base-url",
+          "description": "URL to The Weather Channel API.",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 2
+            },
+            "end": {
+              "line": 111,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "language",
+          "description": "The requested language. The Weather Channel API supports the translation of phrases based on the requested language.\nFor example, The Weather Channel API returns the phrase \"Cloudy\" for English en-US and \"Nublado\" for Spanish es-ES.\nSee The Weather Channel API documentation for valid languages.",
+          "sourceRange": {
+            "start": {
+              "line": 126,
+              "column": 2
+            },
+            "end": {
+              "line": 129,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "units",
+          "description": "The unit of measure for the response. The following values are supported: e = English units, m = Metric units, and h = Hybrid units (UK).\nFor temperatures in Celsius, use Metric unites, and for temperatures in Fahrenheit, use English units.\nSee The Weather Channel API documentation for valid units of measurement.",
+          "sourceRange": {
+            "start": {
+              "line": 136,
+              "column": 2
+            },
+            "end": {
+              "line": 139,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "postal-and-country-code",
+          "description": "String that represents a location based on postal code and country code.\nFormat {postal code}:{country code}.\nSupported country postal codes: US (United States), GB (United Kingdom), FR (France), DE (Germany) , IT (Italy).\nFor example, 89178:US.\nSee The Weather Channel API documentation for valid country codes.",
+          "sourceRange": {
+            "start": {
+              "line": 148,
+              "column": 2
+            },
+            "end": {
+              "line": 150,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "lat-and-long",
+          "description": "String that represents a location based on geocode.\nFormat {latitude}:{longitude}.\nFor example, 36.0671730:-115.1616650.",
+          "sourceRange": {
+            "start": {
+              "line": 157,
+              "column": 2
+            },
+            "end": {
+              "line": 159,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "observation",
+          "description": "The return current weather observation object. It contains weather data such as temperatures, winds, and pressure.\nSee The Weather Channel API documentation for details about the current weather information.",
+          "sourceRange": {
+            "start": {
+              "line": 165,
+              "column": 2
+            },
+            "end": {
+              "line": 170,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-apikey-update",
+          "description": "Fired after retrieving The Weather Channel API license key from the server (property WEATHER_API_KEY).",
+          "metadata": {},
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-generate-request",
+          "description": "Fired a request to get the weather conditions automatically when auto flag is set and a location is provided.",
+          "metadata": {},
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-current-response-complete",
+          "description": "Fired when a response from The Weather Channel API is completed.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-current-response-error",
+          "description": "Fired when a response from The Weather Channel API fails.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "observation-changed",
+          "description": "Fired when the `observation` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-weather-current"
+    },
+    {
+      "description": "A component that retrieves the forecasted weather information for a given location from The Weather Channel (TWC) using the TWC API.\nWeather forecasts are generated from The Weather Channel Forecast system. The return forecasts object contains weather data such as temperatures, winds, and pressure.\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.\n  </div>\n</div>\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n  <b>Note:</b> The Weather Channel API requires a license and is constrained by the API Key entitlements. To use this component, update TRIRIGAWEB.properties file and set The Weather Channel API license key in the WEATHER_API_KEY property.\n  </div>\n</div>\n\nExample of requesting 10 days of forecasted weather data. When the API path is not specified, the default is 10 days.\n\n\t<triplat-weather-forecast\n\t   auto\n\t   postal-and-country-code=\"30075:US\"\n\t   date=\"{{_computeDueDate(data.triReserveAdvanceLimitDT)}}\"\n\t   forecasts=\"{{forecasts}}\"\n\t   forecast=\"{{forecast}}\"></triplat-weather-forecast>\n\nThe return forecasts object contains an array of forecasted data. If the date property is set and it is within the 10-day range, the forecast object will contain the forecast of that day.\n\nExample of using the forecasted weather data.\n\n\t<div class=\"blurb\">[[forecast.night.phrase_32char]]</div>\n\t<div class=\"temps\">\n\t  <div class=\"max-temp\">High: [[forecast.max_temp]] Fahrenheit</div>\n\t  <div class=\"min-temp\">Low: [[forecast.min_temp]] Fahrenheit</div>\n\t</div>\n\t\nExample of requesting 5 days of forecasted weather data. If your API key is authorized for only the 10-day forecast, and you attempt to request a 5-day forecast, you will get an error stating \nthat \"API not allowed for this API key.\"\n\n\n\t<triplat-weather-forecast\n\t   auto\n\t   api-path=\"daily/5day\"\n\t   postal-and-country-code=\"30075:US\"\n\t   date=\"{{_computeDueDate(data.triReserveAdvanceLimitDT)}}\"\n\t   forecasts=\"{{forecasts}}\"\n\t   forecast=\"{{forecast}}\"></triplat-weather-forecast>\n\n### Units of measurement\n\nThe Weather Channel API supports the following units of measurement: e = English units, m = Metric units, and h = Hybrid units (UK).\nExample of requesting the forecasted weather conditions with Metric units. The return forecasts object includes temperatures in Celsius.  \n\n\t<triplat-weather-forecast\n\t   auto\n\t   postal-and-country-code=\"30075:US\"\n\t   date=\"{{_computeDueDate(data.triReserveAdvanceLimitDT)}}\"\n\t   units=\"m\"\n\t   forecasts=\"{{forecasts}}\"\n\t   forecast=\"{{forecast}}\"></triplat-weather-forecast>\n\n### Translation\n\nThe Weather Channel API handles the translation of phrases. A valid language must be passed along the request.\nExample of requesting the forecasted weather conditions with the Spanish language. The return forecasts object includes phrases in Spanish.  \n\n\t<triplat-weather-forecast\n\t   auto\n\t   postal-and-country-code=\"30075:US\"\n\t   date=\"{{_computeDueDate(data.triReserveAdvanceLimitDT)}}\"\n\t   language=\"es-ES\"\n\t   forecasts=\"{{forecasts}}\"\n\t   forecast=\"{{forecast}}\"></triplat-weather-forecast>\n\n\nAs mentioned above, the return forecasts object includes many properties that describe the weather conditions. It also includes icon information such as icon codes and their associated weather phrases.  \n  \nSee The Weather Channel API documentation for more details about the forecasted weather information and usage.",
+      "summary": "",
+      "path": "triplat-weather-forecast.js",
+      "properties": [
+        {
+          "name": "_weatherApiKey",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 31,
+              "column": 4
+            },
+            "end": {
+              "line": 33,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "auto",
+          "type": "boolean | null | undefined",
+          "description": "If location is provided, automatically request the weather conditions for this location.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 122,
+              "column": 2
+            },
+            "end": {
+              "line": 124,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "baseUrl",
+          "type": "string | null | undefined",
+          "description": "URL to The Weather Channel API.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 129,
+              "column": 2
+            },
+            "end": {
+              "line": 132,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"https://api.weather.com\""
+        },
+        {
+          "name": "apiPath",
+          "type": "string | null | undefined",
+          "description": "Path to The Weather Channel API. The default API path requests 10 days of weather forecasts.\nSee The Weather Channel API documentation for valid forecast API paths.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 2
+            },
+            "end": {
+              "line": 141,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"daily/10day\""
+        },
+        {
+          "name": "_apiKey",
+          "type": "string | null | undefined",
+          "description": "The Weather Channel API license key. The license key will be loaded from Tririga web properties file (WEATHER_API_KEY property).",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 146,
+              "column": 2
+            },
+            "end": {
+              "line": 148,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "language",
+          "type": "string | null | undefined",
+          "description": "The requested language. The Weather Channel API supports the translation of phrases based on the requested language.\nFor example, The Weather Channel API returns the phrase \"Cloudy\" for English en-US and \"Nublado\" for Spanish es-ES.\nSee The Weather Channel API documentation for valid languages.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 2
+            },
+            "end": {
+              "line": 158,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"en-US\""
+        },
+        {
+          "name": "units",
+          "type": "string | null | undefined",
+          "description": "The unit of measure for the response. The following values are supported: e = English units, m = Metric units, and h = Hybrid units (UK).\nFor temperatures in Celsius, use Metric unites, and for temperatures in Fahrenheit, use English units.\nSee The Weather Channel API documentation for valid units of measurement.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 165,
+              "column": 2
+            },
+            "end": {
+              "line": 168,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"e\""
+        },
+        {
+          "name": "postalAndCountryCode",
+          "type": "string | null | undefined",
+          "description": "String that represents a location based on postal code and country code.\nFormat {postal code}:{country code}.\nSupported country postal codes: US (United States), GB (United Kingdom), FR (France), DE (Germany) , IT (Italy).\nFor example, 89178:US.\nSee The Weather Channel API documentation for valid country codes.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 177,
+              "column": 2
+            },
+            "end": {
+              "line": 179,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "latAndLong",
+          "type": "string | null | undefined",
+          "description": "String that represents a location based on geocode.\nFormat {latitude}:{longitude}.\nFor example, 36.0671730:-115.1616650.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 186,
+              "column": 2
+            },
+            "end": {
+              "line": 188,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "date",
+          "type": "Date | null | undefined",
+          "description": "The date for the forecast object. If the date is not within the range of the forecasts object then the forecast object will be null.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 193,
+              "column": 2
+            },
+            "end": {
+              "line": 195,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Date"
+            }
+          }
+        },
+        {
+          "name": "forecast",
+          "type": "Object | null | undefined",
+          "description": "The return forecast weather object for the specified date property. It contains weather data such as temperatures, winds, and pressure.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 200,
+              "column": 2
+            },
+            "end": {
+              "line": 205,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "forecasts",
+          "type": "Object | null | undefined",
+          "description": "The return forecasts weather object . It contains an array of forecasted data, each with many properties. The data values in this API are populated\ninto Day, Night, or 24-hour segments. If the date property is set and it is within the 10-day range, the forecast object will contain the forecast of that day.\nSee The Weather Channel API documentation for details about the forecasted weather information.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 212,
+              "column": 2
+            },
+            "end": {
+              "line": 217,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 37,
+              "column": 3
+            },
+            "end": {
+              "line": 39,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_getWeatherAPIKeyFromServer",
+          "description": "Retrieves The Weather Channel API license key from the server (property WEATHER_API_KEY).",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 44,
+              "column": 3
+            },
+            "end": {
+              "line": 55,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_updateWeatherAPIKey",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 57,
+              "column": 3
+            },
+            "end": {
+              "line": 64,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "getWeatherAPIKey",
+          "description": "Return The Weather Channel API license key that was retrieved from the server (property WEATHER_API_KEY).",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 69,
+              "column": 3
+            },
+            "end": {
+              "line": 71,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "initForPostalCode",
+          "description": "Automatically requests the weather information when auto flag is set to true and a postal code and country are provided.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 76,
+              "column": 3
+            },
+            "end": {
+              "line": 93,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "baseUrl"
+            },
+            {
+              "name": "apiKey"
+            },
+            {
+              "name": "language"
+            },
+            {
+              "name": "units"
+            },
+            {
+              "name": "postalAndCountryCode"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "initForLatAndLong",
+          "description": "Automatically requests the weather information when auto flag is set to true and a geocode is provided.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 98,
+              "column": 3
+            },
+            "end": {
+              "line": 115,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "baseUrl"
+            },
+            {
+              "name": "apiKey"
+            },
+            {
+              "name": "language"
+            },
+            {
+              "name": "units"
+            },
+            {
+              "name": "latAndLong"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "getBaseWeatherUrl",
+          "description": "Return base weather URL for The Weather Company API.\nThe API supports requests by postal code or by geocode (latitude and longitude).",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 120,
+              "column": 3
+            },
+            "end": {
+              "line": 145,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "baseUrl"
+            },
+            {
+              "name": "postalAndCountryCode"
+            },
+            {
+              "name": "latAndLong"
+            }
+          ],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_getPostalUrl",
+          "description": "Return the postal code URL. For example location/30075:4:US.\nThe postal code of The Weather Company has a proprietary location type (4) with the following\nformat: location/<postal code>:<location type>:<country code>",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 151,
+              "column": 3
+            },
+            "end": {
+              "line": 164,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "postalAndCountryCode"
+            }
+          ],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_getGeocodeUrl",
+          "description": "Return the geocode URL (latitude and longitude). For example, /geocode/34.063/-84.217. \nFormat: /geocode/<Latitude>/<Longitude>",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-weather-behavior.js",
+            "start": {
+              "line": 169,
+              "column": 3
+            },
+            "end": {
+              "line": 182,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "latAndLong"
+            }
+          ],
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "name": "_updateAPIKey",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 231,
+              "column": 4
+            },
+            "end": {
+              "line": 233,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "generateRequest",
+          "description": "Request forecased weather information from The Weather Channel API.\nThe API supports requests by postal code or by geocode (latitude and longitude).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 238,
+              "column": 1
+            },
+            "end": {
+              "line": 257,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onResponse",
+          "description": "On response, set the days forecast provided by the weather API.\nIf the forecasts object includes the given date, then set forecast property with weather data for that date.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 262,
+              "column": 1
+            },
+            "end": {
+              "line": 286,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 288,
+              "column": 4
+            },
+            "end": {
+              "line": 290,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 88,
+          "column": 8
+        },
+        "end": {
+          "line": 291,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "auto",
+          "description": "If location is provided, automatically request the weather conditions for this location.",
+          "sourceRange": {
+            "start": {
+              "line": 122,
+              "column": 2
+            },
+            "end": {
+              "line": 124,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "base-url",
+          "description": "URL to The Weather Channel API.",
+          "sourceRange": {
+            "start": {
+              "line": 129,
+              "column": 2
+            },
+            "end": {
+              "line": 132,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "api-path",
+          "description": "Path to The Weather Channel API. The default API path requests 10 days of weather forecasts.\nSee The Weather Channel API documentation for valid forecast API paths.",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 2
+            },
+            "end": {
+              "line": 141,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "language",
+          "description": "The requested language. The Weather Channel API supports the translation of phrases based on the requested language.\nFor example, The Weather Channel API returns the phrase \"Cloudy\" for English en-US and \"Nublado\" for Spanish es-ES.\nSee The Weather Channel API documentation for valid languages.",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 2
+            },
+            "end": {
+              "line": 158,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "units",
+          "description": "The unit of measure for the response. The following values are supported: e = English units, m = Metric units, and h = Hybrid units (UK).\nFor temperatures in Celsius, use Metric unites, and for temperatures in Fahrenheit, use English units.\nSee The Weather Channel API documentation for valid units of measurement.",
+          "sourceRange": {
+            "start": {
+              "line": 165,
+              "column": 2
+            },
+            "end": {
+              "line": 168,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "postal-and-country-code",
+          "description": "String that represents a location based on postal code and country code.\nFormat {postal code}:{country code}.\nSupported country postal codes: US (United States), GB (United Kingdom), FR (France), DE (Germany) , IT (Italy).\nFor example, 89178:US.\nSee The Weather Channel API documentation for valid country codes.",
+          "sourceRange": {
+            "start": {
+              "line": 177,
+              "column": 2
+            },
+            "end": {
+              "line": 179,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "lat-and-long",
+          "description": "String that represents a location based on geocode.\nFormat {latitude}:{longitude}.\nFor example, 36.0671730:-115.1616650.",
+          "sourceRange": {
+            "start": {
+              "line": 186,
+              "column": 2
+            },
+            "end": {
+              "line": 188,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "date",
+          "description": "The date for the forecast object. If the date is not within the range of the forecasts object then the forecast object will be null.",
+          "sourceRange": {
+            "start": {
+              "line": 193,
+              "column": 2
+            },
+            "end": {
+              "line": 195,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Date | null | undefined"
+        },
+        {
+          "name": "forecast",
+          "description": "The return forecast weather object for the specified date property. It contains weather data such as temperatures, winds, and pressure.",
+          "sourceRange": {
+            "start": {
+              "line": 200,
+              "column": 2
+            },
+            "end": {
+              "line": 205,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "forecasts",
+          "description": "The return forecasts weather object . It contains an array of forecasted data, each with many properties. The data values in this API are populated\ninto Day, Night, or 24-hour segments. If the date property is set and it is within the 10-day range, the forecast object will contain the forecast of that day.\nSee The Weather Channel API documentation for details about the forecasted weather information.",
+          "sourceRange": {
+            "start": {
+              "line": 212,
+              "column": 2
+            },
+            "end": {
+              "line": 217,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-apikey-update",
+          "description": "Fired after retrieving The Weather Channel API license key from the server (property WEATHER_API_KEY).",
+          "metadata": {},
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-generate-request",
+          "description": "Fired a request to get the weather conditions automatically when auto flag is set and a location is provided.",
+          "metadata": {},
+          "inheritedFrom": "TriplatWeatherBehavior"
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-forecast-response-complete",
+          "description": "Fired when a response from The Weather Channel API is completed.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-weather-forecast-response-error",
+          "description": "Fired when a response from The Weather Channel API fails.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "forecast-changed",
+          "description": "Fired when the `forecast` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "forecasts-changed",
+          "description": "Fired when the `forecasts` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-weather-forecast"
+    }
+  ],
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "A behavior to support weather component.",
+          "summary": "",
+          "path": "triplat-weather-behavior.js",
+          "properties": [
+            {
+              "name": "_weatherApiKey",
+              "type": "string | null | undefined",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 31,
+                  "column": 4
+                },
+                "end": {
+                  "line": 33,
+                  "column": 5
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            }
+          ],
+          "methods": [
+            {
+              "name": "attached",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 37,
+                  "column": 3
+                },
+                "end": {
+                  "line": 39,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_getWeatherAPIKeyFromServer",
+              "description": "Retrieves The Weather Channel API license key from the server (property WEATHER_API_KEY).",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 44,
+                  "column": 3
+                },
+                "end": {
+                  "line": 55,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_updateWeatherAPIKey",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 57,
+                  "column": 3
+                },
+                "end": {
+                  "line": 64,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "e"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "getWeatherAPIKey",
+              "description": "Return The Weather Channel API license key that was retrieved from the server (property WEATHER_API_KEY).",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 69,
+                  "column": 3
+                },
+                "end": {
+                  "line": 71,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": []
+            },
+            {
+              "name": "initForPostalCode",
+              "description": "Automatically requests the weather information when auto flag is set to true and a postal code and country are provided.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 76,
+                  "column": 3
+                },
+                "end": {
+                  "line": 93,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "auto"
+                },
+                {
+                  "name": "baseUrl"
+                },
+                {
+                  "name": "apiKey"
+                },
+                {
+                  "name": "language"
+                },
+                {
+                  "name": "units"
+                },
+                {
+                  "name": "postalAndCountryCode"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "initForLatAndLong",
+              "description": "Automatically requests the weather information when auto flag is set to true and a geocode is provided.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 98,
+                  "column": 3
+                },
+                "end": {
+                  "line": 115,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "auto"
+                },
+                {
+                  "name": "baseUrl"
+                },
+                {
+                  "name": "apiKey"
+                },
+                {
+                  "name": "language"
+                },
+                {
+                  "name": "units"
+                },
+                {
+                  "name": "latAndLong"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "getBaseWeatherUrl",
+              "description": "Return base weather URL for The Weather Company API.\nThe API supports requests by postal code or by geocode (latitude and longitude).",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 120,
+                  "column": 3
+                },
+                "end": {
+                  "line": 145,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "baseUrl"
+                },
+                {
+                  "name": "postalAndCountryCode"
+                },
+                {
+                  "name": "latAndLong"
+                }
+              ]
+            },
+            {
+              "name": "_getPostalUrl",
+              "description": "Return the postal code URL. For example location/30075:4:US.\nThe postal code of The Weather Company has a proprietary location type (4) with the following\nformat: location/<postal code>:<location type>:<country code>",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 151,
+                  "column": 3
+                },
+                "end": {
+                  "line": 164,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "postalAndCountryCode"
+                }
+              ]
+            },
+            {
+              "name": "_getGeocodeUrl",
+              "description": "Return the geocode URL (latitude and longitude). For example, /geocode/34.063/-84.217. \nFormat: /geocode/<Latitude>/<Longitude>",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 169,
+                  "column": 3
+                },
+                "end": {
+                  "line": 182,
+                  "column": 4
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "latAndLong"
+                }
+              ]
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 15,
+              "column": 13
+            },
+            "end": {
+              "line": 184,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriplatWeatherBehavior",
+          "attributes": [],
+          "events": [
+            {
+              "type": "CustomEvent",
+              "name": "triplat-weather-apikey-update",
+              "description": "Fired after retrieving The Weather Channel API license key from the server (property WEATHER_API_KEY).",
+              "metadata": {}
+            },
+            {
+              "type": "CustomEvent",
+              "name": "triplat-weather-generate-request",
+              "description": "Fired a request to get the weather conditions automatically when auto flag is set and a location is provided.",
+              "metadata": {}
+            }
+          ],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

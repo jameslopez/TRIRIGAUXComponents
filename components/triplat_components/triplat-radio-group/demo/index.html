@@ -1,0 +1,72 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-radio-group Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../triplat-radio-group.html">
+
+</head>
+<body>
+	<dom-module id="x-custom">
+		<style>
+			.radio-group-class {
+				font-style: italic;
+				--triplat-radio-group-item-padding: 7px;
+				--triplat-radio-button-size: 16px;
+				--triplat-radio-button-label-color: green;
+				--triplat-radio-button-unchecked-color: blue;
+				--triplat-radio-button-checked-color: red;
+			}		
+		</style>
+		<template>
+
+			<h3>Prefixes:</h3>
+			Selected prefix is <b><span>{{prefix}}</span></b>
+			<p></p>	
+
+			<triplat-radio-group
+				class="radio-group-class"
+				description="Prefixes options"
+				value="{{prefix}}"
+				select-src="{{inputData}}"></triplat-radio-group>
+
+		</template>
+	</dom-module>
+	<script>
+    HTMLImports.whenReady(function() {
+		Polymer({
+
+			is: "x-custom",
+
+			properties : {
+	            inputData : {
+	                type: Array,
+	                value: [{value: "Mr."},
+	                {value: "Mrs."},
+	                {value: "Miss"},
+	                {value: "Ms."},
+	                {value: "Dr."},
+	                {value: "Prof."}]
+	            },
+	            
+	            prefix: String
+        	}
+
+		});
+      });
+	</script>
+
+	<x-custom></x-custom>
+
+</body>
+</html>

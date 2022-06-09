@@ -1,0 +1,431 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-overflow-text` is a component that handles the overflow text and displays the text in ellipsis based on no. of lines given. The component implements `iron-resizable-behavior`.\r\n\r\n  Example:\r\n\r\n  ```html\r\n  <triblock-table>\r\n\t<triblock-table-column title=\"Task Id\">\r\n\t\t<template>\r\n\t\t\t<div>1034914</div>\r\n\t\t</template>\r\n\t</triblock-table-column>\r\n\t<triblock-table-column title=\"Description\">\r\n\t\t<template>\r\n\t\t\t<triblock-overflow-text lines=\"2\" text=\"[[The component will look for binded value and displays the text in ellipsis if it is overflowing based on no. of lines]]\"></triblock-overflow-text>\r\n\t\t</template>\r\n\t</triblock-table-column>\r\n  ```\r\n\r\n  The following custom properties and mixins are available for styling:\r\n\r\n  Custom property | Description | Default\r\n  ----------------|-------------|----------\r\n  `--triblock-overflow-text-ellipsis-background-color` | ellipsis background color |  inherit\r\n  `--triblock-overflow-text-ellipsis-line-height` | Mixin applied to the ellipsis line | normal\r\n  `--triblock-overflow-text-collapse-link-font-size` | Mixin applied to the collapse link | inherit",
+      "summary": "",
+      "path": "triblock-overflow-text.js",
+      "properties": [
+        {
+          "name": "collapse",
+          "type": "boolean | null | undefined",
+          "description": "If true, the overflowing content can be expanded.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 122,
+              "column": 2
+            },
+            "end": {
+              "line": 125,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "lines",
+          "type": "number | null | undefined",
+          "description": "The number of lines to be displayed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 134,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_observeLines\"",
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "2"
+        },
+        {
+          "name": "gradient",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value that indicate if a gradient background should not\nbe displayed in the ellipsis container.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 140,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "text",
+          "type": "string | null | undefined",
+          "description": "The text content. If this property is used, the component\nwill ignore the `<content>`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 2
+            },
+            "end": {
+              "line": 154,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_checkOverflowText\"",
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "_collapsed",
+          "type": "boolean | null | undefined",
+          "description": "Indicate when the content should be collapsed.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 159,
+              "column": 2
+            },
+            "end": {
+              "line": 163,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_collapseContent\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_hideEllipsis",
+          "type": "boolean | null | undefined",
+          "description": "Indicate when to show and hide the ellipsis.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 168,
+              "column": 2
+            },
+            "end": {
+              "line": 171,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 178,
+              "column": 4
+            },
+            "end": {
+              "line": 184,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_observeLines",
+          "description": "Set the maximum number of lines to be displayed.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 189,
+              "column": 1
+            },
+            "end": {
+              "line": 191,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "lines"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_checkOverflowText",
+          "description": "Check if there are overflowing content.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 196,
+              "column": 1
+            },
+            "end": {
+              "line": 212,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleResize",
+          "description": "Check if there are overflowing content when resizing the screen.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 217,
+              "column": 1
+            },
+            "end": {
+              "line": 219,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setMaxHeight",
+          "description": "Set `max-height` for the `outerBox` container.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 224,
+              "column": 1
+            },
+            "end": {
+              "line": 226,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeMaxHeight",
+          "description": "Remove `max-height` from the `outerBox` container.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 231,
+              "column": 1
+            },
+            "end": {
+              "line": 233,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_collapseContent",
+          "description": "Determine when to set or remove the `max-height` from the `outerBox` container..",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 238,
+              "column": 1
+            },
+            "end": {
+              "line": 244,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "collapsed"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCollapseContent",
+          "description": "Toggle value of `_collapsed`.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 249,
+              "column": 1
+            },
+            "end": {
+              "line": 251,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_hasTextProperty",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 253,
+              "column": 4
+            },
+            "end": {
+              "line": 255,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "text"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 40,
+          "column": 8
+        },
+        "end": {
+          "line": 256,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "collapse",
+          "description": "If true, the overflowing content can be expanded.",
+          "sourceRange": {
+            "start": {
+              "line": 122,
+              "column": 2
+            },
+            "end": {
+              "line": 125,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "lines",
+          "description": "The number of lines to be displayed.",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 134,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "gradient",
+          "description": "Boolean value that indicate if a gradient background should not\nbe displayed in the ellipsis container.",
+          "sourceRange": {
+            "start": {
+              "line": 140,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "text",
+          "description": "The text content. If this property is used, the component\nwill ignore the `<content>`.",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 2
+            },
+            "end": {
+              "line": 154,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-overflow-text"
+    }
+  ]
+}

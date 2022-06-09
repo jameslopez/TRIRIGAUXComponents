@@ -1,0 +1,2364 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that provides a way to display and input time. This is typically used within the context of date and time. This can also be used as a duration. See the `triplat-datetime-picker` demo page for an example that displays hours, minutes, and seconds.\n\n<triplat-calendar-times\n  hour=\"{{_hour}}\"\n  minute=\"{{_min}}\"\n  step-hour=\"1\"\n  step-minute=\"15\"\n  step-second=\"15\"\n  display-seconds\n  is-am-pm-format>\n</triplat-calendar-times>\n\n\n### Styling\n\nThe following custom properties are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-calendar-times-time-section` | Applied to the time section | `{}`\n`--triplat-calendar-times-separator` | Applied to the separator | `{}`\n`--triplat-calendar-times-header` | Applied to the time header | `{}`\n`--triplat-calendar-times-colon` | Applied to the colon separator | `{}`",
+      "summary": "",
+      "path": "triplat-calendar-times.js",
+      "properties": [
+        {
+          "name": "isAmPmFormat",
+          "type": "boolean | null | undefined",
+          "description": "Display in 12-hour clock time convention with AM and PM time periods.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 203,
+              "column": 3
+            },
+            "end": {
+              "line": 207,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_isAmPmChanged\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "displaySeconds",
+          "type": "boolean | null | undefined",
+          "description": "Display the seconds counter.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 212,
+              "column": 3
+            },
+            "end": {
+              "line": 216,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_displayChanged\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "hour",
+          "type": "number | null | undefined",
+          "description": "Hour value.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 221,
+              "column": 3
+            },
+            "end": {
+              "line": 224,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "minute",
+          "type": "number | null | undefined",
+          "description": "Minute value.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 229,
+              "column": 3
+            },
+            "end": {
+              "line": 232,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "second",
+          "type": "number | null | undefined",
+          "description": "Second value.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 237,
+              "column": 3
+            },
+            "end": {
+              "line": 240,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "isPm",
+          "type": "boolean | null | undefined",
+          "description": "True if the time is in the PM.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 245,
+              "column": 3
+            },
+            "end": {
+              "line": 248,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "date",
+          "type": "Object | null | undefined",
+          "description": "The date value for the component. The time portion is the main concern.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 253,
+              "column": 3
+            },
+            "end": {
+              "line": 257,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_dateChanged\"",
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "showColonSeparator",
+          "type": "boolean | null | undefined",
+          "description": "Show colon separators between the period counters.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 262,
+              "column": 3
+            },
+            "end": {
+              "line": 265,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "showLabelUnder",
+          "type": "boolean | null | undefined",
+          "description": "Show the label underneath the value instead of above the value.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 270,
+              "column": 3
+            },
+            "end": {
+              "line": 274,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "countersOnly",
+          "type": "boolean | null | undefined",
+          "description": "The user can edit the values with the period counters only. The input will be read-only.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 279,
+              "column": 3
+            },
+            "end": {
+              "line": 282,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "hourMinDigits",
+          "type": "number | null | undefined",
+          "description": "The number of minimum digits to display for the hours period.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 287,
+              "column": 3
+            },
+            "end": {
+              "line": 290,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "2"
+        },
+        {
+          "name": "noLoop",
+          "type": "boolean | null | undefined",
+          "description": "The period counters will not loop when a value is increased or decreased.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 295,
+              "column": 3
+            },
+            "end": {
+              "line": 298,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "stepHour",
+          "type": "number | null | undefined",
+          "description": "Amount to add or subtract when increasing or decreasing hours.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 303,
+              "column": 3
+            },
+            "end": {
+              "line": 305,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "stepMinute",
+          "type": "number | null | undefined",
+          "description": "Amount to add or subtract when increasing or decreasing minutes.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 310,
+              "column": 3
+            },
+            "end": {
+              "line": 312,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "stepSecond",
+          "type": "number | null | undefined",
+          "description": "Amount to add or subtract when increasing or decreasing steps.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 317,
+              "column": 3
+            },
+            "end": {
+              "line": 319,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "_maxHour",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 322,
+              "column": 3
+            },
+            "end": {
+              "line": 322,
+              "column": 19
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "_minHour",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 323,
+              "column": 3
+            },
+            "end": {
+              "line": 323,
+              "column": 19
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "_toggleFontSize",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 325,
+              "column": 3
+            },
+            "end": {
+              "line": 329,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_dateChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 336,
+              "column": 5
+            },
+            "end": {
+              "line": 340,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newDate"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_updateTimeProps",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 342,
+              "column": 5
+            },
+            "end": {
+              "line": 361,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "date"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_updateTimePropsChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 363,
+              "column": 5
+            },
+            "end": {
+              "line": 376,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "hour"
+            },
+            {
+              "name": "minute"
+            },
+            {
+              "name": "second"
+            },
+            {
+              "name": "isPm"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isAmPmChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 378,
+              "column": 5
+            },
+            "end": {
+              "line": 384,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getConvertedHour",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 5
+            },
+            "end": {
+              "line": 391,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "hour"
+            },
+            {
+              "name": "isPm"
+            }
+          ]
+        },
+        {
+          "name": "_toggleAmPm",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 393,
+              "column": 5
+            },
+            "end": {
+              "line": 402,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleTranslation",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 404,
+              "column": 5
+            },
+            "end": {
+              "line": 412,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_displayChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 5
+            },
+            "end": {
+              "line": 421,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_forceAmPmRender",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 423,
+              "column": 5
+            },
+            "end": {
+              "line": 434,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 42,
+          "column": 12
+        },
+        "end": {
+          "line": 435,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "is-am-pm-format",
+          "description": "Display in 12-hour clock time convention with AM and PM time periods.",
+          "sourceRange": {
+            "start": {
+              "line": 203,
+              "column": 3
+            },
+            "end": {
+              "line": 207,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "display-seconds",
+          "description": "Display the seconds counter.",
+          "sourceRange": {
+            "start": {
+              "line": 212,
+              "column": 3
+            },
+            "end": {
+              "line": 216,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "hour",
+          "description": "Hour value.",
+          "sourceRange": {
+            "start": {
+              "line": 221,
+              "column": 3
+            },
+            "end": {
+              "line": 224,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "minute",
+          "description": "Minute value.",
+          "sourceRange": {
+            "start": {
+              "line": 229,
+              "column": 3
+            },
+            "end": {
+              "line": 232,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "second",
+          "description": "Second value.",
+          "sourceRange": {
+            "start": {
+              "line": 237,
+              "column": 3
+            },
+            "end": {
+              "line": 240,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "is-pm",
+          "description": "True if the time is in the PM.",
+          "sourceRange": {
+            "start": {
+              "line": 245,
+              "column": 3
+            },
+            "end": {
+              "line": 248,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "date",
+          "description": "The date value for the component. The time portion is the main concern.",
+          "sourceRange": {
+            "start": {
+              "line": 253,
+              "column": 3
+            },
+            "end": {
+              "line": 257,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "show-colon-separator",
+          "description": "Show colon separators between the period counters.",
+          "sourceRange": {
+            "start": {
+              "line": 262,
+              "column": 3
+            },
+            "end": {
+              "line": 265,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "show-label-under",
+          "description": "Show the label underneath the value instead of above the value.",
+          "sourceRange": {
+            "start": {
+              "line": 270,
+              "column": 3
+            },
+            "end": {
+              "line": 274,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "counters-only",
+          "description": "The user can edit the values with the period counters only. The input will be read-only.",
+          "sourceRange": {
+            "start": {
+              "line": 279,
+              "column": 3
+            },
+            "end": {
+              "line": 282,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "hour-min-digits",
+          "description": "The number of minimum digits to display for the hours period.",
+          "sourceRange": {
+            "start": {
+              "line": 287,
+              "column": 3
+            },
+            "end": {
+              "line": 290,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "no-loop",
+          "description": "The period counters will not loop when a value is increased or decreased.",
+          "sourceRange": {
+            "start": {
+              "line": 295,
+              "column": 3
+            },
+            "end": {
+              "line": 298,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "step-hour",
+          "description": "Amount to add or subtract when increasing or decreasing hours.",
+          "sourceRange": {
+            "start": {
+              "line": 303,
+              "column": 3
+            },
+            "end": {
+              "line": 305,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "step-minute",
+          "description": "Amount to add or subtract when increasing or decreasing minutes.",
+          "sourceRange": {
+            "start": {
+              "line": 310,
+              "column": 3
+            },
+            "end": {
+              "line": 312,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "step-second",
+          "description": "Amount to add or subtract when increasing or decreasing steps.",
+          "sourceRange": {
+            "start": {
+              "line": 317,
+              "column": 3
+            },
+            "end": {
+              "line": 319,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-calendar-times"
+    },
+    {
+      "description": "A component that provides an input box with a calendar icon. Clicking on the icon \nbrings up a calendar and allows you to select a date from the calendar.\n\n\t <triplat-date-picker value=\"{{value}}\"></triplat-date-picker>\n\nNote: The pop-up calendar will be centered when opened on a mobile device. \n\nExample of using custom label. In order for an element to be considered as a label, it must have the `label` slot attribute.\n\n\t<triplat-datetime-picker>\n\t  <iron-icon slot=\"label\" icon=\"icons:perm-contact-calendar\"></iron-icon>\n\t</triplat-datetime-picker>\n\nNote: The 'label' property value will be overridden when using a custom 'label' slot. \n\n### Styling\n\nThe following custom properties are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-date-picker-width` | Width of the input field | `100%`\n`--triplat-date-picker-header-bg-color` | Background color for the header | `--tri-primary-color-40`\n`--triplat-date-picker-header-sec-bg-color` | Secondary background color for the header | `--tri-primary-color-30`\n`--triplat-date-picker-weekday-color` | Color for the weekday column header | `--ibm-gray-60`\n`--triplat-date-picker-cancel-button` | Mixin applied to the cancel button | `{}`\n`--triplat-date-picker-done-button` | Mixin applied to the done button | `{}`\n`--triplat-date-picker-selected-bg-color` | Color of the background for a selected day or year | `--tri-primary-color-30`\n`--triplat-date-picker-disabled-color` | Color of the disabled days | `--ibm-gray-50`\n`--triplat-date-picker-landscape-bg-color` | Color of the background in landscape mode | `--tri-primary-color-40`\n`--triplat-date-picker-icon-size` | Size of the calendar icon | `24px`\n`--triplat-date-picker-icon-color` | Color of the component icons | `--tri-primary-icon-button-color`\n`--triplat-date-picker-icon` | Mixin applied to the picker icon | `{}`\n\nSee `Polymer.PaperInputContainer` for a list of custom properties that can be used to style the paper-input element contained within this element.\n\n### Utilities\n\nSee `triplat-date-utilites` for more API docs.",
+      "summary": "",
+      "path": "triplat-date-picker.js",
+      "properties": [
+        {
+          "name": "value",
+          "type": "string | null | undefined",
+          "description": "The ISO date format",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 182,
+              "column": 5
+            },
+            "end": {
+              "line": 186,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_valueChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_dateValue",
+          "type": "Date | null | undefined",
+          "description": "Representation of the value as a java.util.Date object",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 191,
+              "column": 5
+            },
+            "end": {
+              "line": 194,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_dateValueChanged\"",
+              "attributeType": "Date"
+            }
+          }
+        },
+        {
+          "name": "header",
+          "type": "boolean | null | undefined",
+          "description": "Flag indicating whether to display a block above the calendar containing\nthe day of the week, month, day, and year of the currently selected value.<br>\n<b>true</b> means display the header above the calendar.<br>\n<b>false</b> means just display the calendar without the header block.<br>",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 5
+            },
+            "end": {
+              "line": 205,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "String value to be used for the label.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 210,
+              "column": 5
+            },
+            "end": {
+              "line": 213,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value to indicate that this is a disabled date value input field. Show\nthe value, but not the date picker. The value will be grayed out and not editable.\nThe value will be underlined to indicate it is an input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 220,
+              "column": 5
+            },
+            "end": {
+              "line": 223,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value to indicate that this is a readonly date value. Show\nthe value, but not the date picker.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 229,
+              "column": 5
+            },
+            "end": {
+              "line": 232,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "nullDateInvalid",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value to indicate that a null date should be considered as invalid.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 237,
+              "column": 5
+            },
+            "end": {
+              "line": 240,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disableKeyboardInput",
+          "type": "boolean | null | undefined",
+          "description": "If true, the keyboard input is disabled and the user can only change the date by using the calendar.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 245,
+              "column": 3
+            },
+            "end": {
+              "line": 248,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_errorMsg",
+          "type": "string | null | undefined",
+          "description": "String value that is null when no error exists or it contains the current error\nmessage if the existing value is invalid.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 254,
+              "column": 5
+            },
+            "end": {
+              "line": 258,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "_militaryTime",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 260,
+              "column": 5
+            },
+            "end": {
+              "line": 263,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_currentTimeZone",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 265,
+              "column": 5
+            },
+            "end": {
+              "line": 267,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_initiatedDate",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 269,
+              "column": 5
+            },
+            "end": {
+              "line": 271,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_datetimeInvlidmsg",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 273,
+              "column": 5
+            },
+            "end": {
+              "line": 275,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_datetimePattern",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 277,
+              "column": 5
+            },
+            "end": {
+              "line": 279,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_enteredDateValue",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 280,
+              "column": 5
+            },
+            "end": {
+              "line": 282,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "confirmButtons",
+          "type": "boolean | null | undefined",
+          "description": "Flag indicating whether to display \"Ok\" and \"Cancel\" buttons in the calendar.<br>",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 287,
+              "column": 5
+            },
+            "end": {
+              "line": 290,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disallowWeekends",
+          "type": "boolean | null | undefined",
+          "description": "Flag indicating whether to disable weekends and make them become gray color and unselectable in the calendar.<br>",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 295,
+              "column": 5
+            },
+            "end": {
+              "line": 298,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disallowPastDates",
+          "type": "boolean | null | undefined",
+          "description": "Flag that indicates whether to allow the user to select any date, or just select dates\nin the future. If this is specified, then only dates in the future, excluding today, will be able\nto be selected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 304,
+              "column": 5
+            },
+            "end": {
+              "line": 307,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "displayFormat",
+          "type": "string | null | undefined",
+          "description": "Date format strings",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 312,
+              "column": 5
+            },
+            "end": {
+              "line": 315,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"MM/DD/YYYY\""
+        },
+        {
+          "name": "allowClickThrough",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to allow clicks to go through overlays.\nWhen the user clicks outside this overlay, the click may close the overlay below.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 321,
+              "column": 3
+            },
+            "end": {
+              "line": 323,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_noCancelOnOutsideClick",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 325,
+              "column": 5
+            },
+            "end": {
+              "line": 328,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_noCancelOnEscKey",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 330,
+              "column": 5
+            },
+            "end": {
+              "line": 333,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_invalid",
+          "type": "boolean | null | undefined",
+          "description": "Flag that indicates whether the date that the user enters is a valid date.<br/>\n<b>true</b> means the date picker field appears in red underline color.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 338,
+              "column": 5
+            },
+            "end": {
+              "line": 342,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_isoDateLength",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 343,
+              "column": 5
+            },
+            "end": {
+              "line": 346,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "_isoUTCDateLength",
+          "type": "number | null | undefined",
+          "description": "Returns the length of a datetime using the UTC time zone.\nFor example \"2016-06-08T23:30:00.000Z\" is a datetime with the UTC timezone.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 351,
+              "column": 5
+            },
+            "end": {
+              "line": 354,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "disableErrorMsg",
+          "type": "boolean | null | undefined",
+          "description": "Flag that indicates whether to allow the message to alert when the user enters an invalid date.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 358,
+              "column": 5
+            },
+            "end": {
+              "line": 361,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "alwaysFloatLabel",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to always float the label.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 365,
+              "column": 5
+            },
+            "end": {
+              "line": 368,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "noLabelFloat",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to disable the floating label.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 5
+            },
+            "end": {
+              "line": 376,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disableSelectYear",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to disable select year.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 381,
+              "column": 5
+            },
+            "end": {
+              "line": 384,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_userValueChange",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 5
+            },
+            "end": {
+              "line": 389,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_fireUserChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_lang",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 391,
+              "column": 5
+            },
+            "end": {
+              "line": 391,
+              "column": 18
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_calendarDateSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 394,
+              "column": 5
+            },
+            "end": {
+              "line": 396,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_notDisabledReadonly",
+          "description": "Neither disabled nor readonly flag were set",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 400,
+              "column": 2
+            },
+            "end": {
+              "line": 406,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "readonly"
+            }
+          ]
+        },
+        {
+          "name": "_readonlyNoDisableLabel",
+          "description": "readonly flag was set, but disabled was not set",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 2
+            },
+            "end": {
+              "line": 412,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "label"
+            }
+          ]
+        },
+        {
+          "name": "_readonlyNoDisabledNoLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 5
+            },
+            "end": {
+              "line": 420,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "label"
+            }
+          ]
+        },
+        {
+          "name": "_dateValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 422,
+              "column": 5
+            },
+            "end": {
+              "line": 431,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_directEdit",
+          "description": "Handle user directly entering a new value into the input field\nwithout using the calendar.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 437,
+              "column": 2
+            },
+            "end": {
+              "line": 463,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openTriCalendar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 465,
+              "column": 5
+            },
+            "end": {
+              "line": 484,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "created",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 486,
+              "column": 5
+            },
+            "end": {
+              "line": 489,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 491,
+              "column": 5
+            },
+            "end": {
+              "line": 496,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleLocale",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 498,
+              "column": 5
+            },
+            "end": {
+              "line": 503,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getDateTime",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 505,
+              "column": 5
+            },
+            "end": {
+              "line": 512,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setPickerAriaLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 514,
+              "column": 5
+            },
+            "end": {
+              "line": 520,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "val"
+            }
+          ]
+        },
+        {
+          "name": "_closeCalendar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 522,
+              "column": 5
+            },
+            "end": {
+              "line": 526,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openCalendar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 528,
+              "column": 5
+            },
+            "end": {
+              "line": 531,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_convertToDateObject",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 533,
+              "column": 5
+            },
+            "end": {
+              "line": 538,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "val"
+            }
+          ]
+        },
+        {
+          "name": "_valueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 540,
+              "column": 5
+            },
+            "end": {
+              "line": 542,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clearDateValue",
+          "description": "Handle clear value from the input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 547,
+              "column": 2
+            },
+            "end": {
+              "line": 553,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCustomLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 555,
+              "column": 5
+            },
+            "end": {
+              "line": 559,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleBrowserResize",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 561,
+              "column": 5
+            },
+            "end": {
+              "line": 566,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_fireInputChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 568,
+              "column": 5
+            },
+            "end": {
+              "line": 570,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_fireUserChanged",
+          "description": "or click on the date from the calendar",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 574,
+              "column": 2
+            },
+            "end": {
+              "line": 576,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "closeCalendar",
+          "description": "Close the calendar dropdown.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 581,
+              "column": 2
+            },
+            "end": {
+              "line": 584,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeInputReadonly",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 586,
+              "column": 2
+            },
+            "end": {
+              "line": 588,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "disableKeyboardInput"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 77,
+          "column": 12
+        },
+        "end": {
+          "line": 589,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The ISO date format",
+          "sourceRange": {
+            "start": {
+              "line": 182,
+              "column": 5
+            },
+            "end": {
+              "line": 186,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "header",
+          "description": "Flag indicating whether to display a block above the calendar containing\nthe day of the week, month, day, and year of the currently selected value.<br>\n<b>true</b> means display the header above the calendar.<br>\n<b>false</b> means just display the calendar without the header block.<br>",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 5
+            },
+            "end": {
+              "line": 205,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "label",
+          "description": "String value to be used for the label.",
+          "sourceRange": {
+            "start": {
+              "line": 210,
+              "column": 5
+            },
+            "end": {
+              "line": 213,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "disabled",
+          "description": "Boolean value to indicate that this is a disabled date value input field. Show\nthe value, but not the date picker. The value will be grayed out and not editable.\nThe value will be underlined to indicate it is an input field.",
+          "sourceRange": {
+            "start": {
+              "line": 220,
+              "column": 5
+            },
+            "end": {
+              "line": 223,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "readonly",
+          "description": "Boolean value to indicate that this is a readonly date value. Show\nthe value, but not the date picker.",
+          "sourceRange": {
+            "start": {
+              "line": 229,
+              "column": 5
+            },
+            "end": {
+              "line": 232,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "null-date-invalid",
+          "description": "Boolean value to indicate that a null date should be considered as invalid.",
+          "sourceRange": {
+            "start": {
+              "line": 237,
+              "column": 5
+            },
+            "end": {
+              "line": 240,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disable-keyboard-input",
+          "description": "If true, the keyboard input is disabled and the user can only change the date by using the calendar.",
+          "sourceRange": {
+            "start": {
+              "line": 245,
+              "column": 3
+            },
+            "end": {
+              "line": 248,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "confirm-buttons",
+          "description": "Flag indicating whether to display \"Ok\" and \"Cancel\" buttons in the calendar.<br>",
+          "sourceRange": {
+            "start": {
+              "line": 287,
+              "column": 5
+            },
+            "end": {
+              "line": 290,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disallow-weekends",
+          "description": "Flag indicating whether to disable weekends and make them become gray color and unselectable in the calendar.<br>",
+          "sourceRange": {
+            "start": {
+              "line": 295,
+              "column": 5
+            },
+            "end": {
+              "line": 298,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disallow-past-dates",
+          "description": "Flag that indicates whether to allow the user to select any date, or just select dates\nin the future. If this is specified, then only dates in the future, excluding today, will be able\nto be selected.",
+          "sourceRange": {
+            "start": {
+              "line": 304,
+              "column": 5
+            },
+            "end": {
+              "line": 307,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "display-format",
+          "description": "Date format strings",
+          "sourceRange": {
+            "start": {
+              "line": 312,
+              "column": 5
+            },
+            "end": {
+              "line": 315,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "allow-click-through",
+          "description": "Set to true to allow clicks to go through overlays.\nWhen the user clicks outside this overlay, the click may close the overlay below.",
+          "sourceRange": {
+            "start": {
+              "line": 321,
+              "column": 3
+            },
+            "end": {
+              "line": 323,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disable-error-msg",
+          "description": "Flag that indicates whether to allow the message to alert when the user enters an invalid date.",
+          "sourceRange": {
+            "start": {
+              "line": 358,
+              "column": 5
+            },
+            "end": {
+              "line": 361,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "always-float-label",
+          "description": "Set to true to always float the label.",
+          "sourceRange": {
+            "start": {
+              "line": 365,
+              "column": 5
+            },
+            "end": {
+              "line": 368,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "no-label-float",
+          "description": "Set to true to disable the floating label.",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 5
+            },
+            "end": {
+              "line": 376,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disable-select-year",
+          "description": "Set to true to disable select year.",
+          "sourceRange": {
+            "start": {
+              "line": 381,
+              "column": 5
+            },
+            "end": {
+              "line": 384,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "date-picker-change",
+          "description": "Fired when the date-picker value changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "date-picker-input-change",
+          "description": "Fired every time the value is typed into the date-picker input field.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "date-picker-user-change",
+          "description": "Fired when the date-picker input changes due to user interaction.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "value-changed",
+          "description": "Fired when the `value` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-date-picker"
+    }
+  ]
+}

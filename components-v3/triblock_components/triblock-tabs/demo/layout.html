@@ -1,0 +1,166 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<!doctype html>
+<html>
+<head>
+
+	<title>triblock-tab-nav-layout Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../@webcomponents/webcomponentsjs/webcomponents-loader.js" async></script>
+	
+	<script type="module" src="../../triplat-theme/triplat-theme.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../../@polymer/paper-styles/demo-pages.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../../@polymer/iron-pages/iron-pages.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../../@polymer/iron-flex-layout/iron-flex-layout-classes.js" crossorigin="use-credentials"></script>
+	
+	<script type="module" src="../triblock-tabs.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../triblock-tab.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../triblock-tab-nav-layout.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../../triplat-routing/triplat-routing.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../../triplat-icon/ibm-icons.js" crossorigin="use-credentials"></script>
+
+	<custom-style>
+		<style is="custom-style" include="demo-pages-shared-styles tristyles-theme">
+			#container {
+		        max-width: 800px;
+		    }
+		</style>
+	</custom-style>
+</head>
+<body unresolved>
+	<div id="container" class="vertical-section-container centered">
+ 		<h2>Sample <code>triblock-tab-nav-layout</code></h2>
+ 
+		<h4><code>iron-pages</code> as target page container</h4>
+		<demo-snippet>
+		<template>
+			<custom-style>
+				<style is="custom-style">
+				 	triblock-tab-nav-layout {
+				 		--triblock-tab-nav-layout: {
+				 			height: 200px;
+				 		}
+				 	}
+					section {
+						@apply(--layout-horizontal);
+						@apply(--layout-center-justified);
+					}
+					#myIronPages {
+						@apply(--layout-vertical);
+						@apply(--layout-center-justified);
+						background-color: #f5f5f5;
+					}
+				</style>
+			</custom-style>
+			<triblock-tab-nav-layout>
+				<triblock-tabs selected="activityNavIron" nav>
+					<triblock-tab slot="tab"
+						id="activityNavIron" 
+						iron-page-id="activityPage" 
+						icon="ibm:activity" 
+						label="Activity">
+					</triblock-tab>
+					<triblock-tab slot="tab"
+						id="adminNavIron" 
+						iron-page-id="adminPage" 
+						icon="ibm:admin" 
+						label="Admin">
+					</triblock-tab>
+					<triblock-tab slot="tab"
+						id="applicationNavIron" 
+						iron-page-id="applicationPage" 
+						icon="ibm:applications" 
+						label="Application">
+					</triblock-tab>
+				</triblock-tabs>
+				<iron-pages id="myIronPages" page>
+					<section id="activityPage">
+						<span>Activity Page</span>
+					</section>
+					<section id="adminPage">
+						<span>Administrator Page</span>
+					</section>
+					<section id="applicationPage">
+						<span>Application Page</span>
+					</section>
+				</iron-pages>
+			</triblock-tab-nav-layout>
+		</template>
+		</demo-snippet>
+
+		<h4><code>triplat-route-selector</code> as target page container</h4>
+		<demo-snippet>
+		<template>
+			<custom-style>
+				<style is="custom-style">
+					section {
+						@apply(--layout-horizontal);
+						@apply(--layout-center-justified);
+					}
+					#myRoutePages {
+						@apply(--layout-vertical);
+						@apply(--layout-center-justified);
+						background-color: #f5f5f5;
+					}
+				</style>
+			</custom-style>
+			<triplat-route 
+				id="activityRoute" 
+				name="activityPage" 
+				path="/activity"></triplat-route>
+			<triplat-route 
+				id="adminRoute" 
+				name="adminPage" 
+				path="/admin"></triplat-route>
+			<triplat-route 
+				id="applicationRoute" 
+				name="applicationPage" 
+				path="/application"></triplat-route>
+			
+			<triblock-tab-nav-layout>
+				<triblock-tabs nav>
+					<triblock-tab slot="tab"
+						id="activityRouteNav"
+						triplat-route-id="activityRoute" 
+						icon="ibm:activity" 
+						label="Activity"></triblock-tab>
+					<triblock-tab slot="tab"
+						id="adminRouteNav"
+						triplat-route-id="adminRoute" 
+						triplat-route-params="{{routeParams}}" 
+						icon="ibm:admin" 
+						label="Admin"></triblock-tab>
+					<triblock-tab slot="tab"
+						id="applicationRouteNav"
+						triplat-route-id="applicationRoute" 
+						icon="ibm:applications" 
+						label="Application"></triblock-tab>
+				</triblock-tabs>
+				
+				<triplat-route-selector id="myRoutePages" page>
+					<iron-pages>
+						<section route="activityPage" default-route>
+							<span>Activity Route Page</span>
+						</section>
+						<section route="adminPage">
+							<span>Administrator Route Page</span>
+						</section>
+						<section route="applicationPage">
+							<span>Application Route Page</span>
+						</section>
+					</iron-pages>
+				</triplat-route-selector> 
+			</triblock-tab-nav-layout>
+			
+		</template>
+		</demo-snippet>
+			
+	</div>
+</body>
+</html>

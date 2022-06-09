@@ -1,0 +1,130 @@
+/*
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017-2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+*/
+import { TriBlockAppLayoutBannerBehavior } from "./triblock-app-layout-banner-behavior.js";
+
+import { TriBlockViewResponsiveBehavior } from "../triblock-responsive-layout/triblock-view-responsive-behavior.js";
+
+/** 
+ * Implement `triblock-app-layout-banner-popup-behavior` on your main view element that that contains `triblock-app-layout`. This helps with configuration concerning the mobile page label and back button based on `triblock-popup` behaviors.
+ * 
+ * @polymerBehavior
+ */
+export const TriBlockAppLayoutBannerPopupBehaviorImpl = {
+
+	properties: {
+		_previousPageLabel: String,
+		_previousShowMobileBackButton: Boolean,
+		_openedPopupElement: {
+			type: Object,
+			observer: '_manageAppLayoutBannerPopup'
+		},
+		_stateHistoryTemps: {
+			type: Array,
+			value: function(){
+				return [];
+			},
+		},
+		_currentState:{
+			type: Object,
+			value: function(){
+				return window.history.state;
+			},
+		},
+		_currentStateURL: String,
+	},
+
+	listeners: {
+		'popup-opened': '_setOpenedPopupElement'
+	},
+
+	observers: [ '_smallScreenWidthChanged(smallScreenWidth)'],
+
+	_setOpenedPopupElement: function(e) {
+		this.set('_openedPopupElement', e.detail.element);
+		
+		if(this._openedPopupElement && this.smallScreenWidth){
+			if(this._openedPopupElement.smallScreenWidth) this._setState();
+
+		}else {
+			window.removeEventListener("popstate", this._popstateHandler);
+			if(this._stateHistoryTemps.length > 0){
+				this._stateHistoryTemps = [];
+				window.history.replaceState(this._currentState, "currentState", this._currentStateURL);
+			}
+		}
+	},
+
+	_setState: function(){
+		this._popstateHandler = this._stopBrowserBack.bind(this); 
+		this._currentStateURL = location.href;
+		//create a new state
+		window.history.pushState(this._currentState, "currentState", this._currentStateURL);
+		this._stateHistoryTemps.push({state: this._currentState, url: this._currentStateURL});
+		var hashPopup = this._currentStateURL + "#popup";
+		//modify the state
+		window.history.replaceState(this._currentState, "popupState", hashPopup);
+		window.addEventListener('popstate', this._popstateHandler);
+	},
+
+	//Handle window resize its width to small or large screen, while the popup is opened.
+	_smallScreenWidthChanged: function(smallScreen){
+		if(smallScreen && this._openedPopupElement){
+			var currentWidth = window.innerWidth;
+			popupSmallScreenMaxWidth =  parseInt(this._openedPopupElement.smallScreenMaxWidth, 10);
+			if(currentWidth <= popupSmallScreenMaxWidth) this._setState();
+		}
+		else {
+			if(this._popstateHandler && this._stateHistoryTemps.length > 0){
+				this._stateHistoryTemps = [];
+				window.history.back();
+			}
+		}
+	},
+
+	_manageAppLayoutBannerPopup: function() {
+		var openedPopupElement = this._openedPopupElement;
+		if (openedPopupElement) {
+			this.set('_previousShowMobileBackButton', this.showMobileBackButton);
+			this.set('_previousPageLabel', this.mobilePageLabel);
+			this.set('showMobileBackButton', true);
+			this.set('mobilePageLabel', openedPopupElement.title);
+		} else {
+			this.set('mobilePageLabel', this._previousPageLabel);
+			this.set('showMobileBackButton', this._previousShowMobileBackButton);
+		}
+	},
+
+	/**
+	* Handles closing the `triblock-popup`. Note: to prevent the popup from closing, 
+	* set `manual-close` attribute in triblock-popup. 
+	*/
+	managePopupBackBehavior: function(){
+		if (this._openedPopupElement && !this._openedPopupElement.manualClose) {
+			this._openedPopupElement.closePopup();
+
+			if(this.smallScreenWidth && this._stateHistoryTemps.length > 0){
+				this._stateHistoryTemps = [];
+				window.history.back();
+			}
+		}
+	},
+
+	/**
+	  * Return true when `triblock-popup` is opened, and false when it is closed.
+	  */
+	isPopupOpened: function(){
+		return this._openedPopupElement ? true : false;
+	},
+
+	_stopBrowserBack: function(){
+		if(this._openedPopupElement && this.smallScreenWidth){
+			window.history.replaceState(this._currentState, "currentState", this._currentStateURL);
+			this._openedPopupElement.closePopup();
+		}
+	   
+	},
+};
+
+export const TriBlockAppLayoutBannerPopupBehavior = [ TriBlockAppLayoutBannerBehavior, TriBlockAppLayoutBannerPopupBehaviorImpl, TriBlockViewResponsiveBehavior ];

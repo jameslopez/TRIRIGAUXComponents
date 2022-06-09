@@ -1,0 +1,2085 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "",
+      "summary": "",
+      "path": "triblock-banner-button.js",
+      "properties": [
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the label of the navigation item.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 19,
+              "column": 2
+            },
+            "end": {
+              "line": 19,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "icon",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the name of the icon of the navigation item.  See the demo pages of `triplat-icon` and `iron-icons` for the list of available icons to use.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 23,
+              "column": 2
+            },
+            "end": {
+              "line": 23,
+              "column": 14
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "home",
+          "type": "boolean | null | undefined",
+          "description": "Indicates that the banner button is for the Home button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 27,
+              "column": 2
+            },
+            "end": {
+              "line": 30,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "back",
+          "type": "boolean | null | undefined",
+          "description": "Indicates that the banner button is for the Back button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 34,
+              "column": 2
+            },
+            "end": {
+              "line": 37,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_handleLabelChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 44,
+              "column": 1
+            },
+            "end": {
+              "line": 46,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "label"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_refreshTabs",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 1
+            },
+            "end": {
+              "line": 55,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 56,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Gets or sets the label of the navigation item.",
+          "sourceRange": {
+            "start": {
+              "line": 19,
+              "column": 2
+            },
+            "end": {
+              "line": 19,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "icon",
+          "description": "Gets or sets the name of the icon of the navigation item.  See the demo pages of `triplat-icon` and `iron-icons` for the list of available icons to use.",
+          "sourceRange": {
+            "start": {
+              "line": 23,
+              "column": 2
+            },
+            "end": {
+              "line": 23,
+              "column": 14
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "home",
+          "description": "Indicates that the banner button is for the Home button.",
+          "sourceRange": {
+            "start": {
+              "line": 27,
+              "column": 2
+            },
+            "end": {
+              "line": 30,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "back",
+          "description": "Indicates that the banner button is for the Back button.",
+          "sourceRange": {
+            "start": {
+              "line": 34,
+              "column": 2
+            },
+            "end": {
+              "line": 37,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "update",
+          "description": "Fired when the properties of a navigation item get updated.  The element is passed to the event listener as an item, like `e.detail.item`.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-banner-button"
+    },
+    {
+      "description": "`triblock-app-layout` is a component that provides a basic application layout with a responsive banner.  The banner contains a toolbar for navigation items or banner buttons.\n  On small-screen devices, the banner buttons are moved to a mobile menu drawer where their labels are displayed together with their icons.\n  \n  There are 3 pre-defined banner buttons in the `triblock-app-layout` component:  Back, Home, and Sign Out.  Use the `triblock-banner-button` component to configure the Home, Back, and any custom banner buttons. See <a href=\"?active=triblock-banner-button\">triblock-banner-button</a> for more information.\n\t\n  The Sign Out banner button has its own pre-defined navigation behavior, so there is no need to define a `triblock-banner-button` element for this.\n  However, you will need to enable the Back and Home banner buttons by providing `triblock-banner-button` elements with an attribute of `back` and `home` respectively and provide navigation properties if you need to display them on the banner.\n  If there are no labels provided, these banner buttons will have their default labels as `Back` and `Home` respectively. \n  For banner buttons that are not defined as `back` or `home`, they are considered as custom banner buttons.\n  All banner buttons should have a slot attribute with a value of `banner-button`.\n  \n  The content of your application will need the `content` attribute to apply the necessary styles for the application layout. \n  \n  Example:\n\n\t<triblock-app-layout app-label=\"Group Move\">\n\t  <triblock-banner-button \n\t\ttap-handler=\"_navigateToHome\" slot=\"banner-button\" home></triblock-banner-button>\n\t  <triblock-banner-button \n\t\ttap-handler=\"_navigateToBack\" slot=\"banner-button\" back></triblock-banner-button>\n\t  <triblock-banner-button \n\t\ticon=\"ibm:world-globe\" \n\t\tlabel=\"Watson Analytics\" \n\t\ttap-handler=\"_navigateToWatson\" slot=\"banner-button\"></triblock-banner-button>\n\t  <iron-pages content>\n\t\t  <div id=\"page1\">Page 1 Content</div>\n\t\t  <div id=\"page2\">Page 2 Content</div>\n\t\t  <div id=\"page3\">Page 3 Content</div>\n\t  </iron-pages>\n\t</triblock-app-layout>\n  \n\n  ### Default positioning of the banner buttons\n  \n  If enabled, the Back button appears first in the banner, followed by the custom buttons in the order they are defined, then the Home button, and lastly the Sign Out button.\n  The same order is used when rendering these buttons on the mobile drawer.\n  \n  \n  ### Override banner title\n  \n  The `triblock-app-layout` component has a default title of `IBM TRIRIGA <app-label>`.  You can override this by providing an element containing a slot attribute with a value of `app-title`.\n  The text content of the `app-title` slot element is set as the title of the current document.  You can override this by providing a value to the `title` attribute of the `app-title` slot element. \n  \n  Example:\n\n\t<triblock-app-layout>\n\t  <div slot=\"app-title\" title=\"My Company\">\n\t\t<span>My Company</span> <b>Reports</b>\n\t  </div>\n\t  <triblock-banner-button \n\t\ttap-handler=\"_navigateToHome\" home></triblock-banner-button>\n\t  <triblock-banner-button \n\t\ttap-handler=\"_navigateToBack\" back></triblock-banner-button>\n\t  <triblock-banner-button \n\t\ticon=\"ibm:world-globe\" \n\t\tlabel=\"Watson Analytics\" \n\t\ttap-handler=\"_navigateToWatson\"></triblock-banner-button>\n\t  <iron-pages content>\n\t\t  <div id=\"page1\">Page 1 Content</div>\n\t\t  <div id=\"page2\">Page 2 Content</div>\n\t\t  <div id=\"page3\">Page 3 Content</div>\n\t  </iron-pages>\n\t</triblock-app-layout>\n  \n  In the example above, the title of the banner and page is `My Company Reports`.\n\n\n  ### Styling\n  \n  The following custom properties and mixins are available for styling:\n\n  Custom property | Description | Default\n  ----------------|-------------|----------\n  `--triblock-app-layout-banner-background-color` | Background color applied to the banner | `--tri-header-background-color`\n  `--triblock-app-layout-banner-color` | Color applied to the banner text and buttons | `--tri-header-color`\n  `--triblock-app-layout-banner-height` | Height applied to the banner | `50px`\n  `--triblock-app-layout-banner-mobile-back-button` | Mixin applied to mobile back button | `{}`\n  `--triblock-app-layout-banner-mobile-back-label` | Mixin applied to mobile back label | `{}`\n  `--triblock-app-layout-banner-mobile-page-label` | Mixin applied to mobile page label | `{}`\n  `--triblock-app-layout-banner` | Mixin applied to the banner | `{}`\n  `--triblock-app-layout-banner-button-color` | Color applied to banner buttons | `--tri-header-color`\n  `--triblock-app-layout-banner-button-hover-color` | Color applied to banner buttons on hover | `--tri-footer-icon-button-hover-color`\n  `--triblock-app-layout-banner-button-press-color` | Color applied to banner buttons on press | `--tri-footer-icon-button-press-color`\n  `--triblock-app-layout-banner-button-label` | Mixin applied to banner button labels | `{}`\n  `--triblock-app-layout-mobile-drawer-background-color` | Background color applied to the mobile drawer | `--tri-primary-color-70`\n  `--triblock-app-layout-mobile-drawer-color` | Color applied to the mobile drawer text and icons | `--tri-header-color`\n  `--triblock-app-layout-mobile-drawer-icon-color` | Color applied to the mobile drawer icons | `--tri-header-color`\n  `--triblock-app-layout-mobile-drawer-hover-background-color` | Background color applied to the mobile drawer menu items on hover and focus | `--tri-primary-color-80`\n  `--triblock-app-layout-mobile-drawer-z-index` | z-index applied to mobile drawer | `104`\n  `--triblock-app-layout-paper-drawer-panel` | Mixin applied to paper-drawer-panel | `{}`\n  `--triblock-app-layout-scrim-z-index` | z-index applied to scrim (dark overlay when drawer opens) | `3`\n  `--triblock-app-layout-content-max-width` | Maximum width applied to the content | `1100px`\n  `--triblock-app-layout-body-background-color` | Color applied to the background of the body | `--tri-body-background-color`",
+      "summary": "",
+      "path": "triblock-app-layout.js",
+      "properties": [
+        {
+          "name": "homeApp",
+          "type": "string | null | undefined",
+          "description": "The name of the home application.\nThis is used to redirect the user to the home application after signing out from the current application.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 2
+            },
+            "end": {
+              "line": 410,
+              "column": 17
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "appLabel",
+          "type": "string | null | undefined",
+          "description": "Application label displayed in the toolbar after \"IBM TRIRIGA\".\nYou can override this if you have an element containing a slot attribute with a value of `app-title`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 415,
+              "column": 2
+            },
+            "end": {
+              "line": 418,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handleAppLabelChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "hideSignoutButton",
+          "type": "boolean | null | undefined",
+          "description": "Hides the Sign Out button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 422,
+              "column": 2
+            },
+            "end": {
+              "line": 425,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "drawerWidth",
+          "type": "string | null | undefined",
+          "description": "Specifies drawer width.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 429,
+              "column": 2
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"256px\""
+        },
+        {
+          "name": "showMobileBackButton",
+          "type": "boolean | null | undefined",
+          "description": "Shows the Back button in mobile view and replaces the application label.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 436,
+              "column": 2
+            },
+            "end": {
+              "line": 439,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "responsiveWidth",
+          "type": "string | null | undefined",
+          "description": "Max width to enable mobile drawer.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 443,
+              "column": 2
+            },
+            "end": {
+              "line": 446,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"600px\""
+        },
+        {
+          "name": "mobilePageLabel",
+          "type": "string | null | undefined",
+          "description": "Page label for mobile view. Only shown when showMobileBackButton is true. Note that the back label will be hidden if a page label is provided.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 450,
+              "column": 2
+            },
+            "end": {
+              "line": 453,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "_hasAppTitle",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 454,
+              "column": 2
+            },
+            "end": {
+              "line": 457,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_bannerButtonElements",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 458,
+              "column": 2
+            },
+            "end": {
+              "line": 458,
+              "column": 30
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_dir",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 459,
+              "column": 2
+            },
+            "end": {
+              "line": 459,
+              "column": 14
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "disableEdgeSwipe",
+          "type": "boolean | null | undefined",
+          "description": "If true, swipe from the edge to open the mobile drawer is disabled.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 463,
+              "column": 2
+            },
+            "end": {
+              "line": 466,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disable",
+          "type": "boolean | null | undefined",
+          "description": "If true, this app layout will not be applied to the `content`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 471,
+              "column": 2
+            },
+            "end": {
+              "line": 474,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "displayButtonLabel",
+          "type": "boolean | null | undefined",
+          "description": "If true, It displays the button labels in the toolbar.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 478,
+              "column": 2
+            },
+            "end": {
+              "line": 481,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_hasHomeButton",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 482,
+              "column": 2
+            },
+            "end": {
+              "line": 485,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_escKeyDownHandler",
+          "type": "null",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 488,
+              "column": 4
+            },
+            "end": {
+              "line": 488,
+              "column": 28
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": false
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 490,
+              "column": 4
+            },
+            "end": {
+              "line": 504,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_retrieveBannerButtonItems",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 506,
+              "column": 4
+            },
+            "end": {
+              "line": 509,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getElementsToApplyIronPagesId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 511,
+              "column": 4
+            },
+            "end": {
+              "line": 517,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_computeDrawerPosition",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 519,
+              "column": 4
+            },
+            "end": {
+              "line": 525,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "dir"
+            }
+          ]
+        },
+        {
+          "name": "_computeMediaQuery",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 527,
+              "column": 4
+            },
+            "end": {
+              "line": 529,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "responsiveWidth"
+            }
+          ]
+        },
+        {
+          "name": "_escKeyHandler",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 531,
+              "column": 4
+            },
+            "end": {
+              "line": 536,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleAppTitleContent",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 538,
+              "column": 4
+            },
+            "end": {
+              "line": 544,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isCustomButton",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 546,
+              "column": 4
+            },
+            "end": {
+              "line": 548,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_isHomeButton",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 550,
+              "column": 4
+            },
+            "end": {
+              "line": 552,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_isBackButton",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 554,
+              "column": 4
+            },
+            "end": {
+              "line": 556,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_computeBackIcon",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 558,
+              "column": 4
+            },
+            "end": {
+              "line": 560,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_computeHomeIcon",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 562,
+              "column": 4
+            },
+            "end": {
+              "line": 564,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_computeHomeLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 566,
+              "column": 4
+            },
+            "end": {
+              "line": 569,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_computeBackLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 571,
+              "column": 4
+            },
+            "end": {
+              "line": 574,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_computeShowBackButton",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 576,
+              "column": 4
+            },
+            "end": {
+              "line": 582,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "responsiveWidthMet"
+            },
+            {
+              "name": "showMobileBackButton"
+            }
+          ]
+        },
+        {
+          "name": "_computeShowBackLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 584,
+              "column": 4
+            },
+            "end": {
+              "line": 586,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "pageLabel"
+            }
+          ]
+        },
+        {
+          "name": "_handleAppLabelChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 588,
+              "column": 4
+            },
+            "end": {
+              "line": 592,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "appLabel"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleBackButtonTapped",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 594,
+              "column": 4
+            },
+            "end": {
+              "line": 598,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleHomeButtonTapped",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 600,
+              "column": 4
+            },
+            "end": {
+              "line": 602,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleHomeButtonDrawerTapped",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 604,
+              "column": 4
+            },
+            "end": {
+              "line": 607,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCustomButtonTapped",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 609,
+              "column": 4
+            },
+            "end": {
+              "line": 611,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCustomButtonDrawerTapped",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 613,
+              "column": 4
+            },
+            "end": {
+              "line": 616,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_navigate",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 618,
+              "column": 4
+            },
+            "end": {
+              "line": 620,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openMobileDrawer",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 622,
+              "column": 4
+            },
+            "end": {
+              "line": 626,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_closeMobileDrawer",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 628,
+              "column": 4
+            },
+            "end": {
+              "line": 631,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addEscKeyListener",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 633,
+              "column": 4
+            },
+            "end": {
+              "line": 635,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeEscKeyListener",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 637,
+              "column": 4
+            },
+            "end": {
+              "line": 639,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_signout",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 641,
+              "column": 4
+            },
+            "end": {
+              "line": 643,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_disableEdgeSwipeDrawer",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 645,
+              "column": 4
+            },
+            "end": {
+              "line": 651,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "responsiveWidthMet"
+            },
+            {
+              "name": "disableEdgeSwipe"
+            }
+          ]
+        },
+        {
+          "name": "_computeAppTitleStyleClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 653,
+              "column": 4
+            },
+            "end": {
+              "line": 655,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "_hasHomeButton"
+            }
+          ]
+        },
+        {
+          "name": "_computeHideButtonLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 657,
+              "column": 4
+            },
+            "end": {
+              "line": 663,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "displayButtonLabel"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 122,
+          "column": 8
+        },
+        "end": {
+          "line": 664,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "home-app",
+          "description": "The name of the home application.\nThis is used to redirect the user to the home application after signing out from the current application.",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 2
+            },
+            "end": {
+              "line": 410,
+              "column": 17
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "app-label",
+          "description": "Application label displayed in the toolbar after \"IBM TRIRIGA\".\nYou can override this if you have an element containing a slot attribute with a value of `app-title`.",
+          "sourceRange": {
+            "start": {
+              "line": 415,
+              "column": 2
+            },
+            "end": {
+              "line": 418,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "hide-signout-button",
+          "description": "Hides the Sign Out button.",
+          "sourceRange": {
+            "start": {
+              "line": 422,
+              "column": 2
+            },
+            "end": {
+              "line": 425,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "drawer-width",
+          "description": "Specifies drawer width.",
+          "sourceRange": {
+            "start": {
+              "line": 429,
+              "column": 2
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "show-mobile-back-button",
+          "description": "Shows the Back button in mobile view and replaces the application label.",
+          "sourceRange": {
+            "start": {
+              "line": 436,
+              "column": 2
+            },
+            "end": {
+              "line": 439,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "responsive-width",
+          "description": "Max width to enable mobile drawer.",
+          "sourceRange": {
+            "start": {
+              "line": 443,
+              "column": 2
+            },
+            "end": {
+              "line": 446,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "mobile-page-label",
+          "description": "Page label for mobile view. Only shown when showMobileBackButton is true. Note that the back label will be hidden if a page label is provided.",
+          "sourceRange": {
+            "start": {
+              "line": 450,
+              "column": 2
+            },
+            "end": {
+              "line": 453,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "disable-edge-swipe",
+          "description": "If true, swipe from the edge to open the mobile drawer is disabled.",
+          "sourceRange": {
+            "start": {
+              "line": 463,
+              "column": 2
+            },
+            "end": {
+              "line": 466,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disable",
+          "description": "If true, this app layout will not be applied to the `content`.",
+          "sourceRange": {
+            "start": {
+              "line": 471,
+              "column": 2
+            },
+            "end": {
+              "line": 474,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "display-button-label",
+          "description": "If true, It displays the button labels in the toolbar.",
+          "sourceRange": {
+            "start": {
+              "line": 478,
+              "column": 2
+            },
+            "end": {
+              "line": 481,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-app-layout"
+    }
+  ],
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "Implement `triblock-app-layout-banner-routing-behavior` on your main view element that that contains `triblock-app-layout`. This helps with configuration concerning the mobile page label and back button based on `triplat-routing` behaviors. Additional configuration is as follows:\n\nFirst, listen for `triplat-route`'s `route-active` event.\n```html\n<triplat-route id=\"newRoute\" name=\"new\" path=\"/new\" on-route-active=\"_handleNewRouteActive\"></triplat-route>\n```\n\nThen, set up the custom event needed for the `manageBannerOnRouteChange` function where \"New\" and `true` values are defined by you.\n```javascript\n  _handleNewRouteActive: function (e) {\n     var routedPageBannerDetails = { active: e.detail.active, pageLabel: \"New\", hasBackButton: true };\n     this.manageBannerOnRouteChange(routedPageBannerDetails);\n  }\n```",
+          "summary": "",
+          "path": "triblock-app-layout-banner-routing-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "manageBannerOnRouteChange",
+              "description": "Sets `showMobileBackButton` and `mobilePageLabel` properties based on custom event",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 29,
+                  "column": 1
+                },
+                "end": {
+                  "line": 34,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "routedPageBannerDetails",
+                  "type": "object",
+                  "description": "must have `active`, `hasBackButton` and `pageLabel` properties (see above documentation for more details)"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "navigateToPreviousRoutedPage",
+              "description": "Navigates to the previous routed page in the browser's history",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 39,
+                  "column": 1
+                },
+                "end": {
+                  "line": 41,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "e"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 23,
+              "column": 13
+            },
+            "end": {
+              "line": 42,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockAppLayoutBannerRoutingBehaviorImpl",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        },
+        {
+          "description": "Implement `triblock-app-layout-banner-popup-behavior` on your main view element that that contains `triblock-app-layout`. This helps with configuration concerning the mobile page label and back button based on `triblock-popup` behaviors.",
+          "summary": "",
+          "path": "triblock-app-layout-banner-popup-behavior.js",
+          "properties": [
+            {
+              "name": "_previousPageLabel",
+              "type": "string | null | undefined",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 16,
+                  "column": 2
+                },
+                "end": {
+                  "line": 16,
+                  "column": 28
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            },
+            {
+              "name": "_previousShowMobileBackButton",
+              "type": "boolean | null | undefined",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 17,
+                  "column": 2
+                },
+                "end": {
+                  "line": 17,
+                  "column": 40
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "Boolean"
+                }
+              }
+            },
+            {
+              "name": "_openedPopupElement",
+              "type": "Object | null | undefined",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 18,
+                  "column": 2
+                },
+                "end": {
+                  "line": 21,
+                  "column": 3
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "observer": "\"_manageAppLayoutBannerPopup\"",
+                  "attributeType": "Object"
+                }
+              }
+            },
+            {
+              "name": "_stateHistoryTemps",
+              "type": "Array | null | undefined",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 22,
+                  "column": 2
+                },
+                "end": {
+                  "line": 27,
+                  "column": 3
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "Array"
+                }
+              },
+              "defaultValue": "[]"
+            },
+            {
+              "name": "_currentState",
+              "type": "Object | null | undefined",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 28,
+                  "column": 2
+                },
+                "end": {
+                  "line": 33,
+                  "column": 3
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "Object"
+                }
+              }
+            },
+            {
+              "name": "_currentStateURL",
+              "type": "string | null | undefined",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 34,
+                  "column": 2
+                },
+                "end": {
+                  "line": 34,
+                  "column": 26
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            }
+          ],
+          "methods": [
+            {
+              "name": "_setOpenedPopupElement",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 43,
+                  "column": 1
+                },
+                "end": {
+                  "line": 56,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "e"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_setState",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 58,
+                  "column": 1
+                },
+                "end": {
+                  "line": 68,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_smallScreenWidthChanged",
+              "description": "Handle window resize its width to small or large screen, while the popup is opened.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 71,
+                  "column": 1
+                },
+                "end": {
+                  "line": 83,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "smallScreen"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_manageAppLayoutBannerPopup",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 85,
+                  "column": 1
+                },
+                "end": {
+                  "line": 96,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "managePopupBackBehavior",
+              "description": "Handles closing the `triblock-popup`. Note: to prevent the popup from closing,\nset `manual-close` attribute in triblock-popup.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 102,
+                  "column": 1
+                },
+                "end": {
+                  "line": 111,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "isPopupOpened",
+              "description": "Return true when `triblock-popup` is opened, and false when it is closed.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 116,
+                  "column": 1
+                },
+                "end": {
+                  "line": 118,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            },
+            {
+              "name": "_stopBrowserBack",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 120,
+                  "column": 1
+                },
+                "end": {
+                  "line": 126,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 13,
+              "column": 13
+            },
+            "end": {
+              "line": 127,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockAppLayoutBannerPopupBehaviorImpl",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        },
+        {
+          "description": "Implement `triblock-app-layout-banner-iron-pages-behavior` on your main view element that that contains `triblock-app-layout`. This helps with configuration concerning the mobile page label and back button based on `iron-pages` behaviors.",
+          "summary": "",
+          "path": "triblock-app-layout-banner-iron-pages-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "manageBannerOnIronPagesChange",
+              "description": "Sets `showMobileBackButton` and `mobilePageLabel` properties based on custom event",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 16,
+                  "column": 1
+                },
+                "end": {
+                  "line": 26,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "ironPages",
+                  "type": "object",
+                  "description": "The `iron-pages` component (The child components must have `hasBackButton` and `pageLabel` properties or attributes)."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "navigateToPreviousIronPages",
+              "description": "Navigates to the previous iron pages",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 32,
+                  "column": 1
+                },
+                "end": {
+                  "line": 45,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "ironPages",
+                  "type": "object",
+                  "description": "The `iron-pages` component (The child components must have `hasBackButton` and `pageLabel` properties or attributes)."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_handleNoPreviousPage",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 47,
+                  "column": 1
+                },
+                "end": {
+                  "line": 50,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 10,
+              "column": 13
+            },
+            "end": {
+              "line": 52,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockAppLayoutBannerIronPagesBehaviorImpl",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        },
+        {
+          "description": "Implement `triblock-app-layout-banner-responsive-layout-behavior` on your main view element that that contains `triblock-app-layout`. This helps with configuration concerning the mobile page label and back button based on `triblock-responsive-layout` when `swtichView` and `smallScreenWidth` properties are true behaviors.",
+          "summary": "",
+          "path": "triblock-app-layout-banner-responsive-layout-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "manageBannerOnResponsiveLayoutChange",
+              "description": "Sets `showMobileBackButton` and `mobilePageLabel` properties based on custom event",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 17,
+                  "column": 1
+                },
+                "end": {
+                  "line": 27,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "responsiveLayoutView",
+                  "type": "object",
+                  "description": "The `triblock-responsive-layout` currentView component (The component must have `hasBackButton` and `pageLabel` properties or attributes)."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "navigateToPreviousView",
+              "description": "Navigates to the previous view",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 33,
+                  "column": 1
+                },
+                "end": {
+                  "line": 47,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "responsiveLayoutView",
+                  "type": "object",
+                  "description": "The `triblock-responsive-layout` currentView component (The component must have `hasBackButton` and `pageLabel` properties or attributes)."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "switchToViewIndex",
+              "description": "Switches to a view based on the given `index`.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 56,
+                  "column": 1
+                },
+                "end": {
+                  "line": 60,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "responsiveLayout",
+                  "type": "Object",
+                  "description": "The `triblock-responsive-layout` component."
+                },
+                {
+                  "name": "index",
+                  "type": "Number",
+                  "description": "The index of the child component to display."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "switchToViewId",
+              "description": "Switches to a view based on the given `id`.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 69,
+                  "column": 1
+                },
+                "end": {
+                  "line": 73,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "responsiveLayout",
+                  "type": "Object",
+                  "description": "The `triblock-responsive-layout` component."
+                },
+                {
+                  "name": "viewId",
+                  "type": "string",
+                  "description": "The `id` of the child component to display."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_handleNoPreviousView",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 75,
+                  "column": 1
+                },
+                "end": {
+                  "line": 78,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 11,
+              "column": 13
+            },
+            "end": {
+              "line": 79,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockAppLayoutBannerResponsiveLayoutBehaviorImpl",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

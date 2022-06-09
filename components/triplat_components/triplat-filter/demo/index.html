@@ -1,0 +1,79 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-filter Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../iron-input/iron-input.html">
+
+	<link rel="import" href="../triplat-filter.html">
+	<link rel="import" href="../triplat-filter-field.html">
+
+</head>
+<body>
+	<dom-module id="x-custom">
+		<style>
+		</style>
+		<template>
+
+			<input is="iron-input" bind-value="{{searchInput}}" type="text" placeholder="Type to search car"><p></p>
+
+			<h3>Cars:</h3>
+
+	        <triplat-filter items="{{inputData}}" filtered-items="{{outputData}}" filter-value="{{searchInput}}">
+	          <triplat-filter-field property-name="manufacture"></triplat-filter-field>
+	          <triplat-filter-field property-name="model"></triplat-filter-field>
+	        </triplat-filter>
+
+            <template is="dom-repeat" items="{{outputData}}">
+                <p><span>{{item.manufacture}}</span>, <span>{{item.model}}</span></p>
+            </template>
+
+		</template>
+	</dom-module>
+	<script>
+    HTMLImports.whenReady(function() {
+		Polymer({
+
+			is: "x-custom",
+
+			properties : {
+	            inputData : {
+	                type: Array,
+	                value: [{manufacture: "Audi", model:"R8 V10"},
+	                {manufacture: "BMW", model:"i8"},
+	                {manufacture: "Bugatti", model:"Veyron 16.4 Super Sport"},
+	                {manufacture: "Bentley", model:"Continental GT Speed"},
+	                {manufacture: "Dodge", model:"Viper"},
+	                {manufacture: "Ferrari", model:"LaFerrari"},
+	                {manufacture: "Koenigsegg", model:"Agera R"},
+	                {manufacture: "Lamborghini ", model:"Veneno"},
+	                {manufacture: "McLaren", model:"650S"},
+	                {manufacture: "Mercedes-Benz", model:"SLS AMG GT"},
+	                {manufacture: "Porsche", model:"918 Spyder"}]
+	            },
+	            
+	            outputData : {
+	                type: Array
+	            },
+	            
+	            searchInput: String
+        	}
+
+		});
+    });
+	</script>
+
+	<x-custom></x-custom>
+
+</body>
+</html>

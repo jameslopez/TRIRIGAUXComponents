@@ -1,0 +1,128 @@
+/*
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2020 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+*/
+import { html } from "../@polymer/polymer/lib/utils/html-tag.js";
+
+import { Polymer } from "../@polymer/polymer/lib/legacy/polymer-fn.js";
+import "../@polymer/polymer/polymer-legacy.js";
+import "../@polymer/iron-ajax/iron-ajax.js";
+import "../tricore-url/tricore-url.js";
+
+/*
+A component that can be used to create an alternate login page for UX applications.
+
+	 <triplat-login id="loginControl" 
+		  username="[[username]]"
+		  password="[[password]]"
+		  on-unauthorized="_handleUnauthorized"
+		  on-already-logged="_handleAlreadyLogged"
+		  on-error="_handleError">
+	 </triplat-login>
+
+This is a non-visual component that abstracts the logic of authenticating a user.
+
+<div style="background-color:#FFFFCC">
+	<div style="padding:20px;">
+		<b>Note:</b> You can use the tri-template tool to generate a template that can help you to define an alternate login page.
+	</div>
+</div>
+*/
+Polymer({
+    _template: html`
+		<tricore-url raw-url="/p/websignon/signon" bind-url="{{_signonUrl}}"></tricore-url>
+		<iron-ajax id="ajax" url="[[_signonUrl]]" method="POST" content-type="application/json" on-response="_handleResponse" on-error="_handleError"></iron-ajax>
+	`,
+
+    is: "triplat-login",
+
+    /**
+	 * Fired when the username or password is invalid.
+	 *
+	 * @event unauthorized
+	 */
+
+	/**
+	 * Fired when the user already has an active session.
+	 *
+	 * @event already-logged
+	 */
+
+	/**
+	 * Fired when an unexpected error occurs.
+	 *
+	 * @event error
+	 */
+	properties: {
+
+		/**
+		 * The name of the user.
+		 */
+		username: {
+			type: String,
+			notify: false,
+			readOnly: false,
+			value:""
+		},
+
+		/**
+		 * The password of the user.
+		 */
+		password:  {
+			type: String,
+			notify: false,
+			readOnly: false,
+			value: ""
+		}
+
+	},
+
+    /**
+	 * Authenticates the user with the username and password attributes. 
+	 * This method should be called before the forceLogin method.
+	 * If the authentication is successful, the page will be reloaded to the originally requested page.
+	 * Otherwise, if it fails, one of the following events will be fired:
+	 *  - already-logged: If the user already has an active session.
+	 *  - error: If an unexpected error occurs.
+	 *  - unauthorized: If the username or password is invalid.
+	 */
+	login: function() {
+		var ajax = this.$.ajax;
+		ajax.body = JSON.stringify({userName: this.username, password: this.password, normal: true});
+		ajax.generateRequest();
+	},
+
+    _setupSessionData: function() {
+		var sessionKey = "tridata-session";
+		window.localStorage.removeItem(sessionKey);					
+		window.localStorage.setItem(sessionKey, JSON.stringify({}));					
+	},
+
+    /**
+	 * Forces the authentication of the user with the username and password attributes. 
+	 * If the user already has an active session, it will be ended and the login will proceed. 
+	 * The login can fail if the user already has an active session on the Tririga server. 
+	 * In this case, if the user wants to end the active session and start a new one, this method must be used.
+	 */
+	forceLogin: function(){
+		var ajax = this.$.ajax;
+		ajax.body = JSON.stringify({userName: this.username, password: this.password, normal: false});
+		ajax.generateRequest();
+	},
+
+    _handleResponse: function(e) {
+		this._setupSessionData();
+		location.reload();
+	},
+
+    _handleError: function(e) {
+    	e.stopPropagation();
+		if (e.detail.request.status === 403){
+			this.fire('already-logged', e);
+		} else if (e.detail.request.status === 401){
+			this.fire('unauthorized', e);
+		} else {
+			this.fire('error', e);
+		}
+	}
+});

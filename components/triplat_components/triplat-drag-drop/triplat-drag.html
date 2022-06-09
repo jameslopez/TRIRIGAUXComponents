@@ -1,0 +1,443 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="triplat-interact.html">
+
+<!-- 
+A component to be used as a wrapper to contain draggable element
+
+## Examples
+
+Example of setting up a triplat-icon as a draggable element using a CSS id, where the clone icon is a user profile icon.
+ 
+		<triplat-drag selector="#user" icon="user-profile">
+			<triplat-icon id="user" icon="user-profile"></triplat-icon>
+		</triplat-drag>
+		
+Example of setting up a div element as a draggable element using a CSS class, where clone icon is search icon.
+
+		.ironman {
+			width: 40px;
+			height; 40px;
+			background-image: url('iron-man.png');
+			background-size: cover;
+		}
+		
+		<triplat-drag selector=".ironman" icon="search">
+			<div class="ironman"></div>
+		</triplat-drag>
+		
+## Styling
+
+Style the internal div inside triplat-drag. The default style sets the width to 100%. If you need to customize the internal div style, use the --triplat-drag-internal-div mixin.
+
+### Example
+		triplat-drag {
+			--triplat-drag-internal-div: {
+				width:	50%;			// override default width
+				background-color: yellow;
+			}
+		}
+
+### Drop
+		
+See <b>triplat-drop</b> for setting up drop zone.
+See <b>triplat-graphic-drag-drop</b> for setting up drop zone in triplat-graphic.
+ 
+-->
+<dom-module id="triplat-drag">
+
+<template>
+	<style>
+		:host {
+			z-index: 2;
+		}
+		.triplat-drag-div {
+			width: 100%;
+			@apply(--triplat-drag-internal-div);
+			/* disable IE/Edge touch action */
+			-ms-touch-action: none;
+        	touch-action: none;
+		}
+	</style>
+	<div class="triplat-drag-div" id="{{_containerId}}" hidden$="{{hide}}">
+		<content></content>
+	</div>
+</template>
+
+<script>
+Polymer({
+	is: "triplat-drag",
+	
+	/**
+     * Fired when drag starts.
+     *
+     * @event drag-start
+     * @param {{dragTarget:Object, dataInfo: String }} detail -
+     *     dragTarget: drag target object info.
+     *     dataInfo: data-info attribute value in dragTarget.
+     */
+     
+    /**
+     * Fired when drag ends.
+     *
+     * @event drag-end
+     * @param {{dragTarget:Object, dataInfo: String }} detail -
+     *     dragTarget: drag target object info.
+     *     dataInfo: data-info attribute value in dragTarget.
+     */
+	properties: {
+		/*
+		 * Required CSS selector for the element to interact as drag target. The value syntax is based on the CSS selector. 
+		 * For example, a CSS class `user` is specified by `.user`, while a CSS id `dragme` is specified by `#dragme`.
+		 * Tag name is not supported in selector value. Only id or class syntax.
+		 */
+		selector: {
+			type: String,
+			value: null,
+			observer: '_updateSelector'
+		},
+		/*
+		 * Flag to enable or disable dragging.
+		 */
+		disabled: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true,
+			observer: '_updateDisabled'
+		},
+		/*
+		 * Icon used for clone. Default is user-profile.
+		 */
+		icon: {
+			type: String,
+			value: 'user-profile'
+		},
+		/*
+		 * Flag to turn on/off drag inertia option. This is a low-level visual setting.
+		 */
+		inertia: {
+			type: Boolean,
+			value: true,
+			reflectToAttribute: true,
+			observer: '_updateInertia'
+		},
+		/*
+		 * Flag to restrict drag item to parent dimension. This is a low-level visual setting.
+		 */
+		restrictParent: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true,
+			observer: '_updateRestrictParent'
+		},
+		/*
+		 * Flag to hide light DOM. Name it different from global attribute hidden.
+		 */
+		hide: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true,
+			observer: '_hide'
+		},
+		/*
+		 * Flag to prevent setup in polymer attached method. 
+		 * This is useful when planning to call setupDragging() programmatically.
+		 */
+		noSetup: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true,
+			observer: '_updateNoSetup'
+		},
+		/*
+		 * Flag to turn on debug info.
+		 */
+		debug: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true,
+			observer: '_updateDebug'
+		},
+		
+		// unique id (random number between 1 and 1000)
+		_containerId : {
+			type: String,
+			value: function() {
+				var id = Math.floor(Math.random()*1000) + 1;
+				return "dragDiv-"+ id;
+			}
+		},
+		
+		/*
+		 * Flag to make icon stay after drop completion. 
+		 * This is for debugging purposes.
+		 */
+		dragIconStay: {
+			type: Boolean,
+			value: false
+		},
+		
+		/*
+		 * Turn on/off cursor while dragging.
+		 * This is for debugging purposes.
+		 */
+		showDragCursor: {
+			type: Boolean,
+			value: false
+		},
+	
+		_triInteract: {
+			type: Object,
+			value: null
+		}	
+		
+	},
+	
+	
+	_options: {
+	},
+	
+	_updateSelector: function(newValue, oldValue) {
+		if (!this._triInteract)
+			this._triInteract = new TriInteract.Draggable();
+		this._triInteract.setSelector(newValue);
+	},
+		
+	_hide: function(newValue, oldValue) {
+		this.enabled = !newValue;
+	},
+	
+	_updateDisabled: function(newValue, oldValue) {
+		if (!this._triInteract)
+			this._triInteract = new TriInteract.Draggable();
+		this._triInteract.updateOption("enabled", !newValue);
+		if ((typeof newValue != 'undefined') && (typeof oldValue != 'undefined')) {
+			this.setupDragging();
+		}
+	},
+	
+	/*
+	 * Programmatically enable/disable drag interaction.
+	 * Parameter value is true to enable, false to disable
+	 */
+	updateEnabled: function(value) {
+		if (this._triInteract) {
+			this._triInteract.updateOption("enabled", value);
+			this.setupDragging();
+		}
+	},
+	
+	_updateInertia: function(newValue, oldValue) {
+		if (!this._triInteract)
+			this._triInteract = new TriInteract.Draggable();
+		this._triInteract.updateOption("inertia", newValue);
+	},
+	
+	_updateRestrictParent: function(newValue, oldValue) {
+		if (!newValue && (oldValue == null)) return;
+		if (!this._triInteract)
+			this._triInteract = new TriInteract.Draggable();
+		if (newValue) {
+			var restrictOption = {
+				restriction: "parent",
+				endOnly: true,
+				elementRect: { top: 0, left:0, bottom: 1, right: 1}
+			}
+			this._triInteract.updateOption("restrict", restrictOption);
+		} else {
+			this._triInteract.deleteOption("restrict");
+		}
+	},
+	
+	_updateNoSetup: function(newValue, oldValue) {
+		if (!this._triInteract)
+			this._triInteract = new TriInteract.Draggable();
+		this._triInteract.setSetup(!newValue);
+	},
+	
+	_updateDebug: function(newValue, oldValue) {
+		if (!this._triInteract)
+			this._triInteract = new TriInteract.Draggable();
+		this._triInteract.setDebug(newValue);
+	},
+	
+	attached: function() {
+		this.setupDragging();
+	},
+	
+	_dragMoveListener: function(event) {
+        this._triInteract.dragMoveListener(event, event.target);
+	},
+	
+	_stringStartsWith: function(string, prefix) {
+		return string.slice(0, prefix.length) == prefix;
+	},
+	
+	_getOffset: function (el) {
+		var _x = 0;
+		var _y = 0;
+		while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+			_x += el.offsetLeft - el.scrollLeft;
+			_y += el.offsetTop - el.scrollTop;
+			el = el.offsetParent;
+		}
+		return { top: _y, left: _x};
+	},
+	
+	//TODO: support combinator selectors
+	_setupDefaultOptions: function() {
+		this._triInteract.updateOption("manualStart", true);
+		var dragIconStay = this.dragIconStay;
+		var dragMoveListener = this._dragMoveListener.bind(this);
+		this._triInteract.updateOption("onmove", dragMoveListener);
+		
+		// fire event handlers
+		var onStartHandler = function(event) {
+			var dragId = event.target.getAttribute("data-drag-id");
+			var dragDiv = document.getElementById(dragId);
+			var triplatDrag = dragDiv.parentNode;
+			if (triplatDrag) {
+				var info = event.target.getAttribute('data-info');
+				triplatDrag.fire('drag-start', {dragTarget: event.target,
+												dataInfo: info });
+			}
+		};
+		this._triInteract.updateOption("onstart", onStartHandler);
+		
+		var onEndHandler = function(event) {
+			var dragId = event.target.getAttribute("data-drag-id");
+			var dragDiv = document.getElementById(dragId);
+			var triplatDrag = dragDiv.parentNode;
+			if (triplatDrag) {
+				var info = event.target.getAttribute('data-info');
+				triplatDrag.fire('drag-end', {dragTarget: event.target,
+											  dataInfo: info });
+			};
+			var triplatIconNode = event.target.parentNode;
+			if (!dragIconStay) {
+				if (triplatIconNode.parentNode) {
+					triplatIconNode.parentNode.removeChild(triplatIconNode);
+				}
+			}
+				
+		};
+		this._triInteract.updateOption("onend", onEndHandler);
+	},
+	
+	_setupClone: function(clone, selector, info) {
+		var selectArray = selector.split(",");
+		selectArray.forEach(function(s) {
+			var _selector = s.replace(/ /g,'');
+			if (_selector.slice(0, 1) == "#") {
+				clone.$.triCustomIcon.id = _selector.substr(1);
+			} else if (_selector.slice(0, 1) == ".") {
+				clone.$.triCustomIcon.classList.add(_selector.substr(1));
+			} else {
+				console.error("unknown selector = " + selector + " in triplat-drag")
+				return null;
+			}
+		});
+		clone.$.triCustomIcon.setAttribute("data-info", info);
+		clone.$.triCustomIcon.setAttribute("data-drag-id", this._containerId);
+		return clone;
+	},
+	
+	_createClone: function(original, selector, parent, event) {
+		var clone = document.createElement("triplat-icon");
+		// search upward to find data-info value
+		var info = this._triInteract.findAttributeValue(original, "data-info");
+		
+		clone.icon= this.icon;
+		clone = this._setupClone(clone, selector, info);
+		if (clone) {
+			clone = this._styleClone(clone, event);
+			parent.appendChild(clone);
+		}
+		return clone;
+	},
+	
+	// style and position icon sync with cursor
+	_styleClone: function(clone, event) {
+		// TODO: calculate x, y offset based on icon
+		var offsetX = 8,
+			offsetY = 10,
+			iconTop, iconLeft;
+		
+		iconTop = event.clientY - offsetY;
+		iconLeft = event.clientX - offsetX;
+
+		var cursor, zIndex = 'z-index:11;',
+			opacity = 'opacity:0.7;';
+		
+		if (this.showDragCursor) {
+			cursor = 'cursor:crosshair;';
+		} else {
+			cursor = 'cursor:none;';
+		}
+		
+		var cssText = 'position:fixed;top:' + iconTop + 
+					  'px;left:' + iconLeft + 'px;' + 
+					  zIndex + opacity + cursor;
+		// css style apply to iron-icon in triplat-icon
+		clone.$.triCustomIcon.style.cssText = cssText;			  
+		return clone;
+	},
+	
+	_cloneMove: function(event) {
+
+		var interaction = event.interaction;
+		// if the pointer was moved while held down
+		// and an interaction hasn't started yet
+		if (interaction.pointerIsDown && !interaction.interacting()) {
+			var preparedName = interaction.prepared.name;
+			if (this._triInteract.getOption("enabled") && preparedName && preparedName.toLowerCase() == "drag") {
+				// clone an icon as configured by this.icon
+				var original = event.currentTarget; 
+				//var triplatDrag = this._triInteract.findTriplatDrag(original);
+				//var selector = triplatDrag.getAttribute("selector");
+				var selector = this.selector;
+				
+				// parent node to contain the clone
+				var parentElm = document.body;
+				var clone = this._createClone(original, selector, parentElm, event);
+									
+				// start a drag interaction targeting the iron-icon in the clone
+				if (clone) {
+					interaction.start({name: 'drag'},
+								  event.interactable,
+								  clone.$.triCustomIcon);
+					}
+				}
+		}
+	},
+				
+	/*
+	 * The element can be DOM element (object) or CSS selector (string).
+	 * If setup is successfully, return interactable object. 
+	 * Otherwise, return false.
+	 */
+	setupDragging: function(element) {
+		this._setupDefaultOptions();
+		var cloneMove = this._cloneMove.bind(this);
+		var draggable = this._triInteract.draggable(element);
+		if (draggable) {
+			draggable.on('move', cloneMove);
+		}
+	},
+	
+	ready: function() {
+		var nodes = this.getContentChildren();
+		// IE does not support 'for (i of array)' syntax
+		//for (var n of nodes) { 
+		//	n.setAttribute("ondragstart", "return false;");
+		//};
+		nodes.forEach(function(n) {
+			n.setAttribute("ondragstart", "return false;");
+		});
+	}
+	
+});
+</script>
+</dom-module>

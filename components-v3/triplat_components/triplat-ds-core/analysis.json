@@ -1,0 +1,673 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "An advanced component for interacting with data sources at a deeper level than triplat-ds.\nIt does not support the use of the triplat-ds-offline element.",
+      "summary": "",
+      "path": "triplat-ds-core.js",
+      "properties": [
+        {
+          "name": "context",
+          "type": "string | null | undefined",
+          "description": "The context of the data source request.  The format should be:\n\n     /{modelAndViewName}/{instanceId}/{dataSourceName}\n     or\n     /{modelAndViewName}/{instanceId}/{dataSourceName}\n                                     /{recordId}\n\nThe {dataSourceName}/{recordId} can repeat for nested data sources. This value\nmust be set before making a request.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 45,
+              "column": 2
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "type",
+          "type": "string | null | undefined",
+          "description": "The type of request being made. Possible values are:\n\n     GET | CREATE | DELETE | SAVE | ADD | REMOVE\n\nThis value must be set before making a request.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 56,
+              "column": 2
+            },
+            "end": {
+              "line": 58,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "refresh",
+          "type": "boolean | null | undefined",
+          "description": "Whether to retrieve the values of the data source on the response of the request.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 63,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "action",
+          "type": "string | null | undefined",
+          "description": "The action name if an action should be performed with the request.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 70,
+              "column": 2
+            },
+            "end": {
+              "line": 72,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "actionGroup",
+          "type": "string | null | undefined",
+          "description": "The action group name if an action should be performed with the request.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 77,
+              "column": 2
+            },
+            "end": {
+              "line": 79,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "query",
+          "type": "Object | null | undefined",
+          "description": "If the request needs to have a query (filters, pagination, sorting), set this\nobject with the query details. The triplat-query component can be used to build up\nthis object. Example of the query object:\n\n     {\n        page: {\n           from: 0,\n           size: 100\n        },\n        filters: [\n           {\n              name: \"firstName\",\n              operator: \"contains\",\n              value: \"foo\"\n           },\n           {operator: \"and\"},\n           {operator: \"open parenthesis\"},\n           {\n              name: \"lastName\",\n              operator: \"contains\",\n              value: \"foo\"\n           },\n           {operator: \"or\"},\n           {\n              name: \"lastName\",\n              operator: \"contains\",\n              value: \"bar\"\n           },\n           {operator: \"close parenthesis\"}\n        ],\n        sorts: [\n           {name: \"lastName\", desc: false},\n           {name: \"firstName\", desc: false}\n        ]\n     }",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 118,
+              "column": 2
+            },
+            "end": {
+              "line": 120,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "dataOut",
+          "type": "Object | null | undefined",
+          "description": "The data that will be sent to the server as part of the request. This will be\ndifferent for each request type. For GET requests, this property is ignored.\n\nFor CREATE, DELETE, SAVE and ADD requests, this property can be either an array of record\nobjects or just a single data object. It is important that the record ID is set as\n\"_id\" in each record object.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 132,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "appContext",
+          "type": "Object | null | undefined",
+          "description": "An object that will be put on each request made. This allows the application to\nput a context on the request. In some cases when the request is sent in a small window of\ntime, the response order may not be the same as the request order. This property\ncomes in handy so you can put an ID on the request that will show up in the response.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 140,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "cacheResponse",
+          "type": "boolean | null | undefined",
+          "description": "Whether to save the response records to the offline cache. This property is only effective\nwhen the current application is registered for offline support using the <b>triplat-offline-manager</b> component.\n\n<b style=\"color:red;\">Experimental:</b> This is an experimental property and is not yet supported. The API may change.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 2
+            },
+            "end": {
+              "line": 153,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "generateRequest",
+          "description": "Generates the request and sends it to the server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 200,
+              "column": 1
+            },
+            "end": {
+              "line": 214,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "Promise",
+            "desc": "The resolve value will be the same as the detail of the response\n                  event. The reject value will be the same as the detail of the error\n                  event."
+          }
+        },
+        {
+          "name": "_doRequest",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 216,
+              "column": 4
+            },
+            "end": {
+              "line": 220,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_doRequestInPromise",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 222,
+              "column": 4
+            },
+            "end": {
+              "line": 242,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            },
+            {
+              "name": "resolve"
+            },
+            {
+              "name": "reject"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onResponse",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 244,
+              "column": 4
+            },
+            "end": {
+              "line": 263,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 265,
+              "column": 4
+            },
+            "end": {
+              "line": 277,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_validateParams",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 279,
+              "column": 4
+            },
+            "end": {
+              "line": 300,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_getMethod",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 302,
+              "column": 4
+            },
+            "end": {
+              "line": 324,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_getRequestUrl",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 326,
+              "column": 4
+            },
+            "end": {
+              "line": 328,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_getParams",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 330,
+              "column": 4
+            },
+            "end": {
+              "line": 369,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_getHeaders",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 371,
+              "column": 4
+            },
+            "end": {
+              "line": 379,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_getContentType",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 381,
+              "column": 4
+            },
+            "end": {
+              "line": 398,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_getBody",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 400,
+              "column": 4
+            },
+            "end": {
+              "line": 425,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requestParams"
+            }
+          ]
+        },
+        {
+          "name": "_getUrl",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 427,
+              "column": 4
+            },
+            "end": {
+              "line": 429,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "url"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 430,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "context",
+          "description": "The context of the data source request.  The format should be:\n\n     /{modelAndViewName}/{instanceId}/{dataSourceName}\n     or\n     /{modelAndViewName}/{instanceId}/{dataSourceName}\n                                     /{recordId}\n\nThe {dataSourceName}/{recordId} can repeat for nested data sources. This value\nmust be set before making a request.",
+          "sourceRange": {
+            "start": {
+              "line": 45,
+              "column": 2
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "type",
+          "description": "The type of request being made. Possible values are:\n\n     GET | CREATE | DELETE | SAVE | ADD | REMOVE\n\nThis value must be set before making a request.",
+          "sourceRange": {
+            "start": {
+              "line": 56,
+              "column": 2
+            },
+            "end": {
+              "line": 58,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "refresh",
+          "description": "Whether to retrieve the values of the data source on the response of the request.",
+          "sourceRange": {
+            "start": {
+              "line": 63,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "action",
+          "description": "The action name if an action should be performed with the request.",
+          "sourceRange": {
+            "start": {
+              "line": 70,
+              "column": 2
+            },
+            "end": {
+              "line": 72,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "action-group",
+          "description": "The action group name if an action should be performed with the request.",
+          "sourceRange": {
+            "start": {
+              "line": 77,
+              "column": 2
+            },
+            "end": {
+              "line": 79,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "query",
+          "description": "If the request needs to have a query (filters, pagination, sorting), set this\nobject with the query details. The triplat-query component can be used to build up\nthis object. Example of the query object:\n\n     {\n        page: {\n           from: 0,\n           size: 100\n        },\n        filters: [\n           {\n              name: \"firstName\",\n              operator: \"contains\",\n              value: \"foo\"\n           },\n           {operator: \"and\"},\n           {operator: \"open parenthesis\"},\n           {\n              name: \"lastName\",\n              operator: \"contains\",\n              value: \"foo\"\n           },\n           {operator: \"or\"},\n           {\n              name: \"lastName\",\n              operator: \"contains\",\n              value: \"bar\"\n           },\n           {operator: \"close parenthesis\"}\n        ],\n        sorts: [\n           {name: \"lastName\", desc: false},\n           {name: \"firstName\", desc: false}\n        ]\n     }",
+          "sourceRange": {
+            "start": {
+              "line": 118,
+              "column": 2
+            },
+            "end": {
+              "line": 120,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "data-out",
+          "description": "The data that will be sent to the server as part of the request. This will be\ndifferent for each request type. For GET requests, this property is ignored.\n\nFor CREATE, DELETE, SAVE and ADD requests, this property can be either an array of record\nobjects or just a single data object. It is important that the record ID is set as\n\"_id\" in each record object.",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 132,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "app-context",
+          "description": "An object that will be put on each request made. This allows the application to\nput a context on the request. In some cases when the request is sent in a small window of\ntime, the response order may not be the same as the request order. This property\ncomes in handy so you can put an ID on the request that will show up in the response.",
+          "sourceRange": {
+            "start": {
+              "line": 140,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "cache-response",
+          "description": "Whether to save the response records to the offline cache. This property is only effective\nwhen the current application is registered for offline support using the <b>triplat-offline-manager</b> component.\n\n<b style=\"color:red;\">Experimental:</b> This is an experimental property and is not yet supported. The API may change.",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 2
+            },
+            "end": {
+              "line": 153,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-ds-core-error",
+          "description": "Fired when a request results in an error. The detail of the event object is:\n\n     {\n        // The HTTP status of the response\n        status: String,\n\n        // The request params used in the request\n        requestParams: Object\n     }",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-ds-core-response",
+          "description": "Fired when a successful response is received. The detail of the event object is:\n\n     {\n        // The data payload of the response (records)\n        data: Object | Array,\n\n        // The iron-ajax response object\n        response: Object,\n\n        // The request params used in the request\n        requestParams: Object\n     }",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-ds-core"
+    }
+  ]
+}

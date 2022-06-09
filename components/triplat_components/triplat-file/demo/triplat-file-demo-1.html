@@ -1,0 +1,106 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+
+<link rel="import" href="../triplat-file.html">
+
+<link rel="import" href="../../paper-material/paper-material.html">
+<link rel="import" href="../../marked-element/marked-element.html">
+
+<link rel="import" href="../../prism-element/prism-highlighter.html">
+
+<link rel="import" href="../../triplat-icon/ibm-icons.html">
+<link rel="import" href="../../triplat-icon/triplat-icon.html">
+
+<dom-module id="triplat-file-demo-1">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+            paper-material {
+                margin-top: 15px;
+                margin-bottom: 15px;
+                width: 550px;
+                height: 353px;
+                @apply(--layout-vertical);    
+            }
+
+            .markdown-html {
+                background-color: #eeeeee;
+                height:270px;
+                border-top-width: 2px;
+                border-top-style: solid;    
+                border-top-color: gray;
+                padding: 10px;
+                margin: 0;
+                font-size: 13px;
+                overflow: auto;
+            }
+
+            .markdown-html > pre {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            .fileIconLabel {
+                --triplat-icon-width: 18px;
+                --triplat-icon-height: 18px;
+                padding-bottom:4px;
+            }
+        </style>
+        <prism-highlighter></prism-highlighter>
+        <h3>Using an upload button</h3>
+        <paper-material elevation="1">
+            <triplat-file value="{{binaryField}}" show-download-button 
+                show-clear-button show-upload-button  
+                show-upload-progress-bar show-upload-error>
+                <div label>
+                    <triplat-icon class="fileIconLabel" icon="file">
+                    </triplat-icon>
+                    <span>Binary Field</span>
+                </div>
+            </triplat-file>
+            
+            <marked-element markdown=[[_markdown]]>
+                <div class="markdown-html"></div>
+            </marked-element>
+        </paper-material>
+    </template>
+</dom-module>
+<script>
+    Polymer({
+
+        is: "triplat-file-demo-1",
+        
+        properties: {
+
+            binaryField: {
+                type: Object
+            },
+
+            _markdown: {
+                type: String,
+                value:
+                    '```html\n' +
+                    '<triplat-file value="{{binaryField}}" show-download-button\n' +
+                    '    show-clear-button show-upload-button\n' +
+                    '    show-upload-progress-bar show-upload-error>\n' +
+                    '\n' +
+                    '    <div label>\n' +
+                    '        <triplat-icon class="fileIconLabel" icon="file">\n' +
+                    '        </triplat-icon>\n' +
+                    '        <span>Binary Field</span>\n' +
+                    '    </div>\n' +
+                    '</triplat-file>\n' +
+                    '\n' +
+                    '<style>\n' +
+                    '    .fileIconLabel {\n' +
+                    '        --triplat-icon-width: 18px;\n' +
+                    '        --triplat-icon-height: 18px;\n' +
+                    '        padding-bottom:4px;\n' +
+                    '    }\n' +
+                    '</style>\n' +
+                    '```'
+            }            
+        }
+    });
+</script>

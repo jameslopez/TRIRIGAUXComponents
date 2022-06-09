@@ -1,0 +1,464 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../iron-selector/iron-selectable.html">
+<link rel="import" href="../iron-selector/iron-selector.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../neon-animation/neon-animations.html">
+
+<!--
+
+	`triblock-carousel` is a component that displays and cycles through a sequence of elements or slides for a specified duration. 
+
+	Example:
+
+	```html
+	<triblock-carousel>
+		<div>Item 1</div>
+		<div>Item 2</div>
+		<div>Item 3</div>	
+	</triblock-carousel>
+	```
+	
+	The order of the carousel items can be arranged by assigning a number to the `sequence` attribute. Any carousel items without a number assigned to the `sequence` attribute will be set to 0 by default. 
+
+	Example:
+	
+	```html
+	<triblock-carousel>
+		<div sequence="3">Item 1</div>
+		<div sequence="2">Item 2</div>
+		<div sequence="1">Item 3</div>	
+	</triblock-carousel>
+	```
+
+	### Styling
+
+	The following custom properties and mixins are available for styling:
+
+	Custom property | Description | Default
+	----------------|-------------|----------
+	`--triblock-carousel-buttons-color` | The carousel buttons color | `--tri-primary-content-label-color`
+	`--triblock-carousel-back-button` | The carousel Back button | `{}`
+	`--triblock-carousel-next-button` | The carousel Next button | `{}`
+	`--triblock-carousel-content-container` | The carousel content container | `{}`
+	`--triblock-carousel-dot-indicator-container` | The carousel dot indicator container | `{display: flex; align-items: center; justify-center: center;}`
+	`--triblock-carousel-dot-indicator` | The carousel dot indicator | `{}`
+	`--triblock-carousel-dot-indicator-selected-color` | The carousel dot indicator selected color | `--tri-primary-content-label-color`
+	
+@demo	
+-->
+<dom-module id="triblock-carousel">
+	<template>
+		<style include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning">
+			:host {
+				display: block;
+				position: relative;				
+				@apply(--layout);
+				@apply(--layout-vertical);
+				width: 100%;
+				overflow: hidden;
+			}
+
+			#carousel {
+				@apply(--layout);
+				@apply(--layout-center-center);
+				width: 100%;
+			}
+
+			#content>::content> :not(.iron-selected):not(.transition) {
+				display: none;
+			}
+
+			#content{
+				@apply(--layout);
+				@apply(--triblock-carousel-content-container);
+			}
+
+			#content>::content> :not(.transition) {
+				order:999;
+			}
+
+			#content>::content> .transition {
+				position: absolute;
+				pointer-events: none;
+			}
+
+			#content>::content:last-child.transition{
+				order: 1;
+			}
+
+			paper-icon-button{
+				--paper-icon-button:{
+					color: var(--triblock-carousel-buttons-color, --tri-primary-content-label-color);
+					opacity: 0.7;
+					padding: 0;	
+				};
+			}
+
+			paper-icon-button:hover, paper-icon-button:focus {
+				opacity: 1;
+			}
+
+			#previousBtn {
+				z-index: 9;
+				position: absolute;
+				left: 0;
+				top:50%;
+				transform: translateY(-50%);
+				@apply(--triblock-carousel-back-button);
+			}
+
+			:host-context([dir="rtl"]) #previousBtn {
+				right: 0;
+				left: auto;
+				-webkit-transform: rotate(180deg);
+				-moz-transform: rotate(180deg);
+				-ms-transform: rotate(180deg);
+				-o-transform: rotate(180deg);
+				transform: rotate(180deg);
+			}
+
+			#nextBtn {
+				z-index: 9;
+				position: absolute;
+				right: 0;
+				top:50%;
+				transform: translateY(-50%);
+				@apply(--triblock-carousel-next-button);
+			}
+
+			:host-context([dir="rtl"]) #nextBtn {
+				left: 0;
+				right: auto;
+				-webkit-transform: rotate(180deg);
+				-moz-transform: rotate(180deg);
+				-ms-transform: rotate(180deg);
+				-o-transform: rotate(180deg);
+				transform: rotate(180deg);
+			}
+
+			.carousel-indicators{
+				@apply(--layout);
+				@apply(--layout-center-center);
+				width: 100%;
+				@apply(--triblock-carousel-dot-indicator-container);
+			} 
+
+			.carousel-indicator {
+				width: 10px;
+				height: 10px;
+				cursor: pointer;
+				border-radius: 10px;
+				border-width: 1px;
+				border-style: solid;
+				border-color: var(--triblock-carousel-dot-indicator-selected-color, --tri-primary-content-label-color);
+				margin: 5px;
+				display: inline-block;
+				z-index: 1;
+				@apply(--triblock-carousel-dot-indicator);
+			}
+
+			.carousel-indicator.iron-selected{
+				background-color: var(--triblock-carousel-dot-indicator-selected-color, --tri-primary-content-label-color);
+			}
+
+			.disable-Indicators{
+				pointer-events:none;
+			}
+
+		</style>
+		<div id="carousel">
+			<paper-icon-button on-tap="slideBack" class="slide-previous-container" id="previousBtn" hidden$="{{!showScrollButtons}}" noink  icon="icons:chevron-left"></paper-icon-button>
+			<div id="content">
+				<content></content>
+			</div>
+			<paper-icon-button on-tap="slideNext"  class="slide-next-container" id="nextBtn" hidden$="{{!showScrollButtons}}" noink icon="icons:chevron-right"></paper-icon-button>
+		</div>	
+			
+		<iron-selector id="carouselIndicators" class="carousel-indicators" selected="{{_selectedIndex}}" hidden$="{{_hideDotIndicators}}">
+			<template is="dom-repeat" items="{{items}}" as="index">
+				<div class="carousel-indicator" tabindex="0" on-keydown="_keyPressed" on-tap="_indicatorTapped" data-index$="{{index}}"></div>	
+			</template>
+		</iron-selector>
+	
+	</template>
+</dom-module>
+<script>
+
+	Polymer({
+
+		is: "triblock-carousel",
+
+		behaviors: [
+			Polymer.IronSelectableBehavior,
+			Polymer.NeonAnimationRunnerBehavior,
+	    ],
+
+	    listeners: {
+	    	'neon-animation-finish': '_animationFinished'
+	    },
+
+	    properties: {
+	    	_selectedIndex: {
+	    		type: Number,
+	    		value: 0,
+	    		observer: '_selectedIndexChanged'
+	    	},
+	    	/**
+		      * Set to true to show the carousel slide Back and Next buttons.
+		      */
+	    	showScrollButtons:{
+	    		type: Boolean,
+	    		value: false
+	    	},
+
+	    	/**
+		      * The duration (in milliseconds) of the slide movement.
+		      */
+	    	slideDuration: {
+	    		type: Number, 
+	    		value: 2000 
+
+	    	},
+
+	    	/**
+		      * The auto play duration for each slide (in milliseconds).
+		      */
+	    	autoSlideDuration: {
+	    		type: Number,
+	    		value: 8000
+	    	},
+
+	    	/**
+		      * Set to true to disable auto slide.
+		      */
+	    	disableAutoSlide: {
+	    		type: Boolean,
+	    		value: false,
+	    	},
+
+	    	_disableClickToSlide: {
+				type: Boolean,
+				value: false,
+			},
+
+			/**
+		      * Set to true to hide the carousel dot indicators.
+		      */
+			_hideDotIndicators: {
+				type: Boolean,
+				value: false
+			},
+
+			_dir: String,
+	    },
+
+	    observers: ['_itemsChanged(items)'],
+
+		attached: function(){
+			this.selected = this._selectedIndex;
+			if(!this.disableAutoSlide){
+				this._setAutoSlide();	
+			}
+			var textDirectionValue = document.querySelector('body').getAttribute('dir');
+			this.set('_dir', textDirectionValue ? textDirectionValue : "ltr");
+		},
+
+
+		_setAutoSlide: function(){
+			var self = this;
+			this._carouselIntervalId = setInterval(function(){
+				self.slideNext();
+			}, self.autoSlideDuration);	
+		},
+
+		_handleSingleCarouselitem: function(){
+			if(this.items.length <= 1){
+				this.showScrollButtons = false;
+				this._hideDotIndicators = true;
+			}else{
+				this.showScrollButtons = true;
+				this._hideDotIndicators = false;
+			}
+		},
+
+		/**
+ 		  * Slide to the next item.
+ 		  **/
+		slideNext: function(){
+			if(this._disableClickToSlide) return;
+			this._disableCarouselIndicators();
+			this._handleOldSlide(this.selectedItem);
+			//handle bidi
+			var animateOut = this._dir == "ltr" ? "slide-left-animation" : "slide-right-animation";
+			this._slideOutAnimation(animateOut, this.selectedItem);
+
+			this.selectNext();
+			this._selectedIndex = this.indexOf(this.selectedItem);
+			//handle bidi
+			var animateIn = this._dir == "ltr" ? "slide-from-right-animation" : "slide-from-left-animation";
+			this._slideInAnimation(animateIn, this.selectedItem);
+			this._resetAutoSlide();
+			this.set('_disableClickToSlide', true);
+		},
+
+		/**
+ 		  * Slide to the previous item.
+ 		  **/
+		slideBack: function(){
+			if(this._disableClickToSlide) return;
+			this._disableCarouselIndicators();
+			this._handleOldSlide(this.selectedItem);
+			//handle bidi
+			var animateOut = this._dir == "ltr" ? "slide-right-animation" : "slide-left-animation";
+			this._slideOutAnimation(animateOut, this.selectedItem);
+
+			this.selectPrevious();
+			this._selectedIndex = this.indexOf(this.selectedItem);
+			//handle bidi
+			var animateIn = this._dir == "ltr" ? "slide-from-left-animation" : "slide-from-right-animation";
+			this._slideInAnimation(animateIn, this.selectedItem);
+			this._resetAutoSlide();
+			this.set('_disableClickToSlide', true);
+		},
+
+		_resetAutoSlide: function(){
+			window.clearInterval(this._carouselIntervalId);
+			if(!this.disableAutoSlide){
+				this._setAutoSlide();
+			}
+		},
+
+		_handleOldSlide: function(selectedItem){
+			if(this._oldSlide){
+				this._oldSlide.classList.remove('transition')
+			}
+			this._oldSlide = selectedItem;
+			this._oldSlide.classList.add('transition');
+		},
+
+		_slideOutAnimation: function(animationName, node){
+			this.animationConfig = {
+				slideOut : [
+					{
+						name : animationName,
+						node : node,
+						timing : {duration: this.slideDuration},
+					},
+					{
+						name : "fade-out-animation",
+						node : this.selectedItem,
+						timing : {duration: this.slideDuration},
+					}
+				]
+			}
+			
+			this.playAnimation('slideOut');
+		},
+
+		_slideInAnimation: function(animationName, node){
+			this.animationConfig = {
+				slideIn: {
+					name : animationName,
+					node : node,
+					timing : {duration: this.slideDuration},
+
+				}
+			}
+
+			this.playAnimation('slideIn');
+		},
+
+		_selectedIndexChanged: function(){
+			this.selectIndex(this._selectedIndex);
+			if(this._oldSlide){
+				this._resetAutoSlide();
+			}
+		},
+
+		_keyPressed: function(e){
+			if (e.keyCode === 13 || e.keyCode === 32) {
+				this._interactWithIndicator(e);
+			}
+		},
+
+		_indicatorTapped: function(e){
+			this._interactWithIndicator(e);
+		},
+
+		_interactWithIndicator: function(e){
+			var index = e.target.getAttribute('data-index');
+			var oldIndex = this.indexOf(this._oldSlide);
+
+			if(oldIndex < 0) this._oldSlide = this.selectedItem;
+			if(this._disableClickToSlide) return;
+			if(oldIndex == index) return;
+			this._handleOldSlide(this.selectedItem);
+			this._handleSlideAnimations(index, oldIndex);	
+			this.set('_disableClickToSlide', true);
+		},
+
+		_animationFinished: function(){
+			if(this._oldSlide){
+				this._oldSlide.classList.remove('transition');
+			}
+			this._oldSlide = this.selectedItem;
+			this.set('_disableClickToSlide', false);
+			this.$.carouselIndicators.classList.remove('disable-Indicators');
+		},
+
+		_itemsChanged: function(items){
+			this._orderSlideSequences();
+			if(this.items.length > 1 && !this.disableAutoSlide){
+				this._resetAutoSlide();
+				this.$.previousBtn.disabled = false;
+				this.$.nextBtn.disabled = false;
+			}
+			this._handleSingleCarouselitem();
+		},
+
+		_orderSlideSequences: function(){
+			if(this.items.length > 1) {
+				this.items.sort(function(a, b){
+					var aSequence = a.getAttribute('sequence') || 0;
+					var bSequence = b.getAttribute('sequence') || 0;
+					return aSequence - bSequence;
+				});
+			}
+		},
+
+		_handleSlideAnimations: function(newIndex, oldIndex){
+			this._disableCarouselIndicators();
+			var newIndexGreaterThanOldIndex = newIndex > oldIndex;
+			// slide to the opposite direction when in the bidi user
+			if(this._dir != "ltr") newIndexGreaterThanOldIndex = !newIndexGreaterThanOldIndex;
+			if(newIndexGreaterThanOldIndex){
+				this._slideOutAnimation('slide-left-animation', this._oldSlide);
+				this._selectedIndex = newIndex;
+				this._slideInAnimation('slide-from-right-animation', this.selectedItem);
+				this._resetAutoSlide();
+			}else{
+				this._slideOutAnimation("slide-right-animation", this._oldSlide);
+				this._selectedIndex = newIndex;
+				this._slideInAnimation("slide-from-left-animation", this.selectedItem);
+				this._resetAutoSlide();
+			}
+		},
+
+		_disableCarouselIndicators: function(){
+			this.$.carouselIndicators.classList.add('disable-Indicators');
+		},
+
+	});
+
+
+
+</script>

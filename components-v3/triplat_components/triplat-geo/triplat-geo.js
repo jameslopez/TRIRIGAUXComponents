@@ -1,0 +1,188 @@
+/*
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+*/
+import { html } from "../@polymer/polymer/lib/utils/html-tag.js";
+
+import { Polymer } from "../@polymer/polymer/lib/legacy/polymer-fn.js";
+import "../@polymer/polymer/polymer-legacy.js";
+
+/* 
+A component that provides the current geolocation.
+
+> **Note 1:** The API key may be required when using the third-party map components.
+
+> **Note 2:** For the latest versions of supported browsers, the server must be running on a secure URL (HTTPS). Otherwise, requesting access for the user's location will not be triggered because non-HTTPS (HTTP) will be treated as an unsecured origin.
+
+
+### Example
+		<triplat-geo latitude="{{latitude}}" longitude="{{longitude}}" 
+			accuracy="{{accuracy}}" is-watch-position time-out="50000" 
+			maximum-age="0">
+		</triplat-geo>
+
+		<google-map latitude="[[latitude]]" longitude="[[longitude]]" fit-to-markers api-key="1234">
+			<google-map-marker latitude="[[latitude]]" longitude="[[longitude]]"
+				draggable="true"></google-map-marker>
+			<google-map-marker latitude="[[latitude]]" longitude="[[longitude]]">
+			</google-map-marker>
+		</google-map>
+@demo demo/index.html 
+*/
+Polymer({
+	is: "triplat-geo",
+
+	/**
+	 * Fired after finding the geo location successfully.
+	 * The event detail includes the detected latitude and longitude.
+	 *
+	 * @event triplat-geo-success
+	 */
+
+	/**
+	 * Fired after finding the geo location with no success.
+	 *
+	 * @event triplat-geo-error
+	 */
+
+	properties:{
+		/**
+		 * The current longitude of the device.
+		 */
+		longitude:{
+			type: Number,
+			reflectToAttribute: true,
+			notify: true,
+			readOnly: true,
+		},
+		/**
+		 * The current latitude of the device.
+		 */
+		latitude:{
+			type: Number,
+			reflectToAttribute: true,
+			notify: true,
+			readOnly: true,
+		}, 
+		/**
+		 * The length of time (millisecond) that the device accepts cached positions. 
+		 */
+		maximumAge: {
+			type: Number,
+			value: 600000
+		},
+		/**
+		 * The length of time (millisecond) that the device is taken to return the coordinates.  
+		 */
+		timeOut: {
+			type: Number,
+			value: 10000
+		},
+		/**
+		 * A number that representing the accuracy of the coordinates (latitude and longitude) express in meters. 
+		 */
+		accuracy: {
+			type: Number,
+			reflectToAttribute: true,
+			readOnly: true,
+			notify: true,
+		},
+		/**
+		 * Set to **true** will update the current position information when the device is moved or more accurate location is detected.
+		 */
+		isWatchPosition:{
+			type: Boolean,
+			value: false
+		},
+
+		/**
+		 * A flag to disable the detection of location.
+		 */
+		disable: {
+			type: Boolean,
+			notify: false,
+			readOnly: false,
+			value: false,
+			observer: "_onDisableChanged"
+		},
+		/**
+		 * Flag that allows the second attempt to fetch the current location if the high accuracy failed. 
+		 */
+		_attemptLowerAccuracy:{
+			type: Boolean,
+			value: false
+		},
+
+		_geoResponseOccurred: {
+			type: Boolean,
+			value: false,
+			readOnly: true
+		}
+	},
+
+	attached: function() {
+		this.async(function() {
+			if(!this.disable) {
+				this._getCoordinates();
+			}
+		});
+	},
+
+	_onDisableChanged: function(disable, oldDisable) {
+		if (oldDisable && !disable) {
+			this._getCoordinates();
+		}
+	},
+
+	_getCoordinates: function() {
+		this._set_geoResponseOccurred(false);
+		var success = this._success.bind(this);
+		var watchPositionId;
+		var error = this._error.bind(this);
+		var options = {
+			maximumAge: this.maximumAge,
+			timeout: this.timeOut,
+			enableHighAccuracy: true
+		};
+		if (this._attemptLowerAccuracy) {
+			options.enableHighAccuracy = false;
+		}
+		if (this.isWatchPosition) {
+			watchPositionId = navigator.geolocation.watchPosition(success, error, options);
+		} else {
+			navigator.geolocation.getCurrentPosition(success, error, options);
+		}
+
+		// Set timeout to call error after the timeout time.
+		// This is necessary for Firefox and Edge browsers when the user ignores the permission popup.
+		window.setTimeout(function() {
+			if (!this._geoResponseOccurred) {
+				this._error();
+			}
+		}.bind(this), options.timeout);
+	},
+
+	_success: function(position) {
+		this._set_geoResponseOccurred(true);
+		this._setLatitude(position.coords.latitude);
+		this._setLongitude(position.coords.longitude);
+		this._setAccuracy(position.coords.accuracy);
+		this.fire('triplat-geo-success', {lat: position.coords.latitude, lng: position.coords.longitude});
+		return;
+	},
+
+	_error: function(position) {
+		// attempt lower accuracy
+		if (!this._attemptLowerAccuracy) {
+			this.set("_attemptLowerAccuracy", true);
+			this._getCoordinates();
+			return;
+		}
+		if (!this.isWatchPosition) {
+			this._set_geoResponseOccurred(true);
+			console.warn("Couldn't retrieve the current location");
+			this.fire('triplat-geo-error');
+		}
+	}
+
+})

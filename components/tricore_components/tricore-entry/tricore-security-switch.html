@@ -1,0 +1,58 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../tricore-url/tricore-url.html">
+
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
+
+<dom-module id="tricore-security-switch">
+	<template>
+		<style>
+			.container {
+				@apply(--layout-flex);
+				@apply(--layout);
+				@apply(--layout-horizontal);
+				@apply(--layout-justified);
+			}
+		</style>
+		<tricore-url raw-url="/p/webapi/secprops" bind-url="{{url}}"></tricore-url>
+		<iron-ajax auto url="{{url}}" on-response="_handleGetResposne"></iron-ajax>
+		<iron-ajax id="putAjax" url="{{url}}" content-type="application/json" method="PUT"></iron-ajax>
+		<div class="container">
+			<span>Security</span>
+			<paper-toggle-button id="enabledButton" checked?="{{props.enabled}}" on-change="_handleEnabledChanged"></paper-toggle-button>
+		</div>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "tricore-security-switch",
+
+		properties: {
+
+			props: {
+				type: Object,
+				notify: true,
+				readOnly: false
+			}
+
+		},
+
+		_handleGetResposne: function(e) {
+			this.set("props", e.detail.response);
+			this.$.enabledButton.checked = this.props.enabled;
+		},
+
+		_handleEnabledChanged: function() {
+			this.set("props.enabled", this.$.enabledButton.checked);
+			this.$.putAjax.body = JSON.stringify(this.props);
+			this.$.putAjax.generateRequest();
+		}
+
+	});
+</script>

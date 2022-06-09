@@ -1,0 +1,103 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<!doctype html>
+<html>
+<head>
+
+	<title>TODO triblock-badge Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+
+	
+	<style type="text/css">
+	
+ 		body {
+			font-family: 'Roboto', 'Noto', sans-serif;
+			@apply(--layout-fit);
+			@apply(--layout-vertical);
+		}
+
+		div.line span.info {
+			align-self: flex-end;
+			margin: 0px 30px;
+			font-weight: bold;
+		}
+		span {
+			font-size:12px;
+		}
+
+		.line {
+			padding: 0px;
+			margin: 0px;
+		}
+		
+		#example {
+			margin-left: 30px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			font-size:large;
+			font-weight: bold;
+		}
+
+		#codeTop {
+			margin-left: 30px;
+			margin-top: 10px;
+			margin-bottom: 0px;
+			font-size:medium;
+			font-weight: bold;
+		}
+		
+		#codeBottom {
+			margin-left: 30px;
+			margin-top: 0px;
+			margin-bottom: 10px;
+			font-size:medium;
+			font-weight: bold;
+		}
+
+		#withComponent {
+			margin-top: 1.8em;
+			margin-left: 5px;
+  			font-size: large;	
+  			font-weight: lighter;
+		}
+		
+		.container {
+			@apply(--layout-flex);
+			@apply(--layout-horizontal);
+			min-height: 0;
+		}
+
+	</style>
+</head>
+<body>
+	<dom-module id="x-custom">
+		<style>
+		</style>
+		<template>
+			<h2>TODO Sample triblock-badge</h2>
+			<div class="container">
+		</div>
+		</template>
+	</dom-module>
+	<script>
+    HTMLImports.whenReady(function() {
+		Polymer({
+
+			is: "x-custom",
+
+		});
+    });
+	</script>
+
+	<x-custom></x-custom>
+</body>
+</html>

@@ -1,0 +1,1914 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "",
+      "summary": "",
+      "path": "azure-oauth2.js",
+      "properties": [
+        {
+          "name": "authtoken",
+          "type": "string | null | undefined",
+          "description": "Final OAuth access token for use in later calls to the Microsoft Graph API",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 96,
+              "column": 3
+            },
+            "end": {
+              "line": 100,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "delay",
+          "type": "number | null | undefined",
+          "description": "If there is only a single profile returned, this component automatically\nredirects to the Microsoft Azure login. If a non-zero delay is specified\nIt waits delay seconds before redirecting.  This is intended to allow a\nsplash screen to display",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 3
+            },
+            "end": {
+              "line": 111,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "3"
+        },
+        {
+          "name": "profilelist",
+          "type": "Array | null | undefined",
+          "description": "If there are multiple profiles defined on the TRIRIGA server, and no profile\nname is specified, the component doesn't automatically display the Microsoft\nlogin page.  Instead it reports the list of profiles to the containing component\nwhich must select a profile and initiate the login process.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 119,
+              "column": 3
+            },
+            "end": {
+              "line": 123,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "profilename",
+          "type": "string | null | undefined",
+          "description": "This is the name of a TRIRIG triOffice365 Config record to use for login.\nThe config record as the application key secret, and redirect URL.  The app\nkey effectively selects the office 365 instance, application rights, and the\nlist of valid redirect URL.  The redirect URL can be used to deal with proxy\nservers or to select which TRIRIGA app to launch.\n\nThis can only be set for the",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 134,
+              "column": 3
+            },
+            "end": {
+              "line": 136,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "scopes",
+          "type": "Array | null | undefined",
+          "description": "Requested user scopes (rights).  Scopes in this list must be approved by the\nuser on first login.  These are different from those defined in the Microsoft\napplication definition which must be approved by the Office 365 instance\nadministrator",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 144,
+              "column": 3
+            },
+            "end": {
+              "line": 146,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 1
+            },
+            "end": {
+              "line": 225,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getConfig",
+          "description": "=========================================================================================",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 237,
+              "column": 1
+            },
+            "end": {
+              "line": 253,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onConfig",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 255,
+              "column": 1
+            },
+            "end": {
+              "line": 303,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "response"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getCodeDelayed",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 305,
+              "column": 1
+            },
+            "end": {
+              "line": 315,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "profile"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getCode",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 317,
+              "column": 1
+            },
+            "end": {
+              "line": 345,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "profile"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "login",
+          "description": "=========================================================================================",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 352,
+              "column": 1
+            },
+            "end": {
+              "line": 355,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "profile"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getToken",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 358,
+              "column": 1
+            },
+            "end": {
+              "line": 377,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onAuthToken",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 379,
+              "column": 2
+            },
+            "end": {
+              "line": 409,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "response"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_processToken",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 411,
+              "column": 2
+            },
+            "end": {
+              "line": 436,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "token"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onTokenExpire",
+          "description": "============================================================================",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 441,
+              "column": 2
+            },
+            "end": {
+              "line": 451,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "token"
+            },
+            {
+              "name": "issued"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 457,
+              "column": 2
+            },
+            "end": {
+              "line": 460,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "err"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 462,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "AzureOauth2",
+      "attributes": [
+        {
+          "name": "authtoken",
+          "description": "Final OAuth access token for use in later calls to the Microsoft Graph API",
+          "sourceRange": {
+            "start": {
+              "line": 96,
+              "column": 3
+            },
+            "end": {
+              "line": 100,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "delay",
+          "description": "If there is only a single profile returned, this component automatically\nredirects to the Microsoft Azure login. If a non-zero delay is specified\nIt waits delay seconds before redirecting.  This is intended to allow a\nsplash screen to display",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 3
+            },
+            "end": {
+              "line": 111,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "profilelist",
+          "description": "If there are multiple profiles defined on the TRIRIGA server, and no profile\nname is specified, the component doesn't automatically display the Microsoft\nlogin page.  Instead it reports the list of profiles to the containing component\nwhich must select a profile and initiate the login process.",
+          "sourceRange": {
+            "start": {
+              "line": 119,
+              "column": 3
+            },
+            "end": {
+              "line": 123,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "profilename",
+          "description": "This is the name of a TRIRIG triOffice365 Config record to use for login.\nThe config record as the application key secret, and redirect URL.  The app\nkey effectively selects the office 365 instance, application rights, and the\nlist of valid redirect URL.  The redirect URL can be used to deal with proxy\nservers or to select which TRIRIGA app to launch.\n\nThis can only be set for the",
+          "sourceRange": {
+            "start": {
+              "line": 134,
+              "column": 3
+            },
+            "end": {
+              "line": 136,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "scopes",
+          "description": "Requested user scopes (rights).  Scopes in this list must be approved by the\nuser on first login.  These are different from those defined in the Microsoft\napplication definition which must be approved by the Office 365 instance\nadministrator",
+          "sourceRange": {
+            "start": {
+              "line": 144,
+              "column": 3
+            },
+            "end": {
+              "line": 146,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "office-365-auth-error",
+          "description": "Fired if an error is included in the query parameters of the redirect URL opened by Microsoft",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "office-365-authenticate",
+          "description": "Fired after successfully retrieving an access token.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "office-365-http-error",
+          "description": "Fired when the response status of any HTTP response from REST call to Microsoft or\nTRIRIGA is not OK",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "profile-list",
+          "description": "Fired after retrieving the profile list from TRIRIGA if a profile can not be automatically\nselected wither because there is only one or a entry in the list matches the profilename\nproperty",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "authtoken-changed",
+          "description": "Fired when the `authtoken` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "profilelist-changed",
+          "description": "Fired when the `profilelist` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "azure-oauth2"
+    },
+    {
+      "description": "",
+      "summary": "",
+      "path": "azure-splash-screen.js",
+      "properties": [],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 162,
+              "column": 1
+            },
+            "end": {
+              "line": 183,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onProfile",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 185,
+              "column": 1
+            },
+            "end": {
+              "line": 190,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onProfileSelect",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 192,
+              "column": 1
+            },
+            "end": {
+              "line": 196,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 32,
+          "column": 0
+        },
+        "end": {
+          "line": 201,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "AzureSplashScreen",
+      "attributes": [],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "azure-splash-screen"
+    },
+    {
+      "description": "A Component that provides access to the Microsoft Outlook Event object which includes\nMeetings, Appointments, and Reminders.\n\nThis version uses the Microsoft Graph API which provides access to cloud hosted versions\nof Exchange, and to on-prem Exchange instances configured as hybrid installs.  That is\nintegrated with Azure active directory.",
+      "summary": "",
+      "path": "outlook-calendar-ds.js",
+      "properties": [
+        {
+          "name": "authtoken",
+          "type": "string | null | undefined",
+          "description": "Microsoft OAuth access token. typical returned from azure-oauth2",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 92,
+              "column": 3
+            },
+            "end": {
+              "line": 95,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_authCodeChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "eventlist",
+          "type": "Array | null | undefined",
+          "description": "List of Microsoft Outlook events - meeting, appointments, reminders\nfor the current user populated by getList().\nThis list is paged",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 101,
+              "column": 3
+            },
+            "end": {
+              "line": 105,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "fetchsize",
+          "type": "number | null | undefined",
+          "description": "Maximum number of user entries to return in a query",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 109,
+              "column": 6
+            },
+            "end": {
+              "line": 112,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "10"
+        },
+        {
+          "name": "hasnextpage",
+          "type": "boolean | null | undefined",
+          "description": "True if the User List has been successfully fetched and there are additional records to fetch",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 116,
+              "column": 3
+            },
+            "end": {
+              "line": 120,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "outlookTimeZones",
+          "type": "Array | null | undefined",
+          "description": "List of Microsoft Outlook time zone support on the Exchange server and available to the current user",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 124,
+              "column": 5
+            },
+            "end": {
+              "line": 128,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "timezone",
+          "type": "Object | null | undefined",
+          "description": "Use this to specify the time zone for start and end times in the response.\nIf not specified, those time values are returned in UTC. Optional.\n{\n\t\tname   : \"microsoft timezone name\",\n     abbr   : \"Standard abbriviation\",\n     offset : \"offset from UTC\"\n}",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 3
+            },
+            "end": {
+              "line": 140,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 1
+            },
+            "end": {
+              "line": 216,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "getEventList",
+          "description": "Event List\n\nhttps://docs.microsoft.com/en-us/graph/api/calendar-list-events?view=graph-rest-1.0&tabs=cs\n\nRetrieves all calendar events for the current user that meet the search criteria",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 226,
+              "column": 1
+            },
+            "end": {
+              "line": 236,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "search"
+            }
+          ]
+        },
+        {
+          "name": "getEventListWithQuery",
+          "description": "Event List\n\nhttps://docs.microsoft.com/en-us/graph/api/calendar-list-events?view=graph-rest-1.0&tabs=cs\n\nRetrieves all calendar events for the current user that meet the query criteria",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 246,
+              "column": 1
+            },
+            "end": {
+              "line": 262,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "query"
+            }
+          ]
+        },
+        {
+          "name": "getNextPage",
+          "description": "Get the next page of people data using the same search as was used for getList\n\ngetList must have been called first, and a new call to getList resets the paging",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 269,
+              "column": 1
+            },
+            "end": {
+              "line": 276,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getList",
+          "description": "Event List\n\nhttps://docs.microsoft.com/en-us/graph/api/calendar-list-events?view=graph-rest-1.0&tabs=cs\n\nRetrieves all calendar events for the current user that meet the query criteria",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 285,
+              "column": 1
+            },
+            "end": {
+              "line": 344,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "url"
+            }
+          ]
+        },
+        {
+          "name": "getEventInstances",
+          "description": "Event Instances\n\nhttps://docs.microsoft.com/en-us/graph/api/event-list-instances?view=graph-rest-1.0&tabs=http\n\nGet individual instances of a repeating event",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 353,
+              "column": 1
+            },
+            "end": {
+              "line": 400,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "eventId"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onEventInstances",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 402,
+              "column": 1
+            },
+            "end": {
+              "line": 423,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "response"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "createEvent",
+          "description": "Event Add\nCreates a new calendar event (Meeting, Appointment, Reminder)\n\nhttps://docs.microsoft.com/en-us/graph/api/calendar-list-events?view=graph-rest-1.0&tabs=cs",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 431,
+              "column": 1
+            },
+            "end": {
+              "line": 465,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "calEvent"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onCreateEvent",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 467,
+              "column": 1
+            },
+            "end": {
+              "line": 487,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "response"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "updateEvent",
+          "description": "Event Update\n\nhttps://docs.microsoft.com/en-us/graph/api/calendar-list-events?view=graph-rest-1.0&tabs=cs",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 495,
+              "column": 1
+            },
+            "end": {
+              "line": 544,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "calEvent"
+            }
+          ]
+        },
+        {
+          "name": "getFreeBusyList",
+          "description": "FreeBusy List\n\nhttps://docs.microsoft.com/en-us/graph/api/calendar-getschedule?view=graph-rest-1.0&tabs=http",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 551,
+              "column": 1
+            },
+            "end": {
+              "line": 629,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "schedules"
+            },
+            {
+              "name": "timeZone"
+            }
+          ]
+        },
+        {
+          "name": "getTimeZoneOffset",
+          "description": "Takes a Exchange time zone name and returns the offset from UTC parsed from the displayName\nof the list returned from the Exchange server",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 635,
+              "column": 1
+            },
+            "end": {
+              "line": 638,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "timeZone"
+            }
+          ]
+        },
+        {
+          "name": "_makeTimeZoneLookup",
+          "description": "============================================================================",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 643,
+              "column": 1
+            },
+            "end": {
+              "line": 662,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "tzList"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 664,
+              "column": 1
+            },
+            "end": {
+              "line": 667,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "err"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clear",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 669,
+              "column": 1
+            },
+            "end": {
+              "line": 685,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_authCodeChanged",
+          "description": "============================================================================",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 690,
+              "column": 1
+            },
+            "end": {
+              "line": 709,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 710,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "OutlookCalendarDs",
+      "attributes": [
+        {
+          "name": "authtoken",
+          "description": "Microsoft OAuth access token. typical returned from azure-oauth2",
+          "sourceRange": {
+            "start": {
+              "line": 92,
+              "column": 3
+            },
+            "end": {
+              "line": 95,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "eventlist",
+          "description": "List of Microsoft Outlook events - meeting, appointments, reminders\nfor the current user populated by getList().\nThis list is paged",
+          "sourceRange": {
+            "start": {
+              "line": 101,
+              "column": 3
+            },
+            "end": {
+              "line": 105,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "fetchsize",
+          "description": "Maximum number of user entries to return in a query",
+          "sourceRange": {
+            "start": {
+              "line": 109,
+              "column": 6
+            },
+            "end": {
+              "line": 112,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "hasnextpage",
+          "description": "True if the User List has been successfully fetched and there are additional records to fetch",
+          "sourceRange": {
+            "start": {
+              "line": 116,
+              "column": 3
+            },
+            "end": {
+              "line": 120,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "outlook-time-zones",
+          "description": "List of Microsoft Outlook time zone support on the Exchange server and available to the current user",
+          "sourceRange": {
+            "start": {
+              "line": 124,
+              "column": 5
+            },
+            "end": {
+              "line": 128,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "timezone",
+          "description": "Use this to specify the time zone for start and end times in the response.\nIf not specified, those time values are returned in UTC. Optional.\n{\n\t\tname   : \"microsoft timezone name\",\n     abbr   : \"Standard abbriviation\",\n     offset : \"offset from UTC\"\n}",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 3
+            },
+            "end": {
+              "line": 140,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "calendar-event-create",
+          "description": "Fired when a calendar event is successfully created",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "calendar-event-instances",
+          "description": "Fired on retrieval of instances of a repeating event",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "calendar-event-list",
+          "description": "Fired when the the getEventList or getNextPage operation returns records, including a query that\nreturns no records",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "calendar-event-update",
+          "description": "Fired when a calendar event is successfully updated",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "calendar-freebusy-list",
+          "description": "Fired when a calendar Free/Busy list is retrieved",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "office-365-http-error",
+          "description": "Fired when the response status of any HTTP response from REST call to Microsoft or\nTRIRIGA is not OK",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "office-365-time-zone-list",
+          "description": "Fired when when the list of supported time zones is retrieved from the Exchange server.\nThe query runs once when authorization with the Office 365 is complete",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "eventlist-changed",
+          "description": "Fired when the `eventlist` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "hasnextpage-changed",
+          "description": "Fired when the `hasnextpage` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "outlook-time-zones-changed",
+          "description": "Fired when the `outlookTimeZones` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "outlook-calendar-ds"
+    },
+    {
+      "description": "A Component that provides access to the Microsoft Outlook User object. and provides\nCurrent user context.\n\nOn startup, it makes a single query to get the logged TRIRIGA user and Outlook 365 user.\nThe TRIRIGA user is used to establish the Outlook 365 time zone for other Outlook 365 API\ncalls which require a time zone.\n\nAccess to the user object include:\n - Query a list of users\n - Create a user\n - Get details for an individual user\n - Update a User\n - Delete a User\n\nThis version uses the Microsoft Graph API which provides access to cloud hosted versions\nof Exchange, and to on-prem Exchange instances configured as hybrid installs, that is\nintegrated with Azure active directory.",
+      "summary": "",
+      "path": "outlook-user-ds.js",
+      "properties": [
+        {
+          "name": "authtoken",
+          "type": "string | null | undefined",
+          "description": "Microsoft OAuth access token. typical returned from azure-oauth2",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 161,
+              "column": 3
+            },
+            "end": {
+              "line": 164,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"authCodeChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "currentuser",
+          "type": "Object | null | undefined",
+          "description": "Currently logged-in Office 365 user",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 168,
+              "column": 3
+            },
+            "end": {
+              "line": 172,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "fetchsize",
+          "type": "number | null | undefined",
+          "description": "Maximum number of user entries to return in a query",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 176,
+              "column": 6
+            },
+            "end": {
+              "line": 179,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "10"
+        },
+        {
+          "name": "hasnextpage",
+          "type": "boolean | null | undefined",
+          "description": "True if the User List has been successfully fetched and there are additional records to fetch",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 183,
+              "column": 3
+            },
+            "end": {
+              "line": 187,
+              "column": 6
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "timezone",
+          "type": "Object | null | undefined",
+          "description": "Use this to specify the time zone for start and end times in the response.\nIf not specified, those time values are returned in UTC. Optional.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 192,
+              "column": 3
+            },
+            "end": {
+              "line": 196,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "userlist",
+          "type": "Array | null | undefined",
+          "description": "List out Office/Outlook users populated by getList\nThis list is paged",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 201,
+              "column": 3
+            },
+            "end": {
+              "line": 205,
+              "column": 7
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 231,
+              "column": 1
+            },
+            "end": {
+              "line": 342,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onTririgaUser",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 344,
+              "column": 1
+            },
+            "end": {
+              "line": 352,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "user"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "lookupTimeZoneByMSName",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 354,
+              "column": 1
+            },
+            "end": {
+              "line": 357,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "name"
+            }
+          ]
+        },
+        {
+          "name": "getList",
+          "description": "User List\nhttps://docs.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=cs",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 364,
+              "column": 1
+            },
+            "end": {
+              "line": 381,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "search"
+            }
+          ]
+        },
+        {
+          "name": "getNextPage",
+          "description": "Get the next page of people data using the same search as was used for getList\n\ngetList must have been called first, and a new call to getList resets the paging",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 389,
+              "column": 1
+            },
+            "end": {
+              "line": 396,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getList",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 398,
+              "column": 1
+            },
+            "end": {
+              "line": 466,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "url"
+            }
+          ]
+        },
+        {
+          "name": "createUser",
+          "description": "Create User\nhttps://docs.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0&tabs=http\n\nUser format\n{\n\t\t\"accountEnabled\": true,\n\t\t\"displayName\": \"displayName-value\",\n\t\"mailNickname\": \"mailNickname-value\",\n\t\t\"userPrincipalName\": \"upn-value@tenant-value.onmicrosoft.com\",\n\t\"passwordProfile\" : {\n   \t\t\"forceChangePasswordNextSignIn\": true,\n\t\t\"password\": \"password-value\"\n\t\t}\n}",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 484,
+              "column": 1
+            },
+            "end": {
+              "line": 556,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "user"
+            }
+          ]
+        },
+        {
+          "name": "getUser",
+          "description": "Get USer Details\n\nhttps://docs.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 563,
+              "column": 1
+            },
+            "end": {
+              "line": 620,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "id"
+            },
+            {
+              "name": "fieldList"
+            }
+          ]
+        },
+        {
+          "name": "updateUser",
+          "description": "Get USer Details\n\nhttps://docs.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 628,
+              "column": 1
+            },
+            "end": {
+              "line": 677,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "user"
+            }
+          ]
+        },
+        {
+          "name": "deleteUser",
+          "description": "Delete User\n\nhttps://docs.microsoft.com/en-us/graph/api/user-delete?view=graph-rest-1.0&tabs=http",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 684,
+              "column": 1
+            },
+            "end": {
+              "line": 730,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "id"
+            }
+          ]
+        },
+        {
+          "name": "_onError",
+          "description": "============================================================================",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 735,
+              "column": 1
+            },
+            "end": {
+              "line": 738,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "err"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clear",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 740,
+              "column": 1
+            },
+            "end": {
+              "line": 751,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "authCodeChanged",
+          "description": "============================================================================",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 756,
+              "column": 1
+            },
+            "end": {
+              "line": 775,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            },
+            {
+              "name": "oldValue"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 114,
+          "column": 0
+        },
+        "end": {
+          "line": 776,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "OutlookUserDs",
+      "attributes": [
+        {
+          "name": "authtoken",
+          "description": "Microsoft OAuth access token. typical returned from azure-oauth2",
+          "sourceRange": {
+            "start": {
+              "line": 161,
+              "column": 3
+            },
+            "end": {
+              "line": 164,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "currentuser",
+          "description": "Currently logged-in Office 365 user",
+          "sourceRange": {
+            "start": {
+              "line": 168,
+              "column": 3
+            },
+            "end": {
+              "line": 172,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "fetchsize",
+          "description": "Maximum number of user entries to return in a query",
+          "sourceRange": {
+            "start": {
+              "line": 176,
+              "column": 6
+            },
+            "end": {
+              "line": 179,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "hasnextpage",
+          "description": "True if the User List has been successfully fetched and there are additional records to fetch",
+          "sourceRange": {
+            "start": {
+              "line": 183,
+              "column": 3
+            },
+            "end": {
+              "line": 187,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "timezone",
+          "description": "Use this to specify the time zone for start and end times in the response.\nIf not specified, those time values are returned in UTC. Optional.",
+          "sourceRange": {
+            "start": {
+              "line": 192,
+              "column": 3
+            },
+            "end": {
+              "line": 196,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "userlist",
+          "description": "List out Office/Outlook users populated by getList\nThis list is paged",
+          "sourceRange": {
+            "start": {
+              "line": 201,
+              "column": 3
+            },
+            "end": {
+              "line": 205,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "office-365-http-error",
+          "description": "Fired when the response status of any HTTP response from REST call to Microsoft is not OK",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "office-365-timezone",
+          "description": "Fired when the TRIRIGA users has been retrieved and the time zone in its profiles has been\nconverted to an Office 365 time zone",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "office-365-user-me",
+          "description": "Fired when the currently logged in Outlook users is retrieved",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "tririga-http-error",
+          "description": "Fired when the response status of any HTTP response from REST call to TRIRIGA is not OK",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "user-create",
+          "description": "Fired when a new Office 365 user is created",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "user-list",
+          "description": "Fired when the the getUserList or getNextPage operation returns records, including a query that\nreturns no records",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "currentuser-changed",
+          "description": "Fired when the `currentuser` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "hasnextpage-changed",
+          "description": "Fired when the `hasnextpage` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "timezone-changed",
+          "description": "Fired when the `timezone` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "userlist-changed",
+          "description": "Fired when the `userlist` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "outlook-user-ds"
+    }
+  ]
+}

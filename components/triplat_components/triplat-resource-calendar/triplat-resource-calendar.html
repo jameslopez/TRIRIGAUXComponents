@@ -1,0 +1,758 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../triplat-date-utilities/triplat-date-utilities.html">
+
+<script src="../fullcalendar/lib/jquery.min.js"></script>
+<script src="../fullcalendar/lib/jquery-ui.min.js"></script>
+<script src="../fullcalendar/fullcalendar.min.js"></script>
+<link href='../fullcalendar/fullcalendar.css' rel='stylesheet' />
+<link href='../fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icons/image-icons.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../triplat-icon/triplat-icon.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<!--
+A custom component that displays calendar resources using the [FullCalendar API](http://fullcalendar.io/).
+
+     <triplat-resource-calendar id="resourceCalendar"
+			resources="{{spaceResources}}" 
+			booking-resource="{{bookingRoom}}"
+			initial-date="{{initialDate}}">
+		</triplat-resource-calendar>
+
+<div style="background-color:#FFFFCC">
+    <div style="padding:20px;">
+  <b>Note:</b> The resource events in the calendar are displayed based on the browser time zone, not the time zone specified in the user profile. 
+	</div>
+</div>
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triplat-resource-calendar-bg-color`    | Calendar background color             | `rgb(241, 241, 241)`
+`--triplat-resource-calendar-header-text-color`    | Calendar header text color             | `--tri-primary-content-color`
+`--triplat-resource-calendar-circled-date-text-color`    | Circled date text color              | `rgb(255, 255, 255)`
+`--triplat-resource-calendar-circled-date-bg-color`    | Circled date background color             | `--tri-primary-color-30`
+`--triplat-resource-calendar-prev-next-icons-color`    | Previous and next icons color            | `--tri-primary-content-color`
+`--triplat-resource-calendar-today-button-color`    | Go To Today button color            | `--tri-primary-button-background-color`
+`--triplat-resource-calendar-resource-busy-unavailable`    | Resource busy unavailable color             | `#B5B1B0`
+`--triplat-resource-calendar-resource-busy`    | Resource busy color             | `#FF0000`
+`--triplat-resource-calendar-resource-busy-tentative`    | Resource busy tentative color             | `#FF5733`
+`--triplat-resource-calendar-booking-resource`    | Booking resource color             | `rgb(29, 54, 73)`
+`--triplat-resource-calendar-today-bg-color`    | Calendar today's background color             | `rgb(252, 248, 227)`
+`--triplat-resource-calendar-booking-resource-opacity`    | The opacity of booking resource             | `1`
+`--triplat-resource-calendar-booked-resource-opacity`    | The opacity of resource busy tentative and resource busy unavailable             | `0.3`
+`--triplat-resource-calendar-height`    |   The height of the calendar timeframe. By default, the height is calculated based on the browser's height.           | 
+@demo demo/index.html
+-->
+
+
+
+<dom-module is="triplat-resource-calendar">
+	<style include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning">
+	#prevWeekArrow, #nextWeekArrow {
+		--paper-icon-button: {
+			height:50px;
+			width: 50px;
+		};
+
+	};
+
+	#calendarHeader{
+		background-color: var(--triplat-resource-calendar-bg-color, rgb(241, 241, 241));	
+
+	}
+
+	.fullWeek{
+		width: 14.28%; 
+	}
+	.weekDays{
+		width: 20%;
+	}
+	.space{
+		min-width: 50px;
+		background-color: var(--triplat-resource-calendar-bg-color, rgb(241, 241, 241));
+		padding-left: 1px;
+		padding-right:1px;
+
+	}
+	.days{
+		padding-top: 5px;
+		padding-bottom: 10px;
+		text-align: center;
+		vertical-align: middle;
+	}
+	.dayOfWeek{
+		padding-top: 10px;
+		padding-bottom: 5px;
+		text-align: center;
+		vertical-align: middle;
+		font-size: 12px;
+		color: var(--triplat-resource-calendar-header-text-color);
+	}
+	.date{
+		padding-top: 5px;
+		padding-bottom:5px;
+		padding-left: 5px;
+		padding-right: 5.5px;
+		min-width: 20px;
+		color: var(--triplat-resource-calendar-header-text-color);
+	}
+	.circledDay{
+		content: '';
+		border-radius:15px;
+		color: var(--triplat-resource-calendar-circled-date-text-color, rgb(255, 255, 255));
+		z-index: 0;
+		background: var(--triplat-resource-calendar-circled-date-bg-color, --tri-primary-color-30);
+	}
+	.calendarTitle{
+		@apply(--layout-center-center);
+		font-weight: bold;
+		margin: 5px;
+		width: 100%;
+	}
+
+	paper-icon-button.today-button {
+		color: var(--triplat-resource-calendar-today-button-color, --tri-primary-button-background-color);
+		padding-right: 5px;
+	}
+
+	paper-icon-button{
+		color: var(--triplat-resource-calendar-prev-next-icons-color);
+	}
+	
+	.flex-equal-justified {
+	    @apply(--layout-horizontal);
+	    @apply(--layout-justified);
+	}
+
+	.scrollingSpace {
+		margin-left: 16px;
+	}
+
+	.fc-bgevent{
+		background-color: yellow;
+	}
+	/*
+	 * Make font and padding size smaller when the screen width is lesser than 385px.
+	 */
+	@media all and (max-width: 385px) {
+	  	.dayOfWeek, .date {
+	  		font-size: 11px;
+	  	}
+	  	.days{
+			padding-top: 2.5px;
+			padding-bottom: 5px;
+			text-align: center;
+			vertical-align: middle;
+		}
+		.dayOfWeek{
+			padding-top: 5px;
+			padding-bottom: 2.5px;
+			text-align: center;
+			vertical-align: middle;
+			color: var(--triplat-resource-calendar-header-text-color);
+		}
+		.date{
+			padding-top: 2.5px;
+			padding-bottom:2.5px;
+			padding-left: 2.5px;
+			padding-right: 2.25px;
+			min-width: 10px;
+			color: var(--triplat-resource-calendar-header-text-color);
+		}
+		.circledDay{
+			content: '';
+			border-radius:15px;
+			color: var(--triplat-resource-calendar-circled-date-text-color, rgb(255, 255, 255));
+			z-index: 0;
+			background: var(--triplat-resource-calendar-circled-date-bg-color, --tri-primary-color-30);
+		}
+	}
+	/*
+	 * Change the calendar width to a fixed size when the screen width is lesser than 325px.	
+	 */
+	@media all and (max-width: 325px) {
+	  #availCalendar{
+	  	min-width: 300px;
+	  };
+
+	}
+
+	.paper-icon-button-rtl {
+		transform: scaleX(-1);
+	}
+
+	#__triplatResourceCalendar.fc-today {
+		background-color: var(--triplat-resource-calendar-today-bg-color, rgb(252, 248, 227));
+	}
+
+	</style>
+	<template>
+		<div id="availCalendar">
+			<div class="calendarTitle layout horizontal center-justified">
+				<template is="dom-if" if="{{showTodayButton}}">
+					<paper-icon-button class="today-button" on-tap="today" icon="ibm:calendar-today"></paper-icon-button>
+				</template>
+				<div>{{_dateRange}}</div>
+			</div> 
+				<div style="border: 1px solid #ccc;">
+					<div id="calendarHeader" class="container flex-equal-justified">
+						<div id="headerLeftSpace" class="space layout horizontal center-justified">
+							<div class="layout vertical center-justified">
+								<paper-icon-button class="navigateArrow" id="prevWeekArrow" icon="chevron-left" title="previous week" on-tap="_previous"></paper-icon-button>
+							</div>
+						</div>
+						<template is="dom-repeat" items="{{days}}" as="day">
+							<div class="layout vertical" class$="{{day.class}}">
+								<div class="dayOfWeek">{{day.dayOfWeek}}</div>
+								<div class="layout horizontal center-justified days">
+									<div class"layout vertical center-justified">
+										<div class$="{{day._isToday}}">{{day.date}}</div>
+									</div>
+								</div>
+							</div>
+							
+						</template>
+						
+						<div id="headerRightSpace" class="space layout horizontal center-justified">
+							<div class="layout vertical center-justified">
+								<paper-icon-button class="navigateArrow" id="nextWeekArrow" icon="chevron-right" title="next week" on-tap="_next"></paper-icon-button>
+							</div>
+						</div>
+					</div>
+					<div class="layout horizontal">
+						<div id="__triplatResourceCalendar"></div>
+						<div class="space"></div>
+					</div>
+				</div>	
+		</div>
+			
+	</template>
+</dom-module>
+<script>
+
+	Polymer({
+		is: "triplat-resource-calendar",
+
+	   /**
+	     * Fired when the user navigates to a different week, it returns the first date of that week.   
+	     *
+	     * @event calendar-resource-start-date
+	     * @param {{start:String}} detail -
+	     *     start: the first date of week in ISO date string format.
+	     */
+
+	    /**
+	     * Fired when the user navigates to a different week, it returns the last date of that week.     
+	     *
+	     * @event calendar-resource-end-date
+	     * @param {{end:String}} detail -
+	     *     end: the last date of week in ISO date string format.
+	     */
+
+	     /**
+	     * Fired after the calendar is initially loaded.
+	     *
+	     * @event calendar-loaded
+	     */
+
+        behaviors: [
+			TriDateUtilities
+		],
+
+        properties:{
+        	/**
+	  		  * An array of resource objects that will be displayed on the calendar. See the triplat-query plugin `triplat-query-resource-calendar` for more information.
+	  		  */
+        	resources:{
+        		type: Array,
+        		observer: '_handleISOtoFCalendarEventformat'
+        	},
+
+        	/**
+        	  * The initial date displayed when the calendar first loads.
+        	  */
+        	initialDate: {
+        		type: String,
+        		observer: '_handleInitialDateChanged'
+        	},
+
+        	/**
+        	  * A booking resource object that will be displayed on the calendar.
+        	  */
+        	bookingResource:{
+        		type: Object
+        	},
+
+        	/**
+	  		  * Flag indicating whether to display date range in detail (e.g. Mar 27 - Apr 02, 2016).
+	  		  */
+	       	detailedDateRange:{
+	    		type: Boolean,
+	    		value: false
+	    	},
+
+	    	/**
+	  		  * Boolean value indicate the displayed time-text in military time format on the vertical axis of the calendar.
+	  		  */
+	    	_militaryTime: {
+	    		type: Boolean,
+	    		value: true
+	    	},
+
+	    	/**
+			  * The time-text display format on the vertical axis of the calendar. The time-text displays AM/PM or Military Time format based on the datetime format.
+		      */
+		    timeDisplayFormat: {
+		    	type: String,
+		    	value: "MM/DD/YYYY hh:mm a",
+		    	observer: "_timeDisplayFormatChanged"
+		    },
+
+	    	_daysOfWeek: {
+	    		type: Array,
+	    		value: [
+	    			"S",
+	    			"M",
+	    			"T",
+	    			"W",
+	    			"T",
+	    			"F",
+	    			"S"
+	    		]
+	    	},
+
+        	_businessHours: {
+        		type: Boolean,
+        		value: false
+        	},
+
+        	_disallowWeekend:{
+        		type: Boolean,
+        		value: false
+        	},
+
+        	/**
+			  * The height of the calendar timeframe. By default, this property is unset and the calendar timeframe height is calculated based on the browser's height.
+		      */
+        	_height:{
+        		type: Number,
+        		observer: "_persistContentHeight"
+        	},
+
+        	/**
+			  * Set to true to enable columns to be selectable in the calendar.
+		      */
+        	selectable:{
+        		type: Boolean,
+        		value: false,
+        	},
+
+        	_resources: {
+        		type: Array,
+        	},
+
+        	_initialDate: {
+        		type: String,
+        		value: moment().format("YYYY-MM-DD"),
+        	},
+
+        	_calendar: Object,
+
+	       	/**
+			  * Set to true to show a button beside the date range which can be clicked to go to today's date.
+		      */
+        	showTodayButton: {
+        		type: Boolean,
+        		value: false
+        	},
+
+        	/**
+	  		  * String value to be used for the time zone.
+	  		  */ 
+	  		timeZone:{
+	  			type: String,
+	  			observer: "_timeZoneChanged"
+	  		},
+        },
+
+        attached:function(){
+        	this._initializeComponentStyles();
+        	this.async(function(){
+        		this._calendar = $(Polymer.dom(this.$.__triplatResourceCalendar).node);
+        		this._constructCalendar();
+        	});
+        	if(!this._isMobileDevice()) this.$.headerRightSpace.classList.add("scrollingSpace");
+		  	this._setTranslation();
+		  	this._handlePaperIconButtonBiDi();
+        },
+
+        /**
+	    * Moves the calendar to the today's date.
+	    */
+        today: function(){
+        	this._calendar.fullCalendar('today');
+        	var newDate = this._calendar.fullCalendar( 'getDate' );
+	    	this._handleUpdateCalendar(newDate);
+        },
+
+        /**
+	    * Moves the calendar to a specific date.
+	    * @param {String} date The string representation of the ISO date string (e.g. 1970-01-15T22:19:41.000-08:00).
+	    */
+        goToDate: function(date){
+        	if(!this._isIsoDateStringFormat(date) || !this._initialLoaded) return;
+        	this._calendar.fullCalendar('gotoDate', date);
+        	
+        	var newDate = this._calendar.fullCalendar( 'getDate' );
+	    	this._handleUpdateCalendar(newDate);
+        },
+
+        /**
+	    * Refreshes the calendar.
+	    */
+        refreshCalendar: function(){
+			this._calendar.fullCalendar('destroy');
+		    this._constructCalendar();
+		},
+
+        _next: function(){
+	    	this._calendar.fullCalendar( 'next' );
+	    	var newDate = this._calendar.fullCalendar( 'getDate' );
+	    	this._handleUpdateCalendar(newDate);
+	    },
+
+	    _previous: function(){
+	    	this._calendar.fullCalendar( 'prev' );
+	    	var newDate = this._calendar.fullCalendar( 'getDate' );
+	    	this._handleUpdateCalendar(newDate);
+	    },
+
+	    _handleUpdateCalendar: function(newDate){
+	    	this.days = this._getDaysOfWeek(newDate);
+	    	this._handleFirstLastDays(this.days);
+	    	this._handlePersistCustomCalendar();
+	    	this._handleTodayColorChange();
+	    	this._handleResourceOpacity();
+	    },
+
+        _handleInitialDateChanged: function(val){
+        	this._initialDate = moment(val).format("YYYY-MM-DD");
+        },
+
+        _constructCalendar: function(){
+	     	var self = this;
+	     	var _isRTL = this._getRTL();
+	     	var _lang = this._getLang();
+	     	this._calendar.fullCalendar({
+	     			isRTL: _isRTL,
+	     			lang: _lang,
+	     			slotLabelFormat: self._militaryTime ? 'HH:mm' : 'h(:mm) a',
+					eventOverlap: false,
+					displayEventTime: false,
+					weekends: !self._disallowWeekend,
+					businessHours: self._businessHours,
+					defaultDate: self._initialDate, 
+					selectable: self.selectable,
+					scrollTime: '08:00:00',
+					defaultView: "agendaWeek", 
+					allDaySlot: false,
+					handleWindowResize: true,
+					editable: false,
+					eventLimit: true, 
+					events: self._resources,
+					selectOverlap: false,
+					windowResize: function(view) {
+			        	self._persistContentHeight();
+			    	},
+
+				});
+			this._removeFCdays();
+			this.days = this._getDaysOfWeek(moment(this._initialDate));
+			this._handleFirstLastDays(this.days);
+	    	this._UpdateCalendarResource();
+	    	this._handleBookingResource();
+	    	if(!this._initialLoaded){
+	    		this.fire("calendar-loaded");
+	    	}
+	    	this._initialLoaded = true;
+	    	this._handleTodayColorChange();
+	    	this._handleResourceOpacity();
+	    	this._persistContentHeight(true);
+	    },
+
+	    _handleTodayColorChange: function(){
+	    	var resourceCalendarTodayColor = this.getComputedStyleValue('--triplat-resource-calendar-today-bg-color');
+	    	$(".fc-today").css('background-color', resourceCalendarTodayColor);
+	    },
+
+	    _getLang: function(){
+	    	var lang = document.querySelector('html').getAttribute("lang") || 'en';;
+		  	if(lang === "mock-USER"){
+		  		lang = "en-US"
+		  	}
+		  	return lang;
+	    },
+
+	    _getRTL: function(){
+	    	var isRTL = false;
+		  	var textDirectionValue = document.querySelector('body').getAttribute('dir');
+		  	if(textDirectionValue==="rtl"){
+		  		isRTL = true;
+		  	}
+		  	return isRTL;
+	    },
+
+	    _handleFirstLastDays: function(days){
+	    	var firstDay = moment(days[0].dayObj);
+			var lastDay = moment(days[this.days.length -1].dayObj);
+			this._dateRange = this._computeDisplayDateRange(firstDay, lastDay);
+			this._fireStartEndEvents(moment(firstDay));
+			
+	    },
+
+	    _initializeComponentStyles: function(){
+		    if(!this.getComputedStyleValue('--triplat-resource-calendar-resource-busy-unavailable'))
+        		this.customStyle['--triplat-resource-calendar-resource-busy-unavailable'] = '#B5B1B0';
+        	if(!this.getComputedStyleValue('--triplat-resource-calendar-resource-busy'))
+        		this.customStyle['--triplat-resource-calendar-resource-busy'] = '#FF0000';
+        	if(!this.getComputedStyleValue('--triplat-resource-calendar-resource-busy'))
+        		this.customStyle['--triplat-resource-calendar-resource-busy-tentative'] = '#FF5733';
+        	this.updateStyles();
+        	if(this.getComputedStyleValue('--triplat-resource-calendar-height')){
+        		var heightInString = this.getComputedStyleValue('--triplat-resource-calendar-height');
+        		this._setCalendarHeight(heightInString);
+        	}
+        	
+	    },
+
+	    _setCalendarHeight: function(heightInString){
+	    	var validatedFormat = /[0-9.]px$|Px$|pX$|PX$/g.test(heightInString);
+    		var heightInInt = Number(heightInString.replace(/px$|Px$|pX$|PX$/g, ""));
+    		if(Number.isInteger(heightInInt) && heightInInt>=0){
+        		this._height = heightInInt;
+        		this._hasHeight = true;
+    		}
+	    },
+
+	    _UpdateCalendarResource: function(){
+	    	if(!this._resources) return;
+	    	for(var i = 0; i < this._resources.length; i++){
+	    		this._resources[i].rendering = 'background';
+	    		this._resources[i].overlap = false;
+
+	    		if(this._resources[i]._FreeBusyType){
+	    			switch(this._resources[i]._FreeBusyType){
+	    				case "BUSY_UNAVAILABLE" : this._resources[i].color = this.getComputedStyleValue('--triplat-resource-calendar-resource-busy-unavailable');
+	    				break;
+	    				case "BUSY": this._resources[i].color = this.getComputedStyleValue('--triplat-resource-calendar-resource-busy');
+	    				break;
+	    				case "BUSY_TENTATIVE": this._resources[i].color = this.getComputedStyleValue('--triplat-resource-calendar-resource-busy-tentative');
+	    				break;
+	    			}
+	    		}
+
+	    	}
+	    	this._calendar.fullCalendar('removeEvents');
+	    	this._calendar.fullCalendar('addEventSource', this._resources);
+	    	
+	    	this._handleBookingResource();
+	    },
+
+	    _handleBookingResource: function(){
+	    	if(this.bookingResource){
+    			this.bookingResource.color = this.getComputedStyleValue('--triplat-resource-calendar-booking-resource');
+	    		this._calendar.fullCalendar('renderEvent', this.bookingResource, true);	 
+	    		this._handleResourceOpacity();
+	    	}
+	    },
+
+	    _handleResourceOpacity: function(){
+	    	var bookedResourceOpacity = this.getComputedStyleValue('--triplat-resource-calendar-booked-resource-opacity');
+    		var bookingResourceOpacity = this.getComputedStyleValue('--triplat-resource-calendar-booking-resource-opacity')
+    		$('#__triplatResourceCalendar div.fc-bgevent').css('opacity', bookedResourceOpacity);
+    		$('#__triplatResourceCalendar a.fc-time-grid-event.fc-v-event.fc-event.fc-start.fc-end').css('opacity', bookingResourceOpacity);
+	    },
+
+	    _handlePersistCustomCalendar: function(){
+	    	this._removeFCdays();
+	    	this._persistContentHeight();
+	    },
+
+	   	_removeFCdays: function(){
+	    	$('thead').remove();
+			$('.fc-toolbar').remove();
+	    },
+
+	    _persistContentHeight: function(){
+	    	if(!this._initialLoaded) return;
+		 	if(!this._hasHeight){
+		 		var calendarHeaderHeight = this.$.calendarHeader.getBoundingClientRect().bottom;
+		 		// subtract 1 pixel to prevent display scroll bar
+		 		this._height = window.innerHeight - calendarHeaderHeight - 1;
+		 	}
+		  	this._calendar.fullCalendar('option', 'height', this.height || this._height);
+	    	$('.fc-today').removeClass('fc-state-highlight');
+	    },
+
+	    _fireStartEndEvents: function(newStart){
+	    	this.fire("resource-calendar-start-date", {start: moment(newStart).format("YYYY-MM-DDTHH:mm:ss.SSSZ")});
+	    	var newEnd = moment(newStart).add(6, "d").add(23, "h").add(59, "m").add(59, "s").add(999,"ms");
+	    	this.fire("resource-calendar-end-date", {end: moment(newEnd).format("YYYY-MM-DDTHH:mm:ss.SSSZ")});
+	    },
+
+	    _handleISOtoFCalendarEventformat: function(resources){
+	    	if(resources){
+	    		this._resources = [];
+			     for (var i = 0; i < resources.length; i++){
+			     	var res = resources[i],
+			     	currentTz = this.getBrowserTimeZone();
+			     	if(resources[i]._Start_Datetime && resources[i]._End_Datetime) {
+			     		if(this.timeZone){
+			     			res.start = this._toTimeZone(resources[i]._Start_Datetime, this.timeZone, "YYYY-MM-DDTHH:mm:ss");
+		     				res.end = this._toTimeZone(resources[i]._End_Datetime, this.timeZone, "YYYY-MM-DDTHH:mm:ss");
+			     		}else{
+			     			res.start = moment(resources[i]._Start_Datetime).format("YYYY-MM-DDTHH:mm:ss");
+		     				res.end = moment(resources[i]._End_Datetime).format("YYYY-MM-DDTHH:mm:ss");
+			     		}
+					   }
+			     	this._resources.push(res);
+			     }
+	    	}
+	    	if(this._initialLoaded) this._UpdateCalendarResource();
+	    },
+
+	    _getDaysOfWeek: function(date){
+	    	var self = this;
+	    	var startOfWeek = date.startOf('week').clone();
+			var endOfWeek = date.endOf('week').clone();
+
+			var days = [];
+			var day = startOfWeek;
+			var i = 0;
+
+			while (day <= endOfWeek) {
+			    days.push({
+			    		
+			    		 dayObj: new Date(day.year(), day.month(), day.date()),
+			    		 date: day.date(),
+			    		 dayOfWeek: self._daysOfWeek[day.day()],
+			    		 _isToday: moment(new Date(day.year(), day.month(), day.date())).format("MM-DD-YYYY") == moment().format("MM-DD-YYYY") ? "date circledDay" : "date",
+					});		    
+			    day = day.clone().add(1, 'd');
+			}
+
+			if(this._disallowWeekend){
+				for(i in days){
+					days[i].class = "weekDays";
+				}
+				days.shift();
+				days.pop();
+			}else{
+				for(i in days){
+					days[i].class = "fullWeek";
+				}
+			}
+			
+			return days;
+		},
+
+		_computeDisplayDateRange: function(start, end){
+			var startMonth = start.format("MMM");
+			endMonth = end.format("MMM"); 
+			var dateRange = "";
+			if(this.detailedDateRange){
+				dateRange = start.format("MMM DD, YYYY") + " - " + end.format("MMM DD, YYYY");
+				if(start.year() == end.year()){
+					if(startMonth == endMonth){
+						dateRange = start.format("MMM DD") + " - " + end.format("DD, YYYY");
+						return dateRange;
+					}else{
+						dateRange = start.format("MMM DD") + " - " + end.format("MMM DD, YYYY"); 
+						return dateRange;
+					}
+				}
+				return dateRange;
+			} else{
+				dateRange = start.format("MMMM YYYY") + " - " + end.format("MMMM YYYY");
+				if(start.year() == end.year()){
+					if(startMonth == endMonth){
+						dateRange = start.format("MMMM YYYY");
+						return dateRange;
+					}else{
+						dateRange = start.format("MMMM") + " - " + end.format("MMMM") + " " + start.year(); 
+						return dateRange;
+					}
+					return dateRange
+				}
+				return dateRange;
+			}
+		},
+
+		_isMobileDevice: function () {
+			if( navigator.userAgent.match(/Android/i)
+				 || navigator.userAgent.match(/webOS/i)
+				 || navigator.userAgent.match(/iPhone/i)
+				 || navigator.userAgent.match(/iPad/i)
+				 || navigator.userAgent.match(/iPod/i)
+				 || navigator.userAgent.match(/BlackBerry/i)
+				 || navigator.userAgent.match(/Windows Phone/i)
+			){
+			    return true;
+			}
+			else {
+			    return false;
+			}
+		},
+
+		_setTranslation: function(){
+		    var __dictionary__M = "M - Short for Monday in Calendar";
+		    var __dictionary__T = "T - Short for Tuesday in Calendar";
+		    var __dictionary__W = "W - Short for Wednesday in Calendar";
+		    var __dictionary__Th = "T - Short for Thursday in Calendar";
+		    var __dictionary__F = "F - Short for Friday in Calendar";
+		    var __dictionary__Sa = "S - Short for Saturday in Calendar";
+		    var __dictionary__Su = "S - Short for Sunday in Calendar";
+		    
+		    this._daysOfWeek[0] = ("S - Short for Sunday in Calendar" !== __dictionary__Su ) ? __dictionary__Su : "S";
+		    this._daysOfWeek[1] = ("M - Short for Monday in Calendar" !== __dictionary__M ) ? __dictionary__M : "M";
+		    this._daysOfWeek[2] = ("T - Short for Tuesday in Calendar" !== __dictionary__T) ? __dictionary__T :"T" ;
+		    this._daysOfWeek[3] = ("W - Short for Wednesday in Calendar"  !== __dictionary__W) ? __dictionary__W : "W";
+		    this._daysOfWeek[4] = ("T - Short for Thursday in Calendar" !== __dictionary__Th) ? __dictionary__Th : "T";
+		    this._daysOfWeek[5] = ("F - Short for Friday in Calendar" !== __dictionary__F) ? __dictionary__F : "F"; 
+		    this._daysOfWeek[6] = ("S - Short for Saturday in Calendar" !==__dictionary__Sa) ? __dictionary__Sa : "S";
+
+		    moment.locale(this._getLang());
+		  },
+
+		_handlePaperIconButtonBiDi: function(){
+		  	if(this._getRTL()){
+		  		this.$.prevWeekArrow.classList.add('paper-icon-button-rtl');
+		  		this.$.nextWeekArrow.classList.add('paper-icon-button-rtl');
+		  	}
+		},
+
+	 	_timeDisplayFormatChanged: function(format){
+		    if(format){
+		       if(format.indexOf("a") >-1){
+		          this.set("_militaryTime", false);       
+		       }else {
+		          this.set("_militaryTime", true);
+		       }
+		    }
+		    if(this._initialLoaded) {
+		    	this.refreshCalendar();
+		    }
+		},
+
+		_timeZoneChanged: function(){
+			this._handleISOtoFCalendarEventformat();
+		},
+	});
+</script>

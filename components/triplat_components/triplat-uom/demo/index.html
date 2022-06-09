@@ -1,0 +1,288 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-uom Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+
+	<link rel="import" href="../../paper-input/paper-input.html">
+	<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
+	<link rel="import" href="../../paper-listbox/paper-listbox.html">
+	<link rel="import" href="../../paper-item/paper-item.html">
+
+	<link rel="import" href="../../triplat-number-input/triplat-number-input.html">
+	<link rel="import" href="../../triplat-number-input/triplat-number-behavior.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	
+	<style type="text/css">
+ 		body {
+			font-family: 'Roboto', 'Noto', sans-serif;
+		}
+
+		div.line span.info {
+			align-self: flex-end;
+			margin: 0px 30px;
+			font-weight: bold;
+		}
+		span {
+			font-size:12px;
+		}
+
+		.line {
+			padding: 0px;
+			margin: 0px;
+		}
+		
+		#example {
+			margin-left: 30px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			font-size:large;
+			font-weight: bold;
+		}
+
+		#codeTop {
+			margin-left: 30px;
+			margin-top: 10px;
+			margin-bottom: 0px;
+			font-size:medium;
+			font-weight: bold;
+		}
+		
+		#codeBottom {
+			margin-left: 30px;
+			margin-top: 0px;
+			margin-bottom: 10px;
+			font-size:medium;
+			font-weight: bold;
+		}
+
+		#withComponent {
+			margin-top: 1.8em;
+			margin-left: 5px;
+  			font-size: large;	
+  			font-weight: lighter;
+		}
+	</style>
+</head>
+<body>
+	<dom-module id="x-custom">
+		<template>
+			<style include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning"></style>
+			<section>
+			<h2>Displaying UOM value (by default)</h2>
+			<div class="layout vertical"> 
+				<div class="layout horizontal">
+					<span>User locale=<span>
+					<span>{{currentUser._Locale}}<span>
+				</div>
+				<div class="layout horizontal"> 
+					<div id="example">
+						<span>{{numberValue}}</span>
+						<triplat-uom
+							uom="square-feet"
+							uom-list="{{uomAreaList}}">
+						</triplat-uom>
+					</div>
+				 </div>
+			</div>
+			<div class="layout vertical">
+				<span>Example code snippet:</span>
+				<code id="codeTop">{{_getCodeValue()}}</code>
+				<code id="codeBottom">{{_getCodeDefault()}}</code>
+			</div>
+			<div class="layout vertical" >
+				<div class="layout horizontal">
+					<span>User locale=<span>
+					<span>{{danishUser._Locale}}<span>
+				</div>
+				<div id="example" class="layout vertical">
+					<span>{{numberValue}}</span>
+					<triplat-uom
+						uom="square-meters"
+						uom-list="{{uomAreaListWithTranslation}}">
+					</triplat-uom>
+				</div>
+			</div>
+			<div class="layout vertical">
+				<span>Example code snippet:</span>
+				<code id="codeTop">{{_getCodeValue()}}</code>
+				<code id="codeBottom">{{_getCodeDefaultTranslation()}}</code>
+			</div>
+		</section>
+		<hr>
+		<section>
+			<h2>Displaying UOM abbreviation</h2>
+			<div class="layout vertical" >
+				<div class="layout horizontal">
+					<span>User locale=<span>
+					<span>{{currentUser._Locale}}<span>
+				</div>
+				<div class="layout horizontal">
+					<div id="example">
+					<div>
+					<span>{{numberValue}}</span>
+					<triplat-uom
+						display="abbr"
+						uom="square-feet"
+						uom-list="{{uomAreaList}}">
+					</triplat-uom>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="layout vertical">
+				<span>Example code snippet:</span>
+				<code id="codeTop">{{_getCodeValue()}}</code>
+				<code id="codeBottom">{{_getCodeAbbr()}}</code>
+			</div>
+		</section>
+		<hr>
+		<section>
+			<h2>Displaying UOM with triplat-number-input component</h2>
+			<div class="layout horizontal">
+				<div id="example">
+				<div class="layout horizontal">
+					<div>
+					<triplat-number-input label="Number" 
+					unformatted-value="{{numberValue}}" >
+					</triplat-number-input>
+					</div>
+					<div id="withComponent">
+					<triplat-uom
+					display="uom"
+					uom="square-feet"
+					uom-list="{{uomAreaList}}">
+					</triplat-uom>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="layout vertical">
+				<span>Example code snippet:</span>
+				<code id="codeTop">{{_getCodeNumberInput()}}</code>
+				<code id="codeBottom">{{_getCodeUom()}}</code>
+			</div>
+		</section>
+		<section>
+			<h2>Displaying UOM as drop down list with triplat-number-input component</h2>
+			<div class="layout horizontal">
+				<div id="example">
+				<div class="layout horizontal">
+						<triplat-number-input label="Number" 
+						unformatted-value="{{numberValue}}" >
+						</triplat-number-input>&nbsp
+						<paper-dropdown-menu value="miles">
+						  <paper-listbox class="dropdown-content" selected="1">
+						    <paper-item>microns</paper-item>
+						    <paper-item>miles</paper-item>
+						    <paper-item>meters</paper-item>
+						    <paper-item>kilometers</paper-item>
+						    <paper-item>yards</paper-item>
+						  </paper-listbox>
+						</paper-dropdown-menu>
+				</div>
+				</div>
+			</div>
+			<div class="layout vertical">
+				<span>Example code snippet:</span>
+				<code id="codeTop">{{_getCodeNumberWithUom()}}</code>
+				<code id="codeBottom">{{_getCodeUomDropDown()}}</code>
+			</div>
+		</section>	
+		</template>
+	</dom-module>
+	<script>
+    HTMLImports.whenReady(function() {
+		Polymer({
+
+			is: "x-custom",
+
+			behaviors: [ TriPlatNumberBehavior],
+
+			properties : {
+				numberValue: {
+					type: String,
+					value: "123"
+				},
+
+				currentUser : {
+					type: Object,
+					value: {
+						_Currency: "US Dollars",
+						_Decimal: ".",
+						_Delimiter: ",",
+						_Locale: "en-US"
+					}
+				},
+
+				danishUser : {
+					type: Object,
+					value: {
+						_Currency: "Danish Krone",
+						_Decimal: ",",
+						_Delimiter: ".",
+						_Locale: "da-DK"
+					}
+				},
+
+	            uomAreaList : {
+	                type: Array,
+	                value: [{_Display_Mask: "#.####", _Rounding_Rule: null, _UOM_Type: "Area", _UOM_Value: "square-feet", _UOM_Display_Value: "square-feet", _UOM_Abbreviation: "ft2", _id: "1457126"},
+	                	    {_Display_Mask: "#.####", _Rounding_Rule: null, _UOM_Type: "Area", _UOM_Value: "square-meters", _UOM_Display_Value: "square-meters", _UOM_Abbreviation: "m2", _id: "1649131"}]
+	            },
+
+	            uomAreaListWithTranslation : {
+	                type: Array,
+	                value: [{_Display_Mask: "#.####", _Rounding_Rule: null, _UOM_Type: "Area", _UOM_Value: "square-feet", _UOM_Display_Value: "square-feet-DANISH", _UOM_Abbreviation: "ft2", _id: "1457126"},
+	                	    {_Display_Mask: "#.####", _Rounding_Rule: null, _UOM_Type: "Area", _UOM_Value: "square-meters", _UOM_Display_Value: "square-meters-DANISH", _UOM_Abbreviation: "m2", _id: "1649131"}]
+	            },
+        	},
+        	
+        	_getCodeValue: function() {
+        		return '<span>{{numberValue}}</span>';
+        	},
+
+        	_getCodeDefault: function() {
+        		return '<triplat-uom uom="square-feet" uom-list="{{uomAreaList}}"></triplat-uom>';
+        	},
+
+        	_getCodeDefaultTranslation: function() {
+        		return '<triplat-uom uom="square-meters" uom-list="{{uomAreaListWithTranslation}}"></triplat-uom>';
+        	},
+        	
+        	_getCodeAbbr: function() {
+        		return '<triplat-uom display="abbr" uom="square-feet" uom-list="{{uomAreaList}}"></triplat-uom>';
+        	},
+
+        	_getCodeAbbrTranslation: function() {
+        		return '<triplat-uom display="abbr" uom="square-meters" uom-list="{{uomAreaListWithTranslation}}"></triplat-uom>';
+        	},
+        	_getCodeNumberInput: function() {
+        		return '<triplat-number-input label="Number" unformatted-value="{{numberValue}}"></triplat-number-input>';
+        	},
+        	_getCodeUom: function() {
+        		return '<triplat-uom display="uom" uom="square-feet" uom-list="{{uomAreaList}}"></triplat-uom>';
+        	},
+        	_getCodeUomDropDown: function() {
+        		return '<triplat-uom uom-value="{{datasource.numberFieldWithUom.uom}}" uom-list="{{uomList}}"></triplat-uom>';
+        	},
+        	_getCodeNumberWithUom: function(){
+        		return '<triplat-number-input label="Number with uom" unformatted-value="{{datasource.numberFieldWithUom.value}}" uom="{{datasource.numberFieldWithUom.uom}}"</triplat-number-input>';
+        	}
+		});
+    });
+	</script>
+
+	<x-custom></x-custom>
+</body>
+</html>

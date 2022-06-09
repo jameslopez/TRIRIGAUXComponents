@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple test page for polygon.js</title>
+  <script type="text/javascript" src="polygon.js"></script>
+</head>
+<script>
+var polygon = [[1, 1], [1, 2], [2, 2], [2, 1], [1, 1]];
+var point = {};
+point.x = 1.5;
+point.y = 1.5;
+window.console.log("Polygon._pointInPolygon([1.5, 1.5], polygon) = " + Polygon._pointInPolygon(point, polygon));
+point.x = 2.5;
+window.console.log("Polygon._pointInPolygon([2.5, 1.5], polygon) = " + Polygon._pointInPolygon(point, polygon));
+
+// rec1 (x1, y1) = (2, 1), (w1, h1) = (6, 5)
+// rec2 (x2, y2) = (4, 2), (w2, h2) = (2, 2)
+// rec3 (x3, y3) = (7, 4), (w3, h3) = (3, 3)
+// rec4 (x4, y4) = (5, 2), (w4, h4) = (1, 1)
+// rec5 (x5, y5) = (5, 3), (w5, h5) = (2, 2)
+// rec1 contains rec2, rec4, rec5
+// rec2 contains rec4
+// rec3 overlaps with rec1
+// rec5 overlaps with rec2
+window.console.log("test Polygon.recContains(rec1,rec2) = " + Polygon.recContains(2,1,6,5,4,2,2,2));
+window.console.log("test Polygon.recContains(rec1,rec3) = " + Polygon.recContains(2,1,6,5,7,4,3,3));
+window.console.log("test Polygon.recContains(rec1,rec4) = " + Polygon.recContains(2,1,6,5,5,2,1,1));
+window.console.log("test Polygon.recContains(rec1,rec5) = " + Polygon.recContains(2,1,6,5,5,3,2,2));
+window.console.log("test Polygon.recContains(rec2,rec1) = " + Polygon.recContains(4,2,2,2,2,1,6,5));
+window.console.log("test Polygon.recContains(rec2,rec3) = " + Polygon.recContains(4,2,2,2,7,4,3,3));
+window.console.log("test Polygon.recContains(rec2,rec4) = " + Polygon.recContains(4,2,2,2,5,2,1,1));
+window.console.log("test Polygon.recContains(rec2,rec5) = " + Polygon.recContains(4,2,2,2,5,3,2,2));
+</script>
+<body>
+<h3>Open Developers Tool, view Console</h3>
+</body>
+</html>

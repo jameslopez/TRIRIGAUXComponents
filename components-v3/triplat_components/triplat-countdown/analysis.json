@@ -1,0 +1,846 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that provides a date-time countdown. It displays the remaining days, \nhours, minutes, and seconds.\n\n> **Caution: This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.**\n\n### Examples\n\nExample of a simple usage:\n```html\n<triplat-countdown \n\tlabel=\"[[labelText]]\" \n\tdeadline=\"[[deadlineDate]]\" \n\ttimezone=\"[[timezone]]\">\n</triplat-countdown>\n```\n\n\n### Styling\n\nThe following custom properties and mixins are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--countdown-container` | Mixin applied to the external container | `{}`\n`--countdown` | Mixin applied to the countdown | `{}`\n`--countdown-days` | Mixin applied to the days text | `{}`\n`--countdown-hours` | Mixin applied to the hours text | `{}`\n`--countdown-minutes` | Mixin applied to the minutes text | `{}`\n`--countdown-seconds` | Mixin applied to the seconds text | `{}`\n`--countdown-expired` | Mixin applied to the expired container | `{}`\n`--countdown-expired-text` | Mixin applied to the expired text | `{}`",
+      "summary": "",
+      "path": "triplat-countdown.js",
+      "properties": [
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "String value to be used as a label for the countdown field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 106,
+              "column": 2
+            },
+            "end": {
+              "line": 106,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "loggingEnabled",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value to indicate if the logging method is active.\nThe logging method logs messages in the browser console.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 112,
+              "column": 2
+            },
+            "end": {
+              "line": 115,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value to indicate that this is a disabled countdown. Show\nthe countdown numbers as zeros.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 121,
+              "column": 2
+            },
+            "end": {
+              "line": 124,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "waiting",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value to indicate that it should wait before initializing\nthe countdown.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 133,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "name",
+          "type": "string | null | undefined",
+          "description": "String value to be used as the countdown name.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 2
+            },
+            "end": {
+              "line": 141,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "deadline",
+          "type": "Date | null | undefined",
+          "description": "Date value to be used as a deadline. Used for the component to\ncalculate the amount of time between the current date and the date\nit will be counting down.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 148,
+              "column": 2
+            },
+            "end": {
+              "line": 150,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Date"
+            }
+          }
+        },
+        {
+          "name": "interval",
+          "type": "number | null | undefined",
+          "description": "Number value in milliseconds to determine the amount of time to wait\nbefore calling a new countdown checker.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 156,
+              "column": 2
+            },
+            "end": {
+              "line": 159,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "1000"
+        },
+        {
+          "name": "timezone",
+          "type": "string | null | undefined",
+          "description": "String value to indicate the user time zone.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 164,
+              "column": 2
+            },
+            "end": {
+              "line": 166,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "waitUntil",
+          "type": "Date | null | undefined",
+          "description": "Date value to determine the amount of time to wait before activating\nthe countdown.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 172,
+              "column": 2
+            },
+            "end": {
+              "line": 175,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Date"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "countdown",
+          "type": "Object | null | undefined",
+          "description": "Countdown object.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 180,
+              "column": 2
+            },
+            "end": {
+              "line": 194,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "{\"name\":\"\",\"total\":-1,\"days\":0,\"daysText\":\"0\",\"hours\":0,\"hoursText\":\"00\",\"minutes\":0,\"minutesText\":\"00\",\"seconds\":0,\"secondsText\":\"00\"}"
+        },
+        {
+          "name": "isExpired",
+          "type": "boolean | null | undefined",
+          "description": "Boolean value to indicate that the countdown is expired.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 199,
+              "column": 2
+            },
+            "end": {
+              "line": 204,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "expiredText",
+          "type": "string | null | undefined",
+          "description": "String value to be used as the expired text.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 209,
+              "column": 2
+            },
+            "end": {
+              "line": 212,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"Expired!\""
+        },
+        {
+          "name": "_showDays",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 214,
+              "column": 2
+            },
+            "end": {
+              "line": 217,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_showHours",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 219,
+              "column": 2
+            },
+            "end": {
+              "line": 222,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_showMinutes",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 224,
+              "column": 2
+            },
+            "end": {
+              "line": 227,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_showSeconds",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 229,
+              "column": 2
+            },
+            "end": {
+              "line": 232,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_waitHandle",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 234,
+              "column": 2
+            },
+            "end": {
+              "line": 234,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "detached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 242,
+              "column": 4
+            },
+            "end": {
+              "line": 244,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeShowCountdown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 246,
+              "column": 4
+            },
+            "end": {
+              "line": 255,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "isExpired"
+            }
+          ]
+        },
+        {
+          "name": "_computeShowExpired",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 4
+            },
+            "end": {
+              "line": 266,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "isExpired"
+            }
+          ]
+        },
+        {
+          "name": "_computeIsExpired",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 268,
+              "column": 4
+            },
+            "end": {
+              "line": 283,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "deadline"
+            },
+            {
+              "name": "countdown"
+            },
+            {
+              "name": "disabled"
+            }
+          ]
+        },
+        {
+          "name": "_initCountdown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 285,
+              "column": 4
+            },
+            "end": {
+              "line": 293,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "deadline"
+            },
+            {
+              "name": "timezone"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "waiting"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_countdownWaitWakeUp",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 295,
+              "column": 4
+            },
+            "end": {
+              "line": 302,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_cancelWait",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 304,
+              "column": 4
+            },
+            "end": {
+              "line": 309,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_countdown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 311,
+              "column": 4
+            },
+            "end": {
+              "line": 374,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getCountdown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 376,
+              "column": 4
+            },
+            "end": {
+              "line": 400,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "deadlineDT"
+            },
+            {
+              "name": "nowDT"
+            }
+          ]
+        },
+        {
+          "name": "_logInfo",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 402,
+              "column": 4
+            },
+            "end": {
+              "line": 406,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "msg"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 44,
+          "column": 8
+        },
+        "end": {
+          "line": 407,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "String value to be used as a label for the countdown field.",
+          "sourceRange": {
+            "start": {
+              "line": 106,
+              "column": 2
+            },
+            "end": {
+              "line": 106,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "logging-enabled",
+          "description": "Boolean value to indicate if the logging method is active.\nThe logging method logs messages in the browser console.",
+          "sourceRange": {
+            "start": {
+              "line": 112,
+              "column": 2
+            },
+            "end": {
+              "line": 115,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disabled",
+          "description": "Boolean value to indicate that this is a disabled countdown. Show\nthe countdown numbers as zeros.",
+          "sourceRange": {
+            "start": {
+              "line": 121,
+              "column": 2
+            },
+            "end": {
+              "line": 124,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "waiting",
+          "description": "Boolean value to indicate that it should wait before initializing\nthe countdown.",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 133,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "name",
+          "description": "String value to be used as the countdown name.",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 2
+            },
+            "end": {
+              "line": 141,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "deadline",
+          "description": "Date value to be used as a deadline. Used for the component to\ncalculate the amount of time between the current date and the date\nit will be counting down.",
+          "sourceRange": {
+            "start": {
+              "line": 148,
+              "column": 2
+            },
+            "end": {
+              "line": 150,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Date | null | undefined"
+        },
+        {
+          "name": "interval",
+          "description": "Number value in milliseconds to determine the amount of time to wait\nbefore calling a new countdown checker.",
+          "sourceRange": {
+            "start": {
+              "line": 156,
+              "column": 2
+            },
+            "end": {
+              "line": 159,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "timezone",
+          "description": "String value to indicate the user time zone.",
+          "sourceRange": {
+            "start": {
+              "line": 164,
+              "column": 2
+            },
+            "end": {
+              "line": 166,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "wait-until",
+          "description": "Date value to determine the amount of time to wait before activating\nthe countdown.",
+          "sourceRange": {
+            "start": {
+              "line": 172,
+              "column": 2
+            },
+            "end": {
+              "line": 175,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Date | null | undefined"
+        },
+        {
+          "name": "countdown",
+          "description": "Countdown object.",
+          "sourceRange": {
+            "start": {
+              "line": 180,
+              "column": 2
+            },
+            "end": {
+              "line": 194,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "is-expired",
+          "description": "Boolean value to indicate that the countdown is expired.",
+          "sourceRange": {
+            "start": {
+              "line": 199,
+              "column": 2
+            },
+            "end": {
+              "line": 204,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "expired-text",
+          "description": "String value to be used as the expired text.",
+          "sourceRange": {
+            "start": {
+              "line": 209,
+              "column": 2
+            },
+            "end": {
+              "line": 212,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "countdown-changed",
+          "description": "Fired when the `countdown` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "is-expired-changed",
+          "description": "Fired when the `isExpired` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-countdown"
+    }
+  ]
+}

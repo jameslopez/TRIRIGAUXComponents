@@ -1,0 +1,440 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A custom element for displaying an icon from the IBM icon set. \nIt works similar to iron-icon element in polymer, except this assumes the IBM\nicon set, automatically importing that icon set and removing the need to prefix the icon with the icon set name. \n\n\t <triplat-icon icon=\"icon\" ></triplat-icon>\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n\t\t<b>Note:</b> This element uses the IBM icon set. This icon set can be used directly, for example by paper-button-icon, by importing ../triplat-icon/ibm-icons.html and using 'ibm:' as the prefix to specify the iconset.\n\t</div>\n</div>\n\n### Styling\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n\t\t<b>Deprecated:</b> The use of style and class properties to style the icon is deprecated and will be removed in a future release. Use mixins instead.<br>\n\t\tCustom property `--triplat-icon-style` is deprecated, instead use `--triplat-icon-iron-icon`. \n\t</div>\n</div>\n\nMixins and style/class are mutually exclusive and using both will produce indeterminate results.\n\nThe following custom properties are available for styling:\n\nCustom property               | Description                                                    | Default\n------------------------------|----------------------------------------------------------------|----------\n`--triplat-icon-iron-icon`    | Mixin applied to the iron-iron contained within this component | ``\n`--triplat-icon-width`        | Width of the icon                                              | ``\n`--triplat-icon-height`       | Height of the icon                                             | ``\n`--triplat-icon-fill-color`   | Fill color for the icon                                        | ``\n`--triplat-icon-stroke-color` | Stroke color for the icon                                      | ``\n\n### Supported icons\n\nSee demo for supported icons and the value you should use for the 'icon' property to get that icon.",
+      "summary": "",
+      "path": "triplat-icon.js",
+      "properties": [
+        {
+          "name": "class",
+          "type": "string | null | undefined",
+          "description": "Class property to be applied to this element and its children.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 94,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "description",
+          "type": "string | null | undefined",
+          "description": "Description property to be applied to aria-label for assistive tool to read out description for this icon.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 100,
+              "column": 2
+            },
+            "end": {
+              "line": 100,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "icon",
+          "type": "string | null | undefined",
+          "description": "Icon from the icon set to be displayed. See demo page for list of valid values. The icon set prefix does not\nneed to be specified unless the same icon exists in multiple icon sets.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 107,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "mirror",
+          "type": "boolean | null | undefined",
+          "description": "Mirror property which acts as a flag. When used it will mirror the icon.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 116,
+              "column": 2
+            },
+            "end": {
+              "line": 119,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "tabIndex",
+          "type": "number | null | undefined",
+          "description": "Value to be applied to the tabindex attribute.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 125,
+              "column": 2
+            },
+            "end": {
+              "line": 125,
+              "column": 18
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "iconsets",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 127,
+              "column": 5
+            },
+            "end": {
+              "line": 133,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 136,
+              "column": 4
+            },
+            "end": {
+              "line": 147,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setIcon",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 149,
+              "column": 4
+            },
+            "end": {
+              "line": 182,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "val"
+            },
+            {
+              "name": "iconsets"
+            }
+          ]
+        },
+        {
+          "name": "_setStyle",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 184,
+              "column": 4
+            },
+            "end": {
+              "line": 186,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "style"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_resetClassMap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 188,
+              "column": 4
+            },
+            "end": {
+              "line": 192,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_cleanClassMap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 194,
+              "column": 4
+            },
+            "end": {
+              "line": 203,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_isNewClassInMap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 205,
+              "column": 4
+            },
+            "end": {
+              "line": 219,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newclass"
+            }
+          ]
+        },
+        {
+          "name": "_setClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 221,
+              "column": 4
+            },
+            "end": {
+              "line": 252,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "myclass"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_keyPressHandler",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 254,
+              "column": 4
+            },
+            "end": {
+              "line": 260,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 59,
+          "column": 8
+        },
+        "end": {
+          "line": 261,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "class",
+          "description": "Class property to be applied to this element and its children.",
+          "sourceRange": {
+            "start": {
+              "line": 94,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "description",
+          "description": "Description property to be applied to aria-label for assistive tool to read out description for this icon.",
+          "sourceRange": {
+            "start": {
+              "line": 100,
+              "column": 2
+            },
+            "end": {
+              "line": 100,
+              "column": 21
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "icon",
+          "description": "Icon from the icon set to be displayed. See demo page for list of valid values. The icon set prefix does not\nneed to be specified unless the same icon exists in multiple icon sets.",
+          "sourceRange": {
+            "start": {
+              "line": 107,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "mirror",
+          "description": "Mirror property which acts as a flag. When used it will mirror the icon.",
+          "sourceRange": {
+            "start": {
+              "line": 116,
+              "column": 2
+            },
+            "end": {
+              "line": 119,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "tab-index",
+          "description": "Value to be applied to the tabindex attribute.",
+          "sourceRange": {
+            "start": {
+              "line": 125,
+              "column": 2
+            },
+            "end": {
+              "line": 125,
+              "column": 18
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "iconsets",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 127,
+              "column": 5
+            },
+            "end": {
+              "line": 133,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-icon"
+    }
+  ]
+}

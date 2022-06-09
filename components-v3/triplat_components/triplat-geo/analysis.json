@@ -1,0 +1,506 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that provides the current geolocation.\n\n> **Note 1:** The API key may be required when using the third-party map components.\n\n> **Note 2:** For the latest versions of supported browsers, the server must be running on a secure URL (HTTPS). Otherwise, requesting access for the user's location will not be triggered because non-HTTPS (HTTP) will be treated as an unsecured origin.\n\n\n### Example\n\t\t<triplat-geo latitude=\"{{latitude}}\" longitude=\"{{longitude}}\" \n\t\t\taccuracy=\"{{accuracy}}\" is-watch-position time-out=\"50000\" \n\t\t\tmaximum-age=\"0\">\n\t\t</triplat-geo>\n\n\t\t<google-map latitude=\"[[latitude]]\" longitude=\"[[longitude]]\" fit-to-markers api-key=\"1234\">\n\t\t\t<google-map-marker latitude=\"[[latitude]]\" longitude=\"[[longitude]]\"\n\t\t\t\tdraggable=\"true\"></google-map-marker>\n\t\t\t<google-map-marker latitude=\"[[latitude]]\" longitude=\"[[longitude]]\">\n\t\t\t</google-map-marker>\n\t\t</google-map>",
+      "summary": "",
+      "path": "triplat-geo.js",
+      "properties": [
+        {
+          "name": "longitude",
+          "type": "number | null | undefined",
+          "description": "The current longitude of the device.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 51,
+              "column": 2
+            },
+            "end": {
+              "line": 56,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "latitude",
+          "type": "number | null | undefined",
+          "description": "The current latitude of the device.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 60,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "maximumAge",
+          "type": "number | null | undefined",
+          "description": "The length of time (millisecond) that the device accepts cached positions.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 69,
+              "column": 2
+            },
+            "end": {
+              "line": 72,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "600000"
+        },
+        {
+          "name": "timeOut",
+          "type": "number | null | undefined",
+          "description": "The length of time (millisecond) that the device is taken to return the coordinates.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 76,
+              "column": 2
+            },
+            "end": {
+              "line": 79,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "10000"
+        },
+        {
+          "name": "accuracy",
+          "type": "number | null | undefined",
+          "description": "A number that representing the accuracy of the coordinates (latitude and longitude) express in meters.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 83,
+              "column": 2
+            },
+            "end": {
+              "line": 88,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "isWatchPosition",
+          "type": "boolean | null | undefined",
+          "description": "Set to **true** will update the current position information when the device is moved or more accurate location is detected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 92,
+              "column": 2
+            },
+            "end": {
+              "line": 95,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disable",
+          "type": "boolean | null | undefined",
+          "description": "A flag to disable the detection of location.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 100,
+              "column": 2
+            },
+            "end": {
+              "line": 106,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_onDisableChanged\"",
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_attemptLowerAccuracy",
+          "type": "boolean | null | undefined",
+          "description": "Flag that allows the second attempt to fetch the current location if the high accuracy failed.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 110,
+              "column": 2
+            },
+            "end": {
+              "line": 113,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_geoResponseOccurred",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 2
+            },
+            "end": {
+              "line": 119,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 122,
+              "column": 1
+            },
+            "end": {
+              "line": 128,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onDisableChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 1
+            },
+            "end": {
+              "line": 134,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "disable"
+            },
+            {
+              "name": "oldDisable"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getCoordinates",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 136,
+              "column": 1
+            },
+            "end": {
+              "line": 162,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_success",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 164,
+              "column": 1
+            },
+            "end": {
+              "line": 171,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "position"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_error",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 173,
+              "column": 1
+            },
+            "end": {
+              "line": 185,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "position"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 31,
+          "column": 8
+        },
+        "end": {
+          "line": 187,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "longitude",
+          "description": "The current longitude of the device.",
+          "sourceRange": {
+            "start": {
+              "line": 51,
+              "column": 2
+            },
+            "end": {
+              "line": 56,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "latitude",
+          "description": "The current latitude of the device.",
+          "sourceRange": {
+            "start": {
+              "line": 60,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "maximum-age",
+          "description": "The length of time (millisecond) that the device accepts cached positions.",
+          "sourceRange": {
+            "start": {
+              "line": 69,
+              "column": 2
+            },
+            "end": {
+              "line": 72,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "time-out",
+          "description": "The length of time (millisecond) that the device is taken to return the coordinates.",
+          "sourceRange": {
+            "start": {
+              "line": 76,
+              "column": 2
+            },
+            "end": {
+              "line": 79,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "accuracy",
+          "description": "A number that representing the accuracy of the coordinates (latitude and longitude) express in meters.",
+          "sourceRange": {
+            "start": {
+              "line": 83,
+              "column": 2
+            },
+            "end": {
+              "line": 88,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "is-watch-position",
+          "description": "Set to **true** will update the current position information when the device is moved or more accurate location is detected.",
+          "sourceRange": {
+            "start": {
+              "line": 92,
+              "column": 2
+            },
+            "end": {
+              "line": 95,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disable",
+          "description": "A flag to disable the detection of location.",
+          "sourceRange": {
+            "start": {
+              "line": 100,
+              "column": 2
+            },
+            "end": {
+              "line": 106,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-geo-error",
+          "description": "Fired after finding the geo location with no success.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-geo-success",
+          "description": "Fired after finding the geo location successfully.\nThe event detail includes the detected latitude and longitude.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "longitude-changed",
+          "description": "Fired when the `longitude` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "latitude-changed",
+          "description": "Fired when the `latitude` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "accuracy-changed",
+          "description": "Fired when the `accuracy` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-geo"
+    }
+  ]
+}

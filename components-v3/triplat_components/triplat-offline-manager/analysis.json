@@ -1,0 +1,2326 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triplat-ds-offline` configures how the Service Worker caches the records from data sources. The Service Worker is installed by the `triplat-offline-manager`.\n\nExample:\n```\n<triplat-ds id=\"currentUser\" name=\"currentUser\" data=\"{{currentUser}}\">\n  <triplat-ds-offline mode=\"AUTOMATIC\" cache-thumbnails=\"[[_arrayOfImageFieldNames]]\">\n  </triplat-ds-offline>\n</triplat-ds>\n```\n\n### Configuring a data source to cache records\n\nYou can add `triplat-ds-offline` as an inner element of the `triplat-ds` element. There is one required property named `mode`.\nThe mode property defines how the Service Worker will cache the records that come from the data source. \nThere are three mode options:\n- AUTOMATIC: The data source records are automatically downloaded and saved into the cache whenever the `triplat-offline-manager` executes a download process. \n- CONTEXT: The data source records are automatically cached whenever a record from the contextual data source is saved into the cache during the download process.\n- UPDATE: This mode only updates the records that are already saved into the cache whenever the application refreshes the data source.\n\nExample:\n\nThe code below (1) caches all the building records returned by the \"buildingDS\" data source and also (2) caches the floors associated to each building that is saved into the cache.\n```\n<triplat-ds id=\"buildingDS\" name=\"building\">\n  <triplat-ds-offline mode=\"AUTOMATIC\"></triplat-ds-offline>\n</triplat-ds>\n\n<triplat-ds id=\"floorDS\" name=\"floor\">\n  <triplat-ds-offline mode=\"CONTEXT\"></triplat-ds-offline>\n  <triplat-ds-context name=\"building\" context-id=\"[[_buildingId]]\">\n  </triplat-ds-context>\n</triplat-ds>\n```",
+      "summary": "",
+      "path": "triplat-ds-offline.js",
+      "properties": [
+        {
+          "name": "mode",
+          "type": "string | null | undefined",
+          "description": "Defines how the associated data source records will be cached.\nThere are three possible values: AUTOMATIC, CONTEXT and UPDATE.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 83,
+              "column": 3
+            },
+            "end": {
+              "line": 86,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"UPDATE\""
+        },
+        {
+          "name": "cacheImageFields",
+          "type": "Array | null | undefined",
+          "description": "A list of image field names. Whenever a record is cached, the full-size version of the images that are referenced in this list will also be cached.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 3
+            },
+            "end": {
+              "line": 93,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "cacheThumbnails",
+          "type": "Array | null | undefined",
+          "description": "A list of image field names. Whenever a record is cached, the thumbnail version of the images that are referenced in this list will also be cached.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 3
+            },
+            "end": {
+              "line": 100,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "cacheBinaryFields",
+          "type": "Array | null | undefined",
+          "description": "A list of binary field names. Whenever a record is cached, the files that are referenced by the fields in this list will also be cached.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 105,
+              "column": 3
+            },
+            "end": {
+              "line": 107,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_associatedDS",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 109,
+              "column": 3
+            },
+            "end": {
+              "line": 111,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_modelAndView",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 113,
+              "column": 3
+            },
+            "end": {
+              "line": 115,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_hierarchyPath",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 117,
+              "column": 3
+            },
+            "end": {
+              "line": 119,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_dsName",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 121,
+              "column": 3
+            },
+            "end": {
+              "line": 123,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 126,
+              "column": 5
+            },
+            "end": {
+              "line": 129,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "detached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 131,
+              "column": 5
+            },
+            "end": {
+              "line": 133,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_register",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 135,
+              "column": 5
+            },
+            "end": {
+              "line": 140,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "cacheRecords",
+          "description": "Save one or more records into the cache. The cached records are linked to the current data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 147,
+              "column": 2
+            },
+            "end": {
+              "line": 155,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "deleteOtherRecords",
+              "type": "Boolean",
+              "description": "If true, it will remove from the cache the records that are linked to the current data source and are not contained in the `records` parameter."
+            },
+            {
+              "name": "records",
+              "type": "Object",
+              "description": "The records to be saved into the cache. It can be one record or an array of records."
+            }
+          ]
+        },
+        {
+          "name": "getCachedRecords",
+          "description": "Get all the cached records linked to the current data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 160,
+              "column": 2
+            },
+            "end": {
+              "line": 163,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_cache",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 165,
+              "column": 5
+            },
+            "end": {
+              "line": 172,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "deleteOtherRecordsOnSave"
+            },
+            {
+              "name": "idParams"
+            }
+          ]
+        },
+        {
+          "name": "_doCache",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 174,
+              "column": 5
+            },
+            "end": {
+              "line": 182,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "recordIds"
+            },
+            {
+              "name": "parentContext"
+            }
+          ]
+        },
+        {
+          "name": "_cacheInstanceDS",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 184,
+              "column": 5
+            },
+            "end": {
+              "line": 196,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "recordIds"
+            },
+            {
+              "name": "parentContext"
+            }
+          ]
+        },
+        {
+          "name": "_cacheNonInstanceDS",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 198,
+              "column": 5
+            },
+            "end": {
+              "line": 207,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "parentContext"
+            }
+          ]
+        },
+        {
+          "name": "_getRecordsFromResponse",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 209,
+              "column": 5
+            },
+            "end": {
+              "line": 216,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "cacheResponses"
+            }
+          ]
+        },
+        {
+          "name": "_processCachedRecords",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 218,
+              "column": 5
+            },
+            "end": {
+              "line": 222,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "parentContext"
+            },
+            {
+              "name": "records"
+            }
+          ]
+        },
+        {
+          "name": "_cacheChildren",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 224,
+              "column": 5
+            },
+            "end": {
+              "line": 238,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "parentContext"
+            },
+            {
+              "name": "records"
+            }
+          ]
+        },
+        {
+          "name": "_getDSContext",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 240,
+              "column": 5
+            },
+            "end": {
+              "line": 246,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "parentContext"
+            },
+            {
+              "name": "instanceId"
+            }
+          ]
+        },
+        {
+          "name": "_getDSPath",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 248,
+              "column": 5
+            },
+            "end": {
+              "line": 250,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getRecordIds",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 252,
+              "column": 5
+            },
+            "end": {
+              "line": 273,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "idParams"
+            }
+          ]
+        },
+        {
+          "name": "_isNumber",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 275,
+              "column": 5
+            },
+            "end": {
+              "line": 278,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ]
+        },
+        {
+          "name": "_cacheRecordImages",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 280,
+              "column": 5
+            },
+            "end": {
+              "line": 300,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "records"
+            }
+          ]
+        },
+        {
+          "name": "_cacheImage",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 302,
+              "column": 5
+            },
+            "end": {
+              "line": 314,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "record"
+            },
+            {
+              "name": "cacheThumbnail"
+            },
+            {
+              "name": "cacheFullImage"
+            },
+            {
+              "name": "imageField"
+            }
+          ]
+        },
+        {
+          "name": "_cacheRecordFiles",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 316,
+              "column": 5
+            },
+            "end": {
+              "line": 332,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "records"
+            }
+          ]
+        },
+        {
+          "name": "_cacheFile",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 334,
+              "column": 5
+            },
+            "end": {
+              "line": 346,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "record"
+            },
+            {
+              "name": "binaryField"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 59,
+          "column": 9
+        },
+        "end": {
+          "line": 347,
+          "column": 2
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "mode",
+          "description": "Defines how the associated data source records will be cached.\nThere are three possible values: AUTOMATIC, CONTEXT and UPDATE.",
+          "sourceRange": {
+            "start": {
+              "line": 83,
+              "column": 3
+            },
+            "end": {
+              "line": 86,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "cache-image-fields",
+          "description": "A list of image field names. Whenever a record is cached, the full-size version of the images that are referenced in this list will also be cached.",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 3
+            },
+            "end": {
+              "line": 93,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "cache-thumbnails",
+          "description": "A list of image field names. Whenever a record is cached, the thumbnail version of the images that are referenced in this list will also be cached.",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 3
+            },
+            "end": {
+              "line": 100,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "cache-binary-fields",
+          "description": "A list of binary field names. Whenever a record is cached, the files that are referenced by the fields in this list will also be cached.",
+          "sourceRange": {
+            "start": {
+              "line": 105,
+              "column": 3
+            },
+            "end": {
+              "line": 107,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-ds-offline"
+    },
+    {
+      "description": "The `triplat-offline-manager` adds an offline user experience to UX applications. It uses the following Web APIs:\n- Service Worker: A script that your browser runs in the background, separate from a web page, and intercepts and handles network requests, including programmatically managing a cache of responses.\n- Cache: A storage mechanism for Request/Response object pairs that are cached, usually as part of the Service Worker life cycle. It is used to cache the HTML, CSS, Javascript and image files.\n- IndexedDB: A way to persistently store data inside your browser. It is used to store the records and to queue the changes made when the application is offline.\n\nAll the logic to handle the offline experience is handled by this component and abstracted from the application. The application does not need to create a Service Worker script or to create code to \nsave files into the Cache or to save the records into the IndexedDB. To support an offline experience, the application uses the `triplat-offline-manager` and `triplat-ds-offline` components and the cache \nproperty that is added to the `triplat-image` and `triplat-file` components.\n\nExample:\n```\n<triplat-offline-manager id=\"offlineManager\" online=\"{{online}}\" \n  config-file=\"sw-config.json\">\n</triplat-offline-manager>\n```\n\n### Prerequisites\n\n- The browser must support the Service Worker, Cache and IndexedDB APIs for this component to be usable. The most recent versions of Chrome, Firefox and Safari support these APIs.\n- During development, you can use Service Worker through your localhost. But to use it on production, for security reasons, you must have HTTPS configured on your TRIRIGA server. In other words, to guarantee that the Service Worker code is not tampered or compromised during its journey across the network, you must download it over an HTTPS connection.\n\n### Config file\n\nA JSON config file can be used to specify a list of application files (like HTML, JS, and CSS) that must be loaded into the cache when installing the Service Worker.\nThe name of the config file must be passed to the `config-file` property.\n\nExample:\n```\n{\n  \"appFiles\": [\n\t\"../my-app-view/page1.html\",\n\t\"../my-app-view/page2.html\",\n\t\"../my-app-view/styles1.css\",\n\t\"../my-app-view/script1.js\"\n  ]\n}\n```\nYou can also use the `config-dev-file` property to specify a config file when you are running the application in development mode.\n\n### Installing the Service Worker\n\nThe Service Worker is installed by the `triplat-offline-manager`. It can be installed automatically when the application loads if the autoInstall property is true, or manually by calling the install method.\nIf the Service Worker is already installed, the installation is skipped.\nAfter the Service Worker is installed, it will intercept all requests made by the application to get or change files and data.\n\n### Downloading data\n\nThe download process caches the following data:\n- All the files specified in the JSON config file.\n- All the records bound to data sources configured with the `triplat-ds-offline` element.\n- All the `triplat-auth-check` data used by the application.\n\nThe download process is started on any of the following occasions:\n- After the Service Worker is installed.\n- By calling the download method. It will update the cache with the most recent data from the server.\n- When loading the application and the time in seconds since the last download is greater than the value specified by the cacheMaxAge property. It will update the cache with the most recent data from the server.\n- When using the same device and browser, the user logging into the application is different from the last user. It will clear the cache and download all the data and files again.\n- Whenever the application is online and it requests one or more records using the `triplat-ds` component, it will update the records already saved in the cache.\n\n### Configuring data sources to cache records\n\nThe Service Worker automatically download the records from the data sources if it is configured to do so. The data source can be configured in the application code by adding a `triplat-ds-offline` element to a \n`triplat-ds` component.\nSee the `triplat-ds-offline` component documentation for detailed information.\n\n### Running in offline mode\n\nIf the TRIRIGA server is not reachable for any reason, then the application will run in offline mode. \nIn offline mode, all the files and data requested by the application will be served by Service Worker from the cache. \nThe application continues to use the same `triplat-ds` properties and methods as it would use in online mode. \nAlso, all the actions executed by the user while offline is queued in the IndexedDB.\nWhen the TRIRIGA server is online again, the Service Worker will upload to the server all the pending actions executed while offline.",
+      "summary": "",
+      "path": "triplat-offline-manager.js",
+      "properties": [
+        {
+          "name": "online",
+          "type": "boolean | null | undefined",
+          "description": "Returns the online status of the application. It is false when the TRIRIGA server is not reachable.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 147,
+              "column": 2
+            },
+            "end": {
+              "line": 152,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_handleOnlineChange\"",
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "supported",
+          "type": "boolean | null | undefined",
+          "description": "Indicates if the browser supports the Service Worker and Cache APIs.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 157,
+              "column": 2
+            },
+            "end": {
+              "line": 162,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "installed",
+          "type": "boolean | null | undefined",
+          "description": "It is true when the Service Worker is installed and the offline support is ready to be used.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 2
+            },
+            "end": {
+              "line": 172,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "configFile",
+          "type": "string | null | undefined",
+          "description": "The name of a JSON config file that contains the list of application files (like HTML, JS and CSS) that must be loaded into the cache\nafter the Service Worker is installed.\nThis property is optional and if it is empty, the Service Worker caches the application files only when the application fetches them.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 179,
+              "column": 2
+            },
+            "end": {
+              "line": 182,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "configDevFile",
+          "type": "string | null | undefined",
+          "description": "The name of a JSON config file that overrides the configFile property when running the application in development mode.\nThis property is optional and if it is empty, the JSON config file specified in the configFile property will be used instead.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 188,
+              "column": 2
+            },
+            "end": {
+              "line": 191,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "uploading",
+          "type": "boolean | null | undefined",
+          "description": "Indicates if the Service Worker is uploading to the TRIRIGA server all the actions executed offline.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 196,
+              "column": 2
+            },
+            "end": {
+              "line": 202,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_handleUploadingChanged\"",
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "downloading",
+          "type": "boolean | null | undefined",
+          "description": "Indicates if the Service Worker is downloading data from the TRIRIGA server to the local cache.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 207,
+              "column": 2
+            },
+            "end": {
+              "line": 213,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_handleDownloadingChanged\"",
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "hasPendingActions",
+          "type": "boolean | null | undefined",
+          "description": "It is true whenever there are pending actions in the queue, waiting to be uploaded to the TRIRIGA server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 218,
+              "column": 2
+            },
+            "end": {
+              "line": 223,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "uploadError",
+          "type": "Object | null | undefined",
+          "description": "If the `hasUploadError` property is true, this property will contain an error object describing why the upload of the action failed.\nThe error object contains the following properties:\n- appContext: A brief description of the action that failed. It is the same context string specified by the application when calling any action method on the `triplat-ds` component.\n- translatedMessage: The translated error message.\n- error.errorType: It contains one of the following strings:\n    - UserMismatch: If the current user does not match the user who executed the offline action.\n    - PerformActionException: If the server returns an exception when uploading a pending action.\n    - ImageSaveException: If the upload of an image file failed.\n    - FileSaveException: If the upload of a binary file failed.\n    - SecurityException or ContextSecurityViolation: If a security violation was detected when uploading a pending action.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 237,
+              "column": 2
+            },
+            "end": {
+              "line": 242,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "hasUploadError",
+          "type": "boolean | null | undefined",
+          "description": "Indicates if the last attempt of uploading a pending action to the TRIRIGA server failed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 247,
+              "column": 2
+            },
+            "end": {
+              "line": 252,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "lastDownload",
+          "type": "Date | null | undefined",
+          "description": "The date and time of the last complete data download from the TRIRIGA server to the cache.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 2
+            },
+            "end": {
+              "line": 261,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Date"
+            }
+          }
+        },
+        {
+          "name": "cacheMaxAge",
+          "type": "number | null | undefined",
+          "description": "Specifies the maximum amount of time in seconds, since the last complete download, that the data in the cache is considered fresh. After this time is exceeded,\non the next time the application is loaded, the Service Worker will automatically update all the records in the cache with the most recent data from the server.\nIf this property is less than or equal to zero, the Service Worker never automatically updates all the records in the cache.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 268,
+              "column": 2
+            },
+            "end": {
+              "line": 271,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "autoInstall",
+          "type": "boolean | null | undefined",
+          "description": "If true, the Service Worker will be installed when the application loads.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 276,
+              "column": 2
+            },
+            "end": {
+              "line": 279,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "downloadCallback",
+          "type": "Object | null | undefined",
+          "description": "Callback function invoked as the last step of the download process.\nIt takes no arguments and if it returns a promise, the download process will wait until the promise is resolved or rejected.\nThis can be used by the application to manually save records into the cache.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 287,
+              "column": 2
+            },
+            "end": {
+              "line": 290,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "_downloadPromise",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 292,
+              "column": 2
+            },
+            "end": {
+              "line": 295,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "_translatedMessages",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 297,
+              "column": 2
+            },
+            "end": {
+              "line": 329,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 336,
+              "column": 4
+            },
+            "end": {
+              "line": 354,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "install",
+          "description": "Installs the Service Worker for the current application, if it is not already installed. The application can safely call this method even if the Service Worker is already installed.\nIf the Service Worker is already installed and there are pending actions, it will start the process of uploading the pending actions.\nOtherwise, it will start the download process.\nReturns a promise that indicates if the installation was successful or not.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 362,
+              "column": 1
+            },
+            "end": {
+              "line": 367,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "uninstall",
+          "description": "Uninstall the Service Worker for the current application.\nReturns a promise that indicates if the removal was successful or not.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 1
+            },
+            "end": {
+              "line": 381,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "skipAction",
+          "description": "Skips pending actions from the offline queue. The skipped action is discarded and it is not uploaded to the server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 389,
+              "column": 1
+            },
+            "end": {
+              "line": 391,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "allActions",
+              "type": "Boolean",
+              "description": "If true, it skips all the pending actions. Otherwise, it skips only the first pending action in the queue.\nAfter the skip is complete, if there are pending actions remaining in the queue then it will start the upload process of the remaining pending actions.\nOtherwise, the returned promise will resolve to the NO_MORE_PENDING_ACTIONS value."
+            }
+          ]
+        },
+        {
+          "name": "_doSkipAction",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 393,
+              "column": 4
+            },
+            "end": {
+              "line": 410,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "allActions"
+            },
+            {
+              "name": "resolve"
+            },
+            {
+              "name": "reject"
+            }
+          ]
+        },
+        {
+          "name": "retryUpload",
+          "description": "Tries again to upload the pending actions in the queue.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 415,
+              "column": 1
+            },
+            "end": {
+              "line": 417,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_syncData",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 419,
+              "column": 4
+            },
+            "end": {
+              "line": 425,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "forceCache"
+            },
+            {
+              "name": "forceUpload"
+            }
+          ]
+        },
+        {
+          "name": "download",
+          "description": "Starts the process of downloading and updating all the files and records in the cache with the most recent data from the server.\nReturns a promise that resolves when the download process is completed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 431,
+              "column": 1
+            },
+            "end": {
+              "line": 433,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_download",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 435,
+              "column": 4
+            },
+            "end": {
+              "line": 449,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "force"
+            }
+          ]
+        },
+        {
+          "name": "_fireDownloadSuccess",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 451,
+              "column": 4
+            },
+            "end": {
+              "line": 456,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_handleDownloadError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 458,
+              "column": 4
+            },
+            "end": {
+              "line": 466,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "error"
+            }
+          ]
+        },
+        {
+          "name": "_uploadPendingActions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 468,
+              "column": 4
+            },
+            "end": {
+              "line": 480,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "forceUpload"
+            }
+          ]
+        },
+        {
+          "name": "_handleUploadingChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 482,
+              "column": 4
+            },
+            "end": {
+              "line": 486,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "uploadingNew"
+            },
+            {
+              "name": "uploadingOld"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_fireUploadSuccess",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 488,
+              "column": 4
+            },
+            "end": {
+              "line": 491,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleUploadError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 493,
+              "column": 4
+            },
+            "end": {
+              "line": 497,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "error"
+            }
+          ]
+        },
+        {
+          "name": "_doUnregister",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 499,
+              "column": 4
+            },
+            "end": {
+              "line": 506,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "swReg"
+            }
+          ]
+        },
+        {
+          "name": "_cacheApplicationFiles",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 508,
+              "column": 4
+            },
+            "end": {
+              "line": 510,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "forceCache"
+            }
+          ]
+        },
+        {
+          "name": "_doUpload",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 512,
+              "column": 4
+            },
+            "end": {
+              "line": 514,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_isInstalled",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 516,
+              "column": 4
+            },
+            "end": {
+              "line": 518,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_registerServiceWorker",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 520,
+              "column": 4
+            },
+            "end": {
+              "line": 543,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_waitServiceWorkerRegistration",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 545,
+              "column": 4
+            },
+            "end": {
+              "line": 554,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "serviceWorkerRegistration"
+            }
+          ]
+        },
+        {
+          "name": "_cacheAutomaticOfflineDS",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 556,
+              "column": 4
+            },
+            "end": {
+              "line": 564,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getOfflineDsList",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 566,
+              "column": 4
+            },
+            "end": {
+              "line": 570,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_cacheAuthRequests",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 572,
+              "column": 4
+            },
+            "end": {
+              "line": 574,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_runDownloadCallback",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 576,
+              "column": 4
+            },
+            "end": {
+              "line": 581,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_setupServiceWorkerMessageListener",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 583,
+              "column": 4
+            },
+            "end": {
+              "line": 609,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_deleteAppRecord",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 611,
+              "column": 4
+            },
+            "end": {
+              "line": 613,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_handleServerStatusChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 615,
+              "column": 4
+            },
+            "end": {
+              "line": 617,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "online"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleServerStatusOnlineChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 619,
+              "column": 4
+            },
+            "end": {
+              "line": 621,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleOnlineChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 623,
+              "column": 4
+            },
+            "end": {
+              "line": 634,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newOnline"
+            },
+            {
+              "name": "oldOnline"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setupUploading",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 636,
+              "column": 4
+            },
+            "end": {
+              "line": 643,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_setupLastDownload",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 645,
+              "column": 4
+            },
+            "end": {
+              "line": 652,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_setupHasPendingActions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 654,
+              "column": 4
+            },
+            "end": {
+              "line": 662,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_setupGetServerStatus",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 664,
+              "column": 4
+            },
+            "end": {
+              "line": 669,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_setupNetworkStatusListener",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 671,
+              "column": 4
+            },
+            "end": {
+              "line": 675,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_checkSupported",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 677,
+              "column": 4
+            },
+            "end": {
+              "line": 682,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_checkOnline",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 684,
+              "column": 4
+            },
+            "end": {
+              "line": 689,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_checkHasNoPendingActions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 691,
+              "column": 4
+            },
+            "end": {
+              "line": 696,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_checkInstalled",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 698,
+              "column": 4
+            },
+            "end": {
+              "line": 703,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getMessage",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 705,
+              "column": 4
+            },
+            "end": {
+              "line": 707,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "msgKey"
+            },
+            {
+              "name": "error"
+            }
+          ]
+        },
+        {
+          "name": "_getErrorMessage",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 709,
+              "column": 4
+            },
+            "end": {
+              "line": 719,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "error"
+            },
+            {
+              "name": "defaultMsgKey"
+            }
+          ]
+        },
+        {
+          "name": "_translateUploadError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 721,
+              "column": 4
+            },
+            "end": {
+              "line": 762,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "uploadError"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_decodeAppContext",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 764,
+              "column": 4
+            },
+            "end": {
+              "line": 774,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "str"
+            }
+          ]
+        },
+        {
+          "name": "_handleUploadErrorChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 776,
+              "column": 4
+            },
+            "end": {
+              "line": 782,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "hasPendingActions"
+            },
+            {
+              "name": "uploadError"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleDownloadingChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 784,
+              "column": 4
+            },
+            "end": {
+              "line": 788,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "downloading"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 89,
+          "column": 8
+        },
+        "end": {
+          "line": 789,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "online",
+          "description": "Returns the online status of the application. It is false when the TRIRIGA server is not reachable.",
+          "sourceRange": {
+            "start": {
+              "line": 147,
+              "column": 2
+            },
+            "end": {
+              "line": 152,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "supported",
+          "description": "Indicates if the browser supports the Service Worker and Cache APIs.",
+          "sourceRange": {
+            "start": {
+              "line": 157,
+              "column": 2
+            },
+            "end": {
+              "line": 162,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "installed",
+          "description": "It is true when the Service Worker is installed and the offline support is ready to be used.",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 2
+            },
+            "end": {
+              "line": 172,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "config-file",
+          "description": "The name of a JSON config file that contains the list of application files (like HTML, JS and CSS) that must be loaded into the cache\nafter the Service Worker is installed.\nThis property is optional and if it is empty, the Service Worker caches the application files only when the application fetches them.",
+          "sourceRange": {
+            "start": {
+              "line": 179,
+              "column": 2
+            },
+            "end": {
+              "line": 182,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "config-dev-file",
+          "description": "The name of a JSON config file that overrides the configFile property when running the application in development mode.\nThis property is optional and if it is empty, the JSON config file specified in the configFile property will be used instead.",
+          "sourceRange": {
+            "start": {
+              "line": 188,
+              "column": 2
+            },
+            "end": {
+              "line": 191,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "uploading",
+          "description": "Indicates if the Service Worker is uploading to the TRIRIGA server all the actions executed offline.",
+          "sourceRange": {
+            "start": {
+              "line": 196,
+              "column": 2
+            },
+            "end": {
+              "line": 202,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "downloading",
+          "description": "Indicates if the Service Worker is downloading data from the TRIRIGA server to the local cache.",
+          "sourceRange": {
+            "start": {
+              "line": 207,
+              "column": 2
+            },
+            "end": {
+              "line": 213,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "has-pending-actions",
+          "description": "It is true whenever there are pending actions in the queue, waiting to be uploaded to the TRIRIGA server.",
+          "sourceRange": {
+            "start": {
+              "line": 218,
+              "column": 2
+            },
+            "end": {
+              "line": 223,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "upload-error",
+          "description": "If the `hasUploadError` property is true, this property will contain an error object describing why the upload of the action failed.\nThe error object contains the following properties:\n- appContext: A brief description of the action that failed. It is the same context string specified by the application when calling any action method on the `triplat-ds` component.\n- translatedMessage: The translated error message.\n- error.errorType: It contains one of the following strings:\n    - UserMismatch: If the current user does not match the user who executed the offline action.\n    - PerformActionException: If the server returns an exception when uploading a pending action.\n    - ImageSaveException: If the upload of an image file failed.\n    - FileSaveException: If the upload of a binary file failed.\n    - SecurityException or ContextSecurityViolation: If a security violation was detected when uploading a pending action.",
+          "sourceRange": {
+            "start": {
+              "line": 237,
+              "column": 2
+            },
+            "end": {
+              "line": 242,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "has-upload-error",
+          "description": "Indicates if the last attempt of uploading a pending action to the TRIRIGA server failed.",
+          "sourceRange": {
+            "start": {
+              "line": 247,
+              "column": 2
+            },
+            "end": {
+              "line": 252,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "last-download",
+          "description": "The date and time of the last complete data download from the TRIRIGA server to the cache.",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 2
+            },
+            "end": {
+              "line": 261,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Date | null | undefined"
+        },
+        {
+          "name": "cache-max-age",
+          "description": "Specifies the maximum amount of time in seconds, since the last complete download, that the data in the cache is considered fresh. After this time is exceeded,\non the next time the application is loaded, the Service Worker will automatically update all the records in the cache with the most recent data from the server.\nIf this property is less than or equal to zero, the Service Worker never automatically updates all the records in the cache.",
+          "sourceRange": {
+            "start": {
+              "line": 268,
+              "column": 2
+            },
+            "end": {
+              "line": 271,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "auto-install",
+          "description": "If true, the Service Worker will be installed when the application loads.",
+          "sourceRange": {
+            "start": {
+              "line": 276,
+              "column": 2
+            },
+            "end": {
+              "line": 279,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "download-callback",
+          "description": "Callback function invoked as the last step of the download process.\nIt takes no arguments and if it returns a promise, the download process will wait until the promise is resolved or rejected.\nThis can be used by the application to manually save records into the cache.",
+          "sourceRange": {
+            "start": {
+              "line": 287,
+              "column": 2
+            },
+            "end": {
+              "line": 290,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "download-error",
+          "description": "Fired when the download of data from the server to the cache fails.\nThe event contains an error object with the following properties:\n- message: The translated error message.\n- cause:  It contains one of the following strings:\n   - UNAUTHORIZED: If there was a session timeout or unauthorized access.\n   - FILE_NOT_FOUND: If a file specified in the JSON config files was not found on the server.\n   - CANNOT_EXECUTE_OFFLINE: If the application is running in offline mode.\n   - HAS_PENDING_ACTIONS_ERROR: If there are pending actions in the offline queue.\n   - QUOTA_EXCEEDED_ERROR: If there is insufficient storage available.\n   - DOWNLOAD_FAILED: If the download process failed for any other reason.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "download-success",
+          "description": "Fired when the download of data from the server to the cache succeeds.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "upload-error",
+          "description": "Fired when the upload of a pending action fails.\nThe event contains an error object with the following properties:\n- message: The translated error message.\n- cause:  It contains one of the following strings:\n   - UNAUTHORIZED: If there was a session timeout or unauthorized access.\n   - CANNOT_EXECUTE_OFFLINE: If the application is running in offline mode.\n   - UPLOAD_FAILED: If the upload of a pending action failed for any other reason.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "upload-success",
+          "description": "Fired when the upload of a pending action succeeds.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "online-changed",
+          "description": "Fired when the `online` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "supported-changed",
+          "description": "Fired when the `supported` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "installed-changed",
+          "description": "Fired when the `installed` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "uploading-changed",
+          "description": "Fired when the `uploading` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "downloading-changed",
+          "description": "Fired when the `downloading` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "has-pending-actions-changed",
+          "description": "Fired when the `hasPendingActions` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "upload-error-changed",
+          "description": "Fired when the `uploadError` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "has-upload-error-changed",
+          "description": "Fired when the `hasUploadError` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "last-download-changed",
+          "description": "Fired when the `lastDownload` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-offline-manager"
+    }
+  ]
+}

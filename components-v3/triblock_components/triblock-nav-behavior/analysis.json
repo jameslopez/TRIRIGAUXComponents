@@ -1,0 +1,880 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "`TriBlockNavBehavior` handles navigating to pages and invoking actions depending on the populated properties.  It can navigate to both route and iron pages and also invoke actions on both tap and event handlers at the same time.  If all properties are specified with values the order of execution are as follows:\n<ul>\n\t\t<li>Fire `navigate` event</li>\n\t\t<li>Navigate to a route page</li>\n\t\t<li>Navigate to an iron page</li>\n\t\t<li>Invoke tap handler</li>\n</ul>",
+          "summary": "",
+          "path": "triblock-nav-behavior.js",
+          "properties": [
+            {
+              "name": "triplatRouteId",
+              "type": "string | null | undefined",
+              "description": "Value of the `id` property of the `triplat-route` to be navigated.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 27,
+                  "column": 2
+                },
+                "end": {
+                  "line": 27,
+                  "column": 24
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            },
+            {
+              "name": "triplatRouteParams",
+              "type": "Object | null | undefined",
+              "description": "URL parameters when navigating to a `triplat-route`.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 31,
+                  "column": 2
+                },
+                "end": {
+                  "line": 31,
+                  "column": 28
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "Object"
+                }
+              }
+            },
+            {
+              "name": "ironPagesId",
+              "type": "string | null | undefined",
+              "description": "Value of the `id` property of the `iron-pages` to be navigated.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 35,
+                  "column": 2
+                },
+                "end": {
+                  "line": 35,
+                  "column": 21
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            },
+            {
+              "name": "ironPageId",
+              "type": "string | null | undefined",
+              "description": "Identifier of the iron page inside `iron-pages` to be navigated.  Value can either be from the `id` property or from the property specified in the `attr-for-selected` property of `iron-pages`.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 39,
+                  "column": 2
+                },
+                "end": {
+                  "line": 39,
+                  "column": 20
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            },
+            {
+              "name": "tapHandler",
+              "type": "string | null | undefined",
+              "description": "Name of the action or function to call when the navigation is tapped.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 43,
+                  "column": 2
+                },
+                "end": {
+                  "line": 43,
+                  "column": 20
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            }
+          ],
+          "methods": [
+            {
+              "name": "attached",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 46,
+                  "column": 1
+                },
+                "end": {
+                  "line": 53,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "detached",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 55,
+                  "column": 1
+                },
+                "end": {
+                  "line": 62,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_onRouteActive",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 64,
+                  "column": 1
+                },
+                "end": {
+                  "line": 68,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "e"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_navigate",
+              "description": "Navigates to route and/or iron pages and/or invokes an action based on the tap and event handlers.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 73,
+                  "column": 1
+                },
+                "end": {
+                  "line": 89,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_isTriplatRoute",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 91,
+                  "column": 1
+                },
+                "end": {
+                  "line": 93,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            },
+            {
+              "name": "_getTriplatRouteElement",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 95,
+                  "column": 1
+                },
+                "end": {
+                  "line": 100,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            },
+            {
+              "name": "_navigateRoutePage",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 102,
+                  "column": 1
+                },
+                "end": {
+                  "line": 119,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_navigateIronPage",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 121,
+                  "column": 1
+                },
+                "end": {
+                  "line": 139,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_executeTapHandler",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 141,
+                  "column": 1
+                },
+                "end": {
+                  "line": 145,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 21,
+              "column": 13
+            },
+            "end": {
+              "line": 146,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockNavBehavior",
+          "attributes": [
+            {
+              "name": "triplat-route-id",
+              "description": "Value of the `id` property of the `triplat-route` to be navigated.",
+              "sourceRange": {
+                "start": {
+                  "line": 27,
+                  "column": 2
+                },
+                "end": {
+                  "line": 27,
+                  "column": 24
+                }
+              },
+              "metadata": {},
+              "type": "string | null | undefined"
+            },
+            {
+              "name": "triplat-route-params",
+              "description": "URL parameters when navigating to a `triplat-route`.",
+              "sourceRange": {
+                "start": {
+                  "line": 31,
+                  "column": 2
+                },
+                "end": {
+                  "line": 31,
+                  "column": 28
+                }
+              },
+              "metadata": {},
+              "type": "Object | null | undefined"
+            },
+            {
+              "name": "iron-pages-id",
+              "description": "Value of the `id` property of the `iron-pages` to be navigated.",
+              "sourceRange": {
+                "start": {
+                  "line": 35,
+                  "column": 2
+                },
+                "end": {
+                  "line": 35,
+                  "column": 21
+                }
+              },
+              "metadata": {},
+              "type": "string | null | undefined"
+            },
+            {
+              "name": "iron-page-id",
+              "description": "Identifier of the iron page inside `iron-pages` to be navigated.  Value can either be from the `id` property or from the property specified in the `attr-for-selected` property of `iron-pages`.",
+              "sourceRange": {
+                "start": {
+                  "line": 39,
+                  "column": 2
+                },
+                "end": {
+                  "line": 39,
+                  "column": 20
+                }
+              },
+              "metadata": {},
+              "type": "string | null | undefined"
+            },
+            {
+              "name": "tap-handler",
+              "description": "Name of the action or function to call when the navigation is tapped.",
+              "sourceRange": {
+                "start": {
+                  "line": 43,
+                  "column": 2
+                },
+                "end": {
+                  "line": 43,
+                  "column": 20
+                }
+              },
+              "metadata": {},
+              "type": "string | null | undefined"
+            }
+          ],
+          "events": [
+            {
+              "type": "CustomEvent",
+              "name": "navigate",
+              "description": "Fired when `navigate` is called.  It is fired before pages are routed or a tap handler is invoked.  The element is passed to the event listener as an item, like `e.detail.item`.",
+              "metadata": {}
+            }
+          ],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        },
+        {
+          "description": "`TriBlockNavIronPagesContainerBehavior` propagates the value of the `iron-pages-id` property to all the navigation items.\n\n<div style=\"background-color:#FFFFCC\">\n    <div style=\"padding:20px;\">\n        <b>Note:</b> Implementors of this behavior should override `_getElementsToApplyIronPagesId()` method to return a list of navigation items to apply the value of `iron-pages-id` property.\n    </div>\n</div>",
+          "summary": "",
+          "path": "triblock-nav-iron-pages-container-behavior.js",
+          "properties": [
+            {
+              "name": "ironPagesId",
+              "type": "string | null | undefined",
+              "description": "The ID of the `iron-pages` used by all of the navigation items when switching different views in it.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 25,
+                  "column": 2
+                },
+                "end": {
+                  "line": 25,
+                  "column": 21
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              }
+            }
+          ],
+          "methods": [
+            {
+              "name": "_handleIronPagesIdChanged",
+              "description": "Sets the value of the `iron-pages-id` property of all the navigation items based of the value of the `iron-pages-id` property in this container behavior.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 37,
+                  "column": 1
+                },
+                "end": {
+                  "line": 47,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "ironPagesId",
+                  "type": "string",
+                  "description": "The id of the `iron-pages` to set to."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_getElementsToApplyIronPagesId",
+              "description": "Returns the navigation items to apply the default value of the `iron-pages-id` property. </br>\n\n<div style=\"background-color:#FFFFCC\">\n    <div style=\"padding:20px;\">\n        <b>Note:</b> Implementors of this behavior should override this method to return a list of navigation items to apply the value of `iron-pages-id` property.\n    </div>\n</div>",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 60,
+                  "column": 1
+                },
+                "end": {
+                  "line": 62,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "Array.<HTMLElement>"
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 19,
+              "column": 13
+            },
+            "end": {
+              "line": 64,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockNavIronPagesContainerBehavior",
+          "attributes": [
+            {
+              "name": "iron-pages-id",
+              "description": "The ID of the `iron-pages` used by all of the navigation items when switching different views in it.",
+              "sourceRange": {
+                "start": {
+                  "line": 25,
+                  "column": 2
+                },
+                "end": {
+                  "line": 25,
+                  "column": 21
+                }
+              },
+              "metadata": {},
+              "type": "string | null | undefined"
+            }
+          ],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        },
+        {
+          "description": "`TriBlockNavLayoutBehavior` detects `iron-pages` component used as `page` in the container and sets the `iron-pages-id` property of the `nav` component based from the `id` of the `iron-pages`.",
+          "summary": "",
+          "path": "triblock-nav-layout-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "attached",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 15,
+                  "column": 1
+                },
+                "end": {
+                  "line": 21,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 13,
+              "column": 13
+            },
+            "end": {
+              "line": 22,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockNavLayoutBehavior",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        },
+        {
+          "description": "`TriBlockNavSelectBehavior` handles selection of a navigation item.  Currently, it supports initial selection.",
+          "summary": "",
+          "path": "triblock-nav-select-behavior.js",
+          "properties": [
+            {
+              "name": "initialSelection",
+              "type": "boolean | null | undefined",
+              "description": "If true, the item is navigated when the component is initially rendered on the page.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 17,
+                  "column": 3
+                },
+                "end": {
+                  "line": 17,
+                  "column": 28
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "Boolean"
+                }
+              }
+            }
+          ],
+          "methods": [],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 11,
+              "column": 13
+            },
+            "end": {
+              "line": 19,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockNavSelectBehavior",
+          "attributes": [
+            {
+              "name": "initial-selection",
+              "description": "If true, the item is navigated when the component is initially rendered on the page.",
+              "sourceRange": {
+                "start": {
+                  "line": 17,
+                  "column": 3
+                },
+                "end": {
+                  "line": 17,
+                  "column": 28
+                }
+              },
+              "metadata": {},
+              "type": "boolean | null | undefined"
+            }
+          ],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        },
+        {
+          "description": "`TriBlockNavSelectContainerBehavior` manages the selected navigation item including the initial selection when the navigation items are first rendered in the page.",
+          "summary": "",
+          "path": "triblock-nav-select-container-behavior.js",
+          "properties": [
+            {
+              "name": "selected",
+              "type": "string | null | undefined",
+              "description": "Gets or sets the selected navigation item.  The value corresponds to the value of the `id` property, by default,  or the property value of the property specified in `attr-for-selected` property of the navigation item.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 19,
+                  "column": 2
+                },
+                "end": {
+                  "line": 22,
+                  "column": 3
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "notify": true,
+                  "attributeType": "String"
+                }
+              }
+            },
+            {
+              "name": "attrForSelected",
+              "type": "string | null | undefined",
+              "description": "If you want to use a property value that is not from the `id` property for the `selected` property, set this to the name of the property.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 26,
+                  "column": 2
+                },
+                "end": {
+                  "line": 29,
+                  "column": 3
+                }
+              },
+              "metadata": {
+                "polymer": {
+                  "attributeType": "String"
+                }
+              },
+              "defaultValue": "\"id\""
+            }
+          ],
+          "methods": [
+            {
+              "name": "attached",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 32,
+                  "column": 1
+                },
+                "end": {
+                  "line": 34,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "detached",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 36,
+                  "column": 1
+                },
+                "end": {
+                  "line": 38,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_onRouteActivated",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 40,
+                  "column": 1
+                },
+                "end": {
+                  "line": 49,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "e"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_computeSelectAttr",
+              "description": "Returns the value of the property named in `attrForSelected`.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 58,
+                  "column": 1
+                },
+                "end": {
+                  "line": 60,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "item",
+                  "type": "HTMLElement",
+                  "description": "The element to retrieve the value of the property from."
+                },
+                {
+                  "name": "attrForSelected",
+                  "type": "string",
+                  "description": "The name of the property to retrieve the value from."
+                }
+              ],
+              "return": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "_computeInitialSelection",
+              "description": "Sets a value to the `selected` property if one of the navigation items has `initial-selection` property sets to true.  The value is based from the property value of the property specified in `attr-for-selected`, otherwise the value of the `id` property of the navigation item.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 67,
+                  "column": 1
+                },
+                "end": {
+                  "line": 73,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "items",
+                  "type": "Array.<HTMLElement>",
+                  "description": "Navigation items to check for the `initial-selection` property."
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 13,
+              "column": 13
+            },
+            "end": {
+              "line": 75,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriBlockNavSelectContainerBehavior",
+          "attributes": [
+            {
+              "name": "selected",
+              "description": "Gets or sets the selected navigation item.  The value corresponds to the value of the `id` property, by default,  or the property value of the property specified in `attr-for-selected` property of the navigation item.",
+              "sourceRange": {
+                "start": {
+                  "line": 19,
+                  "column": 2
+                },
+                "end": {
+                  "line": 22,
+                  "column": 3
+                }
+              },
+              "metadata": {},
+              "type": "string | null | undefined"
+            },
+            {
+              "name": "attr-for-selected",
+              "description": "If you want to use a property value that is not from the `id` property for the `selected` property, set this to the name of the property.",
+              "sourceRange": {
+                "start": {
+                  "line": 26,
+                  "column": 2
+                },
+                "end": {
+                  "line": 29,
+                  "column": 3
+                }
+              },
+              "metadata": {},
+              "type": "string | null | undefined"
+            }
+          ],
+          "events": [
+            {
+              "type": "CustomEvent",
+              "name": "selected-changed",
+              "description": "Fired when the `selected` property changes.",
+              "metadata": {}
+            }
+          ],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,188 @@
+<link rel="import" href="../triplat-search-input/triplat-search-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="../triplat-routing/triplat-routing.html">
+<link rel="import" href="../triblock-page-container-behavior/triblock-page-container-behavior.html">
+
+<link rel="import" href="triblock-open-page-behavior.html">
+<link rel="import" href="triblock-list.html">
+<link rel="import" href="triblock-create.html">
+<link rel="import" href="triblock-open.html">
+
+<dom-module id="triblock-open-page">
+	<style include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning">
+
+		main {
+			@apply(--main-container-class);
+		}
+
+		triplat-search-input {
+			@apply(--search-input-class);
+		}
+
+		paper-button {
+			@apply(--create-button-class);
+		}
+	</style>
+
+	<template>
+
+		<triplat-route id="home" name="list" path="/"></triplat-route>
+        <triplat-route name="create" id="createRoute" path="/new"></triplat-route>
+        <triplat-route name="open" id="openRoute" path="/:_id" params="{{recordParams}}"></triplat-route>
+
+		<main class="layout vertical flex">
+			<triplat-route-selector>
+            	<iron-pages>
+					<section class="layout vertical" route="list" default-route is="open-page-section"
+                             on-page-attached="_handleListPageAttached"
+                             on-page-detached="_handleListPageDetached"
+                             on-page-loaded="_handleListPageLoaded">
+						<div class="layout horizontal">
+							<triplat-search-input value="{{_currentFilter}}"></triplat-search-input>
+							<paper-button on-tap="_handleCreateNew">{{_listBlock.createLabel}}</paper-button>
+						</div>
+						<content select="triblock-list" id="triblock-list"></content>
+					</section>
+					<section route="create" is="open-page-section"
+                             on-page-attached="_handleCreatePageAttached"
+                             on-page-detached="_handleCreatePageDetached"
+                             on-page-loaded="_handleCreatePageLoaded">
+						<content select="triblock-create" id="triblock-create"></content>
+					</section>
+					<section route="open" is="open-page-section"
+                             on-page-attached="_handleOpenPageAttached"
+                             on-page-detached="_handleOpenPageDetached"
+                             on-page-loaded="_handleOpenPageLoaded">
+						<content select="triblock-open" id="triblock-open"></content>
+					</section>
+				</iron-pages>
+			</triplat-route-selector>
+		</main>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "triblock-open-page",
+
+		properties: {
+			_currentFilter: {
+				type: String,
+				readOnly: false
+			},
+
+			datasourceId: String,
+
+			filteredData: {
+				type: Object,
+				readOnly: false,
+				notify: true,
+				computed: "_computedFilteredData(_unfilteredData, _currentFilter)",
+			},
+            
+			_shouldPerformQuerying: {
+				type: Boolean,
+				readOnly: true,
+				value: false
+			},
+            
+            _datasource : {
+                type: Object,
+                readOnly: true,
+                observer: "_datasourceChanged"
+            },
+            
+            _unfilteredData: {
+                type: Object,
+                readOnly: true
+            }
+		},
+
+		behaviors: [TriBlockOpenPageBehavior],
+        
+        attached: function(){
+            var parentNode = Polymer.dom(this).parentNode;
+            this._set_datasource(Polymer.dom(parentNode).querySelector("#"+this.datasourceId));
+        },
+        
+        _datasourceChanged: function(changed){
+            this.listen(changed, "ds-get-complete", "_handleGetComplete");
+            this.listen(changed, "ds-create-complete", "_handleCreateComplete");
+            this.listen(changed, "ds-delete-complete", "_handleDeleteComplete");
+        },
+        
+        _handleGetComplete: function(){
+            this._set_unfilteredData(this._datasource.data);
+        },
+        
+        _handleCreateComplete: function(e){
+            this._createBlock.createData = {};
+			this.fire("create-complete");
+		},
+        
+        _handleUpdateComplete: function(e){
+			this.fire("update-complete");
+		},
+
+		_handleDeleteComplete: function(e){
+			this.fire("delete-complete");
+		},
+        
+		_computedFilteredData: function(unfilteredData, currentFilter) {
+            
+	        if (!currentFilter || currentFilter == "" || !unfilteredData[0]) {
+    		    return unfilteredData;
+          	}
+
+          	var fields = Object.keys(unfilteredData[0]);
+          	var lowerFilter = currentFilter.toLowerCase();
+          	return unfilteredData.filter(function(data) {
+          		for(var field in fields){
+              		if (data[fields[field]] && data[fields[field]].toLowerCase().indexOf(lowerFilter) != -1) {
+		                return true;
+              		}
+              	}
+              	return false;
+          	});
+        },
+
+        _handleCreateNew: function(){
+        	this.$.createRoute.navigate();
+        },
+
+        _backButtonTap: function(){
+        	this.navigateHome();
+        },
+
+        navigateHome: function(){
+        	this.$.home.navigate();
+        },
+
+        _openButtonTap: function(recordId){
+        	this.$.openRoute.navigate({_id: recordId});
+        },
+	});
+    
+    OpenPageSection = Polymer({
+
+        is: "open-page-section",
+        extends: "section",
+        behaviors: [TriBlockPageContainerBehavior],
+        
+        _pageAttached: function(params){
+            this.fire("page-attached", {params: params});
+        },
+        
+        _pageDetached: function(){
+            this.fire("page-detached");
+        },
+        
+        _pageLoaded: function(){
+            this.fire("page-loaded");
+        }
+
+    });
+</script>

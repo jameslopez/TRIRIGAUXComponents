@@ -1,0 +1,59 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../tricore-context-path/tricore-context-path.html">
+
+<!--
+A component to help debug data on the page.  When the value
+changes a console log will be printed.
+
+     <triplat-debug message="What is happening here?" value="{{data}}"></triplat-debug>
+
+@demo demo/index.html
+-->
+<dom-module id="triplat-debug"><template></template></dom-module>
+<script>
+	Polymer({
+
+		is: "triplat-debug",
+
+		properties: {
+
+			/**
+			 * Optional. 
+			 * This message will be printed to the console
+			 * when the value changes.
+			 */
+			message: {
+				type: String,
+				notify: false,
+				readOnly: false
+			},
+
+			/**
+			 * When this value changes, it will output it to
+			 * the console.
+			 */
+			value: {
+				type: Object,
+				notify: false,
+				readOnly: false
+			}
+
+		},
+
+		observers: [
+			"_handleValueChange(value.*)"
+		],
+
+		_handleValueChange: function(value) {
+			if (this.message) {
+				console.log(this.message);
+			}
+			console.log(this.value);
+		}
+
+	});
+</script>

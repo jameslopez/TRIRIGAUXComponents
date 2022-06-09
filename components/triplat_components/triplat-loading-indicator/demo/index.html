@@ -1,0 +1,98 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<!doctype html>
+<html>
+<head>
+
+	<title>triplat-loading-indicator Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../paper-styles/demo-pages.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+	<link rel="import" href="../../iron-pages/iron-pages.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+ 	
+	<link rel="import" href="../triplat-loading-indicator.html">
+
+	<link rel="import" href="../../triblock-tabs/triblock-tabs.html">
+	<link rel="import" href="../../triblock-tabs/triblock-tab.html">
+	<link rel="import" href="../../triblock-tabs/triblock-tab-nav-layout.html">
+	<link rel="import" href="../../triplat-routing/triplat-routing.html">
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+
+	
+	<style is="custom-style" include="demo-pages-shared-styles">
+		#container {
+	        max-width: 800px;
+	    }
+	</style>
+</head>
+<body unresolved>
+	<div id="container" class="vertical-section-container centered">
+ 		<h2>Sample <code>triplat-loading-indicator</code></h2>
+ 
+		<demo-snippet>
+		<template>
+			<style is="custom-style">
+			 	triblock-tab-nav-layout {
+			 		--triblock-tab-nav-layout-style: {
+			 			height: 200px;
+			 		}
+			 	}
+				section {
+					@apply(--layout-horizontal);
+					@apply(--layout-center-justified);
+				}
+				#myIronPages {
+					@apply(--layout-vertical);
+					@apply(--layout-center-justified);
+					background-color: #f5f5f5;
+				}
+			</style>
+			<triblock-tab-nav-layout>
+				<triblock-tabs primary selected="showPageNav" nav>
+					<triblock-tab 
+						id="showPageNav" 
+						iron-page-id="showPage" 
+						label="Show page">
+					</triblock-tab>
+					<triblock-tab 
+						id="hidePageNav" 
+						iron-page-id="hidePage" 
+						label="Hide page">
+					</triblock-tab>
+					<triblock-tab 
+						id="noLoadingIndicatorNav" 
+						iron-page-id="noLoadingIndicatorPage" 
+						label="No loading indicator">
+					</triblock-tab>
+				</triblock-tabs>
+				<iron-pages id="myIronPages" page>
+					<section id="showPage">
+						<span>This page is shown in the background when the loading indicator is activated.</span>
+						<triplat-loading-indicator show></triplat-loading-indicator>
+					</section>
+					<section id="hidePage">
+						<span>This page is not shown in the background when the loading indicator is activated.</span>
+						<triplat-loading-indicator show hide-background></triplat-loading-indicator>
+					</section>
+					<section id="noLoadingIndicatorPage">
+						<span>The loading indicator in this page is not activated.</span>
+						<triplat-loading-indicator></triplat-loading-indicator>
+					</section>
+				</iron-pages>
+			</triblock-tab-nav-layout>
+		</template>
+		</demo-snippet>
+
+	</div>
+	
+</body>
+</html>

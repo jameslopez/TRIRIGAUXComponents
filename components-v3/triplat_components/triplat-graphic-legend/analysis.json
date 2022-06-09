@@ -1,0 +1,3327 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A custom element to define a pin row in a graphic legend component. A pin row is composed of a check box, a pin icon and a label. It controls the visibility of one pin type.\n\nThis element should be used as an inner element of **triplat-graphic-legend**. Zero, one or more **triplat-graphic-legend-pin** elements can be defined inside a **triplat-graphic-legend**.\n\nThis component delegates the responsibility for hiding or showing the pins on a graphic to a **triplat-graphic-pin** plugin. The **checked** and **enabled** properties connect these two elements. \n\nExample:\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" \n\t\tlegend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t\t<triplat-graphic-legend-pin label=\"Person\" icon=\"ibm:pin-person\" \n\t\t\tchecked=\"{{personsPinEnabled}}\">\n\t\t</triplat-graphic-legend-pin>\n\n\t\t<triplat-graphic-legend-pin label=\"Asset\" icon=\"ibm:pin-asset\" \n\t\t\tchecked=\"{{assetsPinEnabled}}\">\n\t\t</triplat-graphic-legend-pin>\n\t\t...\n\t</triplat-graphic-legend>\n\n\t<triplat-graphic record-id=\"[[floorId]]\">\n\t\t...   \n\t\t<triplat-graphic-pin pins=\"[[selectedPersons]]\" icon=\"ibm:pin-person\" \n\t\t\tpin-size=\"32\" badge-size=\"20\" show-label-onhover\n\t\t\tenabled=\"{{personsPinEnabled}}\" class-number=\"1\">\n\t\t</triplat-graphic-pin>\n\n\t\t<triplat-graphic-pin pins=\"[[selectedPins]]\" icon=\"ibm:pin-asset\" \n\t\t\tpin-size=\"32\" badge-size=\"20\" show-label-onhover\n\t\t\tenabled=\"{{assetsPinEnabled}}\" class-number=\"2\">\n\t\t</triplat-graphic-pin>\n\t\t...\n\t</triplat-graphic> \n\n### Styling\n\nCustom property                                       | Description                                                        | Default\n------------------------------------------------------|--------------------------------------------------------------------|-------------------\n`--triplat-graphic-legend-pin-fill-color`             | The fill color of the pin icon                                     | --ibm-gray-60\n`--triplat-graphic-legend-pin-size`                   | The size of the pin icon                                           | 32px\n`--triplat-graphic-legend-secondary-border-color`     | The secondary border color                                         | --ibm-gray-20\n`--triplat-graphic-legend-border-width`               | The border width                                                   | 1px\n`--triplat-graphic-legend-border-style`               | The border style                                                   | solid\n`--triplat-graphic-legend-row`                        | Mixin applied to the legend pin row                                | {}\n`--triplat-graphic-legend-criterion-text`             | Mixin applied to the pin text                                      | {}\n`--triplat-graphic-legend-checkbox-size`              | The size of the check box                                          | 24px\n`--triplat-graphic-legend-checkbox-color`             | The color of the check box                                         | --tri-primary-color\n`--triplat-graphic-legend-checkbox-margin`            | The margin around the check box                                    | 10px \n`--triplat-graphic-legend-checkbox`                   | Mixin applied to the check box                                     | {}\n`--triplat-graphic-legend-vertical-divider-line`      | Mixin applied to the divider line between the check box and its label | {}",
+      "summary": "",
+      "path": "triplat-graphic-legend-pin.js",
+      "properties": [
+        {
+          "name": "icon",
+          "type": "string | null | undefined",
+          "description": "The name of the icon to use for the pin row.\nThe name should have the format: \"iconset_name:icon_name\". The iconset_name: can be omitted for the IBM icon set.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 158,
+              "column": 2
+            },
+            "end": {
+              "line": 161,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"ibm:pin-multiples\""
+        },
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "A label for the pin row.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 166,
+              "column": 2
+            },
+            "end": {
+              "line": 168,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "checked",
+          "type": "boolean | null | undefined",
+          "description": "Gets or sets the state of the pin row, where true is checked and false is unchecked.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 173,
+              "column": 2
+            },
+            "end": {
+              "line": 178,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_legendPinChange\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_legendPinChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 181,
+              "column": 4
+            },
+            "end": {
+              "line": 183,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 65,
+          "column": 8
+        },
+        "end": {
+          "line": 186,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "icon",
+          "description": "The name of the icon to use for the pin row.\nThe name should have the format: \"iconset_name:icon_name\". The iconset_name: can be omitted for the IBM icon set.",
+          "sourceRange": {
+            "start": {
+              "line": 158,
+              "column": 2
+            },
+            "end": {
+              "line": 161,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "label",
+          "description": "A label for the pin row.",
+          "sourceRange": {
+            "start": {
+              "line": 166,
+              "column": 2
+            },
+            "end": {
+              "line": 168,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "checked",
+          "description": "Gets or sets the state of the pin row, where true is checked and false is unchecked.",
+          "sourceRange": {
+            "start": {
+              "line": 173,
+              "column": 2
+            },
+            "end": {
+              "line": 178,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "checked-changed",
+          "description": "Fired when the `checked` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-graphic-legend-pin"
+    },
+    {
+      "description": "A custom element to define a **show by** row in a graphic legend component. A **show by** row contains a list of one or more criteria that the user can select.\n\nWhen a **show by** row is selected, it controls the spaces that are highlighted in a graphic. It will highlight only the spaces that satisfy the selected criteria.\n\nThe criteria for a **show by** are dynamically defined based on the content of a particular space attribute. Possible space attributes that can be used are the \"Occupancy Status\", \"Charge To Organization\", \"Spaces Class\", among others.\n\nEach row has a **show all** check box that allows the user to check or uncheck all criteria at one time.\n\nThis element should be used as an inner element of **triplat-graphic-legend**. One or more **tripat-graphic-legend-show-by** elements can be defined inside **triplat-graphic-legend**. Only one **show by** row can be selected.\n\nExample\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\"\n\t\tavailable-spaces=\"[[availableSpaces]]\"\n\t\tlegend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t\t<triplat-graphic-legend-show-by attribute=\"OccupancyStatus\" \n\t\t\tcolor-by=\"OccupancyColor\" label=\"Occupancy Status\">\n\t\t</triplat-graphic-legend-show-by>\n\n\t\t<triplat-graphic-legend-show-by attribute=\"OrgName\" \n\t\t\tcolor-by=\"OrgColor\" label=\"Organization\"\n\t\t\tshow-empty-criterion mask-unavailable-spaces>\n\t\t</triplat-graphic-legend-show-by>\n\t\t...\n\t</triplat-graphic-legend>\n\nIn this example, each object in the **spaces** array property must have the following attributes:\n - **OccupancyStatus**: Contains the value to create the criteria for the \"Occupancy Status\" row.\n - **OccupancyColor**: Contains the color value for each criterion of the \"Occupancy Status\" row.\n - **OrgName**: Contains the value to create the criteria for the \"Organization\" row.\n - **OrgColor**: Contains the color value for each criterion of the \"Organization\" row.\n\nFor example, the \"Occupancy Status\" row could contain the following criteria:\n - Occupied\n - Vacant\n\nThe list of criteria shown for a particular row may differ between two distinct set of spaces. That happens because this component  only shows the criteria that are satisfied by at least one space.\n\n### Styling\n\nCustom property                                       | Description                                                        | Default\n------------------------------------------------------|--------------------------------------------------------------------|-------------------\n`--triplat-graphic-legend-secondary-border-color`     | The secondary border color                                         | --ibm-gray-20\n`--triplat-graphic-legend-border-width`               | The border width                                                   | 1px\n`--triplat-graphic-legend-border-style`               | The border style                                                   | solid\n`--triplat-graphic-legend-row`                        | Mixin applied to the \"show by\" row                                 | {}\n`--triplat-graphic-legend-checkbox-size`              | The size of the check box                                           | 24px\n`--triplat-graphic-legend-checkbox-color`             | The color of the check box                                          | --tri-primary-color\n`--triplat-graphic-legend-checkbox-margin`            | The margin around the check box                                    | 10px \n`--triplat-graphic-legend-checkbox`                   | Mixin applied to the check box                                     | {}\n`--triplat-graphic-legend-radio-size`                 | The size of the radio button                                       | 24px\n`--triplat-graphic-legend-radio-color`                | The color of the radio button                                      | --tri-primary-color\n`--triplat-graphic-legend-radio-margin`               | The margin around the radio button                                 | 10px \n`--triplat-graphic-legend-radio`                      | Mixin applied to the radio button                                  | {}\n`--triplat-graphic-legend-secondary-background-color` | The secondary background color of the legend                       | #f7f7f7\n`--triplat-graphic-legend-show-all`                   | Mixin applied to the \"show all\" row                                | {}\n`--triplat-graphic-legend-show-all-button`            | Mixin applied to the \"show all\" button                             | {} \n`--triplat-graphic-legend-criterion`                  | Mixin applied to the criterion row                                 | {}\n`--triplat-graphic-legend-criterion-text`             | Mixin applied to the criterion text                                | {}\n`--triplat-graphic-legend-vertical-divider-line`      | Mixin applied to the divider line between the check box/radio button and its label | {} \n`--triplat-graphic-legend-color-box-size`             | The size of box that shows the color of each criterion             | 22px\n`--triplat-graphic-legend-show-by-availability`       | Mixin applied to the \"available/unavailable\" text                  | {}",
+      "summary": "",
+      "path": "triplat-graphic-legend-show-by.js",
+      "properties": [
+        {
+          "name": "attribute",
+          "type": "string | null | undefined",
+          "description": "The name of a space attribute whose content will be used to create the criteria that will be shown on the\nlegend when this row is selected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 370,
+              "column": 2
+            },
+            "end": {
+              "line": 372,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "colorBy",
+          "type": "string | null | undefined",
+          "description": "The name of a space attribute that provides the color value for each criterion.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 377,
+              "column": 2
+            },
+            "end": {
+              "line": 379,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "A label for the row.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 384,
+              "column": 2
+            },
+            "end": {
+              "line": 386,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "showEmptyCriterion",
+          "type": "boolean | null | undefined",
+          "description": "By default, the user will not be able to highlight the spaces that do not satisfy any criterion.\nIf this property is true, an empty criterion will be shown on the legend.\nThe empty criterion can be customized by the **emptyCriterionText** and **emptyCriterionColor** properties.\nWhen the empty criterion is selected, the legend will highlight the spaces that do not satisfy any other criterion.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 394,
+              "column": 2
+            },
+            "end": {
+              "line": 397,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "emptyCriterionText",
+          "type": "string | null | undefined",
+          "description": "The name for the empty criterion. It is only used if the **showEmptyCriterion** property is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 402,
+              "column": 2
+            },
+            "end": {
+              "line": 405,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"Undefined\""
+        },
+        {
+          "name": "emptyCriterionColor",
+          "type": "string | null | undefined",
+          "description": "The color for the empty criterion. It is only used if the **showEmptyCriterion** property is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 2
+            },
+            "end": {
+              "line": 413,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"gray\""
+        },
+        {
+          "name": "maskUnavailableSpaces",
+          "type": "boolean | null | undefined",
+          "description": "If true, the spaces that satisfy the criteria will be highlighted on the graphic using different opacities\nto indicate their availability. The available spaces will have the opacity defined by the **opacity** property.\nThe unavailable spaces will have the opacity defined by the **opacityForUnavailableSpaces** property.\nThe available spaces are defined by the **availableSpaces** on the **triplat-graphic-legend** element.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 421,
+              "column": 2
+            },
+            "end": {
+              "line": 424,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "opacity",
+          "type": "number | null | undefined",
+          "description": "The opacity used to highlight the spaces. If **maskUnavailableSpaces** is true, this property is used only for\nthe available spaces. Otherwise, it is used for all spaces.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 430,
+              "column": 2
+            },
+            "end": {
+              "line": 433,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0.95"
+        },
+        {
+          "name": "opacityForUnavailableSpaces",
+          "type": "number | null | undefined",
+          "description": "The opacity used to highlight the unavailable spaces.\nIt is only used if the **maskUnavailableSpaces** property is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 439,
+              "column": 2
+            },
+            "end": {
+              "line": 442,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0.3"
+        },
+        {
+          "name": "classNumber",
+          "type": "number | null | undefined",
+          "description": "The number used by **triplat-graphic-highlight-group** to style the spaces when this row is selected.\nTo style the spaces, create a CSS mixin **--triplat-graphic-highlight-group-(classNumber)** on the\n**triplat-graphic** element. It must be a number between 1 and 5 inclusive.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 449,
+              "column": 2
+            },
+            "end": {
+              "line": 454,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "1"
+        },
+        {
+          "name": "checked",
+          "type": "boolean | null | undefined",
+          "description": "Gets or sets the state of this row, where true is checked and false is unchecked.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 459,
+              "column": 2
+            },
+            "end": {
+              "line": 463,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "showAllChecked",
+          "type": "boolean | null | undefined",
+          "description": "Gets or sets the first state of the **Show all** check box when this row is selected by the user.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 468,
+              "column": 2
+            },
+            "end": {
+              "line": 471,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "selectedCriterions",
+          "type": "Array | null | undefined",
+          "description": "Gets or sets the selected criteria for this row.\nThe value of this property is an array of the names of the selected criteria.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 477,
+              "column": 2
+            },
+            "end": {
+              "line": 480,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "readonlyCriterion",
+          "type": "boolean | null | undefined",
+          "description": "Sets criterion list to read-only.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 485,
+              "column": 2
+            },
+            "end": {
+              "line": 489,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_criterions",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 491,
+              "column": 2
+            },
+            "end": {
+              "line": 493,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_showCriterions",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 495,
+              "column": 2
+            },
+            "end": {
+              "line": 498,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_showAll",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 500,
+              "column": 2
+            },
+            "end": {
+              "line": 503,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "setShowAll",
+          "description": "Sets the state of the show all check box.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 514,
+              "column": 1
+            },
+            "end": {
+              "line": 523,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "showAllState",
+              "type": "Boolean",
+              "description": "true is checked and false is unchecked."
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleSelectedCriterionsChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 525,
+              "column": 4
+            },
+            "end": {
+              "line": 529,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_checkSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 531,
+              "column": 4
+            },
+            "end": {
+              "line": 542,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCriterionsDomChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 544,
+              "column": 4
+            },
+            "end": {
+              "line": 556,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleItemChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 558,
+              "column": 4
+            },
+            "end": {
+              "line": 569,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_satisfyShowBy",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 571,
+              "column": 4
+            },
+            "end": {
+              "line": 578,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "space"
+            }
+          ]
+        },
+        {
+          "name": "_getCriterionName",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 580,
+              "column": 4
+            },
+            "end": {
+              "line": 593,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "space"
+            }
+          ]
+        },
+        {
+          "name": "_hideShowAllAndCriterions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 595,
+              "column": 4
+            },
+            "end": {
+              "line": 601,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "checked"
+            },
+            {
+              "name": "criterions"
+            }
+          ]
+        },
+        {
+          "name": "_handleShowAllChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 603,
+              "column": 4
+            },
+            "end": {
+              "line": 611,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectAllCriterions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 613,
+              "column": 4
+            },
+            "end": {
+              "line": 619,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCriterionChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 621,
+              "column": 4
+            },
+            "end": {
+              "line": 632,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectItem",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 634,
+              "column": 4
+            },
+            "end": {
+              "line": 639,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "checked"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getShowByColor",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 641,
+              "column": 4
+            },
+            "end": {
+              "line": 650,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "space"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 82,
+          "column": 8
+        },
+        "end": {
+          "line": 653,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "attribute",
+          "description": "The name of a space attribute whose content will be used to create the criteria that will be shown on the\nlegend when this row is selected.",
+          "sourceRange": {
+            "start": {
+              "line": 370,
+              "column": 2
+            },
+            "end": {
+              "line": 372,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "color-by",
+          "description": "The name of a space attribute that provides the color value for each criterion.",
+          "sourceRange": {
+            "start": {
+              "line": 377,
+              "column": 2
+            },
+            "end": {
+              "line": 379,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "label",
+          "description": "A label for the row.",
+          "sourceRange": {
+            "start": {
+              "line": 384,
+              "column": 2
+            },
+            "end": {
+              "line": 386,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "show-empty-criterion",
+          "description": "By default, the user will not be able to highlight the spaces that do not satisfy any criterion.\nIf this property is true, an empty criterion will be shown on the legend.\nThe empty criterion can be customized by the **emptyCriterionText** and **emptyCriterionColor** properties.\nWhen the empty criterion is selected, the legend will highlight the spaces that do not satisfy any other criterion.",
+          "sourceRange": {
+            "start": {
+              "line": 394,
+              "column": 2
+            },
+            "end": {
+              "line": 397,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "empty-criterion-text",
+          "description": "The name for the empty criterion. It is only used if the **showEmptyCriterion** property is true.",
+          "sourceRange": {
+            "start": {
+              "line": 402,
+              "column": 2
+            },
+            "end": {
+              "line": 405,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "empty-criterion-color",
+          "description": "The color for the empty criterion. It is only used if the **showEmptyCriterion** property is true.",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 2
+            },
+            "end": {
+              "line": 413,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "mask-unavailable-spaces",
+          "description": "If true, the spaces that satisfy the criteria will be highlighted on the graphic using different opacities\nto indicate their availability. The available spaces will have the opacity defined by the **opacity** property.\nThe unavailable spaces will have the opacity defined by the **opacityForUnavailableSpaces** property.\nThe available spaces are defined by the **availableSpaces** on the **triplat-graphic-legend** element.",
+          "sourceRange": {
+            "start": {
+              "line": 421,
+              "column": 2
+            },
+            "end": {
+              "line": 424,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "opacity",
+          "description": "The opacity used to highlight the spaces. If **maskUnavailableSpaces** is true, this property is used only for\nthe available spaces. Otherwise, it is used for all spaces.",
+          "sourceRange": {
+            "start": {
+              "line": 430,
+              "column": 2
+            },
+            "end": {
+              "line": 433,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "opacity-for-unavailable-spaces",
+          "description": "The opacity used to highlight the unavailable spaces.\nIt is only used if the **maskUnavailableSpaces** property is true.",
+          "sourceRange": {
+            "start": {
+              "line": 439,
+              "column": 2
+            },
+            "end": {
+              "line": 442,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "class-number",
+          "description": "The number used by **triplat-graphic-highlight-group** to style the spaces when this row is selected.\nTo style the spaces, create a CSS mixin **--triplat-graphic-highlight-group-(classNumber)** on the\n**triplat-graphic** element. It must be a number between 1 and 5 inclusive.",
+          "sourceRange": {
+            "start": {
+              "line": 449,
+              "column": 2
+            },
+            "end": {
+              "line": 454,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "checked",
+          "description": "Gets or sets the state of this row, where true is checked and false is unchecked.",
+          "sourceRange": {
+            "start": {
+              "line": 459,
+              "column": 2
+            },
+            "end": {
+              "line": 463,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "show-all-checked",
+          "description": "Gets or sets the first state of the **Show all** check box when this row is selected by the user.",
+          "sourceRange": {
+            "start": {
+              "line": 468,
+              "column": 2
+            },
+            "end": {
+              "line": 471,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "selected-criterions",
+          "description": "Gets or sets the selected criteria for this row.\nThe value of this property is an array of the names of the selected criteria.",
+          "sourceRange": {
+            "start": {
+              "line": 477,
+              "column": 2
+            },
+            "end": {
+              "line": 480,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "readonly-criterion",
+          "description": "Sets criterion list to read-only.",
+          "sourceRange": {
+            "start": {
+              "line": 485,
+              "column": 2
+            },
+            "end": {
+              "line": 489,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "show-by-change",
+          "description": "Fired when the checked state of this row or the checked state of one the criteria changes due to user interaction.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "checked-changed",
+          "description": "Fired when the `checked` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "selected-criterions-changed",
+          "description": "Fired when the `selectedCriterions` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-graphic-legend-show-by"
+    },
+    {
+      "description": "A custom element to define a **filter by** row in a graphic legend component. \n\nWhen a **filter by** row is selected, it gets the spaces that satisfy the selected **show by** criteria and filters out the spaces that does not satisfy this filter by criteria.\n\nA **filter by** alone cannot select which spaces will be highlighted. It only works on the spaces that already satisfy the selected **show by** criteria.\n\nThis element should be used as an inner element of **triplat-graphic-legend**. Zero, one or more **triplat-graphic-legend-filter-by** elements can be defined inside **triplat-graphic-legend**. Only one **filter by** row can be selected.\n\nThere are two possible configurations for a **filter by**:\n - Filter by attribute\n - Filter by spaces\n\n### Filter by attribute\n\nTo filter by attribute, the **attribute** property must be defined. A **filter by attribute** row contains a list of one or more criteria that the user can select.\n\nThe criteria for a **filter by attribute** are dynamically defined based on the content of a particular space attribute. Possible space attributes that can be used are the \"Occupancy Status\", \"Spaces Class\", among others.\n\nEach row has a **show all** check box that allows the user to check or uncheck all criteria at one time.\n\nExample:\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" \n\t\tlegend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t\t<triplat-graphic-legend-filter-by attribute=\"ClassName\" \n\t\t\tlabel=\"Space Class\">\n\t\t</triplat-graphic-legend-filter-by>\n\t\t...\n\t</triplat-graphic-legend>\n\nIn this example, each object in the **spaces** array property of the legend element must have the following attribute:\n - **ClassName**: Contains the value to create the criteria for the \"Space Class\" row.\n\nFor example, the \"Space Class\" row could contain the following criteria:\n - Dedicated Enclosed Workstation\n - Dedicated Open Workstation\n\nThe list of criteria shown for a particular row may differ between two distinct set of spaces. That happens because this component only shows the criteria that are satisfied by at least one space.\n\n### Filter by spaces\n\nTo filter by spaces, the **spaces** property must be defined. A **filter by space** row does not have a list of criteria.\n\nWhen a **filter by space** is selected, it gets the spaces that satisfies the selected **show by** criteria and filters out only the spaces that are also contained in the **spaces** property of this row.\n\nExample:\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" \n\t\tlegend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t\t<triplat-graphic-legend-filter-by spaces=\"[[JohnEntitledSpaces]]\" \n\t\t\tlabel=\"Entitlements\">\n\t\t</triplat-graphic-legend-filter-by>\n\t\t...\n\t</triplat-graphic-legend>\n\nIn this example, the **spaces** property of the \"Entitlements\" row receives an array of spaces that John is entitled to use. When the user selects this row, the legend will filter out only the spaces that John is entitled to use.\n\n### Styling\n\nCustom property                                       | Description                                                        | Default\n------------------------------------------------------|--------------------------------------------------------------------|-------------------\n`--triplat-graphic-legend-secondary-border-color`     | The secondary border color                                         | --ibm-gray-20\n`--triplat-graphic-legend-border-width`               | The border width                                                   | 1px\n`--triplat-graphic-legend-border-style`               | The border style                                                   | solid\n`--triplat-graphic-legend-row`                        | Mixin applied to the \"filter by\" row                               | {}\n`--triplat-graphic-legend-checkbox-size`              | The size of the check box                                          | 24px\n`--triplat-graphic-legend-checkbox-color`             | The color of the check box                                         | --tri-primary-color\n`--triplat-graphic-legend-checkbox-margin`            | The margin around the check box                                    | 10px \n`--triplat-graphic-legend-checkbox`                   | Mixin applied to the check box                                     | {}\n`--triplat-graphic-legend-radio-size`                 | The size of the radio button                                       | 24px\n`--triplat-graphic-legend-radio-color`                | The color of the radio button                                      | --tri-primary-color\n`--triplat-graphic-legend-radio-margin`               | The margin around the radio button                                 | 10px \n`--triplat-graphic-legend-radio`                      | Mixin applied to the radio button                                  | {}\n`--triplat-graphic-legend-secondary-background-color` | The secondary background color of the legend                       | #f7f7f7\n`--triplat-graphic-legend-show-all`                   | Mixin applied to the \"show all\" row                                | {}\n`--triplat-graphic-legend-show-all-button`            | Mixin applied to the \"show all\" button                             | {} \n`--triplat-graphic-legend-criterion`                  | Mixin applied to the criterion row                                 | {}\n`--triplat-graphic-legend-criterion-text`             | Mixin applied to the criterion text                                | {}\n`--triplat-graphic-legend-vertical-divider-line`      | Mixin applied to the divider line between the check box/radio button and its label | {}",
+      "summary": "",
+      "path": "triplat-graphic-legend-filter-by.js",
+      "properties": [
+        {
+          "name": "attribute",
+          "type": "string | null | undefined",
+          "description": "The name of a space attribute whose content will be used to create the criteria that will be shown on the\nlegend when this row is selected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 324,
+              "column": 2
+            },
+            "end": {
+              "line": 326,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "A label for the row.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 331,
+              "column": 2
+            },
+            "end": {
+              "line": 333,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "spaces",
+          "type": "Array | null | undefined",
+          "description": "An array of spaces that is used to filter the legend spaces.\nIf this property is defined, the **filter by** row will have no criteria.\nWhen it is selected, only the legend spaces contained in this array will be highlighted on the graphic.\nThis property and the attribute property cannot be used together.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 341,
+              "column": 2
+            },
+            "end": {
+              "line": 343,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "showEmptyCriterion",
+          "type": "boolean | null | undefined",
+          "description": "By default, the user will not be able to filter the spaces that do not satisfy any criterion.\nIf this property is true, an empty criterion will be shown on the legend.\nThe empty criterion can be customized by the **emptyCriterionText** property.\nWhen the empty criterion is selected, the legend will filter out the spaces that do not satisfy any other criterion.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 351,
+              "column": 2
+            },
+            "end": {
+              "line": 354,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "emptyCriterionText",
+          "type": "string | null | undefined",
+          "description": "The name for the empty criterion. It is only used if the **showEmptyCriterion** property is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 359,
+              "column": 2
+            },
+            "end": {
+              "line": 362,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"Undefined\""
+        },
+        {
+          "name": "spaceIdAttributeName",
+          "type": "string | null | undefined",
+          "description": "The name of the attribute that contains the ID of each space in the **spaces** array property of this row.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 367,
+              "column": 2
+            },
+            "end": {
+              "line": 370,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"_id\""
+        },
+        {
+          "name": "checked",
+          "type": "boolean | null | undefined",
+          "description": "Gets or sets the state of this row, where true is checked and false is unchecked.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 375,
+              "column": 2
+            },
+            "end": {
+              "line": 379,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "filterAllChecked",
+          "type": "boolean | null | undefined",
+          "description": "Gets or sets the first state of the **Filter all** check box when this row is selected by the user.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 384,
+              "column": 2
+            },
+            "end": {
+              "line": 387,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "selectedCriterions",
+          "type": "Array | null | undefined",
+          "description": "Gets or sets the selected criteria for this row.\nThe value of this property is an array of the names of the selected criteria.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 393,
+              "column": 2
+            },
+            "end": {
+              "line": 396,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_criterions",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 398,
+              "column": 2
+            },
+            "end": {
+              "line": 400,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_showCriterions",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 402,
+              "column": 2
+            },
+            "end": {
+              "line": 405,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_showAll",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 407,
+              "column": 2
+            },
+            "end": {
+              "line": 410,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_hasSpaces",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 412,
+              "column": 2
+            },
+            "end": {
+              "line": 415,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "setFilterAll",
+          "description": "Sets the state of the filter all check box.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 427,
+              "column": 1
+            },
+            "end": {
+              "line": 436,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filterAllState",
+              "type": "Boolean",
+              "description": "true is checked and false is unchecked."
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleSpacesChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 438,
+              "column": 4
+            },
+            "end": {
+              "line": 446,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleSelectedCriterionsChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 448,
+              "column": 4
+            },
+            "end": {
+              "line": 456,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_checkSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 458,
+              "column": 4
+            },
+            "end": {
+              "line": 469,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCriterionsDomChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 471,
+              "column": 4
+            },
+            "end": {
+              "line": 487,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleItemChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 489,
+              "column": 4
+            },
+            "end": {
+              "line": 502,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_satisfyFilterBy",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 504,
+              "column": 4
+            },
+            "end": {
+              "line": 518,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "space"
+            },
+            {
+              "name": "spaceId"
+            }
+          ]
+        },
+        {
+          "name": "_getCriterionName",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 520,
+              "column": 4
+            },
+            "end": {
+              "line": 533,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "space"
+            }
+          ]
+        },
+        {
+          "name": "_hideShowAllAndCriterions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 535,
+              "column": 4
+            },
+            "end": {
+              "line": 541,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "checked"
+            },
+            {
+              "name": "criterions"
+            }
+          ]
+        },
+        {
+          "name": "_handleShowAllChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 543,
+              "column": 4
+            },
+            "end": {
+              "line": 553,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectAllCriterions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 555,
+              "column": 4
+            },
+            "end": {
+              "line": 561,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleCriterionChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 563,
+              "column": 4
+            },
+            "end": {
+              "line": 576,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectItem",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 578,
+              "column": 4
+            },
+            "end": {
+              "line": 583,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "checked"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getShowByColor",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 585,
+              "column": 4
+            },
+            "end": {
+              "line": 587,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "space"
+            }
+          ]
+        },
+        {
+          "name": "_show",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 589,
+              "column": 4
+            },
+            "end": {
+              "line": 595,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "show"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 99,
+          "column": 8
+        },
+        "end": {
+          "line": 598,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "attribute",
+          "description": "The name of a space attribute whose content will be used to create the criteria that will be shown on the\nlegend when this row is selected.",
+          "sourceRange": {
+            "start": {
+              "line": 324,
+              "column": 2
+            },
+            "end": {
+              "line": 326,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "label",
+          "description": "A label for the row.",
+          "sourceRange": {
+            "start": {
+              "line": 331,
+              "column": 2
+            },
+            "end": {
+              "line": 333,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "spaces",
+          "description": "An array of spaces that is used to filter the legend spaces.\nIf this property is defined, the **filter by** row will have no criteria.\nWhen it is selected, only the legend spaces contained in this array will be highlighted on the graphic.\nThis property and the attribute property cannot be used together.",
+          "sourceRange": {
+            "start": {
+              "line": 341,
+              "column": 2
+            },
+            "end": {
+              "line": 343,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "show-empty-criterion",
+          "description": "By default, the user will not be able to filter the spaces that do not satisfy any criterion.\nIf this property is true, an empty criterion will be shown on the legend.\nThe empty criterion can be customized by the **emptyCriterionText** property.\nWhen the empty criterion is selected, the legend will filter out the spaces that do not satisfy any other criterion.",
+          "sourceRange": {
+            "start": {
+              "line": 351,
+              "column": 2
+            },
+            "end": {
+              "line": 354,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "empty-criterion-text",
+          "description": "The name for the empty criterion. It is only used if the **showEmptyCriterion** property is true.",
+          "sourceRange": {
+            "start": {
+              "line": 359,
+              "column": 2
+            },
+            "end": {
+              "line": 362,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "space-id-attribute-name",
+          "description": "The name of the attribute that contains the ID of each space in the **spaces** array property of this row.",
+          "sourceRange": {
+            "start": {
+              "line": 367,
+              "column": 2
+            },
+            "end": {
+              "line": 370,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "checked",
+          "description": "Gets or sets the state of this row, where true is checked and false is unchecked.",
+          "sourceRange": {
+            "start": {
+              "line": 375,
+              "column": 2
+            },
+            "end": {
+              "line": 379,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "filter-all-checked",
+          "description": "Gets or sets the first state of the **Filter all** check box when this row is selected by the user.",
+          "sourceRange": {
+            "start": {
+              "line": 384,
+              "column": 2
+            },
+            "end": {
+              "line": 387,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "selected-criterions",
+          "description": "Gets or sets the selected criteria for this row.\nThe value of this property is an array of the names of the selected criteria.",
+          "sourceRange": {
+            "start": {
+              "line": 393,
+              "column": 2
+            },
+            "end": {
+              "line": 396,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "filter-by-change",
+          "description": "Fired when the checked state of this row or the checked state of one the criteria changes due to user interaction.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "checked-changed",
+          "description": "Fired when the `checked` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "selected-criterions-changed",
+          "description": "Fired when the `selectedCriterions` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-graphic-legend-filter-by"
+    },
+    {
+      "description": "A custom element that shows a legend for controlling the spaces that are highlighted and the pins that are shown in a graphic.\n\nThis component delegates the responsibility for highlighting the spaces on a graphic to a **triplat-graphic-highlight-group** plugin. The **legendSpaces** property connects these two elements. The legend can also be connected to one or more **triplat-graphic-pin** plugins to control the visibility of the pins. Example of a basic legend configuration:\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" legend-spaces=\"{{legendSpaces}}\">\n\t\t<triplat-graphic-legend-show-by attribute=\"ClassName\" color-by=\"ClassColor\" \n\t\t\tlabel=\"Space Class\"\n\t\t\tslot=\"graphic-legend-show-by\">\n\t\t</triplat-graphic-legend-show-by>\n\t</triplat-graphic-legend>\n\n\t<triplat-graphic record-id=\"[[floorId]]\">\n\t\t<triplat-graphic-highlight-group legend-spaces=\"[[legendSpaces]]\">\n\t\t</triplat-graphic-highlight-group>\n\t</triplat-graphic>\n\nThe legend can be opened by clicking on the bar or using a swipe movement on touch devices.\n\nThe legend contains three graphical sections:\n - Location Pins\n - Show By \n - Filter By\n\n### Location Pins section\n\nThis section controls the visibility of the pins that are shown in a graphic. It is composed of a list of pin rows, and each pin row  controls the visibility of one pin type.\n\nEach pin row is defined by a **triplat-graphic-legend-pin** element defined as an inner element of the legend. If no **triplat-graphic-legend-pin** is defined, the pin section is not displayed.\n\nThis section is also not displayed if the **showLocationPin** property of this legend is true.\nFor more details, see the documentation page for **triplat-graphic-legend-pin**.\n\nExample:\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" legend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t\t<triplat-graphic-legend-pin label=\"Person\" icon=\"ibm:pin-person\"                                   \n\t\t\tchecked=\"{{personsPinEnabled}}\"\n\t\t\tslot=\"graphic-legend-pin\">\n\t\t</triplat-graphic-legend-pin>\n\t\t...\n\t</triplat-graphic-legend>\n\n\t<triplat-graphic record-id=\"[[floorId]]\">\n\t\t...   \n\t\t<triplat-graphic-pin pins=\"[[selectedPersons]]\" icon=\"ibm:pin-person\" \n\t\t\tpin-size=\"32\" badge-size=\"20\" show-label-onhover \n\t\t\tenabled=\"{{personsPinEnabled}}\" class-number=\"1\">\n\t\t</triplat-graphic-pin>\n\t\t...\n\t</triplat-graphic>\n\n### Show By section\n\nThis section controls the spaces that are highlighted in a graphic. It is composed of a list of **show by** rows, and each row highlights the spaces based on the content of a particular space attribute. Possible space attributes that can be used are the \"Occupancy Status\", \"Charge to Organization\", \"Space Class\", among others.\n\nEach **show by** row is defined by a **triplat-graphic-legend-show-by** element defined as an inner element of this legend. Only one **show by** row can be selected. For more details, see the documentation page for **triplat-graphic-legend-show-by**.\n\nExample:\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" legend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t\t<triplat-graphic-legend-show-by attribute=\"OccupancyStatus\" \n\t\t\tcolor-by=\"OccupancyColor\" label=\"Occupancy Status\"\n\t\t\tslot=\"graphic-legend-show-by\">\n\t\t</triplat-graphic-legend-show-by>\n\n\t\t<triplat-graphic-legend-show-by attribute=\"OrgName\" \n\t\t\tcolor-by=\"OrgColor\" label=\"Organization\" show-empty-criterion\n\t\t\tslot=\"graphic-legend-show-by\">\n\t\t</triplat-graphic-legend-show-by>\n\t\t...\n\t</triplat-graphic-legend> \n\n### Filter By section\n\nThis section filters the spaces that are highlighted in a graphic. It is composed of a list of **filter by** rows.\nWhen a **filter by** row is selected, it gets the spaces that satisfy the selected **show by** and filters out the spaces that does not satisfy the **filter by**.\n\nA **filter by** alone cannot determine which spaces will be highlighted. It only works on the spaces that satisfy a selected **show by**. \n\nEach **filter by** row is defined by a **triplat-graphic-legend-filter-by** element defined as an inner element of the legend. If no **triplat-graphic-legend-filter-by** is defined, the filter section is not displayed.\n\nOnly one **filter by** row can be selected. For more details, see the documentation page for **triplat-graphic-legend-filter-by**.\n\nExample:\n\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" legend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t\t<triplat-graphic-legend-filter-by attribute=\"ClassName\" label=\"Space Class\"\n\t\t\tslot=\"graphic-legend-filter-by\">\n\t\t</triplat-graphic-legend-filter-by>\n\t\t...\n\t</triplat-graphic-legend>\n\n### Styling\n\nCustom property                                       | Description                                                 | Default\n------------------------------------------------------|-------------------------------------------------------------|----------------------------\n`--triplat-graphic-legend-min-width`                  | The minimum width of the legend when it is not collapsed    | 350px\n`--triplat-graphic-legend-transition-duration`| The duration of the animation transition for collapsing or expanding the legend | 300ms\n`--triplat-graphic-legend-pin-fill-color` | The fill color of the location pin icon, it is used when the **showLocationPin** property is true.| --ibm-gray-60\n`--triplat-graphic-legend-pin-size`       | The size of the location pin icon, it is used when the **showLocationPin** property is true.      | 32px\n`--triplat-graphic-legend-bar`                        | Mixin applied to the legend bar                             | {}\n`--triplat-graphic-legend-bar-width`                  | The width of the legend bar.                                | 20px\n`--triplat-graphic-legend-show-button`                | Mixin applied to the show/hide button on the legend bar     | {}\n`--triplat-graphic-legend-container`                  | Mixin applied to the legend container                       | {}\n`--triplat-graphic-legend-primary-background-color`   | The primary background color of the legend                  | --tri-primary-content-background-color\n`--triplat-graphic-legend-secondary-background-color` | The secondary background color of the location pin section  | #f7f7f7\n`--triplat-graphic-legend-primary-border-color`       | The primary border color                                    | --ibm-gray-30\n`--triplat-graphic-legend-secondary-border-color`     | The secondary border color                                  | --ibm-gray-20\n`--triplat-graphic-legend-border-width`               | The border width                                            | 1px\n`--triplat-graphic-legend-border-style`               | The border style                                            | solid\n`--triplat-graphic-legend-section-header`             | Mixin applied to the section header                         | {}\n`--triplat-graphic-legend-show-all`                   | Mixin applied to the \"show all\" row of the location pin section | {}\n`--triplat-graphic-legend-show-all-button`            | Mixin applied to the \"show all\" expand and collapse button of the location pin section | {}   \n`--triplat-graphic-legend-checkbox-size`              | The size of the \"show all\" check box of the location pin section | 24px\n`--triplat-graphic-legend-checkbox-color`             | The color of the \"show all\" check box of the location pin section| --tri-primary-color\n`--triplat-graphic-legend-checkbox-margin`            | The margin around the \"show all\" check box of the location pin section  | 10px \n`--triplat-graphic-legend-checkbox`                   | Mixin applied to the \"show all\" check box of the location pin section   | {}\n\n\nThere are some CSS properties that are shared between the **triplat-graphic-legend-legend**, **triplat-graphic-legend-pin**, **triplat-graphic-legend-show-by** and **triplat-graphic-legend-filter-by** elements. Because these properties have the same name, they can be defined once in a :host rule and they will applied to the legend and its children.\n\nExample of applying a CSS property to the legend and its children:\n\t\n\t<style>\n\t\t:host {\n\t\t\t--triplat-graphic-legend-checkbox-color: red;\n\t\t}\n\t</style>\n\t\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" legend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t</triplat-graphic-legend> \n\nIn this example all the check boxes inside the legend will be red.\n\nExample of applying a CSS property to the legend only:\n\t\n\t<style>\n\t\ttriplat-graphic-legend {\n\t\t\t--triplat-graphic-legend-checkbox-color: red;\n\t\t}\n\t</style>\n\t\n\t<triplat-graphic-legend spaces=\"[[spaces]]\" legend-spaces=\"{{legendSpaces}}\">\n\t\t...\n\t</triplat-graphic-legend> \n\nIn this example, only the **show all** check box of the location pin section will be red.\n\nThe CSS properties shared between the legend and its children are listed bellow:\n\n- --triplat-graphic-legend-pin-fill-color\n- --triplat-graphic-legend-pin-size\n- --triplat-graphic-legend-secondary-background-color\n- --triplat-graphic-legend-secondary-border-color   \n- --triplat-graphic-legend-border-width\n- --triplat-graphic-legend-border-style\n- --triplat-graphic-legend-show-all \n- --triplat-graphic-legend-show-all-button\n- --triplat-graphic-legend-checkbox-size\n- --triplat-graphic-legend-checkbox-color\n- --triplat-graphic-legend-checkbox-margin\n- --triplat-graphic-legend-checkbox",
+      "summary": "",
+      "path": "triplat-graphic-legend.js",
+      "properties": [
+        {
+          "name": "spaces",
+          "type": "Array | null | undefined",
+          "description": "An array of all spaces that can be highlighted using this legend.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 345,
+              "column": 2
+            },
+            "end": {
+              "line": 349,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "availableSpaces",
+          "type": "Array | null | undefined",
+          "description": "An array of available spaces, and it must be a subset of the **spaces** property.\nThis array is used to differentiate the available spaces from the unavailable ones.\nThis property must be defined if any **triplat-graphic-legend-show-by** child of the legend has the\n**mask-unavailable-spaces** property set.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 357,
+              "column": 2
+            },
+            "end": {
+              "line": 361,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "legendSpaces",
+          "type": "Array | null | undefined",
+          "description": "Returns an array of highlighted spaces grouped and filtered by the criteria selected in the legend.\nThis array must be passed to the **legend-spaces** of the **triplat-graphic-highlight-group** plugin.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 367,
+              "column": 2
+            },
+            "end": {
+              "line": 371,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "spaceIdAttributeName",
+          "type": "string | null | undefined",
+          "description": "The name of the attribute that contains the ID of each space in the **spaces** and\n**availableSpaces** arrays.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 377,
+              "column": 2
+            },
+            "end": {
+              "line": 380,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"_id\""
+        },
+        {
+          "name": "showLocationPin",
+          "type": "boolean | null | undefined",
+          "description": "If true, the **Location Pins** section is not shown in the legend and the pins visibility is toggled via a\npin icon on the right end of the **Show By** section header.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 2
+            },
+            "end": {
+              "line": 389,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "locationPinChecked",
+          "type": "boolean | null | undefined",
+          "description": "If the **showLocationPin** property is true, this property gets or sets the state of the location pin icon,\nwhere true is checked and false is unchecked.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 395,
+              "column": 2
+            },
+            "end": {
+              "line": 399,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "locationPinIcon",
+          "type": "string | null | undefined",
+          "description": "The name of the icon to use for the location pin.\nThe name should have the format: \"iconset_name:icon_name\". The iconset_name: can be omitted for the IBM icon set.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 405,
+              "column": 2
+            },
+            "end": {
+              "line": 408,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"ibm:pin-multiples\""
+        },
+        {
+          "name": "showBySelected",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the selected **triplat-graphic-legend-show-by**.\nThe value of this property is the label of the selected element.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 2
+            },
+            "end": {
+              "line": 417,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "filterBySelected",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the selected **triplat-graphic-legend-filter-by** label.\nThe value of this property is the label of the selected element.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 423,
+              "column": 2
+            },
+            "end": {
+              "line": 426,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "position",
+          "type": "string | null | undefined",
+          "description": "Positions the legends bar to the right or left of the legend.\nThe bar controls whether the legend is collapsed or not.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 432,
+              "column": 2
+            },
+            "end": {
+              "line": 436,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handlePositionChange\"",
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"left\""
+        },
+        {
+          "name": "opened",
+          "type": "boolean | null | undefined",
+          "description": "Set opened to true to expand the legend and to false collapse it.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 441,
+              "column": 2
+            },
+            "end": {
+              "line": 447,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_handleOpenedChange\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disableSwipe",
+          "type": "boolean | null | undefined",
+          "description": "If true, swipe to open/close the legend is disabled.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 452,
+              "column": 2
+            },
+            "end": {
+              "line": 456,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_disableSwipeChanged\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "dragging",
+          "type": "boolean | null | undefined",
+          "description": "Whether the user is dragging the legend interactively.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 461,
+              "column": 2
+            },
+            "end": {
+              "line": 467,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "swipeThreshold",
+          "type": "number | null | undefined",
+          "description": "The minimum number of pixels that the user must move their finger by before it is considered a swipe.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 472,
+              "column": 2
+            },
+            "end": {
+              "line": 475,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "100"
+        },
+        {
+          "name": "_dragStartedOnBar",
+          "type": "boolean | null | undefined",
+          "description": "Indicates that the swipe movement was started on the legend bar.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 484,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_legendMinWidth",
+          "type": "number | null | undefined",
+          "description": "When attached, this property contains the legend bar width.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 489,
+              "column": 2
+            },
+            "end": {
+              "line": 493,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "_legendMaxWidth",
+          "type": "number | null | undefined",
+          "description": "When attached, this property contains the legend width when it is opened.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 498,
+              "column": 2
+            },
+            "end": {
+              "line": 502,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "_showBySelectedItem",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 504,
+              "column": 2
+            },
+            "end": {
+              "line": 506,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_filterBySelectedItem",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 508,
+              "column": 2
+            },
+            "end": {
+              "line": 510,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_showFilterBySection",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 512,
+              "column": 2
+            },
+            "end": {
+              "line": 515,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_showPinSection",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 517,
+              "column": 2
+            },
+            "end": {
+              "line": 520,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 528,
+              "column": 4
+            },
+            "end": {
+              "line": 537,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 539,
+              "column": 4
+            },
+            "end": {
+              "line": 549,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleSpacesChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 551,
+              "column": 4
+            },
+            "end": {
+              "line": 557,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleAvailableSpacesChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 559,
+              "column": 4
+            },
+            "end": {
+              "line": 563,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computePinSectionVisibility",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 565,
+              "column": 4
+            },
+            "end": {
+              "line": 568,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeFilterByVisibility",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 570,
+              "column": 4
+            },
+            "end": {
+              "line": 582,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addShowByCriterions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 584,
+              "column": 4
+            },
+            "end": {
+              "line": 587,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addFilterByCriterions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 589,
+              "column": 4
+            },
+            "end": {
+              "line": 592,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addCriterions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 594,
+              "column": 4
+            },
+            "end": {
+              "line": 623,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "children"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleShowByChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 625,
+              "column": 4
+            },
+            "end": {
+              "line": 628,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFilterByChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 630,
+              "column": 4
+            },
+            "end": {
+              "line": 632,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_generateLegendSpacesList",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 634,
+              "column": 4
+            },
+            "end": {
+              "line": 677,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getSpaceId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 679,
+              "column": 4
+            },
+            "end": {
+              "line": 686,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "space"
+            }
+          ]
+        },
+        {
+          "name": "_getOpacity",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 688,
+              "column": 4
+            },
+            "end": {
+              "line": 702,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "showBy"
+            },
+            {
+              "name": "spaceId"
+            }
+          ]
+        },
+        {
+          "name": "_isEqual",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 704,
+              "column": 4
+            },
+            "end": {
+              "line": 709,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "stringA"
+            },
+            {
+              "name": "stringB"
+            }
+          ]
+        },
+        {
+          "name": "_handleOpenedChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 711,
+              "column": 4
+            },
+            "end": {
+              "line": 713,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleBarTap",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 715,
+              "column": 4
+            },
+            "end": {
+              "line": 717,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_disableSwipeChanged",
+          "description": "Listen for track events on the legend if the swipe is not disabled.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 722,
+              "column": 1
+            },
+            "end": {
+              "line": 728,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newDisableSwipe"
+            },
+            {
+              "name": "oldDisableSwipe"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onTrack",
+          "description": "Handles track events for controlling swipe movements.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 733,
+              "column": 1
+            },
+            "end": {
+              "line": 745,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_trackStart",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 747,
+              "column": 4
+            },
+            "end": {
+              "line": 751,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_trackX",
+          "description": "Changes the legend width only if the swipe movement started on the legend bar.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 756,
+              "column": 1
+            },
+            "end": {
+              "line": 761,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_calculateWidth",
+          "description": "Calculates the legend width based on the horizontal distance of the swipe movement.\nThe returned width will be between the legend min and max width.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 767,
+              "column": 1
+            },
+            "end": {
+              "line": 775,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "dx"
+            }
+          ]
+        },
+        {
+          "name": "_changeLegendSize",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 777,
+              "column": 4
+            },
+            "end": {
+              "line": 783,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "width"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_trackEnd",
+          "description": "Completes the swipe movement if it was bigger than the swipe threshold.\nOtherwise, cancels the swipe.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 789,
+              "column": 1
+            },
+            "end": {
+              "line": 800,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isLeftBar",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 802,
+              "column": 4
+            },
+            "end": {
+              "line": 804,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_validateSwipeDistance",
+          "description": "Checks if the user has swipe far enough\nReturns true if the threshold was met, otherwise returns false.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 810,
+              "column": 1
+            },
+            "end": {
+              "line": 812,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "dx"
+            }
+          ]
+        },
+        {
+          "name": "_handlePositionChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 814,
+              "column": 4
+            },
+            "end": {
+              "line": 819,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newPosition"
+            },
+            {
+              "name": "oldPosition"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 191,
+          "column": 8
+        },
+        "end": {
+          "line": 822,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "spaces",
+          "description": "An array of all spaces that can be highlighted using this legend.",
+          "sourceRange": {
+            "start": {
+              "line": 345,
+              "column": 2
+            },
+            "end": {
+              "line": 349,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "available-spaces",
+          "description": "An array of available spaces, and it must be a subset of the **spaces** property.\nThis array is used to differentiate the available spaces from the unavailable ones.\nThis property must be defined if any **triplat-graphic-legend-show-by** child of the legend has the\n**mask-unavailable-spaces** property set.",
+          "sourceRange": {
+            "start": {
+              "line": 357,
+              "column": 2
+            },
+            "end": {
+              "line": 361,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "legend-spaces",
+          "description": "Returns an array of highlighted spaces grouped and filtered by the criteria selected in the legend.\nThis array must be passed to the **legend-spaces** of the **triplat-graphic-highlight-group** plugin.",
+          "sourceRange": {
+            "start": {
+              "line": 367,
+              "column": 2
+            },
+            "end": {
+              "line": 371,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "space-id-attribute-name",
+          "description": "The name of the attribute that contains the ID of each space in the **spaces** and\n**availableSpaces** arrays.",
+          "sourceRange": {
+            "start": {
+              "line": 377,
+              "column": 2
+            },
+            "end": {
+              "line": 380,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "show-location-pin",
+          "description": "If true, the **Location Pins** section is not shown in the legend and the pins visibility is toggled via a\npin icon on the right end of the **Show By** section header.",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 2
+            },
+            "end": {
+              "line": 389,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "location-pin-checked",
+          "description": "If the **showLocationPin** property is true, this property gets or sets the state of the location pin icon,\nwhere true is checked and false is unchecked.",
+          "sourceRange": {
+            "start": {
+              "line": 395,
+              "column": 2
+            },
+            "end": {
+              "line": 399,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "location-pin-icon",
+          "description": "The name of the icon to use for the location pin.\nThe name should have the format: \"iconset_name:icon_name\". The iconset_name: can be omitted for the IBM icon set.",
+          "sourceRange": {
+            "start": {
+              "line": 405,
+              "column": 2
+            },
+            "end": {
+              "line": 408,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "show-by-selected",
+          "description": "Gets or sets the selected **triplat-graphic-legend-show-by**.\nThe value of this property is the label of the selected element.",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 2
+            },
+            "end": {
+              "line": 417,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "filter-by-selected",
+          "description": "Gets or sets the selected **triplat-graphic-legend-filter-by** label.\nThe value of this property is the label of the selected element.",
+          "sourceRange": {
+            "start": {
+              "line": 423,
+              "column": 2
+            },
+            "end": {
+              "line": 426,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "position",
+          "description": "Positions the legends bar to the right or left of the legend.\nThe bar controls whether the legend is collapsed or not.",
+          "sourceRange": {
+            "start": {
+              "line": 432,
+              "column": 2
+            },
+            "end": {
+              "line": 436,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "opened",
+          "description": "Set opened to true to expand the legend and to false collapse it.",
+          "sourceRange": {
+            "start": {
+              "line": 441,
+              "column": 2
+            },
+            "end": {
+              "line": 447,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disable-swipe",
+          "description": "If true, swipe to open/close the legend is disabled.",
+          "sourceRange": {
+            "start": {
+              "line": 452,
+              "column": 2
+            },
+            "end": {
+              "line": 456,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "dragging",
+          "description": "Whether the user is dragging the legend interactively.",
+          "sourceRange": {
+            "start": {
+              "line": 461,
+              "column": 2
+            },
+            "end": {
+              "line": 467,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "swipe-threshold",
+          "description": "The minimum number of pixels that the user must move their finger by before it is considered a swipe.",
+          "sourceRange": {
+            "start": {
+              "line": 472,
+              "column": 2
+            },
+            "end": {
+              "line": 475,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "legend-spaces-changed",
+          "description": "Fired when the `legendSpaces` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "location-pin-checked-changed",
+          "description": "Fired when the `locationPinChecked` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "show-by-selected-changed",
+          "description": "Fired when the `showBySelected` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "filter-by-selected-changed",
+          "description": "Fired when the `filterBySelected` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "opened-changed",
+          "description": "Fired when the `opened` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "dragging-changed",
+          "description": "Fired when the `dragging` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-graphic-legend"
+    }
+  ]
+}

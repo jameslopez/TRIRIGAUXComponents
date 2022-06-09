@@ -1,0 +1,53 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="triplat-signout.html">
+
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../triplat-icon/ibm-icons.html">
+
+<!--
+A signout button that will signout the current user from TRIRIGA when tapped.
+
+     <triplat-signout-button></triplat-signout-button>
+
+@demo demo/index.html
+-->
+<dom-module id="triplat-signout-button">
+    <style>
+		.rtl-icon-mirror {
+			transform: scaleX(-1);
+		}
+    </style>
+	<template>
+		<triplat-signout id="signout"></triplat-signout>
+		<paper-icon-button id="signoutIcon" icon="ibm:sign-out" on-tap="_handleTap" alt="signout" on-keypress="_keyPressHandler"></paper-icon-button>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "triplat-signout-button",
+
+		attached: function() {
+			var textDirectionValue = document.querySelector('body').getAttribute('dir');
+			if(textDirectionValue==="rtl"){
+				this.$.signoutIcon.classList.add('rtl-icon-mirror');
+			}
+		},
+
+		_handleTap: function() {
+			this.$.signout.signout();
+		},
+		
+		_keyPressHandler: function(event) {
+			var keyCode = event.keyCode;
+			// accept Enter or Spacebar
+			if (code == 13 || code == 32) {
+				this._handlerTap();
+			}
+		}
+
+	});
+</script>

@@ -1,0 +1,165 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="triplat-filter-field.html">
+
+<!--
+
+<div style="background-color:#FFFFCC">
+    <div style="padding:20px;">
+		<b>Deprecated:</b> This component has been deprecated and will be removed in a future release. Use triplat-query instead.
+    </div>
+</div>
+
+ 
+triplat-filter is a custom element that provides filtering functionality through binding. It accepts an input data list and a search input value. Each object in the list contains pairs of property name and value. It returns an output data list containing items that matched the search input value. Filtering is based on the property names provided by triplat-filter-fields custom elements. By default, filter is case-insensitive.
+
+Example:
+
+     <triplat-filter 
+     	items="{{inputData}}" 
+     	filtered-items="{{outputData}}" 
+     	filter-value="{{searchInput}}">
+    	<triplat-filter-field property-name="manufacture"></triplat-filter-field>
+    	<triplat-filter-field property-name="model"></triplat-filter-field>
+     </triplat-filter>
+
+For case-sensitive filtering, use the case-insensitive property.
+
+Example:
+
+     <triplat-filter 
+     	items="{{inputData}}" 
+     	filtered-items="{{outputData}}" 
+     	filter-value="{{searchInput}}"
+     	case-sensitive>
+    	<triplat-filter-field property-name="manufacture"></triplat-filter-field>
+    	<triplat-filter-field property-name="model"></triplat-filter-field>
+     </triplat-filter>
+
+@demo demo/index.html
+-->
+
+<dom-module id="triplat-filter">
+	<style></style>
+	<template>
+		<content></content>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "triplat-filter",
+
+		properties: {
+
+            /**
+			 * The unfiltered data. 
+			 */
+			items: {
+				type: Array,
+				readOnly: false,
+				notify: true
+			},
+
+            /**
+			 * The filtered data. 
+			 */
+			filteredItems: {
+				type: Array,
+				readOnly: false,
+				notify: true,
+				computed: "_computedFilteredItems(items,filterValue)"
+			},
+
+            /**
+			 * The filter value to match. 
+			 */
+			filterValue: {
+				type: String,
+				readOnly: false,
+				notify: true
+			},
+
+            /**
+			 * Optional. If exist, filter value is case sensitive. 
+			 */
+			caseSensitive: {
+				type: Boolean,
+        		notify: true
+			}
+
+		},
+		
+		attached: function(){
+			console.warn("NOTE: triplat-filter component has been deprecated, and will be removed in a future release. Use triplat-query instead.");
+		},
+
+        /**
+		 * Compute filter data. 
+		 * Return a sub set of items that match a given filter value.
+		 * By default, filter is case-insensitive.
+		 * For case-sensitive includes the case-sensitive property.
+		 */
+		_computedFilteredItems:function(items, filterValue) {
+			var fieldsToFilter = [];
+          	var filteredData;
+
+			//find fields property names to filter
+			var fields = Polymer.dom(this).querySelectorAll("triplat-filter-field");
+			if(fields.length > 0) {
+				fields.forEach(function(field){
+					if(field.hasAttribute("property-name")){
+						fieldsToFilter.push(field.propertyName);
+					}
+				});
+			}
+
+          	if (!filterValue || filterValue == "" || !fieldsToFilter) {
+            	return items;
+          	}
+
+          	if(this.caseSensitive) {
+	          	filteredData = this._filterCaseSensitive(items, filterValue, fieldsToFilter);
+          	} else {
+	          	filteredData = this._filterCaseInsensitive(items, filterValue, fieldsToFilter);
+          	}
+
+          	return filteredData
+		},
+
+        /**
+		 * Filter data (case-sensitive). 
+		 */
+        _filterCaseSensitive: function(unFilteredData, currentFilter, fieldsToFilter) {
+        	return unFilteredData.filter(function(record) {
+	            for (var field in fieldsToFilter) {
+	              if (fieldsToFilter[field] && record[fieldsToFilter[field]]
+	              	&& record[fieldsToFilter[field]].indexOf(currentFilter) != -1) {
+                	return true;
+	              }
+	            }
+	            return false;
+	          });
+        },
+        
+        /**
+		 * Filter data (case-insensitive). 
+		 */
+        _filterCaseInsensitive: function(unFilteredData, currentFilter, fieldsToFilter) {
+        	return unFilteredData.filter(function(record) {
+	            var lowerCasefilter = currentFilter.toLowerCase();
+
+	            for (var field in fieldsToFilter) {
+	              if (fieldsToFilter[field] && record[fieldsToFilter[field]] 
+	              	&& record[fieldsToFilter[field]].toLowerCase().indexOf(lowerCasefilter) != -1){
+	                return true;
+	              }
+	            }
+	            return false;
+	          });
+        }
+        
+	});
+</script>

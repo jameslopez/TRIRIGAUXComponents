@@ -1,0 +1,34 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2019 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-progress-gauge</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../@webcomponents/webcomponentsjs/webcomponents-loader.js" async></script>
+	<script type="module" src="../@polymer/iron-component-page/iron-component-page.js" crossorigin="use-credentials"></script>
+	<script type="module" src="../@polymer/marked-element/marked-element.js" crossorigin="use-credentials"></script>
+	<script>
+		setTimeout(() => {
+			window._marked = window.marked;
+			window.marked = function (src, opt, callback) {
+				if (opt) opt.sanitize = false;
+				return window._marked(src, opt, callback);
+			};
+			window.marked.Renderer = window._marked.Renderer;
+		}, 1000);
+	</script>
+	<script type="module" src="./triplat-progress-gauge.js" crossorigin="use-credentials"></script>
+
+</head>
+<body>
+
+  <iron-component-page></iron-component-page>
+
+</body>
+</html>

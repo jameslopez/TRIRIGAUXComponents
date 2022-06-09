@@ -1,0 +1,231 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="triplat-weather-behavior.html">
+
+<!--
+A component that retrieves the current weather information for a given location from The Weather Channel (TWC) using the TWC API.
+Weather observations are generated on demand from The Weather Channel Currents On Demand system.
+The return observation object contains weather data such as temperatures, winds, and pressure.
+
+<div style="background-color:#FFFFCC">
+    <div style="padding:20px;">
+  <b>Note:</b> The Weather Channel API requires a license and is constrained by the API Key entitlements. To use this component, update the TRIRIGAWEB.properties file and set The Weather Channel API license key in the WEATHER_API_KEY property.
+	</div>
+</div>
+
+Example of requesting the current weather conditions for postal code 30075 in the United States. 
+
+    <triplat-weather-current
+		 	auto
+		 	postal-and-country-code="30075:US"
+		 	observation="{{observationCurrent}}"></triplat-weather-current>
+
+Example of requesting the current weather conditions for a location specified by latitude and longitude. 
+
+    <triplat-weather-current
+		 	auto
+		 	lat-and-long="34.021944:-84.359167"
+		 	observation="{{observationCurrent}}"></triplat-weather-current>
+
+Example of displaying the current temperature and a phrase that describes the weather conditions.
+
+    <div class="temps">{{observationCurrent.imperial.temp}} Fahrenheit</div>
+    <div class="blurb">{{observationCurrent.phrase_32char}}</div>
+
+		 	
+### Units of measurement
+
+The Weather Channel API supports the following units of measurement: e = English units, m = Metric units, and h = Hybrid units (UK).
+Example of requesting the current weather conditions with Metric units. The return observation includes temperatures in Celsius.  
+
+    <triplat-weather-current
+		 	auto
+		 	postal-and-country-code="30075:US"
+		 	units="m"
+		 	observation="{{observationCurrent}}"></triplat-weather-current>
+
+### Translation
+
+The Weather Channel API handles the translation of phrases. A valid language must be passed along the request.
+Example of requesting the current weather conditions with the Spanish language. The return observation has phrases in Spanish.  
+
+    <triplat-weather-current
+		 	auto
+		 	postal-and-country-code="30075:US"
+		 	language="es-ES"
+		 	observation="{{observationCurrent}}"></triplat-weather-current>
+
+
+As mentioned above, the return observation object includes many properties that describe the weather conditions. It also includes icon information such as icon codes and their associated weather phrases.  
+  
+See The Weather Channel API documentation for more details about the current weather information and usage.
+
+-->
+
+
+<dom-module id="triplat-weather-current">
+	<template>
+		<style>
+			:host {
+				display: none;
+			}
+		</style>
+		
+		<iron-ajax id="ajax"
+		 	handle-as="json"
+		 	on-response="_onResponse"
+		 	on-error="_onError"></iron-ajax>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "triplat-weather-current",
+
+	    /**
+	     * Fired when a response from The Weather Channel API is completed.
+	     *
+	     * @event triplat-weather-current-response-complete
+	     */
+
+	    /**
+	     * Fired when a response from The Weather Channel API fails.
+	     *
+	     * @event triplat-weather-current-response-error
+	     */
+
+		behaviors: [TriplatWeatherBehavior],
+
+		properties: {
+
+			/*
+			 * If location is provided, automatically request the weather conditions for this location.
+			 */
+			auto: {
+				type: Boolean
+			},
+
+			/*
+			 * URL to The Weather Channel API.
+			 */
+			baseUrl: {
+				type: String,
+				value: "https://api.weather.com"
+			},
+
+			/*
+			 * The Weather Channel API license key. The license key will be loaded from Tririga web properties file (WEATHER_API_KEY property).
+			 */ 
+			_apiKey: {
+				type: String,
+				value: ""
+			},
+
+			/*
+			 * The requested language. The Weather Channel API supports the translation of phrases based on the requested language.
+			 * For example, The Weather Channel API returns the phrase "Cloudy" for English en-US and "Nublado" for Spanish es-ES.
+			 * See The Weather Channel API documentation for valid languages.
+			 */
+			language: {
+				type: String,
+				value: "en-US"
+			},
+
+			/*
+			 * The unit of measure for the response. The following values are supported: e = English units, m = Metric units, and h = Hybrid units (UK).
+			 * For temperatures in Celsius, use Metric unites, and for temperatures in Fahrenheit, use English units.
+			 * See The Weather Channel API documentation for valid units of measurement.
+			 */
+			units: {
+				type: String,
+				value: "e"
+			},
+
+			/*
+			 * String that represents a location based on postal code and country code.
+			 * Format {postal code}:{country code}.
+			 * Supported country postal codes: US (United States), GB (United Kingdom), FR (France), DE (Germany) , IT (Italy).
+			 * For example, 89178:US.
+			 * See The Weather Channel API documentation for valid country codes.
+			 */
+			postalAndCountryCode: {
+				type: String
+			},
+
+			/*
+			 * String that represents a location based on geocode.
+			 * Format {latitude}:{longitude}.
+			 * For example, 36.0671730:-115.1616650.
+			 */
+			latAndLong: {
+				type: String
+			},
+
+			/*
+			 * The return current weather observation object. It contains weather data such as temperatures, winds, and pressure.
+			 * See The Weather Channel API documentation for details about the current weather information.
+			 */
+			observation: {
+				type: Object,
+				notify: true,
+				readOnly: true,
+				value: null
+			},
+
+		},
+
+  		listeners: {
+    		'triplat-weather-apikey-update':'_updateAPIKey',
+    		'triplat-weather-generate-request':'generateRequest'
+  		},
+
+		observers: [
+			"initForPostalCode(auto, baseUrl, _apiKey, language, units, postalAndCountryCode)",
+			"initForLatAndLong(auto, baseUrl, _apiKey, language, units, latAndLong)"
+		],
+
+		_updateAPIKey: function(e) {
+			this.set("_apiKey", e.detail);	
+		},
+		
+		/* Request current weather information from The Weather Channel API.
+		 * The API supports requests by postal code or by geocode (latitude and longitude).
+		 */
+		generateRequest: function() {
+			if(!this._apiKey) {
+				console.warn("The Weather Channel API requires license key. Check Tririga web server properties file (property WEATHER_API_KEY).");
+				return;
+			}
+
+			var url = this.getBaseWeatherUrl(this.baseUrl, this.postalAndCountryCode, this.latAndLong);
+			if(!url) {
+				return; //getBaseWeatherUrl() will log the error to the console
+			}
+
+			url += "/observations/current.json" 
+				+ "?language=" + this.language 
+				+ "&units=" + this.units
+				+ "&apiKey=" + this._apiKey;
+
+			var ajax = this.$.ajax;
+			ajax.url = url;
+			ajax.generateRequest();
+		},
+
+		/* On response, set the current forecast provided by the weather API.
+		 */
+		_onResponse: function(e) {
+			var response = e.detail.response;
+			this._setObservation(response.observation);
+			this.fire("triplat-weather-current-response-complete", response);
+		},
+		
+		_onError: function(e) {
+			this.fire("triplat-weather-current-response-error", e);
+		}
+		
+
+	});
+</script>

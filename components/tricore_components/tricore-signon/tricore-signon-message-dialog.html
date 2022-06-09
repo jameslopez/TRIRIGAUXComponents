@@ -1,0 +1,93 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2019 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../paper-dialog-behavior/paper-dialog-behavior.html">
+
+<dom-module id="tricore-signon-message-dialog">
+
+  <link rel="import" type="css" href="../paper-dialog-behavior/paper-dialog-common.css">
+  <template>
+		<style>
+			:host ::content #dialogHeader{ 
+				height: 2em;
+				background: #003e68;
+				margin: 0;      
+				padding-top: .8em;
+				padding-bottom: .2em;
+				padding-left: 1em;
+				padding-right: .1em;
+				color: white;
+				font-size: 1.2em;
+				font-weight: bold;
+				font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+				line-height: 15px;
+
+			}
+
+			:host ::content #dialogBody{
+				margin-top: .5em;
+				padding: 10px 15px;
+				font-size:small;
+				font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+				color:#4C4C4C;
+				text-align:justify;
+				line-height: 15px;
+			}
+
+			:host {
+				margin-bottom: -2em;
+				width: 310px;
+				background-color: rgba(255, 255, 255, 1);
+				max-height: 400px;
+				top:22.5% !important;   
+				white-space: normal;
+
+			}
+
+			:host ::content .activeUser {
+				color: #FFFFC2;
+			}
+
+			@media (max-width: 375px) {
+				:host ::content #dialogHeader { 
+					font-size: 1em;
+				} 
+			}
+
+			@media (max-width: 325px) {
+				:host ::content #dialogHeader { 
+					padding-top: 0;
+					padding-left: .9em;
+					font-size: .9em;
+				} 
+				:host ::content #dialogBody{
+					font-size:.9em;
+					line-height: 15px;
+					padding-left: 11.34px;
+					padding-right: 11.34px;
+				}
+			}
+		</style>
+    	<content></content>
+  </template>
+
+</dom-module>
+
+<script>
+
+(function() {
+
+  Polymer({
+
+    is: 'tricore-signon-message-dialog',
+
+    behaviors: [
+      Polymer.PaperDialogBehavior
+    ]
+
+  });
+
+})();
+
+</script>

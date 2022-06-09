@@ -1,0 +1,63 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+    <head>
+        <title>triplat-graphic</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../polymer/polymer.html">
+        <link rel="import" href="../iron-component-page/iron-component-page.html">
+
+    </head>
+    <body>
+        <template is="dom-bind" id="template">
+            <iron-component-page id="docPage"></iron-component-page>
+        </template>
+    </body>
+    <script>
+        var template = document.querySelector('#template');
+        template.addEventListener('dom-change', function() {
+            this.$.docPage.addEventListener("doc-elements-changed", function(change){
+                var elements = change.detail.value;
+                var elementsAux = elements.filter(function(docElement){
+                    if(docElement.is == "triplat-graphic-base" ||
+                        docElement.is == "triplat-graphic-highlight-class" || 
+                        docElement.is == "triplat-graphic-pin-tooltip" ||
+                        docElement.is == "triplat-graphic-pin-classes" ||
+                        docElement.is == "triplat-graphic-pin-worker"){  
+                            return false;
+                    }
+                    return true;
+                });
+                elements.splice(0, elements.length);
+                elementsAux.forEach(function(element){
+                    elements.push(element);
+                });
+                elements.sort(function(a, b){
+                    return a.is == b.is ? 0 : 
+                        +(a.is > b.is) || -1;
+                });
+            });
+
+			this.$.docPage.addEventListener("doc-behaviors-changed", function(change) {
+				var behaviors = change.detail.value;
+				var behaviorsAux = behaviors.filter(function(docBehavior) {
+					if(docBehavior.is == "Polymer.TriplatGraphicSelectableBehavior") {
+							return false;
+					}
+					return true;
+				});
+				behaviors.splice(0, behaviors.length);
+				behaviorsAux.forEach(function(behavior) {
+					behaviors.push(behavior);
+				});
+			});
+        });
+    </script>
+</html>
+ 

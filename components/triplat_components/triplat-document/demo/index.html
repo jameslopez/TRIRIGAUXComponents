@@ -1,0 +1,43 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+	<head>
+		<title>triplat-document-download</title>
+	
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	
+		<link rel="import" href="../../polymer/polymer.html">
+		<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+		<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+		<link rel="import" href="../../triplat-theme/triplat-theme.html">
+		<link rel="import" href="../../tricore-demo-url/tricore-demo-url.html">
+		
+		<link rel="import" href="triplat-document-download-demo-1.html">
+		<link rel="import" href="triplat-document-download-demo-2.html">
+	
+		<style is="custom-style" include="iron-flex iron-flex-alignment">
+			.demoContainer {
+				border-top-width: 2px;
+				border-top-style: solid;	
+				border-top-color: gray;
+			}
+		</style>
+	</head>
+	<body dir="ltr">
+		<div style="background-color:#FFFFCC">
+		    <div style="padding:20px;">
+		        <b>Note:</b> This demo page works against mocked back-end services. The documents do not exist in the Document Manager.
+		    </div>
+		</div>
+		<template is="dom-bind">
+			<tricore-demo-url></tricore-demo-url>
+			<div class="demoContainercenter layout fit vertical center">
+				<triplat-document-download-demo-1></triplat-document-download-demo-1>
+				<triplat-document-download-demo-2></triplat-document-download-demo-2>
+			</div>
+		</template>
+	</body>
+</html>

@@ -1,0 +1,245 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component for showing progress in a gauge.\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.\n  </div>\n</div>\n\n\t <triplat-progress-gauge progress=\"0.5\"></triplat-progress-gauge>\n\n# Styling\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-progress-gauge-circle-stroke-color`    | Circle stroke color             | `--ibm-gray-10`\n`--triplat-progress-gauge-circle-stroke-width`    | Circle stroke width             | `2`\n`--triplat-progress-gauge-completed-stroke-width` | Completed circle stroke width   | `10`\n`--triplat-progress-gauge-q1-stroke-color`        | First quarter stroke color      | `--ibm-green-10`\n`--triplat-progress-gauge-q2-stroke-color`        | Second quarter stroke color     | `--ibm-green-20`\n`--triplat-progress-gauge-q3-stroke-color`        | Third quarter stroke color      | `--ibm-green-30`\n`--triplat-progress-gauge-q4-stroke-color`        | Fouth quarter stroke color      | `--ibm-green-40`\n`--triplat-progress-gauge-complete-stroke-color`  | Complete stroke color           | `--ibm-green-40`\n`--triplat-progress-gauge-value-color`            | Color of the text value         | `--ibm-gray-60`\n`--triplat-progress-gauge-value-font-size`        | Font size of the text value     | `1.3em`\n`--triplat-progress-gauge-value-mixin`            | Mixin fo the text value         | `{}`\n`--triplat-progress-gauge-percent-color`          | Color of the percent symbol     | `--ibm-gray-60`\n`--triplat-progress-gauge-percent-font-size`      | Font size of the percent symbol | `1.3em`\n`--triplat-progress-gauge-percent-mixin`          | Mixin fo the percent symbol     | `{}`",
+      "summary": "",
+      "path": "triplat-progress-gauge.js",
+      "properties": [
+        {
+          "name": "progress",
+          "type": "number | null | undefined",
+          "description": "The progress value between 0.0 and 1.0",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 137,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_handleProgressChange\"",
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "_displayProgress",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 144,
+              "column": 2
+            },
+            "end": {
+              "line": 148,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_isRtl",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 152,
+              "column": 4
+            },
+            "end": {
+              "line": 158,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_handleProgressChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 160,
+              "column": 4
+            },
+            "end": {
+              "line": 200,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "progress"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_clearStyles",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 4
+            },
+            "end": {
+              "line": 208,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_applyStyle",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 210,
+              "column": 4
+            },
+            "end": {
+              "line": 221,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "progress"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addClassSvg",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 223,
+              "column": 4
+            },
+            "end": {
+              "line": 226,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "element"
+            },
+            {
+              "name": "className"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeClassSvg",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 228,
+              "column": 4
+            },
+            "end": {
+              "line": 237,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "element"
+            },
+            {
+              "name": "className"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 43,
+          "column": 8
+        },
+        "end": {
+          "line": 238,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "progress",
+          "description": "The progress value between 0.0 and 1.0",
+          "sourceRange": {
+            "start": {
+              "line": 137,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-progress-gauge"
+    }
+  ]
+}

@@ -1,0 +1,498 @@
+/* IBM Confidential‌ - OCO Source Materials‌ - (C) COPYRIGHT IBM CORP. 2015-2019 - The source code for this program is not published or otherwise‌ divested of its trade secrets, irrespective of what has been‌ deposited with the U.S. Copyright Office. */
+import { html } from "../@polymer/polymer/lib/utils/html-tag.js";
+
+import { Polymer } from "../@polymer/polymer/lib/legacy/polymer-fn.js";
+import "../@polymer/iron-flex-layout/iron-flex-layout.js";
+import { IronMenubarBehaviorImpl, IronMenubarBehavior } from "../@polymer/iron-menu-behavior/iron-menubar-behavior.js";
+import { IronResizableBehavior } from "../@polymer/iron-resizable-behavior/iron-resizable-behavior.js";
+import "../@polymer/iron-a11y-keys/iron-a11y-keys.js";
+import "../@polymer/paper-icon-button/paper-icon-button.js";
+import "../@polymer/paper-styles/typography.js";
+import "../@polymer/paper-styles/shadow.js";
+
+/*
+`triblock-scroll-container` creates a horizontal scroll container controlled by arrow buttons.
+The user can control the scroll by click and drag (or tap and swipe).
+The scroll buttons will only be available when the content width is greater than the container width.
+* This component is based on `paper-tabs`.
+
+<div style="background-color:#FFFFCC">
+  <div style="padding:20px;">
+    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.
+  </div>
+</div>
+
+Example:
+```html
+<triblock-scroll-container>
+  <div>Content 1</div>
+  <div>Content 2</div>
+  <div>Content 3</div>
+</triblock-scroll-container>
+```
+
+The `auto-height` property can be used to set the container height according to the content height:
+```html
+<triblock-scroll-container auto-height>
+  ...
+</triblock-scroll-container>
+```
+
+The `scroller` property with two-way binding can be used to apply scroll pagination.
+```html
+<triblock-scroll-container scroller="{{scroller}}">
+  ...
+</triblock-scroll-container>
+```
+
+<div style="background-color:#FFFFCC">
+	<div style="padding: 10px 20px;">
+		<p><b>Important:</b> When working with pagination, it's recommended to use a callback when 
+		the data source "get" is completed (on-ds-get-complete). In the callback, call the 
+		`notifyResize` method to notify that the container has expanded, 
+		so the control buttons will be displayed.</p>
+	</div>
+</div>
+
+------------------------------------------
+<div style="background-color:#FFFFCC">
+	<div style="padding: 10px 20px;">
+	<p><b>Important:</b> When adding child elements into this component, it's important that the children 
+	stay side by side, without spaces between them, like the margin. This is because when scrolling by 
+	clicking and dragging, if you click in a space between the child elements, the scroll effect 
+	will be affected.</p>
+	<p><b>Solution:</b> If you need a space between the children (for visual purpose), add a padding 
+	in the direct children, and use grandchildren for visual styling. Since the direct children will have 
+	a padding, the granchildren will have a space between them.</p>
+	<p>Example:</p>
+```html
+<triblock-scroll-container>
+  <div class="direct-child">
+	<div class="grandchild">Content 1</div>
+  </div>
+  <div class="direct-child">
+	<div class="grandchild">Content 2</div>
+  </div>
+  <div class="direct-child">
+	<div class="grandchild">Content 3</div>
+  </div>
+</triblock-scroll-container>
+
+<style>
+  .direct-child {
+	padding: 10px;
+  }
+</style>
+```
+  </div>
+</div>
+------------------------------------------
+
+### Styling
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--triblock-scroll-container-height` | Height of the container | `250px`
+`--triblock-scroll-container-left-arrow` | Position of the left control button | `1%`
+`--triblock-scroll-container-right-arrow` | Position of the right control button  | `1%`
+`--triblock-scroll-container-button-top` | Top position of the control button | `50%`
+`--triblock-scroll-container-button-height` | Height of the control button | `48px`
+`--triblock-scroll-container-button-width` | Width of the control button | `48px`
+`--triblock-scroll-container-button-padding` | Padding of the control button | `2px`
+`--triblock-scroll-container-button-background` | Background of the control button | `rgba(65, 120, 190, 0.7)`
+`--triblock-scroll-container-button-background-hover` | Background of the control button when hovering | `rgba(65, 120, 190, 0.9)`
+`--triblock-scroll-container-button-color` | Color of the icon inside the control button | `white`
+*/
+Polymer({
+  _template: html`
+	<style include="tristyles-theme">
+
+	  :host {
+		@apply --layout;
+		@apply --layout-center;
+		position: relative;
+		height: var(--triblock-scroll-container-height, 250px);
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-webkit-user-select: none;
+		user-select: none;
+		/* NOTE: Both values are needed, since some phones require the value to be \`transparent\`. */
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+		-webkit-tap-highlight-color: transparent;
+	  }
+
+	  :host,
+	  :host *,
+	  :host ::slotted(*) {
+		box-sizing: border-box;
+	  }
+
+	  #itemsContainer {
+		@apply --layout-flex-auto;
+		position: relative;
+		height: 100%;
+		overflow: hidden;
+	  }
+
+	  #itemsContent {
+		@apply --layout-horizontal;
+		position: absolute;
+		min-width: 100%;
+		-moz-flex-basis: auto;
+		-ms-flex-basis: auto;
+		flex-basis: auto;
+	  }
+	  #itemsContent > ::slotted(*) {
+		/* IE - prevent items from compressing when they should scroll. */
+		-ms-flex: 1 0 auto;
+		-webkit-flex: 1 0 auto;
+		flex: 1 0 auto;
+	  }
+
+	  .not-available {
+		opacity: 0;
+		cursor: default;
+	  }
+
+	  .left {
+		left: var(--triblock-scroll-container-left-arrow, 1%);
+	  }
+
+	  .right {
+		right: var(--triblock-scroll-container-right-arrow, 1%);
+	  }
+
+	  paper-icon-button {
+		@apply --shadow-elevation-4dp;
+		position: absolute;
+		top: var(--triblock-scroll-container-button-top, 50%);
+		transform: translateY(-50%);
+		z-index: 1;
+		height: var(--triblock-scroll-container-button-height, 48px);
+		width: var(--triblock-scroll-container-button-width, 48px);
+		margin: 0 4px;
+		border-radius: 100%;
+		padding: var(--triblock-scroll-container-button-padding, 2px);
+		background: var(--triblock-scroll-container-button-background, rgba(65, 120, 190, 0.7));
+		color: var(--triblock-scroll-container-button-color, white);
+		transition: 0.4s;
+	  }
+	  paper-icon-button:hover {
+		background: var(--triblock-scroll-container-button-background-hover, rgba(65, 120, 190, 0.9));
+	  }
+	
+	</style>
+
+	<iron-a11y-keys id="a11yLeftButtonDown" target="[[_leftButton]]" keys="enter:keydown" on-keys-pressed="_onLeftButtonDown" stop-keyboard-event-propagation=""></iron-a11y-keys>
+	<iron-a11y-keys id="a11yLeftButtonUp" target="[[_leftButton]]" keys="enter:keyup" on-keys-pressed="_onLeftButtonUp" stop-keyboard-event-propagation=""></iron-a11y-keys>
+	<iron-a11y-keys id="a11yRightButtonDown" target="[[_rightButton]]" keys="enter:keydown" on-keys-pressed="_onRightButtonDown" stop-keyboard-event-propagation=""></iron-a11y-keys>
+	<iron-a11y-keys id="a11yRightButtonUp" target="[[_rightButton]]" keys="enter:keyup" on-keys-pressed="_onRightButtonUp" stop-keyboard-event-propagation=""></iron-a11y-keys>
+
+	<paper-icon-button id="leftButton" icon="[[iconLeft]]" class\$="[[_computeScrollButtonClass('left', _leftHidden)]]" on-up="_onScrollButtonUp" on-down="_onLeftScrollButtonDown" tabindex="0"></paper-icon-button>
+
+	<div id="itemsContainer" on-track="_scroll" on-down="_down">
+	  <div id="itemsContent">
+		<slot></slot>
+	  </div>
+	</div>
+
+	<paper-icon-button id="rightButton" icon="[[iconRight]]" class\$="[[_computeScrollButtonClass('right', _rightHidden)]]" on-up="_onScrollButtonUp" on-down="_onRightScrollButtonDown" tabindex="0"></paper-icon-button>
+  `,
+
+  is: "triblock-scroll-container",
+
+  behaviors: [
+	IronResizableBehavior,
+	IronMenubarBehavior
+  ],
+
+  properties: {
+	/*
+	* If true, the element's height will be set to fit the child's height.
+	*/
+	autoHeight: {
+	  type: Boolean,
+	  value: false
+	},
+	
+	/*
+	* Scroller container element object. This object is also used 
+	* to data-bind with the triplat-query-scroll-page scroller attribute.
+	*/
+	scroller: {
+	  type: Object,
+	  notify: true
+	},
+	
+	/*
+	* The icon that will be displayed inside the left scroll button.
+	*/
+	iconLeft: {
+	  type: String,
+	  value: "chevron-left"
+	},
+
+	/*
+	* The icon that will be displayed inside the right scroll button.
+	*/
+	iconRight: {
+	  type: String,
+	  value: "chevron-right"
+	},
+
+	_step: {
+	  type: Number,
+	  value: 10
+	},
+
+	_holdDelay: {
+	  type: Number,
+	  value: 1
+	},
+
+	_leftHidden: {
+	  type: Boolean,
+	  value: false
+	},
+
+	_rightHidden: {
+	  type: Boolean,
+	  value: false
+	},
+
+	_previousItem: {
+	  type: Object
+	},
+
+	_leftButton: {
+	  type: Object
+	},
+
+	_leftButtonPressed: {
+	  type: Boolean,
+	  value: false
+	},
+
+	_rightButton: {
+	  type: Object
+	},
+
+	_rightButtonPressed: {
+	  type: Boolean,
+	  value: false
+	},
+
+	/*
+	* True if BIDI is active
+	*/
+	_isBidi: {
+	  type: Boolean,
+	  value: function() {
+		var direction = getComputedStyle(document.body).direction;
+
+		if (direction === "rtl") {
+		  return true;
+		} else {
+		  return false;
+		}
+	  }
+	},
+
+	/*
+	* True if the application is running on Chrome browser
+	*/
+	_isChrome: {
+	  type: Boolean,
+	  value: function() {
+		var chrome = window.navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+		var edge = window.navigator.userAgent.toLowerCase().indexOf('edge') > -1;
+
+		// It's necessary to check if it's not Edge browser, because `chrome` returns true when running on the Edge 
+		return (chrome && !edge);
+	  }
+	},
+
+	/*
+	* True if the application is running on Edge browser
+	*/
+	_isEdge: {
+	  type: Boolean,
+	  value: function() {
+		var edge = window.navigator.userAgent.toLowerCase().indexOf('edge') > -1;
+
+		return (edge);
+	  }
+	}
+  },
+
+  listeners: {
+	'iron-resize': '_onContentSizingChanged',
+	'iron-items-changed': '_onContentSizingChanged',
+	'iron-select': '_onIronSelect',
+	'iron-deselect': '_onIronDeselect'
+  },
+
+  attached: function() {
+	this.set("scroller", this.$.itemsContainer);
+  },
+
+  created: function() {
+	this._holdJob = null;
+  },
+
+  ready: function() {
+    this.setScrollDirection('y', this.$.itemsContainer);
+	this.set("_leftButton", this.$.leftButton);
+	this.set("_rightButton", this.$.rightButton);
+  },
+
+  _computeScrollButtonClass: function(button, hideThisButton) {
+	if (button == "left" && !hideThisButton) {
+	  return 'left';
+	}
+	if (button == "right" && !hideThisButton) {
+	  return 'right';
+	}
+	if (button == "left" && hideThisButton) {
+	  return 'left not-available';
+	}
+	if (button == "right" && hideThisButton) {
+	  return 'right not-available';
+	}
+	return '';
+  },
+
+  _onContentSizingChanged: function() {
+	this.debounce('_onContentSizingChanged', function() {
+	  this._scroll();
+
+	  this._setAutoHeight();
+	}, 10);
+  },
+
+  _onIronSelect: function(event) {
+	this._previousItem = event.detail.item;
+	this.cancelDebouncer('tab-changed');
+  },
+
+  _onIronDeselect: function(event) {
+	this.debounce('tab-changed', function() {
+	  this._previousItem = null;
+	}, 1);
+  },
+
+  get _itemContainerScrollSize () {
+	return Math.max(
+	  0,
+	  this.$.itemsContainer.scrollWidth -
+		this.$.itemsContainer.offsetWidth
+	);
+  },
+
+  _scroll: function(e, detail) {
+	var ddx = (detail && -detail.ddx) || 0;
+	this._affectScroll(ddx);
+  },
+
+  _down: function(e) {
+	// go one beat async to defeat IronMenuBehavior
+	// autorefocus-on-no-selection timeout
+	this.async(function() {
+	  if (this._defaultFocusAsync) {
+		this.cancelAsync(this._defaultFocusAsync);
+		this._defaultFocusAsync = null;
+	  }
+	}, 1);
+  },
+
+  _affectScroll: function(dx) {
+	// When BIDI is activate on Edge the `dx` should be a negative number to scroll to right side
+	if (this._isBidi && this._isEdge) {
+	  this.$.itemsContainer.scrollLeft += (-dx);
+	} else {
+	  this.$.itemsContainer.scrollLeft += dx;
+	}
+
+	var scrollLeft = Math.round(this.$.itemsContainer.scrollLeft);
+
+	// When BIDI is active the scroll has different behaviors in different browsers:
+	// - On Chrome, the `scrollLeft` has value zero in the left side of the container
+	// - On Edge, the `scrollLeft` has value zero in the right side of the container and the value increases when scrolling left
+	// - On the other browsers, the `scrollLeft` has value zero in the right side of the container and the value decreases when scrolling left (negative number)
+	if (!this._isBidi || (this._isBidi && this._isChrome)) {
+	  this._leftHidden = scrollLeft === 0;
+	  this._rightHidden = scrollLeft === this._itemContainerScrollSize;
+	} else if (this._isBidi && this._isEdge) {
+	  this._leftHidden = scrollLeft === this._itemContainerScrollSize;
+	  this._rightHidden = scrollLeft === 0;
+	} else {
+	  this._leftHidden = scrollLeft === (- this._itemContainerScrollSize);
+	  this._rightHidden = scrollLeft === 0;
+	}
+  },
+
+  _onLeftScrollButtonDown: function() {
+	this._scrollToLeft();
+	this._holdJob = setInterval(this._scrollToLeft.bind(this), this._holdDelay);
+  },
+
+  _onRightScrollButtonDown: function() {
+	this._scrollToRight();
+	this._holdJob = setInterval(this._scrollToRight.bind(this), this._holdDelay);
+  },
+
+  _onScrollButtonUp: function() {
+	clearInterval(this._holdJob);
+	this._holdJob = null;
+  },
+
+  _scrollToLeft: function() {
+	this._affectScroll(-this._step);
+  },
+
+  _scrollToRight: function() {
+	this._affectScroll(this._step);
+  },
+
+  //=========================================================
+  // Function _setAutoHeight
+  // Objective: Set the container height to be equal to the content height
+  // It's only active when autoHeight is true
+  //=========================================================
+  _setAutoHeight: function() {
+	// If Statement: Check if the autoHeight property is true
+	  // And if the itemsContent element is already in the dom
+	if (this.autoHeight && this.$.itemsContent) {
+	  var height = this.$.itemsContent.offsetHeight;
+
+	  this.updateStyles({
+	    "--triblock-scroll-container-height": (height + 5) + 'px'
+	  });
+	}// end if
+  },
+
+  _onLeftButtonDown: function() { 
+	if (!this._leftButtonPressed) {
+	  this._leftButtonPressed = true;
+	  this._onLeftScrollButtonDown();
+	}
+  },
+
+  _onLeftButtonUp: function() { 
+	this._leftButtonPressed = false;
+	this._onScrollButtonUp();
+  },
+
+  _onRightButtonDown: function() { 
+	if (!this._rightButtonPressed) {
+	  this._rightButtonPressed = true;
+	  this._onRightScrollButtonDown();
+	}
+  },
+
+  _onRightButtonUp: function() { 
+	this._rightButtonPressed = false;
+	this._onScrollButtonUp();
+  }
+});

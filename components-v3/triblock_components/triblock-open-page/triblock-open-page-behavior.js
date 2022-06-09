@@ -1,0 +1,121 @@
+import { dom } from "../@polymer/polymer/lib/legacy/polymer.dom.js";
+
+export const TriBlockOpenPageBehavior = {
+
+	properties: {
+		_createLabel: {
+			type: String,
+			value: "Create New"
+		},
+
+		_listBlock : {
+			type: Object,
+			readOnly: false
+		},
+
+		_createBlock : {
+			type: Object,
+			readOnly: false
+		},
+
+		_openBlock : {
+			type: Object,
+			readOnly: false
+		},
+
+	},
+
+	attached: function(){
+		this.async(function(){
+			var createBlock = dom(this.$$("#triblock-create")).getDistributedNodes()[0];
+			if(createBlock){
+				this.set("_createBlock", createBlock);
+				this.listen(this._createBlock, "create-button-tapped", "_handleCreateTap");
+				this.listen(this._createBlock, "back-button-tapped", "_handleBackTap");
+				this._createBlock.assignButtons();
+			}
+
+			var openBlock = dom(this.$$("#triblock-open")).getDistributedNodes()[0];
+			if(openBlock){
+				this.set("_openBlock", openBlock);
+				this.listen(this._openBlock, "back-button-tapped", "_handleBackTap");
+				this.listen(this._openBlock, "ds-update-complete", "_handleDsUpdateComplete");
+				this._openBlock.assignButtons();
+			}
+			
+			var listBlock = dom(this.$$("#triblock-list")).getDistributedNodes()[0];
+			if(listBlock){
+				this.set("_listBlock", listBlock);
+				this.listen(this._listBlock, "open-button-tapped", "_handleOpenTap");
+				this.listen(this._listBlock, "delete-button-tapped", "_handleDeleteTap");
+				this._listBlock.doPageAttached();
+			}
+		});
+	},
+	
+	_handleCreateTap: function(){
+		this._datasource.createRecord(this._createBlock.createData, 
+			TriPlatDs.RefreshType.CLIENT, this._createBlock.actionGroup, 
+			this._createBlock.createAction);
+	},
+	
+	_handleOpenTap: function(e){
+		this._openBlock.setOpenRecordId(e.detail.recordId);
+		this._openButtonTap(e.detail.recordId);
+	},
+	
+	_handleDeleteTap: function(e){
+		this._datasource.deleteRecord(e.detail.recordId,
+			TriPlatDs.RefreshType.CLIENT, this._listBlock.actionGroup, 
+			this._listBlock.deleteAction);
+	},
+	
+	_handleBackTap: function(){
+		this._backButtonTap();
+	},
+	
+	_handleDsUpdateComplete: function(){
+		this._handleUpdateComplete();
+	},
+	
+	_handleListPageAttached: function(e){
+		if(this._listBlock){
+			this._listBlock.doPageAttached(e.detail.params);
+		}
+	},
+	
+	_handleOpenPageAttached: function(e){
+		this._openBlock.doPageAttached(e.detail.params);
+	},
+	
+	_handleCreatePageAttached: function(e){
+		this._createBlock.doPageAttached(e.detail.params);
+	},
+	
+	_handleListPageDetached: function(){
+		this._listBlock.doPageDetached();
+	},
+	
+	_handleOpenPageDetached: function(){
+		this._openBlock.doPageDetached();
+	},
+	
+	_handleCreatePageDetached: function(){
+		this._createBlock.doPageDetached();
+	},
+	
+	_handleListPageLoaded: function(){
+		if(this._listBlock){
+			this._listBlock.doPageLoaded();
+		}
+	},
+	
+	_handleOpenPageLoaded: function(){
+		this._openBlock.doPageLoaded();
+	},
+	
+	_handleCreatePageLoaded: function(){
+		this._createBlock.doPageLoaded();
+	},
+	
+};

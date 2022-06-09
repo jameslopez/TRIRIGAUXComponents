@@ -1,0 +1,936 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-side-nav-item` is a component that can be used to define and configure the navigation items to be rendered inside the `triblock-side-nav` component.\n  \n  It can navigate to any combination or all of the following targets:\n\t<ul>\n\t\t<li>Routing page inside a `triplat-route-selector` component</li>\n\t\t<li>Page inside an `iron-pages` component</li>\n\t\t<li>Tap handler</li>\n\t\t<li>Event handler</li>\n\t</ul>\n  \n  See <a href=\"?active=TriBlockNavBehavior\">TriBlockNavBehavior</a> for more information about the properties to set for the different targets that a navigation item can be configured for.\n  \n\t\n  ### Route page\n  \n  Use this component to navigate to one of the routing pages inside the `triplat-route-selector` component by setting the `triplat-route-id` and/or `triplat-route-params` properties.  Optionally, you can provide parameters to your target route.\n  \n\tExample: \n  \n\t  <triplat-route \n\t\tid=\"activityRoute\" \n\t\tname=\"activityPage\" \n\t\tpath=\"/activity\"></triplat-route>\n\t  <triplat-route \n\t\tid=\"adminRoute\" \n\t\tname=\"adminPage\" \n\t\tpath=\"/admin\"></triplat-route>\n\t  <triplat-route \n\t\tid=\"applicationRoute\" \n\t\tname=\"applicationPage\" \n\t\tpath=\"/application\"></triplat-route>\n\t  \n\t  <triblock-side-nav>\n\t\t<triblock-side-nav-item \n\t\t  triplat-route-id=\"activityRoute\" \n\t\t  icon=\"activity\" \n\t\t  label=\"Activity\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  triplat-route-id=\"adminRoute\" \n\t\t  triplat-route-params=\"{{routeParams}}\" \n\t\t  icon=\"admin\" \n\t\t  label=\"Admin\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  triplat-route-id=\"applicationRoute\" \n\t\t  icon=\"applications\" \n\t\t  label=\"Application\"></triblock-side-nav-item>\n\t  </triblock-side-nav>\n\t  \n\t  <triplat-route-selector>\n\t\t<iron-pages>\n\t\t  <section route=\"activityPage\" default-route>\n\t\t\t<span>Activity Page</span>\n\t\t  </section>\n\t\t  <section route=\"adminPage\">\n\t\t\t<span>Administrator Page</span>\n\t\t  </section>\n\t\t  <section route=\"applicationPage\">\n\t\t\t<span>Application Page</span>\n\t\t  </section>\n\t\t</iron-pages>\n\t  </triplat-route-selector> \n\n\n  ### Iron page\n  \n  Use this component to navigate to one of the iron pages inside the `iron-pages` component by setting the `iron-pages-id` and `iron-page-id` properties.\n  \n\tDefault `id` example: \n  \n\t  <triblock-side-nav>\n\t\t<triblock-side-nav-item \n\t\t  iron-pages-id=\"myIronPages\" \n\t\t  iron-page-id=\"activityPage\" \n\t\t  icon=\"activity\" \n\t\t  label=\"Activity\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  iron-pages-id=\"myIronPages\" \n\t\t  iron-page-id=\"adminPage\" \n\t\t  icon=\"admin\" \n\t\t  label=\"Admin\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  iron-pages-id=\"myIronPages\" \n\t\t  iron-page-id=\"applicationPage\" \n\t\t  icon=\"applications\" \n\t\t  label=\"Application\"></triblock-side-nav-item>\n\t  </triblock-side-nav>\n\t  \n\t   <iron-pages id=\"myIronPages\">\n\t\t<section id=\"activityPage\">\n\t\t  <span>Activity Page</span>\n\t\t</section>\n\t\t<section id=\"adminPage\">\n\t\t  <span>Administrator Page</span>\n\t\t</section>\n\t\t<section id=\"applicationPage\">\n\t\t  <span>Application Page</span>\n\t\t</section>\n\t  </iron-pages>\n\n\t`attr-for-selected` example: \n  \n\t  <triblock-side-nav>\n\t\t<triblock-side-nav-item \n\t\t  iron-pages-id=\"myIronPages\" \n\t\t  iron-page-id=\"activityPage\" \n\t\t  icon=\"activity\" \n\t\t  label=\"Activity\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  iron-pages-id=\"myIronPages\" \n\t\t  iron-page-id=\"adminPage\" \n\t\t  icon=\"admin\" \n\t\t  label=\"Admin\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  iron-pages-id=\"myIronPages\" \n\t\t  iron-page-id=\"applicationPage\" \n\t\t  icon=\"applications\" \n\t\t  label=\"Application\"></triblock-side-nav-item>\n\t  </triblock-side-nav>\n\t  \n\t   <iron-pages id=\"myIronPages\" attr-for-selected=\"page-id\">\n\t\t<section page-id=\"activityPage\">\n\t\t  <span>Activity Page</span>\n\t\t</section>\n\t\t<section page-id=\"adminPage\">\n\t\t  <span>Administrator Page</span>\n\t\t</section>\n\t\t<section page-id=\"applicationPage\">\n\t\t  <span>Application Page</span>\n\t\t</section>\n\t  </iron-pages>\n  \n  ### Tap handler\n\n  Use this component to invoke an action through a tap handler by setting the name of the handler to the `tap-handler` property.  The tapped `triblock-side-nav-item` will be passed to the handler. \n  \n\tExample: \n  \n\t  <triblock-side-nav>\n\t\t<triblock-side-nav-item \n\t\t  tap-handler=\"_myActivityHandler\" \n\t\t  icon=\"activity\" \n\t\t  label=\"Activity\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  tap-handler=\"_myAdminHandler\" \n\t\t  icon=\"admin\" \n\t\t  label=\"Admin\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  tap-handler=\"_myApplicationHandler\" \n\t\t  icon=\"applications\" \n\t\t  label=\"Application\"></triblock-side-nav-item>\n\t  </triblock-side-nav>\n\t  \n\t  <script>\n\t\t_myActivityHandler: function(e) {\n\t\t  alert(\"My activity tap handler is called! Navigation label: \" + e.label);\n\t\t}, \n\t\t_myAdminHandler: function(e) {\n\t\t  alert(\"My admin tap handler is called! Navigation label: \" + e.label);\n\t\t},\n\t\t_myApplicationHandler: function(e) {\n\t\t  alert(\"My application tap handler is called! Navigation label: \" + e.label);\n\t\t}\n\t  </script>\n  \n  ### Event handler\n\n  Use this component to invoke an action by listening to a `navigate` event.  The `triblock-side-nav-item` element will be passed to the event listener and can be accessed as an item to the event, like `e.detail.item`. \n  \n\tExample: \n  \n\t  <triblock-side-nav>\n\t\t<triblock-side-nav-item \n\t\t  on-navigate=\"_myActivityListener\" \n\t\t  icon=\"activity\" \n\t\t  label=\"Activity\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  on-navigate=\"_myAdminListener\" \n\t\t  icon=\"admin\" \n\t\t  label=\"Admin\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  on-navigate=\"_myApplicationListener\" \n\t\t  icon=\"applications\" \n\t\t  label=\"Application\"></triblock-side-nav-item>\n\t  </triblock-side-nav>\n\t  \n\t  <script>\n\t\t_myActivityListener: function(e) {\n\t\t  alert(\"My activity event listener is called! Navigation label: \" + e.detail.item.label);\n\t\t},\n\t\t_myAdminListener: function(e) {\n\t\t  alert(\"My admin event listener is called! Navigation label: \" + e.detail.item.label);\n\t\t},\n\t\t_myApplicationListener: function(e) {\n\t\t  alert(\"My application event listener is called! Navigation label: \" + e.detail.item.label);\n\t\t}\n\t  </script>\n  \n  \n  ### Badges\n  \n  You can configure the navigation item to have a badge shown by default at the upper right corner of the component.  You can show the badge as an icon or as a label which can be a text or a number.    See <a href=\"?active=TriBlockBadgeBehavior\">TriBlockBadgeBehavior</a> for more information about the properties to set for the different type of badges on the navigation item.\n  \n\tExample: \n  \n\t  <triblock-side-nav>\n\t\t<triblock-side-nav-item \n\t\t  badge-number=\"5\" \n\t\t  icon=\"activity\" \n\t\t  label=\"Activity\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  badge-label=\"*\" \n\t\t  icon=\"admin\" \n\t\t  label=\"Admin\"></triblock-side-nav-item>\n\t\t<triblock-side-nav-item \n\t\t  badge-icon=\"check\" \n\t\t  icon=\"applications\" \n\t\t  label=\"Application\"></triblock-side-nav-item>\n\t  </triblock-side-nav>\n  \n  \n  See demo page of <a href=\"?active=triblock-side-nav\">triblock-side-nav</a> for sample usages.  \n\n\t\n  ### Styling\n  \n  The following custom properties and mixins are available for styling:\n\n  Custom property | Description | Default\n  ----------------|-------------|----------\n  `--triblock-side-nav-item-badge-icon-color` | Color applied to the badge icon of the navigation item | `white`",
+      "summary": "",
+      "path": "triblock-side-nav-item.js",
+      "properties": [
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the label of the navigation item.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 267,
+              "column": 2
+            },
+            "end": {
+              "line": 267,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "icon",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the name of the icon of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 271,
+              "column": 2
+            },
+            "end": {
+              "line": 271,
+              "column": 14
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "badgeIcon",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the name of the icon for the badge of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 275,
+              "column": 2
+            },
+            "end": {
+              "line": 278,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | null | undefined",
+          "description": "If true, the user cannot interact with this navigation item and the opacity is set to 50%.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 282,
+              "column": 2
+            },
+            "end": {
+              "line": 285,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_handleLabelChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 294,
+              "column": 4
+            },
+            "end": {
+              "line": 296,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "label"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleBadgeIconChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 298,
+              "column": 4
+            },
+            "end": {
+              "line": 300,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "badgeIcon"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleDisabledChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 302,
+              "column": 4
+            },
+            "end": {
+              "line": 304,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "disabled"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_refreshMenu",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 306,
+              "column": 4
+            },
+            "end": {
+              "line": 313,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 244,
+          "column": 8
+        },
+        "end": {
+          "line": 314,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Gets or sets the label of the navigation item.",
+          "sourceRange": {
+            "start": {
+              "line": 267,
+              "column": 2
+            },
+            "end": {
+              "line": 267,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "icon",
+          "description": "Gets or sets the name of the icon of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "sourceRange": {
+            "start": {
+              "line": 271,
+              "column": 2
+            },
+            "end": {
+              "line": 271,
+              "column": 14
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "badge-icon",
+          "description": "Gets or sets the name of the icon for the badge of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "sourceRange": {
+            "start": {
+              "line": 275,
+              "column": 2
+            },
+            "end": {
+              "line": 278,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "disabled",
+          "description": "If true, the user cannot interact with this navigation item and the opacity is set to 50%.",
+          "sourceRange": {
+            "start": {
+              "line": 282,
+              "column": 2
+            },
+            "end": {
+              "line": 285,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "update",
+          "description": "Fired when navigation item's properties get updated.  The element is passed to the event listener as item, like `e.detail.item`.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-side-nav-item"
+    },
+    {
+      "description": "`triblock-side-nav` is a component which provides a group of navigation items that will be rendered vertically on the page.\n  \n  Use the `triblock-side-nav-item` component and `side-nav-item` slot attribute to configure the navigation items that will be rendered in the side navigation.  This is the only supported component that can be used inside the `triblock-side-nav`.  See <a href=\"?active=triblock-side-nav-item\">triblock-side-nav-item</a> for more information.\n\n  Example:\n\n\t<triblock-side-nav>\n\t  <triblock-side-nav-item \n\t\ticon=\"activity\" \n\t\tlabel=\"Activity\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\ticon=\"admin\" \n\t\tlabel=\"Admin\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\ticon=\"applications\" \n\t\tlabel=\"Application\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t</triblock-side-nav>\n  \n  \n  ### Default maximum badge number\n  \n  It implements badge container behavior which propagates its `badge-max-number` value to its navigation items that do not have a value for its `badge-max-number` property.  See <a href=\"?active=TriBlockBadgeContainerBehavior\">TriBlockBadgeContainerBehavior</a> for more information.\n  \n  Example:\n  \n\t<triblock-side-nav badge-max-number=\"99\">\n\t  <triblock-side-nav-item \n\t\ticon=\"activity\" \n\t\tlabel=\"Activity\" \n\t\tbadge-max-number=\"50\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\ticon=\"admin\" \n\t\tlabel=\"Admin\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\ticon=\"applications\" \n\t\tlabel=\"Application\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t</triblock-side-nav>\n  \n  The `Activity` navigation item above will have a maximum badge number of 50 while the other two navigation items will have 99 as their maximum badge number which comes from the `triblock-side-nav`.\n\n  \n  ### Default id for `iron-pages` \n  \n  It implements iron pages container behavior which propagates its `iron-pages-id` value to its navigation items that do not have a value for its `iron-pages-id` property.  When the `triblock-side-nav` component is used as a `nav` component inside the `triblock-side-nav-layout` component the `iron-pages-id` property will be automatically assigned a value from the `id` of the `iron-pages` component that is marked as `page` inside the layout component.  In this usage, you do not need to set a value for the `iron-pages-id` property.  See <a href=\"?active=TriBlockNavIronPagesContainerBehavior\">TriBlockNavIronPagesContainerBehavior</a> for more information. \n  \n  \n  ### Selection\n  \n  It implements navigation selection behavior which maintains the currently selected navigation item based on the `id` or `attr-for-selected` property of its navigation items.  Use the `selected` property to get or set the selected side navigation item.  The index of the navigation item is not supported as a value for the `selected` property.  See <a href=\"?active=TriBlockNavSelectContainerBehavior\">TriBlockNavSelectContainerBehavior</a> for more information.\n  \n  `id` example:\n  \n\t<triblock-side-nav selected=\"activityNav\">\n\t  <triblock-side-nav-item \n\t\tid=\"activityNav\" \n\t\ticon=\"activity\" \n\t\tlabel=\"Activity\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\tid=\"adminNav\" \n\t\ticon=\"admin\" \n\t\tlabel=\"Admin\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\tid=\"applicationNav\" \n\t\ticon=\"applications\" \n\t\tlabel=\"Application\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t</triblock-side-nav>\n\t\n  The `Activity` navigation item will be selected by default.\n\n  `attr-for-selected` example:\n  \n\t<triblock-side-nav selected=\"adminNav\" attr-for-selected=\"route-to\">\n\t  <triblock-side-nav-item \n\t\troute-to=\"activityNav\" \n\t\ticon=\"activity\" \n\t\tlabel=\"Activity\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\troute-to=\"adminNav\" \n\t\ticon=\"admin\" \n\t\tlabel=\"Admin\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t  <triblock-side-nav-item \n\t\troute-to=\"applicationNav\" \n\t\ticon=\"applications\" \n\t\tlabel=\"Application\"\n\t\tslot=\"side-nav-item\"></triblock-side-nav-item>\n\t</triblock-side-nav>\n\t\n  The `Admin` navigation item will be selected by default.\n  \n  \n  ### Default styling\n  \n  The `triblock-side-nav` component comes with default TRIRIGA application styling such as:\n  <ul>\n\t  <li>On hover or focus, a band appears from the right side of the navigation item and follows the cursor between navigation items.</li>\n\t  <li>On hover or focus or selected, the navigation item label and icon change its opacity so that navigation item appears prominent.</li>\n\t  <li>When selected, the navigation band slides right to left and the navigation item color changes.</li>\n\t  <li>When unselected, the navigation band slides left to right and returns to its unselected or default state.</li>\n\t  <li>Rectangular shape for text and number badges.</li>\n  </ul>\n  \n  \n  ### Styling\n  \n  The following custom properties and mixins are available for styling:\n\n  Custom property | Description | Default\n  ----------------|-------------|----------\n  `--triblock-side-nav-container` | Mixin applied to the side navigation container  | `{}`\n  `--triblock-side-nav` | Mixin applied to the side navigation | `{}`\n  `--triblock-side-nav-item` | Mixin applied to the navigation item  | `{}`\n  `--triblock-side-nav-item-selected` | Mixin applied to the selected navigation item  | `opacity:1`\n  `--triblock-side-nav-item-focused-after` | Mixin applied to the after pseudo element of the focused navigation item | `opacity:0`\n  `--triblock-side-nav-item-hover` | Mixin applied to the navigation item when it is hovered on | `{}`    \n  `--triblock-side-nav-item-min-height` | Minimum height applied to the navigation item | `80px`\n  `--triblock-side-nav-item-selected-weight` | Weight applied to the selected navigation item | `{}`\n  `--triblock-side-nav-item-disabled` | Mixin applied to the disabled navigation item | `{}`  \n  `--triblock-side-nav-item-focused-band-width` | Width applied to the band when navigation item is focused or hovered on  | `5px`, \n  `--triblock-side-nav-width` | Width applied to the side navigation | `80px`\n  `--triblock-side-nav-item-focused-band` | Mixin applied to the band that appears when the navigation item is focused or hovered on | `{}`\n  `--triblock-side-nav-bg-color` | Background color applied to the side navigation | `--tri-header-background-color`, \n  `--triblock-side-nav-item-icon-height` | Height applied to the icon of the navigation item | `32px`\n  `--triblock-side-nav-item-icon-width` | Width applied to the icon of the navigation item  | `32px`\n  `--triblock-side-nav-icon` | Mixin applied to the icon of the navigation item | `{}`\n  `--triblock-side-nav-item-label-icon-selected-color` | Color applied to the icon and label when the navigation item is selected | `white`\n  `--triblock-side-nav-item-content-selected` | Mixin applied to the icon and label when the navigation item is selected | `{}`  \n  `--triblock-side-nav-item-label-icon-color` | Color applied to the label and icon when the navigation item is not selected | `white`  \n  `--triblock-side-nav-item-label-font-size` | Font size applied to the label when the navigation item is not selected | `12px`\n  `--triblock-side-nav-item-unselected` | Mixin applied to the label and icon when the navigation item is not selected  | `{}`\n  `--triblock-side-nav-item-content-focused` | Mixin applied to the label and icon when the navigation item is focused or hovered on | `{}`\n  `--triblock-side-nav-item-label` | Mixin applied to the label of the navigation item | `{}`\n  `--triblock-side-nav-badge` | Mixin applied to the badge of the navigation item | `{}`\n  `--triblock-side-nav-item-selected-color` | Background color applied to the slider when navigation item is selected. | `--tri-primary-color-60`\n  `--triblock-side-nav-badge-label-background-color` | Background color applied to the badge label of the navigation item | `white`\n  `--triblock-side-nav-badge-text-color` | Color applied to the text of the badge of the navigation item | `--ibm-gray-70`\n  `--triblock-side-nav-badge-label` | Mixin applied to the badge label of the navigation item | `{}`\n  `--triblock-side-nav-badge-label-width` | Width applied to the badge of the navigation item | `24px`\n  `--triblock-side-nav-badge-label-height` | Height applied to the badge of the navigation item | `17px`\n  `--triblock-side-nav-badge-label-margin-left` | Left margin applied to the badge of the navigation item | `10px`\n  `--triblock-side-nav-badge-label-margin-bottom` | Bottom margin applied to the badge of the navigation item | `{}`\n  `--triblock-side-nav-badge-icon` | Mixin applied to the badge icon of the navigation item | `{}`\n  `--triblock-side-nav-badge-icon-width` | Width applied to the badge icon of the navigation item | `20px`\n  `--triblock-side-nav-badge-icon-height` | Height applied to the badge icon of the navigation item  | `20px`",
+      "summary": "",
+      "path": "triblock-side-nav.js",
+      "properties": [
+        {
+          "name": "_isRTL",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 406,
+              "column": 2
+            },
+            "end": {
+              "line": 406,
+              "column": 17
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "selected",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 407,
+              "column": 2
+            },
+            "end": {
+              "line": 410,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_getElementsToApplyIronPagesId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 423,
+              "column": 4
+            },
+            "end": {
+              "line": 429,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_menuItemUpdated",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 431,
+              "column": 4
+            },
+            "end": {
+              "line": 433,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 435,
+              "column": 4
+            },
+            "end": {
+              "line": 439,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 441,
+              "column": 4
+            },
+            "end": {
+              "line": 443,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleRTL",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 445,
+              "column": 4
+            },
+            "end": {
+              "line": 458,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setIndividualBadgeStyles",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 460,
+              "column": 4
+            },
+            "end": {
+              "line": 476,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleBadgeMaxNumberAndMenuItems",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 478,
+              "column": 4
+            },
+            "end": {
+              "line": 484,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "badgeMaxNumber"
+            },
+            {
+              "name": "_menuItems"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeIconId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 486,
+              "column": 4
+            },
+            "end": {
+              "line": 496,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "index"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 498,
+              "column": 4
+            },
+            "end": {
+              "line": 500,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_computeDisabled",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 502,
+              "column": 4
+            },
+            "end": {
+              "line": 508,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeBadgeId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 510,
+              "column": 4
+            },
+            "end": {
+              "line": 520,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "index"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeBadgeClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 522,
+              "column": 4
+            },
+            "end": {
+              "line": 532,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeBadgeLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 534,
+              "column": 4
+            },
+            "end": {
+              "line": 540,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeBadgeIcon",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 542,
+              "column": 4
+            },
+            "end": {
+              "line": 548,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeBadgeHidden",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 550,
+              "column": 4
+            },
+            "end": {
+              "line": 560,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "index"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_menuItemsLoaded",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 562,
+              "column": 4
+            },
+            "end": {
+              "line": 564,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_refreshMenu",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 566,
+              "column": 4
+            },
+            "end": {
+              "line": 574,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_updateMenuItemStyles",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 576,
+              "column": 4
+            },
+            "end": {
+              "line": 584,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_retrieveMenuItems",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 586,
+              "column": 4
+            },
+            "end": {
+              "line": 589,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_updateBadgeStylesAndPosition",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 591,
+              "column": 4
+            },
+            "end": {
+              "line": 605,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleIronSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 607,
+              "column": 4
+            },
+            "end": {
+              "line": 611,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleIronDeselected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 613,
+              "column": 4
+            },
+            "end": {
+              "line": 615,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_navigate",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 617,
+              "column": 4
+            },
+            "end": {
+              "line": 619,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 181,
+          "column": 8
+        },
+        "end": {
+          "line": 620,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "selected",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 407,
+              "column": 2
+            },
+            "end": {
+              "line": 410,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "selected-changed",
+          "description": "Fired when the `selected` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-side-nav"
+    },
+    {
+      "description": "`triblock-side-nav-layout` is a container component that positions the side navigation and the area for switching pages.  It determines the side navigation content if the `nav` attribute is present in one of its child components.  Similarly, it determines the area for pages if the `page` attribute is present in one of its child components.  The `nav` and `page` attributes should not be set to the same child component.  It applies the horizontal layout to position the `nav` and `page` components.  The `nav` component does not flex while the `page` does.\n  \n  Use the `triblock-side-nav` component as the `nav` component in the container.  See <a href=\"?active=triblock-side-nav\">triblock-side-nav</a> for more information.\n  \n  Example:\n\t\n\t  <triblock-side-nav-layout>\n\t\t<triblock-side-nav nav>\n\t\t  <triblock-side-nav-item \n\t\t\tiron-pages-id=\"myIronPages\" \n\t\t\tiron-page-id=\"activityPage\" \n\t\t\ticon=\"activity\" \n\t\t\tlabel=\"Activity\"></triblock-side-nav-item>\n\t\t  <triblock-side-nav-item \n\t\t\tiron-pages-id=\"myIronPages\" \n\t\t\tiron-page-id=\"adminPage\" \n\t\t\ticon=\"admin\" \n\t\t\tlabel=\"Admin\"></triblock-side-nav-item>\n\t\t  <triblock-side-nav-item \n\t\t\tiron-pages-id=\"myIronPages\" \n\t\t\tiron-page-id=\"applicationPage\" \n\t\t\ticon=\"applications\" \n\t\t\tlabel=\"Application\"></triblock-side-nav-item>\n\t\t</triblock-side-nav>\n\t\t\n\t\t <iron-pages id=\"myIronPages\" page>\n\t\t  <section id=\"activityPage\">\n\t\t\t<span>Activity Page</span>\n\t\t  </section>\n\t\t  <section id=\"adminPage\">\n\t\t\t<span>Administrator Page</span>\n\t\t  </section>\n\t\t  <section id=\"applicationPage\">\n\t\t\t<span>Application Page</span>\n\t\t  </section>\n\t\t</iron-pages>\n\t  </triblock-side-nav-layout>\n  \n\t\n  In the example above, the `nav` content appears first on the page, and is then followed by the `iron-pages` content which takes up the rest of the horizontal space.  \n\t\n  \n  ### Default `iron-pages-id`\n  \n  If you use the `triblock-side-nav` component as the `nav` content in this container, you do not need to specify the `iron-pages-id` in the individual `triblock-side-nav-item` but you will need to provide `id` to the `iron-pages` element.  The `iron-pages-id` property will be populated by the container after it is attached to the document.\n  \n  Example:\n\t\n\t  <triblock-side-nav-layout>\n\t\t<triblock-side-nav nav>\n\t\t  <triblock-side-nav-item \n\t\t\tiron-page-id=\"activityPage\" \n\t\t\ticon=\"activity\" \n\t\t\tlabel=\"Activity\"></triblock-side-nav-item>\n\t\t  <triblock-side-nav-item \n\t\t\tiron-page-id=\"adminPage\" \n\t\t\ticon=\"admin\" \n\t\t\tlabel=\"Admin\"></triblock-side-nav-item>\n\t\t  <triblock-side-nav-item \n\t\t\tiron-page-id=\"applicationPage\" \n\t\t\ticon=\"applications\" \n\t\t\tlabel=\"Application\"></triblock-side-nav-item>\n\t\t</triblock-side-nav>\n\t\t\n\t\t <iron-pages id=\"myIronPages\" page>\n\t\t  <section id=\"activityPage\">\n\t\t\t<span>Activity Page</span>\n\t\t  </section>\n\t\t  <section id=\"adminPage\">\n\t\t\t<span>Administrator Page</span>\n\t\t  </section>\n\t\t  <section id=\"applicationPage\">\n\t\t\t<span>Application Page</span>\n\t\t  </section>\n\t\t</iron-pages>\n\t  </triblock-side-nav-layout>\n\n\n  ### Styling\n  \n  The following custom properties and mixins are available for styling:\n\n  Custom property | Description | Default\n  ----------------|-------------|----------\n  `--triblock-side-nav-layout` | Mixin applied to the container | `{}`\n  `--triblock-side-nav-layout-nav` | Mixin applied to the navigation content marked as `nav` | `{}`\n  `--triblock-side-nav-layout-page` | Mixin applied to the navigation content marked as `page` | `{}`",
+      "summary": "",
+      "path": "triblock-side-nav-layout.js",
+      "properties": [],
+      "methods": [],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/layout.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 101,
+          "column": 8
+        },
+        "end": {
+          "line": 133,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-side-nav-layout"
+    }
+  ]
+}

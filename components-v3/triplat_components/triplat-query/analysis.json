@@ -1,0 +1,3540 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component to specify that the data should be retrieved from the server by using traditional pagination for a triplat-query component. \nFiltering and sorting will be done on the server.\n\nAdditional information including examples can be found on the triplat-query documentation page.",
+      "summary": "",
+      "path": "triplat-query-page.js",
+      "properties": [
+        {
+          "name": "currentPage",
+          "type": "number | null | undefined",
+          "description": "The number of the current page retrieved from the server. The methods reset, prev, and next can be used to change this.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 29,
+              "column": 2
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "1"
+        },
+        {
+          "name": "totalPages",
+          "type": "number | null | undefined",
+          "description": "The total number of pages available from the server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 39,
+              "column": 2
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "totalSize",
+          "type": "number | null | undefined",
+          "description": "The total number of records available from the server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 2
+            },
+            "end": {
+              "line": 52,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "size",
+          "type": "number | null | undefined",
+          "description": "The number of records that you want to represent a page.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 57,
+              "column": 2
+            },
+            "end": {
+              "line": 59,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_totalSizeChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 72,
+              "column": 1
+            },
+            "end": {
+              "line": 78,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "totalSize"
+            },
+            {
+              "name": "size"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_currentPageChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 80,
+              "column": 1
+            },
+            "end": {
+              "line": 100,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "currentPage"
+            },
+            {
+              "name": "size"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_dsChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 102,
+              "column": 1
+            },
+            "end": {
+              "line": 104,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "reset",
+          "description": "Resets the current page to one.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 109,
+              "column": 1
+            },
+            "end": {
+              "line": 111,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "next",
+          "description": "Retrieves the next page of records.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 116,
+              "column": 1
+            },
+            "end": {
+              "line": 118,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "prev",
+          "description": "Retrieves the previous page of records.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 123,
+              "column": 1
+            },
+            "end": {
+              "line": 125,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 127,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "current-page",
+          "description": "The number of the current page retrieved from the server. The methods reset, prev, and next can be used to change this.",
+          "sourceRange": {
+            "start": {
+              "line": 29,
+              "column": 2
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "total-pages",
+          "description": "The total number of pages available from the server.",
+          "sourceRange": {
+            "start": {
+              "line": 39,
+              "column": 2
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "total-size",
+          "description": "The total number of records available from the server.",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 2
+            },
+            "end": {
+              "line": 52,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "size",
+          "description": "The number of records that you want to represent a page.",
+          "sourceRange": {
+            "start": {
+              "line": 57,
+              "column": 2
+            },
+            "end": {
+              "line": 59,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "current-page-changed",
+          "description": "Fired when the `currentPage` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "total-pages-changed",
+          "description": "Fired when the `totalPages` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "total-size-changed",
+          "description": "Fired when the `totalSize` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query-page"
+    },
+    {
+      "description": "A component to indicate that the data should be retrieved from the server by using scrolling pagination for a triplat-query component. \nFiltering and sorting will be done on the server.\n\nAdditional information including examples can be found on the triplat-query documentation page.",
+      "summary": "",
+      "path": "triplat-query-scroll-page.js",
+      "properties": [
+        {
+          "name": "scroller",
+          "type": "Object | null | undefined",
+          "description": "This element contains the data items on the page, whose scroll event is responsible for triggering this pagination request.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 25,
+              "column": 2
+            },
+            "end": {
+              "line": 30,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_initScroller\"",
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "threshold",
+          "type": "number | null | undefined",
+          "description": "The number of pixels from the current scroll position to the bottom of the scroller that will trigger a pagination request.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 35,
+              "column": 2
+            },
+            "end": {
+              "line": 40,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "250"
+        },
+        {
+          "name": "dataSize",
+          "type": "number | null | undefined",
+          "description": "The total number of records that have been retrieved from the server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 45,
+              "column": 2
+            },
+            "end": {
+              "line": 49,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "totalSize",
+          "type": "number | null | undefined",
+          "description": "The total number of records available from the server.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 54,
+              "column": 2
+            },
+            "end": {
+              "line": 58,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "size",
+          "type": "number | null | undefined",
+          "description": "The number of records that you want to represent a page.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 63,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "disableAutoFetch",
+          "type": "boolean | null | undefined",
+          "description": "By default, the triplat-query-scroll-page will listen to dom-change events from\nthe scroller container. When a dom-change from a dom-repeat occurs, it will check if the\ncurrently retrieved records activated the scrollbar on the scroller container.\nIf there is no scrollbar yet and there are more records to be retrieved, the\ntriplat-query-scroll-page will trigger the triplat-ds to fetch more records until the\nscrollbar is activated on the scroller or all records have been retrieved.\nThis logic prevents the scenario where the first page of records are retrieved and there are more\nrecords to be retrieved, but the scroller container does not have a scrollbar to trigger\nthe retrieval of remaining records.\nIf <b>disableAutoFetch</b> is true it will disable this auto-fetch logic.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 79,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "acceptModernSearch",
+          "type": "boolean | null | undefined",
+          "description": "Deprecated. Use the <b>disableAutoFetch</b> property instead.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 2
+            },
+            "end": {
+              "line": 90,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "horizontalScroll",
+          "type": "boolean | null | undefined",
+          "description": "If true, the <b>triplat-query-scroll-page</b> will react to the movement of scroller's horizontal\nscrollbar. Otherwise, it will react to the movement of scroller's vertical scrollbar.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 96,
+              "column": 2
+            },
+            "end": {
+              "line": 99,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "detached",
+          "description": "Sets the scroller to null.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 113,
+              "column": 1
+            },
+            "end": {
+              "line": 115,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_initScroller",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 117,
+              "column": 1
+            },
+            "end": {
+              "line": 128,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "newScroller"
+            },
+            {
+              "name": "oldScroller"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onScroll",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 1
+            },
+            "end": {
+              "line": 148,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onDsChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 1
+            },
+            "end": {
+              "line": 157,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "reset",
+          "description": "Sets the 'from' to zero.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 162,
+              "column": 1
+            },
+            "end": {
+              "line": 164,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_scrollerDataPopulationComplete",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 166,
+              "column": 1
+            },
+            "end": {
+              "line": 192,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_nextPage",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 194,
+              "column": 1
+            },
+            "end": {
+              "line": 199,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isAutoFetchEnabled",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 201,
+              "column": 1
+            },
+            "end": {
+              "line": 203,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 205,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "scroller",
+          "description": "This element contains the data items on the page, whose scroll event is responsible for triggering this pagination request.",
+          "sourceRange": {
+            "start": {
+              "line": 25,
+              "column": 2
+            },
+            "end": {
+              "line": 30,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "threshold",
+          "description": "The number of pixels from the current scroll position to the bottom of the scroller that will trigger a pagination request.",
+          "sourceRange": {
+            "start": {
+              "line": 35,
+              "column": 2
+            },
+            "end": {
+              "line": 40,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "data-size",
+          "description": "The total number of records that have been retrieved from the server.",
+          "sourceRange": {
+            "start": {
+              "line": 45,
+              "column": 2
+            },
+            "end": {
+              "line": 49,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "total-size",
+          "description": "The total number of records available from the server.",
+          "sourceRange": {
+            "start": {
+              "line": 54,
+              "column": 2
+            },
+            "end": {
+              "line": 58,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "size",
+          "description": "The number of records that you want to represent a page.",
+          "sourceRange": {
+            "start": {
+              "line": 63,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "disable-auto-fetch",
+          "description": "By default, the triplat-query-scroll-page will listen to dom-change events from\nthe scroller container. When a dom-change from a dom-repeat occurs, it will check if the\ncurrently retrieved records activated the scrollbar on the scroller container.\nIf there is no scrollbar yet and there are more records to be retrieved, the\ntriplat-query-scroll-page will trigger the triplat-ds to fetch more records until the\nscrollbar is activated on the scroller or all records have been retrieved.\nThis logic prevents the scenario where the first page of records are retrieved and there are more\nrecords to be retrieved, but the scroller container does not have a scrollbar to trigger\nthe retrieval of remaining records.\nIf <b>disableAutoFetch</b> is true it will disable this auto-fetch logic.",
+          "sourceRange": {
+            "start": {
+              "line": 79,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "accept-modern-search",
+          "description": "Deprecated. Use the <b>disableAutoFetch</b> property instead.",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 2
+            },
+            "end": {
+              "line": 90,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "horizontal-scroll",
+          "description": "If true, the <b>triplat-query-scroll-page</b> will react to the movement of scroller's horizontal\nscrollbar. Otherwise, it will react to the movement of scroller's vertical scrollbar.",
+          "sourceRange": {
+            "start": {
+              "line": 96,
+              "column": 2
+            },
+            "end": {
+              "line": 99,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "data-size-changed",
+          "description": "Fired when the `dataSize` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "total-size-changed",
+          "description": "Fired when the `totalSize` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query-scroll-page"
+    },
+    {
+      "description": "A component to specify how to sort the data for a triplat-query component. \n\nAdditional information including examples can be found on the triplat-query documentation page.",
+      "summary": "",
+      "path": "triplat-query-sort.js",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string | null | undefined",
+          "description": "The name of the data source field to be used for this sort.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 29,
+              "column": 2
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "desc",
+          "type": "boolean | null | undefined",
+          "description": "If specified, the sort order will be descending. Otherwise it will be ascending.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 38,
+              "column": 2
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "type",
+          "type": "string | null | undefined",
+          "description": "If specified, the client query will attempt to convert the operands to the specified type before applying the filter.\nThe supported types are:\n - DATE\n - DATE_TIME\n - STRING_WITH_ID",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 52,
+              "column": 2
+            },
+            "end": {
+              "line": 55,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "sort",
+          "type": "Object | null | undefined",
+          "description": "A representation of 'name' and 'desc' in a single object.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 60,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_sortChanged\"",
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_initBoth",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 73,
+              "column": 1
+            },
+            "end": {
+              "line": 79,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "name"
+            },
+            {
+              "name": "desc"
+            },
+            {
+              "name": "type"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_sortChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 81,
+              "column": 1
+            },
+            "end": {
+              "line": 83,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "sort"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 85,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "The name of the data source field to be used for this sort.",
+          "sourceRange": {
+            "start": {
+              "line": 29,
+              "column": 2
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "desc",
+          "description": "If specified, the sort order will be descending. Otherwise it will be ascending.",
+          "sourceRange": {
+            "start": {
+              "line": 38,
+              "column": 2
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "type",
+          "description": "If specified, the client query will attempt to convert the operands to the specified type before applying the filter.\nThe supported types are:\n - DATE\n - DATE_TIME\n - STRING_WITH_ID",
+          "sourceRange": {
+            "start": {
+              "line": 52,
+              "column": 2
+            },
+            "end": {
+              "line": 55,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "sort",
+          "description": "A representation of 'name' and 'desc' in a single object.",
+          "sourceRange": {
+            "start": {
+              "line": 60,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-query-sort-changed",
+          "description": "Fired when the sort changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "sort-changed",
+          "description": "Fired when the `sort` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query-sort"
+    },
+    {
+      "description": "A component to specify criteria for retrieving a resource calendar. \n\nWhen this component is specified, server-side filtering will be used. \nWhen this component is specified, the triplat-ds 'data' will be an array of calendar events.\nThis plugin must be used with data sources of type RESOURCE_CALENDAR to retrieve calendar events for resources.\n\n\t<triplat-ds id=\"myResourceCalendarSpace\" \n\t\t\t\tname=\"myResourceCalendarSpace\" \n\t\t\t\tdata=\"{{resourceCalendarSpace}}\">\n\t\t<triplat-ds-context name=\"spaceDs\" \n\t\t\t\t\t\t\tcontext-id=\"{{space._id}}\">\n\t\t</triplat-ds-context>\n\t\t<triplat-query id=\"myResourceCalendarQuerySpace\">\n\t\t\t<triplat-query-resource-calendar\n\t\t\t\tstart-date=\"{{startDateSpace}}\"\n\t\t\t\tend-date=\"{{endDateSpace}}\">\n\t\t\t</triplat-query-resource-calendar>\n\t\t</triplat-query>\n\t</triplat-ds>\n\nThere is a triplat-query plugin which contains this plugin. \nIn the above example, the name of the data source, myResourceCalendarSpace, is a data source whose type is RESOURCE_CALENDAR. \nBecause triplat-ds-context is specified, we do not need to specify the id property in triplat-query-resource-calendar. \nThe value needed for context-id will depend on the Calendar Set and the filter criteria specified in its queries.",
+      "summary": "",
+      "path": "triplat-query-resource-calendar.js",
+      "properties": [
+        {
+          "name": "startDate",
+          "type": "string | null | undefined",
+          "description": "The start date for the range that you want to search. This must be in ISO format.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 52,
+              "column": 2
+            },
+            "end": {
+              "line": 56,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_startDateChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "endDate",
+          "type": "string | null | undefined",
+          "description": "The end date for the range that you want to search. This must be in ISO format.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 61,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_endDateChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "id",
+          "type": "number | null | undefined",
+          "description": "The resource identifier of the calendar you want to query. If not specified, then the context-id will be used.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 70,
+              "column": 2
+            },
+            "end": {
+              "line": 73,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_idChanged\"",
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "name",
+          "type": "string | null | undefined",
+          "description": "The calendar set name that you want to be used. If not specified, then the calendar set name specified in the\nQuery Name field of that data source model will be used.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 79,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_nameChanged\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "availability",
+          "type": "Object | null | undefined",
+          "description": "A representation of 'startDate', 'endDate' , 'id' and 'name' in a single object.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 2
+            },
+            "end": {
+              "line": 92,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_availabilityChanged\"",
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_initAll",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 101,
+              "column": 1
+            },
+            "end": {
+              "line": 107,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "startDate"
+            },
+            {
+              "name": "endDate"
+            },
+            {
+              "name": "id"
+            },
+            {
+              "name": "name"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_availabilityChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 109,
+              "column": 1
+            },
+            "end": {
+              "line": 113,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "availability"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_startDateChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 1
+            },
+            "end": {
+              "line": 117,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_endDateChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 119,
+              "column": 1
+            },
+            "end": {
+              "line": 121,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_idChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 123,
+              "column": 1
+            },
+            "end": {
+              "line": 125,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_nameChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 127,
+              "column": 1
+            },
+            "end": {
+              "line": 129,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 37,
+          "column": 8
+        },
+        "end": {
+          "line": 132,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "start-date",
+          "description": "The start date for the range that you want to search. This must be in ISO format.",
+          "sourceRange": {
+            "start": {
+              "line": 52,
+              "column": 2
+            },
+            "end": {
+              "line": 56,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "end-date",
+          "description": "The end date for the range that you want to search. This must be in ISO format.",
+          "sourceRange": {
+            "start": {
+              "line": 61,
+              "column": 2
+            },
+            "end": {
+              "line": 65,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "id",
+          "description": "The resource identifier of the calendar you want to query. If not specified, then the context-id will be used.",
+          "sourceRange": {
+            "start": {
+              "line": 70,
+              "column": 2
+            },
+            "end": {
+              "line": 73,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "name",
+          "description": "The calendar set name that you want to be used. If not specified, then the calendar set name specified in the\nQuery Name field of that data source model will be used.",
+          "sourceRange": {
+            "start": {
+              "line": 79,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "availability",
+          "description": "A representation of 'startDate', 'endDate' , 'id' and 'name' in a single object.",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 2
+            },
+            "end": {
+              "line": 92,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-query-resource-calendar-changed",
+          "description": "Fired after the availability object changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "availability-changed",
+          "description": "Fired when the `availability` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query-resource-calendar"
+    },
+    {
+      "description": "",
+      "summary": "",
+      "path": "triplat-query-work-planner.js",
+      "properties": [
+        {
+          "name": "config",
+          "type": "?",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 61,
+              "column": 1
+            },
+            "end": {
+              "line": 67,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "startDate",
+          "type": "string | null | undefined",
+          "description": "The start date for the range that you want to search. This must be in ISO format.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 14,
+              "column": 3
+            },
+            "end": {
+              "line": 16,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "endDate",
+          "type": "string | null | undefined",
+          "description": "The end date for the range that you want to search. This must be in ISO format.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 21,
+              "column": 3
+            },
+            "end": {
+              "line": 23,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "contextId",
+          "type": "Object | null | undefined",
+          "description": "An object that holds a context ID or an array of context IDs for the work planner data source. If not specified, then the context-id from the triplat-ds-context will be used.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 28,
+              "column": 3
+            },
+            "end": {
+              "line": 30,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_handleQueryWorkPlannerChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 40,
+              "column": 1
+            },
+            "end": {
+              "line": 59,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "startDate"
+            },
+            {
+              "name": "endDate"
+            },
+            {
+              "name": "contextId"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getContextId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 69,
+              "column": 1
+            },
+            "end": {
+              "line": 86,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getContextIdFromObject",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 88,
+              "column": 1
+            },
+            "end": {
+              "line": 104,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "contextIdObject"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 105,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "TriplatQueryWorkPlanner",
+      "attributes": [
+        {
+          "name": "start-date",
+          "description": "The start date for the range that you want to search. This must be in ISO format.",
+          "sourceRange": {
+            "start": {
+              "line": 14,
+              "column": 3
+            },
+            "end": {
+              "line": 16,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "end-date",
+          "description": "The end date for the range that you want to search. This must be in ISO format.",
+          "sourceRange": {
+            "start": {
+              "line": 21,
+              "column": 3
+            },
+            "end": {
+              "line": 23,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "context-id",
+          "description": "An object that holds a context ID or an array of context IDs for the work planner data source. If not specified, then the context-id from the triplat-ds-context will be used.",
+          "sourceRange": {
+            "start": {
+              "line": 28,
+              "column": 3
+            },
+            "end": {
+              "line": 30,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query-work-planner"
+    },
+    {
+      "description": "triplat-query-reserve-context specifies the context properties to run a reserve query. When this component is used, you do not need <b>triplat-ds-context</b> \nto set a reserve context record. But if you run a reserve query without using this component, you need <b>triplat-ds-context</b> to set the reserve context \nrecord that is used by the reserve query engine to run the desired query.\n\n### Recurrence object\n\nThe recurrence object has the following properties:\n- <b>type</b>: The type of the recurrence pattern. It can be one of the values from the triRecurrencePatternTypeICal list: DAILY, WEEKLY, MONTHLY or YEARLY.\n- <b>dailyProperties</b>: The daily recurrence object. It must be set if the <b>type</b> is DAILY.\n- <b>weeklyProperties</b>: The weekly recurrence object. It must be set if the <b>type</b> is WEEKLY.\n- <b>monthlyProperties</b>: The monthly recurrence object. It must be set if the <b>type</b> is MONTHLY.\n- <b>yearlyProperties</b>: The yearly recurrence object. It must be set if the <b>type</b> is YEARLY.\n\n### Daily recurrence object\n\nThe daily recurrence object has the following properties:\n- <b>type</b>: The type of the daily recurrence. It can be one of the values from the triRecurrenceDailyOptionsICal list:  \"Every [x] day(s)\", \"Every weekday\" or \"Every weekend day\".\n- <b>interval</b>: The daily recurrence period between instances. It can be used if the <b>type</b> is \"Every [x] day(s)\".\n- <b>end</b>: The recurrence end object.\n\n### Weekly recurrence object\n\nThe weekly recurrence object has the following properties:\n- <b>interval</b>: The weekly recurrence period between instances.\n- <b>weeklyDays</b>: An array of days of the week. The array can contain one or more days of week. Valid values are: \"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\" and \"Saturday\".\n- <b>end</b>: The recurrence end object.\n\n### Monthly recurrence object\n\nThe monthly recurrence object has the following properties:\n- <b>type</b>: The type of the monthly recurrence. It can be one of the values from the triRecurrenceMonthlyOptionsICal list:  \"Day [x] of every [x] month(s)\" or \"The [First] [Monday] of every [x] month(s)\".\n- <b>interval</b>: The monthly recurrence period between instances.\n- <b>dayOfMonth</b>: A number representing the day of the month. It must be a number between 1 and 31. It must be used if the <b>type</b> is \"Day [x] of every [x] month(s)\".\n- <b>dayOfWeek</b>: Represents the day of the week. It can be one of the values from the triRecurrenceMonthlyDayOfWeekICal list: \"day\", \"weekday\", \"weekend day\", \"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\" or \"Saturday\". It must be used if the type is \"The [First] [Monday] of every [x] month(s)\".\n- <b>weekOfMonth</b>: Represents the ordinal position of the week inside the month. It can be one of the values from the weeks list: \"First\", \"Second\", \"Third\" or \"Fourth\", \"Last\". It must be used if the <b>type</b> is \"The [First] [Monday] of every [x] month(s)\".\n- <b>end</b>: The recurrence end object.\n\n### Yearly recurrence object\n\nThe yearly recurrence object has the following properties:\n- <b>type</b>: The type of the yearly recurrence. It can be one of the values from the triRecurrenceYearlyOptionsICal list:  \"Every [May] [1]\" or \"The [First] [Monday] of [May]\".\n- <b>dayOfMonth</b>: A number representing the day of the month. It must be a number between 1 and 31. It must be used if the <b>type</b> is \"Every [May] [1]\".\n- <b>dayOfWeek</b>: Represents the day of the week. It can be one of the values from the triRecurrenceYearlyDayOfWeekICal list: \"day\", \"weekday\", \"weekend day\", \"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\" or \"Saturday\". It must be used if the type is \"The [First] [Monday] of [May]\".\n- <b>weekOfMonth</b>: Represents the ordinal position of the week inside the month. It can be one of the values from the weeks list: \"First\", \"Second\", \"Third\", \"Fourth\" or \"Last\". It must be used if the <b>type</b> is \"The [First] [Monday] of [May]\".\n- <b>month</b>: Represents the month. It can be one of the values from the months list: \"January\", \"February\", \"March\", \"April\", \"May\", \"June\", \"July\", \"August\", \"September\", \"October\", \"November\" or \"December\".\n- <b>end</b>: The recurrence end object.\n\n### Recurrence end object\n\nThe recurrence end has the following properties:\n- <b>type</b>: The type of the recurrence end. It can be one of the values from the triRecurrenceEndOptionsICal list:  \"End After\", \"End Date\" or \"No End Date\".\n- <b>endDate</b>: The end date for the recurrence. This must be in ISO format. It must be used if the <b>type</b> is \"End Date\".\n- <b>numberOfOccurrencesBeforeEnd</b>: The number of recurrence instances. It must be used if the <b>type</b> is \"End After\".\n\n### Recurrence object examples\n\n- A monthly recurrence, on the third weekday of every month, ending after 10 occurrences:\n```\n\t{\n\t\ttype: \"MONTHLY\",\n\t\tmonthlyProperties: {\n\t\t\ttype: \"The [First] [Monday] of every [x] month(s)\",\n\t\t\tinterval: 1,\n\t\t\tdayOfWeek: \"weekday\",\n\t\t\tweekOfMonth: \"Third\",\n\t\t\tend: {\n\t\t\t\ttype: \"End After\",\n\t\t\t\tnumberOfOccurrencesBeforeEnd: 10\n\t\t\t}\n\t\t}\n\t}\n```\n\n- A weekly recurrence, every 2 weeks, on Monday and Friday, ending on 30 August 2019:\n```\n\t{\n\t\ttype: \"WEEKLY\",\n\t\tweeklyProperties: {\n\t\t\tinterval: 2,\n\t\t\tweeklyDays: [\"Monday\", \"Friday\"],\n\t\t\tend: {\n\t\t\t\ttype: \"End Date\",\n\t\t\t\tendDate: \"2019-08-30T23:59:59.000-00:00\"\n\t\t\t}\n\t\t}\n\t}\n```",
+      "summary": "",
+      "path": "triplat-query-reserve-context.js",
+      "properties": [
+        {
+          "name": "config",
+          "type": "?",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 171,
+              "column": 1
+            },
+            "end": {
+              "line": 180,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "startDate",
+          "type": "string | null | undefined",
+          "description": "The start date for the range that is searched. This must be in ISO format.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 105,
+              "column": 3
+            },
+            "end": {
+              "line": 107,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "endDate",
+          "type": "string | null | undefined",
+          "description": "The end date for the range that is searched. This must be in ISO format.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 112,
+              "column": 3
+            },
+            "end": {
+              "line": 114,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "resultsLimit",
+          "type": "number | null | undefined",
+          "description": "The maximum number of resources that is returned by the reserve query.\nIf this property is not set or has a value that equals zero, it returns the entire set of query results.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 120,
+              "column": 3
+            },
+            "end": {
+              "line": 122,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "recurrenceAvailabilityPercentage",
+          "type": "number | null | undefined",
+          "description": "The minimum percentage of the time that a resource can be available for a recurring reservation.\nFor example, if you specify 90, the query will return only resources that are available 90% of the recurring instances.\nIn this case, a resource that is available 4 of 5 days is not shown as available.\nThis property is only used if you set the <b>recurrence</b> property.\nIt must be a integer between 1 and 100.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 131,
+              "column": 3
+            },
+            "end": {
+              "line": 133,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "recurrence",
+          "type": "Object | null | undefined",
+          "description": "The recurrence properties that are applied to the reserve query.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 3
+            },
+            "end": {
+              "line": 140,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_handleQueryReserveContextChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 1
+            },
+            "end": {
+              "line": 169,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "startDate"
+            },
+            {
+              "name": "endDate"
+            },
+            {
+              "name": "resultsLimit"
+            },
+            {
+              "name": "recurrenceAvailabilityPercentage"
+            },
+            {
+              "name": "recurrenceChange"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 97,
+          "column": 0
+        },
+        "end": {
+          "line": 181,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "TriplatQueryReserveContext",
+      "attributes": [
+        {
+          "name": "start-date",
+          "description": "The start date for the range that is searched. This must be in ISO format.",
+          "sourceRange": {
+            "start": {
+              "line": 105,
+              "column": 3
+            },
+            "end": {
+              "line": 107,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "end-date",
+          "description": "The end date for the range that is searched. This must be in ISO format.",
+          "sourceRange": {
+            "start": {
+              "line": 112,
+              "column": 3
+            },
+            "end": {
+              "line": 114,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "results-limit",
+          "description": "The maximum number of resources that is returned by the reserve query.\nIf this property is not set or has a value that equals zero, it returns the entire set of query results.",
+          "sourceRange": {
+            "start": {
+              "line": 120,
+              "column": 3
+            },
+            "end": {
+              "line": 122,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "recurrence-availability-percentage",
+          "description": "The minimum percentage of the time that a resource can be available for a recurring reservation.\nFor example, if you specify 90, the query will return only resources that are available 90% of the recurring instances.\nIn this case, a resource that is available 4 of 5 days is not shown as available.\nThis property is only used if you set the <b>recurrence</b> property.\nIt must be a integer between 1 and 100.",
+          "sourceRange": {
+            "start": {
+              "line": 131,
+              "column": 3
+            },
+            "end": {
+              "line": 133,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "recurrence",
+          "description": "The recurrence properties that are applied to the reserve query.",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 3
+            },
+            "end": {
+              "line": 140,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query-reserve-context"
+    },
+    {
+      "description": "A component to specify conditions to be evaluated for a triplat-query component. \n\nAdditional information including examples can be found on the triplat-query documentation page.",
+      "summary": "",
+      "path": "triplat-query-filter.js",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string | null | undefined",
+          "description": "The name of the data source field to be used for this filter.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 30,
+              "column": 2
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "operator",
+          "type": "string | null | undefined",
+          "description": "The operator to be used for this comparison. The list of supported values for operator can be found on the triplat-query documentation page.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 39,
+              "column": 2
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "value",
+          "type": "Object | null | undefined",
+          "description": "The value to which the field will be evaluated.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 2
+            },
+            "end": {
+              "line": 52,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "ignoreIfBlank",
+          "type": "boolean | null | undefined",
+          "description": "If specified and when the value is empty, this entire filter will be ignored.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 57,
+              "column": 2
+            },
+            "end": {
+              "line": 62,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean | null | undefined",
+          "description": "If specified, then this filter will be required.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 67,
+              "column": 2
+            },
+            "end": {
+              "line": 72,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "filter",
+          "type": "Object | null | undefined",
+          "description": "An internal representation of the filter.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 77,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_filterChanged\"",
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "type",
+          "type": "string | null | undefined",
+          "description": "If specified, the client query will attempt to convert the operands to the specified type before applying the filter.\nThe supported types are:\n - DATE\n - DATE_TIME\n - STRING_WITH_ID",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        }
+      ],
+      "methods": [
+        {
+          "name": "_init",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 102,
+              "column": 1
+            },
+            "end": {
+              "line": 108,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "name"
+            },
+            {
+              "name": "operator"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "ignoreIfBlank"
+            },
+            {
+              "name": "type"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_filterChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 110,
+              "column": 1
+            },
+            "end": {
+              "line": 112,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filter"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 15,
+          "column": 8
+        },
+        "end": {
+          "line": 114,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "The name of the data source field to be used for this filter.",
+          "sourceRange": {
+            "start": {
+              "line": 30,
+              "column": 2
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "operator",
+          "description": "The operator to be used for this comparison. The list of supported values for operator can be found on the triplat-query documentation page.",
+          "sourceRange": {
+            "start": {
+              "line": 39,
+              "column": 2
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "value",
+          "description": "The value to which the field will be evaluated.",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 2
+            },
+            "end": {
+              "line": 52,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "ignore-if-blank",
+          "description": "If specified and when the value is empty, this entire filter will be ignored.",
+          "sourceRange": {
+            "start": {
+              "line": 57,
+              "column": 2
+            },
+            "end": {
+              "line": 62,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "required",
+          "description": "If specified, then this filter will be required.",
+          "sourceRange": {
+            "start": {
+              "line": 67,
+              "column": 2
+            },
+            "end": {
+              "line": 72,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "filter",
+          "description": "An internal representation of the filter.",
+          "sourceRange": {
+            "start": {
+              "line": 77,
+              "column": 2
+            },
+            "end": {
+              "line": 82,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "type",
+          "description": "If specified, the client query will attempt to convert the operands to the specified type before applying the filter.\nThe supported types are:\n - DATE\n - DATE_TIME\n - STRING_WITH_ID",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-query-filter-change",
+          "description": "Fired when the filter changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "filter-changed",
+          "description": "Fired when the `filter` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query-filter"
+    },
+    {
+      "description": "A component for paging, filtering and sorting triplat-ds component data.\n\nThere are two main ways that the filtering and sorting are performed: client and server. If there \nis a page specified, then the filtering and sorting are performed on the server. If there is no \npage specified or if triplat-ds is not the parent, then the filtering and sorting are performed on the client.\n\n### Server query with traditional pagination\n\n\t <triplat-ds id=\"peopleDs\" name=\"people\" data=\"{{people}}\">\n\t   <triplat-query>\n\t\t <triplat-query-page id=\"peopleDsPage\" \n\t\t\t size=\"50\" \n\t\t\t current-page=\"{{currentPage}}\" \n\t\t\t total-pages=\"[[totalPages]]\"></triplat-query-page>\n\t\t <triplat-query-filter \n\t\t\t name=\"firstName\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"{{searchValue}}\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t   </triplat-query>\n\t </triplat-ds>\n\n\t <div id=\"peopleContent\" class=\"people-content\">\n\t\t<template id=\"itemsTemplate\" is=\"dom-repeat\" items=\"{{people}}\">\n\t\t   <span style=\"padding-left: 5px;\">{{item.name}}</span>\n\t\t</template>\n\t </div>\n\n\t ...\n\n\t // go to the next page\n\t this.$.peopleDsPage.next();\n\n\t // go to the previous page\n\t this.$.peopleDsPage.prev();\n\n### Server query with scrolling pagination\n\n\t <triplat-ds id=\"peopleDs\" name=\"people\" data=\"{{people}}\">\n\t   <triplat-query>\n\t\t <triplat-query-scroll-page \n\t\t\t scroller=\"{{scrollerPeople}}\" \n\t\t\t size=\"50\"></triplat-query-scroll-page>\n\t\t <triplat-query-filter \n\t\t\t name=\"firstName\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"{{searchValue}}\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t   </triplat-query>\n\t </triplat-ds>\n\n\t <div id=\"peopleContent\" class=\"people-scroll-content\">\n\t\t<template id=\"itemsTemplate\" is=\"dom-repeat\" items=\"{{people}}\">\n\t\t   <span style=\"padding-left: 5px;\">{{item.name}}</span>\n\t\t</template>\n\t </div>\n\n\t ...\n\t \n\t attached : function() {\n\t\t//Bind the scroller to the element that has the scroll. \n\t\t//As user scroll this element, the next data is retrieved.\n\t\tthis.set('scrollerPeople', this.$.peopleContent);\n\t }\n\t \n### Client query\n\nNote that for client filtering/sorting, bind to filtered-data.\n\n\t <triplat-ds id=\"peopleDs\" name=\"people\" filtered-data=\"{{people}}\">\n\t   <triplat-query>\n\t\t <triplat-query-filter \n\t\t\t name=\"firstName\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"{{searchValue}}\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t   </triplat-query>\n\t </triplat-ds>\n\n### Client query - complex filtering\n\nNote that for client filtering/sorting, bind to filtered-data.\n\n\t <triplat-ds id=\"peopleDs\" name=\"people\" filtered-data=\"{{people}}\">\n\t   <triplat-query>\n\t\t <triplat-query-filter \n\t\t\t name=\"org\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"development\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-and></triplat-query-and>\n\t\t <triplat-query-filter \n\t\t\t name=\"firstName\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"{{searchValue}}\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t   </triplat-query>\n\t </triplat-ds>\n\n### Client query - complex filtering with parentheses\n\nNote that for client filtering/sorting, bind to filtered-data.\n\nThis code represents the following expression:\n\norg contains development AND (firstName contains {{searchValue}} OR lastName contains {{searchValue}})\n\n\t <triplat-ds id=\"peopleDs\" name=\"people\" filtered-data=\"{{people}}\">\n\t   <triplat-query>\n\t\t <triplat-query-filter \n\t\t\t name=\"org\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"development\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-and></triplat-query-and>\n\t\t <triplat-query-open-paren></triplat-query-open-paren>\n\t\t <triplat-query-filter \n\t\t\t name=\"firstName\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"{{searchValue}}\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-or></triplat-query-or>\n\t\t <triplat-query-filter \n\t\t\t name=\"lastName\" \n\t\t\t operator=\"contains\" \n\t\t\t value=\"{{searchValue}}\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-close-paren></triplat-query-close-paren>\n\t\t <triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t   </triplat-query>\n\t </triplat-ds>\n\n### Client query without a triplat-ds parent\n\nNote that for filtering independent of triplat-ds, the 'data' is the input and 'filtered-data-out' is the output/filtered data.\n'data' does not have to be a data source, it can be any array. 'triplat-query-page' and 'triplat-query-scroll-page' are ignored.\n\n\t<triplat-ds id=\"peopleDs\" name=\"people\" data=\"{{people}}\"></triplat-ds>\n\n\t<triplat-query data=\"{{people}}\" filtered-data-out=\"{{filteredResults}}\">\n\t  <triplat-query-filter \n\t\tname=\"firstName\" \n\t\toperator=\"contains\" \n\t\tvalue=\"{{searchValue}}\"\n\t\tignore-if-blank></triplat-query-filter>\n\t  <triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t</triplat-query>\n\n### Client query - specifying the data type \n\nNote that for client filtering/sorting, bind to filtered-data.\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n\t\t<b>Important:</b> Note that for client filtering of date, datetime and String_With_ID fields, it is important to set the type of the values being compared. If the <b>type</b> property is not specified, the comparison will be held between String types and may return unexpected results.\n\t</div>\n</div>\n\n\t <triplat-ds id=\"assetDs\" name=\"asset\" filtered-data=\"{{asset}}\">\n\t   <triplat-query>\n\t\t <triplat-query-filter \n\t\t\t name=\"serviceDate\" \n\t\t\t operator=\"greater than or equals\" \n\t\t\t value=\"{{initialServiceDate}}\"\n\t\t\t type=\"DATE\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-and></triplat-query-and>\n\t\t <triplat-query-filter \n\t\t\t name=\"assignedDateTime\" \n\t\t\t operator=\"greater than\" \n\t\t\t value=\"{{initialAssignedDateTime}}\"\n\t\t\t type=\"DATE_TIME\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t\t <triplat-query-filter \n\t\t\t name=\"status\" \n\t\t\t operator=\"equals\" \n\t\t\t value=\"Active\"\n\t\t\t type=\"STRING_WITH_ID\"\n\t\t\t ignore-if-blank></triplat-query-filter>\n\t   <triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t   <triplat-query-sort name=\"status\" type=\"STRING_WITH_ID\"></triplat-query-sort>\n\t   </triplat-query>\n\t </triplat-ds>\n\n### Resource Calendar Query\n\nSee the triplat-query-resource-calendar documentation\n\n### Work Planner Query\n\nSee the triplat-query-work-planner documentation\n\n### Reserve Query\n\nSee the triplat-query-reserve-context documentation\n\n### Filter Types (specified in the operator property)\n\nFilter Name | Description\n------------|------------\ncontains | Case insensitive contains filter.\nequals | Equals filter.\nnot equals | Not equals filter.\nstarts with | Case insensitive starts with filter.\nless than | Less than filter.\nless than or equals | Less than or equals filter.\ngreater than | Greater than filter.\ngreater than or equals | Greater than or equals filter.\nin | In filter that allows you to test whether a specified value matches any value in an array.",
+      "summary": "",
+      "path": "triplat-query.js",
+      "properties": [
+        {
+          "name": "query",
+          "type": "Object | null | undefined",
+          "description": "An object that has all the query information. This includes the page, filters and\nsorting.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1017,
+              "column": 2
+            },
+            "end": {
+              "line": 1021,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "delay",
+          "type": "number | null | undefined",
+          "description": "The amount of delay between the time (milliseconds) a filter value, sort order or\npage is changed and the time the query changed event is fired.\n\nThis delay is needed so we can wait a bit after a change in case there are more\nchanges. For example as a user types a filter, we don't need to immediately send a\nnew request for each character typed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1031,
+              "column": 2
+            },
+            "end": {
+              "line": 1036,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "100"
+        },
+        {
+          "name": "paginated",
+          "type": "boolean | null | undefined",
+          "description": "Whether this query is paginated or not.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1041,
+              "column": 2
+            },
+            "end": {
+              "line": 1045,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "data",
+          "type": "Object | null | undefined",
+          "description": "When triplat-query is not a child of triplat-ds, then this represents the data that\nyou want to be filtered.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1051,
+              "column": 2
+            },
+            "end": {
+              "line": 1054,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "filteredDataOut",
+          "type": "Object | null | undefined",
+          "description": "When triplat-query is not a child of triplat-ds, then this represents the data that\nhas been filtered.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1060,
+              "column": 2
+            },
+            "end": {
+              "line": 1064,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "appendPage",
+          "type": "boolean | null | undefined",
+          "description": "If this is a paginated query, appendPage tells you whether the pagination should\nappend or not.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1070,
+              "column": 2
+            },
+            "end": {
+              "line": 1074,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "appendFilters",
+          "type": "Array | null | undefined",
+          "description": "If this query is used for doing search by using the new search input,\nthis binding is needed. Make sure it is bound to the same property as\nthe related \"triplat-search-input\".",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1081,
+              "column": 2
+            },
+            "end": {
+              "line": 1083,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "forceServerFilteringSize",
+          "type": "number | null | undefined",
+          "description": "If this is server-side filter without pagination, this tells you the maximum number of entries returned.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1088,
+              "column": 2
+            },
+            "end": {
+              "line": 1091,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "10000"
+        },
+        {
+          "name": "searchColumn",
+          "type": "string | null | undefined",
+          "description": "If the query is used for a search, this tells the column name",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 1096,
+              "column": 2
+            },
+            "end": {
+              "line": 1098,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_filterMeta",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1100,
+              "column": 2
+            },
+            "end": {
+              "line": 1104,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_query",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1106,
+              "column": 2
+            },
+            "end": {
+              "line": 1110,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_deferredHandleDataChange",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1112,
+              "column": 2
+            },
+            "end": {
+              "line": 1115,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_appendFilterIndexLookup",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1117,
+              "column": 2
+            },
+            "end": {
+              "line": 1120,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "{}"
+        },
+        {
+          "name": "_intDelay",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1124,
+              "column": 4
+            },
+            "end": {
+              "line": 1126,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_validPage",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1143,
+              "column": 4
+            },
+            "end": {
+              "line": 1160,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1162,
+              "column": 4
+            },
+            "end": {
+              "line": 1170,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_init",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1172,
+              "column": 4
+            },
+            "end": {
+              "line": 1229,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setIndex",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1231,
+              "column": 4
+            },
+            "end": {
+              "line": 1233,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "element"
+            },
+            {
+              "name": "index"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getIndex",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1235,
+              "column": 4
+            },
+            "end": {
+              "line": 1237,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "element"
+            }
+          ]
+        },
+        {
+          "name": "_pageChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1239,
+              "column": 4
+            },
+            "end": {
+              "line": 1242,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_sortChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1244,
+              "column": 4
+            },
+            "end": {
+              "line": 1248,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_resourceCalendarChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1250,
+              "column": 4
+            },
+            "end": {
+              "line": 1253,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_workPlannerChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1255,
+              "column": 1
+            },
+            "end": {
+              "line": 1258,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_reserveContextChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1260,
+              "column": 1
+            },
+            "end": {
+              "line": 1263,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_filterChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1265,
+              "column": 4
+            },
+            "end": {
+              "line": 1271,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_queryChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1273,
+              "column": 4
+            },
+            "end": {
+              "line": 1298,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleDataChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1300,
+              "column": 4
+            },
+            "end": {
+              "line": 1315,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_doQueryChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1317,
+              "column": 4
+            },
+            "end": {
+              "line": 1465,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_appendFiltersChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1467,
+              "column": 4
+            },
+            "end": {
+              "line": 1515,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addUniversalFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1517,
+              "column": 4
+            },
+            "end": {
+              "line": 1539,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filters"
+            },
+            {
+              "name": "currentIndex"
+            },
+            {
+              "name": "query"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_adjustFilterLookup",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1541,
+              "column": 4
+            },
+            "end": {
+              "line": 1552,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filterRemoved"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1554,
+              "column": 4
+            },
+            "end": {
+              "line": 1560,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "lookup"
+            },
+            {
+              "name": "query"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeFilters",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1562,
+              "column": 4
+            },
+            "end": {
+              "line": 1574,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "query"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeFilterElement",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1576,
+              "column": 4
+            },
+            "end": {
+              "line": 1582,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "lookup"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeChildQueryElement",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1584,
+              "column": 4
+            },
+            "end": {
+              "line": 1589,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "removeIndex"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addFilterElement",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1591,
+              "column": 4
+            },
+            "end": {
+              "line": 1618,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "elementName"
+            },
+            {
+              "name": "currentIndex"
+            },
+            {
+              "name": "query"
+            },
+            {
+              "name": "filterProps"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_createFilterElement",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1620,
+              "column": 4
+            },
+            "end": {
+              "line": 1628,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "elementName"
+            },
+            {
+              "name": "filterProps"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "currentIndex"
+            }
+          ]
+        },
+        {
+          "name": "_buildFilterMeta",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 1630,
+              "column": 4
+            },
+            "end": {
+              "line": 1653,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filterElement"
+            },
+            {
+              "name": "currentIndex"
+            },
+            {
+              "name": "query"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 986,
+          "column": 8
+        },
+        "end": {
+          "line": 1654,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "query",
+          "description": "An object that has all the query information. This includes the page, filters and\nsorting.",
+          "sourceRange": {
+            "start": {
+              "line": 1017,
+              "column": 2
+            },
+            "end": {
+              "line": 1021,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "delay",
+          "description": "The amount of delay between the time (milliseconds) a filter value, sort order or\npage is changed and the time the query changed event is fired.\n\nThis delay is needed so we can wait a bit after a change in case there are more\nchanges. For example as a user types a filter, we don't need to immediately send a\nnew request for each character typed.",
+          "sourceRange": {
+            "start": {
+              "line": 1031,
+              "column": 2
+            },
+            "end": {
+              "line": 1036,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "paginated",
+          "description": "Whether this query is paginated or not.",
+          "sourceRange": {
+            "start": {
+              "line": 1041,
+              "column": 2
+            },
+            "end": {
+              "line": 1045,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "data",
+          "description": "When triplat-query is not a child of triplat-ds, then this represents the data that\nyou want to be filtered.",
+          "sourceRange": {
+            "start": {
+              "line": 1051,
+              "column": 2
+            },
+            "end": {
+              "line": 1054,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "filtered-data-out",
+          "description": "When triplat-query is not a child of triplat-ds, then this represents the data that\nhas been filtered.",
+          "sourceRange": {
+            "start": {
+              "line": 1060,
+              "column": 2
+            },
+            "end": {
+              "line": 1064,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "append-page",
+          "description": "If this is a paginated query, appendPage tells you whether the pagination should\nappend or not.",
+          "sourceRange": {
+            "start": {
+              "line": 1070,
+              "column": 2
+            },
+            "end": {
+              "line": 1074,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "append-filters",
+          "description": "If this query is used for doing search by using the new search input,\nthis binding is needed. Make sure it is bound to the same property as\nthe related \"triplat-search-input\".",
+          "sourceRange": {
+            "start": {
+              "line": 1081,
+              "column": 2
+            },
+            "end": {
+              "line": 1083,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "force-server-filtering-size",
+          "description": "If this is server-side filter without pagination, this tells you the maximum number of entries returned.",
+          "sourceRange": {
+            "start": {
+              "line": 1088,
+              "column": 2
+            },
+            "end": {
+              "line": 1091,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "search-column",
+          "description": "If the query is used for a search, this tells the column name",
+          "sourceRange": {
+            "start": {
+              "line": 1096,
+              "column": 2
+            },
+            "end": {
+              "line": 1098,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-query-changed",
+          "description": "Fired when the query changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "trplat-query-changed",
+          "description": "Fired when the query changes. This event is deprecated, use triplat-query-changed.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "query-changed",
+          "description": "Fired when the `query` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "paginated-changed",
+          "description": "Fired when the `paginated` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "data-changed",
+          "description": "Fired when the `data` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "filtered-data-out-changed",
+          "description": "Fired when the `filteredDataOut` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "append-page-changed",
+          "description": "Fired when the `appendPage` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-query"
+    }
+  ]
+}

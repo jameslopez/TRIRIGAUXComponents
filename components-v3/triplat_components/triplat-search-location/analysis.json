@@ -1,0 +1,637 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that provides the closest location according to the user's Global Positioning System(GPS) coordinates.\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n  <b>Note:</b> For the latest versions of supported browsers, the server must be running on a secure URL (HTTPS). Otherwise, requesting access for the user's location will not be triggered because non-HTTPS (HTTP) will be treated as an unsecured origin.\n  </div>\n</div>\n\n### Declaring Examples\n\nExample of searching a location. This will provide the closest location found as well as\nthe locations found within the defined threshold.\n\n\t<triplat-search-location locations=\"{{locations}}\"\n\t\tclosest-location=\"{{closestLocation}}\"\n\t\tlocations-within-threshold=\"{{withinThreshold}}\">\n\t</triplat-search-location>\n\nExample of searching a location with more complexity. This will provide the closest location and closest distance found as well as the locations found within the defined threshold. This will also watch the user's position changes and will use\nthe accuracy provided.\n\n\t<triplat-search-location locations=\"{{locations}}\"\n\t\tclosest-location=\"{{closestLocation}}\" closest-distance=\"{{closestDistance}}\"\n\t\tlocations-within-threshold=\"{{withinThreshold}}\" accuracy=\"10\"\n\t\tis-watch-position>\n\t</triplat-search-location>",
+      "summary": "",
+      "path": "triplat-search-location.js",
+      "properties": [
+        {
+          "name": "timeOut",
+          "type": "number | null | undefined",
+          "description": "The length of time (millisecond) that the device is given to return the coordinates.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 67,
+              "column": 2
+            },
+            "end": {
+              "line": 70,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "10000"
+        },
+        {
+          "name": "isWatchPosition",
+          "type": "boolean | null | undefined",
+          "description": "Set to <b>true</b> will update the current position information when the device is moved or\na more accurate location is detected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 75,
+              "column": 2
+            },
+            "end": {
+              "line": 78,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "accuracy",
+          "type": "number | null | undefined",
+          "description": "A number that represents the accuracy of the coordinates (latitude and longitude) in meters.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 82,
+              "column": 2
+            },
+            "end": {
+              "line": 87,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          }
+        },
+        {
+          "name": "maximumAge",
+          "type": "number | null | undefined",
+          "description": "The length of time (milliseconds) that the device accepts cached positions.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "600000"
+        },
+        {
+          "name": "locations",
+          "type": "Object | null | undefined",
+          "description": "The locations data object to which the data source values can be bound.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 2
+            },
+            "end": {
+              "line": 102,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "threshold",
+          "type": "number | null | undefined",
+          "description": "The radius(meters) of a circle around the position of\nthe user where locations can be found.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 107,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "100"
+        },
+        {
+          "name": "locationsWithinThreshold",
+          "type": "Object | null | undefined",
+          "description": "An array of locations found within the\nthreshold.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 2
+            },
+            "end": {
+              "line": 119,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "closestLocation",
+          "type": "Object | null | undefined",
+          "description": "Closest location found.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 123,
+              "column": 2
+            },
+            "end": {
+              "line": 127,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "closestDistance",
+          "type": "number | null | undefined",
+          "description": "Closest distance found.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 131,
+              "column": 2
+            },
+            "end": {
+              "line": 135,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "disable",
+          "type": "boolean | null | undefined",
+          "description": "A flag to disable the detection of a location.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 139,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_disableChanged\"",
+              "readOnly": false,
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_geoLocationFound",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 145,
+              "column": 2
+            },
+            "end": {
+              "line": 149,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_handleSuccessGeoLocation",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 160,
+              "column": 4
+            },
+            "end": {
+              "line": 162,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_findLocation",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 164,
+              "column": 4
+            },
+            "end": {
+              "line": 177,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            },
+            {
+              "name": "geoLocationFound"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_findClosestLocation",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 179,
+              "column": 4
+            },
+            "end": {
+              "line": 205,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getDistanceBetween",
+          "description": "Implements the haversine formula to determine\nthe great-circle distance between two\npoints on a sphere given their latitudes\nand longitudes.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 213,
+              "column": 1
+            },
+            "end": {
+              "line": 225,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "lat1"
+            },
+            {
+              "name": "lng1"
+            },
+            {
+              "name": "lat2"
+            },
+            {
+              "name": "lng2"
+            }
+          ]
+        },
+        {
+          "name": "_degreeToRadians",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 227,
+              "column": 4
+            },
+            "end": {
+              "line": 229,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ]
+        },
+        {
+          "name": "_disableChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 231,
+              "column": 4
+            },
+            "end": {
+              "line": 237,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "disable"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 38,
+          "column": 8
+        },
+        "end": {
+          "line": 238,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "time-out",
+          "description": "The length of time (millisecond) that the device is given to return the coordinates.",
+          "sourceRange": {
+            "start": {
+              "line": 67,
+              "column": 2
+            },
+            "end": {
+              "line": 70,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "is-watch-position",
+          "description": "Set to <b>true</b> will update the current position information when the device is moved or\na more accurate location is detected.",
+          "sourceRange": {
+            "start": {
+              "line": 75,
+              "column": 2
+            },
+            "end": {
+              "line": 78,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "accuracy",
+          "description": "A number that represents the accuracy of the coordinates (latitude and longitude) in meters.",
+          "sourceRange": {
+            "start": {
+              "line": 82,
+              "column": 2
+            },
+            "end": {
+              "line": 87,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "maximum-age",
+          "description": "The length of time (milliseconds) that the device accepts cached positions.",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "locations",
+          "description": "The locations data object to which the data source values can be bound.",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 2
+            },
+            "end": {
+              "line": 102,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "threshold",
+          "description": "The radius(meters) of a circle around the position of\nthe user where locations can be found.",
+          "sourceRange": {
+            "start": {
+              "line": 107,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "locations-within-threshold",
+          "description": "An array of locations found within the\nthreshold.",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 2
+            },
+            "end": {
+              "line": 119,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "closest-location",
+          "description": "Closest location found.",
+          "sourceRange": {
+            "start": {
+              "line": 123,
+              "column": 2
+            },
+            "end": {
+              "line": 127,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "closest-distance",
+          "description": "Closest distance found.",
+          "sourceRange": {
+            "start": {
+              "line": 131,
+              "column": 2
+            },
+            "end": {
+              "line": 135,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "disable",
+          "description": "A flag to disable the detection of a location.",
+          "sourceRange": {
+            "start": {
+              "line": 139,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "triplat-geo-error",
+          "description": "Fired after finding the geo location with no success.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "triplat-geo-success",
+          "description": "Fired after finding the geo location successfully.\nThe event detail includes the detected latitude and longitude.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "accuracy-changed",
+          "description": "Fired when the `accuracy` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "locations-changed",
+          "description": "Fired when the `locations` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "locations-within-threshold-changed",
+          "description": "Fired when the `locationsWithinThreshold` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "closest-location-changed",
+          "description": "Fired when the `closestLocation` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "closest-distance-changed",
+          "description": "Fired when the `closestDistance` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-search-location"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "_id": 12345,
+    "label": "Conference",
+    "icon": "room-function"
+  },
+  {
+    "_id": 23456,
+    "label": "Pantry",
+    "icon": "catering"
+  },
+  {
+    "_id": 34567,
+    "label": "Mail Room",
+    "icon": "unread"
+  }
+]

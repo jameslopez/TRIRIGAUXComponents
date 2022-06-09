@@ -1,0 +1,22 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<dom-module id="x-person">
+	<template>
+		<span><span>{{person.first}}</span> <span>{{person.last}}</span></span>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "x-person",
+
+		properties: {
+
+			person: Object
+
+		}
+
+	});
+</script>

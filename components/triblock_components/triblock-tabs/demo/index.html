@@ -1,0 +1,293 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<!doctype html>
+<html>
+<head>
+
+	<title>triblock-tabs Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../paper-styles/demo-pages.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+	<link rel="import" href="../../iron-pages/iron-pages.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../iron-ajax/iron-ajax.html">	
+	
+	<link rel="import" href="../triblock-tabs.html">
+	<link rel="import" href="../triblock-tab.html">
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+
+	<style is="custom-style" include="demo-pages-shared-styles">
+		#container {
+	        max-width: 800px;
+	    }
+	</style>
+
+</head>
+<body unresolved>
+	<div id="container" class="vertical-section-container centered">
+		<h2>Sample <code>triblock-tabs</code></h2>
+		<span>You can navigate tabs with keyboard arrow keys.</span>
+	
+		<h4>Primary <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs primary>
+				<triblock-tab id="activityNav" icon="activity" label="Activity"></triblock-tab>
+				<triblock-tab id="adminNav" icon="admin" label="Admin"></triblock-tab>
+				<triblock-tab id="applicationNav" icon="applications" label="Application"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Secondary <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs>
+				<triblock-tab id="activityNav" icon="activity" label="Activity"></triblock-tab>
+				<triblock-tab id="adminNav" icon="admin" label="Admin"></triblock-tab>
+				<triblock-tab id="applicationNav" icon="applications" label="Application"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Label-only <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs primary>
+				<triblock-tab id="activityNav" label="Activity"></triblock-tab>
+				<triblock-tab id="adminNav" label="Admin"></triblock-tab>
+				<triblock-tab id="applicationNav" label="Application"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Icon-only <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs primary>
+				<triblock-tab icon="activity" id="activityNav"></triblock-tab>
+				<triblock-tab icon="admin" id="adminNav"></triblock-tab>
+				<triblock-tab icon="applications" id="applicationNav"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Scrollable Primary <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs primary>
+				<triblock-tab id="activityNav" icon="activity" label="Activity"></triblock-tab>
+				<triblock-tab id="adminNav" icon="admin" label="Admin"></triblock-tab>
+				<triblock-tab id="applicationNav" icon="applications" label="Application"></triblock-tab>
+				<triblock-tab id="mailNav" icon="icons:mail" label="Mail Nav"></triblock-tab>
+				<triblock-tab id="settingsNav" icon="icons:settings" label="Settings Nav"></triblock-tab>
+				<triblock-tab id="helpNav" icon="icons:help-outline" label="Help Nav"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Scrollable Secondary <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs>
+				<triblock-tab id="activityNav" icon="activity" label="Activity"></triblock-tab>
+				<triblock-tab id="adminNav" icon="admin" label="Admin"></triblock-tab>
+				<triblock-tab id="applicationNav" icon="applications" label="Application"></triblock-tab>
+				<triblock-tab id="mailNav" icon="icons:mail" label="Mail Nav"></triblock-tab>
+				<triblock-tab id="settingsNav" icon="icons:settings" label="Settings Nav"></triblock-tab>
+				<triblock-tab id="helpNav" icon="icons:help-outline" label="Help Nav"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Fit-to-container Primary <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs primary fit-container>
+				<triblock-tab id="activityNav" icon="activity" label="Activity"></triblock-tab>
+				<triblock-tab id="adminNav" icon="admin" label="Admin"></triblock-tab>
+				<triblock-tab id="applicationNav" icon="applications" label="Application"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Fit-to-container Secondary <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template>
+			<triblock-tabs fit-container>
+				<triblock-tab id="activityNav" icon="activity" label="Activity"></triblock-tab>
+				<triblock-tab id="adminNav" icon="admin" label="Admin"></triblock-tab>
+				<triblock-tab id="applicationNav" icon="applications" label="Application"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+		
+		<h4>Dynamic <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template is="dom-bind">
+		  	<iron-ajax url="data/tabs.json" last-response="{{tabs}}" auto></iron-ajax>
+			<triblock-tabs primary>
+				<template is="dom-repeat" items="[[tabs]]">
+					<triblock-tab id="[[item._id]]" icon="[[item.icon]]" label="[[item.label]]"></triblock-tab>
+				</template>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+
+		<h4>Static and Dynamic <code>triblock-tabs</code></h4>
+		<demo-snippet>
+		  <template is="dom-bind">
+		  	<iron-ajax url="data/tabs.json" last-response="{{tabs}}" auto></iron-ajax>
+			<triblock-tabs>
+				<triblock-tab id="ceoOfficeNav" icon="user" label="CEO Office"></triblock-tab>
+				<template is="dom-repeat" items="[[tabs]]">
+					<triblock-tab id="[[item._id]]" icon="[[item.icon]]" label="[[item.label]]"></triblock-tab>
+				</template>
+				<triblock-tab id="inventoryNav" icon="inventory" label="Storage"></triblock-tab>
+			</triblock-tabs>
+		  </template>
+		</demo-snippet>	
+				
+		<h4>Selected (default <code>id</code>)</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-tabs selected="adminNav">
+				<triblock-tab 
+					id="activityNav" 
+					icon="activity" 
+					label="Activity">
+				</triblock-tab>
+				<triblock-tab 
+					id="adminNav" 
+					icon="admin" 
+					label="Admin">
+				</triblock-tab>
+				<triblock-tab 
+					id="applicationNav" 
+					icon="applications" 
+					label="Application">
+				</triblock-tab>
+			</triblock-tabs>
+	        </template>
+	      </demo-snippet>
+
+		<h4>Selected (<code>attr-for-selected</code>)</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-tabs selected="applicationNav" attr-for-selected="nav-id">
+				<triblock-tab 
+					nav-id="activityNav" 
+					icon="activity" 
+					label="Activity">
+				</triblock-tab>
+				<triblock-tab 
+					nav-id="adminNav" 
+					icon="admin" label="Admin">
+				</triblock-tab>
+				<triblock-tab 
+					nav-id="applicationNav" 
+					icon="applications" 
+					label="Application">
+				</triblock-tab>
+			</triblock-tabs>
+	        </template>
+	      </demo-snippet>
+
+		<h4><code>badge-max-number</code> for badges</h4>
+	      <demo-snippet>
+	        <template>
+			<triblock-tabs badge-max-number="99">
+				<triblock-tab 
+					id="activityNavBadge" 
+					icon="activity" 
+					label="Activity" 
+					badge-max-number="50" 
+					badge-number="60">
+				</triblock-tab>
+				<triblock-tab 
+					id="adminNavBadge" 
+					icon="admin" 
+					label="Admin" 
+					badge-number="70">
+				</triblock-tab>
+				<triblock-tab 
+					id="applicationNavBadge" 
+					icon="applications" 
+					label="Application" 
+					badge-number="80">
+				</triblock-tab>
+			</triblock-tabs>
+	        </template>
+	      </demo-snippet>
+	
+		<h4>Default <code>iron-pages-id</code></h4>
+		<demo-snippet>
+		<template>
+			<style is="custom-style">
+				.container {
+					@apply(--layout-flex);
+					@apply(--layout-vertical);
+					height: 200px;
+				}
+				#myIronPages {
+					position:relative;
+					@apply(--layout-flex);
+					@apply(--layout-vertical);
+					@apply(--layout-center-justified);
+					background-color: #f5f5f5;
+				}
+				#tabs {
+					position:relative;
+				}
+				section {
+					@apply(--layout-horizontal);
+					@apply(--layout-center-justified);
+				}
+			</style>
+			<div class="container">
+				<triblock-tabs id="tabs" iron-pages-id="myIronPages" selected="activityNavIron">
+					<triblock-tab 
+						id="activityNavIron" 
+						iron-page-id="activityPage" 
+						icon="activity" 
+						label="Activity">
+					</triblock-tab>
+					<triblock-tab 
+						id="adminNavIron" 
+						iron-page-id="adminPage" 
+						icon="admin" 
+						label="Admin">
+					</triblock-tab>
+					<triblock-tab 
+						id="applicationNavIron" 
+						iron-page-id="applicationPage" 
+						icon="applications" 
+						label="Application">
+					</triblock-tab>
+				</triblock-tabs>
+				<iron-pages id="myIronPages">
+					<section id="activityPage">
+						<span>Activity Page</span>
+					</section>
+					<section id="adminPage">
+						<span>Administrator Page</span>
+					</section>
+					<section id="applicationPage">
+						<span>Application Page</span>
+					</section>
+				</iron-pages>
+			</div>
+		</template>
+	</demo-snippet>
+	
+	</div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+/*
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+*/
+import { html } from "../@polymer/polymer/lib/utils/html-tag.js";
+
+import { Polymer } from "../@polymer/polymer/lib/legacy/polymer-fn.js";
+import "../@polymer/polymer/polymer-legacy.js";
+import "../tricore-url/tricore-url.js";
+import "../tricore-context-path/tricore-context-path.js";
+import "../@polymer/iron-ajax/iron-ajax.js";
+import "../@polymer/iron-label/iron-label.js";
+import { dom } from "../@polymer/polymer/lib/legacy/polymer.dom.js";
+
+/*
+A custom element for displaying a field type of note.
+
+<div style="background-color:#FFFFCC">
+	<div style="padding:20px;">
+		<b>Note:</b> The triplat-note component is read-only and does not support editing a note field at this time.
+	</div>
+</div>
+
+<div style="background-color:#FFFFCC">
+  <div style="padding:20px;">
+    <b>Caution:</b> This component was upgraded to Polymer 3, but was not fully tested. Please use this component with caution.
+  </div>
+</div>
+
+	 <triplat-note 
+	   value="{{value}}" 
+	   label="Label">
+	 </triplat-note>
+
+Example of using custom label. In order for an element to be considered as a label, it must have the `label` attribute.
+
+	<triplat-note value="{{value}}">
+	  <iron-icon label icon="icons:store"></iron-icon>
+	  <span label>Note</span>
+	</triplat-note>
+
+Note: The 'label' property value will be overridden when using a custom 'label'. <br/>
+
+### Styling
+
+The following custom properties are available for styling:
+
+Custom property                             | Description                                              | Default
+--------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------
+`--triplat-note-container-background-color` | Background color of the container that displays the note | `--tri-primary-content-background-color`
+`--triplat-note-container`                  | Mixin applied to the container that displays the note    | `{}`
+`--triplat-note-label-color`                | Text color of the label                                  | `--tri-primary-content-label-color`
+`--triplat-note-label`                      | Mixin applied to the label                               | `{}`
+
+This element also inherits all the rich text editor styles customized by the user in the Style Manager.
+*/
+Polymer({
+    _template: html`
+		<style include="tristyles-theme">
+
+				#noteContainer {
+					overflow: auto;
+					padding: 2px;
+					word-wrap: break-word;
+					border-width: 1px;
+					border-style: solid;	
+					border-color: var(--ibm-gray-20);
+					background-color : var(--triplat-note-container-background-color, var(--tri-primary-content-background-color));
+					@apply --triplat-note-container;
+				}
+
+				iron-label {
+					color : var(--triplat-note-label-color, var(--tri-primary-content-label-color));
+					@apply --triplat-note-label;
+				}
+			
+		</style>
+
+		<tricore-context-path get-path="{{_contextPath}}"></tricore-context-path>
+		<tricore-url raw-url="/html/en/default/smartrecord/richTextEditor/richTextEditorStyles.jsp" bind-url="{{_downloadCSSUrl}}">
+		</tricore-url>
+		<iron-ajax id="downloadCSSAjax" url="[[_downloadCSSUrl]]" handle-as="text" method="GET" on-response="_handleDownloadCSSResponse">
+		</iron-ajax>
+
+		<template is="dom-if" if="[[_showLabel(label)]]">
+			  <iron-label for="noteContainer">[[label]]</iron-label>
+		</template>
+		<iron-label><slot id="labelContent" name="label"></slot></iron-label>
+		<div id="noteContainer"></div>
+	`,
+
+    is: "triplat-note",
+
+    properties: {
+	   
+	   /*
+		* The note field to be displayed.
+		*/
+	   value: {
+		   type: String,
+		   notify: true,
+		   readOnly: false,
+		   value: "",
+		   observer: "_handleValueChange"
+	   },
+
+	   /**
+		* The label text for the note.
+		*/
+	   label:{
+		   type: String,
+	   },   			
+   },
+
+    ready: function() {
+		// Download the rich text editor styles customized by the user using the Style Manager.
+		this.$.downloadCSSAjax.generateRequest();
+	},
+
+    attached: function(){
+		if(dom(this.$$('#labelContent')).getDistributedNodes().length >0){
+			this.label=" ";
+		}
+	},
+
+    _handleValueChange: function(newValue, oldValue) {
+		newValue = (newValue != null ? newValue : "");
+		if (oldValue == null || oldValue != newValue) {
+			var noteContainer = this.$.noteContainer;
+			dom(noteContainer).innerHTML = this._adjustImagesPath(newValue);
+			var allNotesElements = Array.from(dom(noteContainer).querySelectorAll('*'));
+			for (var i = 0; i < allNotesElements.length; i++) {
+				this.toggleClass("tri-disable-theme", true, allNotesElements[i]);
+			}
+		}
+	},
+
+    _handleDownloadCSSResponse: function(e) {
+		var style = document.createElement('style');
+		dom(this.root).appendChild(style);
+		dom(style).innerHTML = e.detail.response;
+	},
+
+    /**
+	 * Add the Tririga context path to the source attribute of 'img' tags inside the note field.
+	 * Only 'img' tags with relative source paths will be modified.
+	 */
+	_adjustImagesPath: function(note) {
+		if (note == null ) {
+			return note;
+		}
+		return note.replace(/src=\"(?!(http|\/))/gi,'src="' + this._contextPath + '/');
+	},
+
+    _hasValue: function(elem) {
+		return elem != undefined && elem != null && elem.length > 0;
+	},
+
+    _showLabel: function(label) {
+		return this._hasValue(label);
+	}
+});

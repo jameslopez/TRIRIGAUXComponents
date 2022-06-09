@@ -1,0 +1,201 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2018 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+
+<link rel="import" href="../../paper-button/paper-button.html">
+<link rel="import" href="../../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../paper-input/paper-input.html">
+
+<link rel="import" href="../../iron-list/iron-list.html">
+<link rel="import" href="../../iron-resizable-behavior/iron-resizable-behavior.html">
+
+<link rel="import" href="../../triplat-theme/triplat-theme.html">
+<link rel="import" href="../../triplat-code-scanner/triplat-barcode-scanner.html">
+
+<link rel="import" href="../../triblock-popup/triblock-popup.html">
+<link rel="import" href="../../triblock-responsive-layout/triblock-view-responsive-behavior.html">
+<link rel="import" href="../../triblock-toast/triblock-toast.html">
+
+<dom-module id="triplat-barcode-scanner-demo">
+	<template>
+		<style include="tristyles-theme">
+			.settings,
+			.result {
+				border: 1px solid var(--tri-secondary-color);
+				border-radius: 10px;
+				margin: 15px 0;
+				padding: 15px;
+			}
+
+			.settings > *,
+			.result > * {
+				margin: 10px 0;
+			}
+
+			.settings-section {
+				@apply --layout-vertical;
+			}
+
+			.settings-section label {
+				font-size: 13px;
+				margin-bottom: 6px;
+			}
+
+			.settings-section paper-button {
+				margin: 15px 0 0 !important;
+			}
+
+			.list-item {
+				padding: 5px 0;
+			}
+
+			triblock-popup {
+				@apply --layout-vertical;
+				height: 90%;
+				width: 90%;
+			}
+
+			triplat-barcode-scanner {
+				@apply --layout-flex-auto;
+			}
+
+			.popup-footer {
+				margin-top: 20px;
+			}
+		</style>
+
+		<h3>Scanning a Bar Code</h3>
+
+		<div class="settings">
+			<h4>Settings</h4>
+
+			<div class="settings-section">
+				<paper-input label="Timeout (miliseconds)" value="{{_timeout}}" type="number" always-float-label></paper-input>
+			</div>
+
+			<div class="settings-section">
+				<label>Set validator callback - It will validate if the decoded data has only numbers:</label>
+				<paper-checkbox checked="{{_setValidator}}">Set validator</paper-checkbox>
+			</div>
+
+			<div class="settings-section">
+				<paper-button on-tap="_scanBarcode">Start Scan</paper-button>
+			</div>
+		</div>
+
+		<div class="result">
+			<h4>Results</h4>
+
+			<iron-list items="[[_decodedValues]]">
+				<template>
+					<div class="list-item">
+						[[item]]
+					</div>
+				</template>
+			</iron-list>
+		</div>
+
+		<triblock-popup id="barcodePopup" on-iron-overlay-closed="_onPopupClosed">
+			<triplat-barcode-scanner id="barcodeScanner"
+				decoded-data="{{_decodedValue}}"
+				timeout="[[_timeout]]"
+				on-barcode-detected="_closeBarcodePopup"
+				on-barcode-timeout="_onBarcodeTimeout"></triplat-barcode-scanner>
+
+			<div class="popup-footer" hidden$="[[!smallScreenWidth]]">
+				<paper-button on-tap="_closeBarcodePopup">Cancel</paper-button>
+			</div>
+		</triblock-popup>
+
+		<triblock-toast id="toastAlert" type="warning" title="Warning" text="Barcode timeout expired."></triblock-toast>
+	</template>
+	<script>
+		Polymer({
+
+			is: "triplat-barcode-scanner-demo",
+
+			behaviors: [
+				Polymer.IronResizableBehavior,
+				TriBlockViewResponsiveBehavior
+			],
+
+			properties: {
+				_barcodeValidatorCallback: {
+					type: Function,
+					value: function() {
+						return this._barcodeValidator.bind(this);
+					}
+				},
+
+				_decodedValue: {
+					type: String,
+					value: ""
+				},
+
+				_decodedValues: {
+					type: Array,
+					value: function() {
+						return [];
+					}
+				},
+
+				_setValidator: {
+					type: Boolean,
+					value: false,
+				},
+
+				_timeout: {
+					type: Number,
+					value: 0
+				}
+			},
+
+			observers: [
+				"_observeDecodeValue(_decodedValue)",
+				"_observeSetValidator(_setValidator)"
+			],
+
+			_barcodeValidator: function(code) {
+				var isValid = /^\d+$/.test(code);
+				return isValid;
+			},
+
+			_closeBarcodePopup: function() {
+				if (this.$.barcodePopup.opened) {
+					this.$.barcodePopup.closePopup();
+				}
+			},
+
+			_observeDecodeValue: function(value) {
+				if (value && value != "") {
+					this.push('_decodedValues', value);
+					this.notifyResize();
+				}
+			},
+
+			_observeSetValidator: function(setValidator) {
+				if (setValidator) {
+					this.$.barcodeScanner.validatorCallback = this._barcodeValidatorCallback;
+				} else {
+					this.$.barcodeScanner.validatorCallback = null;
+				}
+			},
+
+			_onBarcodeTimeout: function() {
+				this.$.toastAlert.open();
+				this._closeBarcodePopup();
+			},
+
+			_onPopupClosed: function() {
+				this.$.barcodeScanner.stop();
+			},
+
+			_scanBarcode: function() {
+				this.$.barcodePopup.openPopup();
+				this.$.barcodeScanner.start();
+			}
+
+		});
+	</script>
+</dom-module>

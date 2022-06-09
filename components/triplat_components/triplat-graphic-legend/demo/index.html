@@ -1,0 +1,290 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-graphic-legend</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+	<link rel="import" href="../../tricore-demo-url/tricore-demo-url.html">
+	
+	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+		
+	<link rel="import" href="../../triplat-graphic/triplat-graphic.html">
+	<link rel="import" href="../triplat-graphic-legend.html">
+
+	<style is="custom-style" include="demo-pages-shared-styles iron-flex iron-flex-alignment">
+		#container {
+	        max-width: 800px;
+	    }
+
+	    demo-snippet {
+			--demo-snippet-demo: {
+				padding: 0px;
+				height: 300px;
+				@apply(--layout-horizontal);
+			};
+	    }
+	</style>
+</head>
+<body dir="ltr">
+	<template is="dom-bind">
+		<tricore-demo-url></tricore-demo-url>
+	</template>
+	<div id="container" class="vertical-section-container centered">
+		<h3>Location Pins and Show By sections</h3>
+        <demo-snippet>
+        	<template id="template-demo" is="dom-bind">
+				<triplat-graphic class="layout flex" id="triplatGraphic" record-id="10101010">
+					<triplat-graphic-zoomable></triplat-graphic-zoomable>
+					<triplat-graphic-pin pins="[[persons]]"  
+							icon="pin-person" class-number="2" enabled="[[personsEnabled]]">
+					</triplat-graphic-pin>
+					<triplat-graphic-pin pins="[[assets]]"  
+							icon="pin-asset" class-number="3" enabled="[[assetsEnabled]]">
+					</triplat-graphic-pin>
+					<triplat-graphic-pin multiple-pin class-number="4">
+					</triplat-graphic-pin>
+					<triplat-graphic-highlight-group legend-spaces="[[legend]]" highlight-layer="ATTACHED">
+					</triplat-graphic-highlight-group>
+				</triplat-graphic>
+				
+				<triplat-graphic-legend spaces="[[spaces]]"
+							legend-spaces="{{legend}}" opened show-by-selected="Occupancy Status">
+					<triplat-graphic-legend-pin class="legendPeoplePin" label="People" icon="pin-person" 
+							checked="{{personsEnabled}}">
+					</triplat-graphic-legend-pin>
+
+					<triplat-graphic-legend-pin class="legendAssetPin" label="Assets" icon="pin-asset"
+							checked="{{assetsEnabled}}">
+					</triplat-graphic-legend-pin>
+
+					<triplat-graphic-legend-show-by attribute="OccupancyStatus" 
+							color-by="OccupancyColor" label="Occupancy Status" show-all-checked>
+					</triplat-graphic-legend-show-by>
+				</triplat-graphic-legend>
+
+				<style is="custom-style">
+					triplat-graphic-legend {
+						--triplat-graphic-legend-min-width: 250px;
+						flex: initial;
+					}
+
+					triplat-graphic {
+						--triplat-graphic-pin-color-2: #872a0f;
+						--triplat-graphic-pin-color-3: #562f72;
+						--triplat-graphic-pin-color-4: #339d8d;
+					}
+
+					.legendPeoplePin {
+						--triplat-graphic-legend-pin-fill-color: #872a0f;
+					}
+
+					.legendAssetPin {
+						--triplat-graphic-legend-pin-fill-color: #562f72;
+					}
+				</style>
+        	</template>
+        </demo-snippet>
+
+        <h3>Alternative layout for controlling the pins</h3>
+        <demo-snippet>
+        	<template id="template-demo" is="dom-bind">
+				<triplat-graphic class="layout flex" id="triplatGraphic" record-id="10101010">
+					<triplat-graphic-zoomable></triplat-graphic-zoomable>
+					<triplat-graphic-pin pins="[[persons]]"  
+							icon="pin-person" enabled="[[pinsEnabled]]">
+					</triplat-graphic-pin>
+					<triplat-graphic-pin pins="[[assets]]"  
+							icon="pin-asset" enabled="[[pinsEnabled]]">
+					</triplat-graphic-pin>
+					<triplat-graphic-highlight-group legend-spaces="[[legend]]" highlight-layer="ATTACHED">
+					</triplat-graphic-highlight-group>
+				</triplat-graphic>
+				
+				<triplat-graphic-legend spaces="[[spaces]]" legend-spaces="{{legend}}" show-location-pin
+                        location-pin-checked="{{pinsEnabled}}" opened show-by-selected="Occupancy Status">
+					<triplat-graphic-legend-show-by attribute="OccupancyStatus" 
+							color-by="OccupancyColor" label="Occupancy Status" show-all-checked>
+					</triplat-graphic-legend-show-by>
+				</triplat-graphic-legend>
+
+				<style is="custom-style">
+					triplat-graphic-legend {
+						--triplat-graphic-legend-min-width: 250px;
+						flex: initial;
+					}
+				</style>
+        	</template>
+        </demo-snippet>
+
+        <h3>Mask unavailable spaces</h3>
+        <demo-snippet>
+        	<template id="template-demo" is="dom-bind">
+				<triplat-graphic class="layout flex" id="triplatGraphic" record-id="10101010">
+					<triplat-graphic-zoomable></triplat-graphic-zoomable>
+					<triplat-graphic-highlight-group legend-spaces="[[legend]]" highlight-layer="ATTACHED">
+					</triplat-graphic-highlight-group>
+				</triplat-graphic>
+				
+				<triplat-graphic-legend spaces="[[spaces]]" available-spaces="[[availableSpaces]]" legend-spaces="{{legend}}" 
+						opened show-by-selected="Organization">
+					<triplat-graphic-legend-show-by attribute="OrgName" color-by="OrgColor"
+						label="Organization" mask-unavailable-spaces show-all-checked>
+					</triplat-graphic-legend-show-by>
+				</triplat-graphic-legend>
+
+				<style is="custom-style">
+					triplat-graphic-legend {
+						--triplat-graphic-legend-min-width: 250px;
+						flex: initial;
+					}
+				</style>
+        	</template>
+        </demo-snippet>
+
+        <h3>Show the empty criterion</h3>
+        <demo-snippet>
+        	<template id="template-demo" is="dom-bind">
+				<triplat-graphic class="layout flex" id="triplatGraphic" record-id="10101010">
+					<triplat-graphic-zoomable></triplat-graphic-zoomable>
+					<triplat-graphic-highlight-group legend-spaces="[[legend]]" highlight-layer="ATTACHED">
+					</triplat-graphic-highlight-group>
+				</triplat-graphic>
+				
+				<triplat-graphic-legend spaces="[[spaces]]" legend-spaces="{{legend}}" 
+						opened show-by-selected="Organization">
+					<triplat-graphic-legend-show-by attribute="OrgName" color-by="OrgColor" label="Organization" 
+							show-all-checked show-empty-criterion empty-criterion-text="No Org">
+					</triplat-graphic-legend-show-by>
+				</triplat-graphic-legend>
+
+				<style is="custom-style">
+					triplat-graphic-legend {
+						--triplat-graphic-legend-min-width: 250px;
+						flex: initial;
+					}
+				</style>
+        	</template>
+        </demo-snippet>
+
+        <h3>Show By and Filter By section</h3>
+        <demo-snippet>
+        	<template id="template-demo" is="dom-bind">
+				<triplat-graphic class="layout flex" id="triplatGraphic" record-id="10101010">
+					<triplat-graphic-zoomable></triplat-graphic-zoomable>
+					<triplat-graphic-highlight-group legend-spaces="[[legend]]" highlight-layer="ATTACHED">
+					</triplat-graphic-highlight-group>
+				</triplat-graphic>
+				
+				<triplat-graphic-legend spaces="[[spaces]]" legend-spaces="{{legend}}" 
+						opened show-by-selected="Organization" filter-by-selected="Space Class">
+					<triplat-graphic-legend-show-by attribute="OrgName" color-by="OrgColor" label="Organization" 
+							show-all-checked show-empty-criterion empty-criterion-text="No Org">
+					</triplat-graphic-legend-show-by>
+
+					<triplat-graphic-legend-filter-by attribute="ClassName" label="Space Class" filter-all-checked>
+					</triplat-graphic-legend-filter-by>
+				</triplat-graphic-legend>
+
+				<style is="custom-style">
+					triplat-graphic-legend {
+						--triplat-graphic-legend-min-width: 250px;
+						flex: initial;
+					}
+				</style>
+        	</template>
+        </demo-snippet>
+
+        <h3>Applying a CSS property to the legend and its children</h3>
+        <demo-snippet>
+        	<template id="template-demo" is="dom-bind">
+				<triplat-graphic class="layout flex" id="triplatGraphic" record-id="10101010">
+					<triplat-graphic-zoomable></triplat-graphic-zoomable>
+					<triplat-graphic-pin pins="[[persons]]" icon="pin-person" enabled="[[personsEnabled]]">
+					</triplat-graphic-pin>
+					<triplat-graphic-pin pins="[[assets]]" icon="pin-asset" enabled="[[assetsEnabled]]">
+					</triplat-graphic-pin>
+					<triplat-graphic-highlight-group legend-spaces="[[legend]]" highlight-layer="ATTACHED">
+					</triplat-graphic-highlight-group>
+				</triplat-graphic>
+				
+				<triplat-graphic-legend class="red-checkbox" spaces="[[spaces]]" legend-spaces="{{legend}}" 
+						opened show-by-selected="Organization" filter-by-selected="Space Class">
+
+					<triplat-graphic-legend-pin label="People" icon="pin-person" checked="{{personsEnabled}}">
+					</triplat-graphic-legend-pin>
+
+					<triplat-graphic-legend-pin label="Assets" icon="pin-asset"	checked="{{assetsEnabled}}">
+					</triplat-graphic-legend-pin>
+
+					<triplat-graphic-legend-show-by class="red-checkbox" attribute="OrgName" color-by="OrgColor" 
+							label="Organization" show-all-checked show-empty-criterion empty-criterion-text="No Org">
+					</triplat-graphic-legend-show-by>
+
+					<triplat-graphic-legend-filter-by class="red-checkbox" attribute="ClassName" label="Space Class" 
+							filter-all-checked>
+					</triplat-graphic-legend-filter-by>
+				</triplat-graphic-legend>
+
+				<style is="custom-style">
+					triplat-graphic-legend {
+						--triplat-graphic-legend-min-width: 250px;
+						flex: initial;
+					}
+
+					.red-checkbox {
+						--triplat-graphic-legend-checkbox-color: red;
+					}
+				</style>
+        	</template>
+        </demo-snippet>
+	</div>
+	<script>
+        var templates = document.querySelectorAll('#template-demo');
+        for (var i = 0; i < templates.length; i++) {
+	        templates[i].addEventListener('dom-change', function(event) {
+	        	event.target.personsEnabled = true;
+	        	event.target.assetsEnabled = true;
+	        	event.target.pinsEnabled = true;
+	        	setTimeout(function() {
+		        	event.target.spaces = [
+		        		{"_id":"127817414",	"OccupancyStatus":"Occupied","OccupancyColor":"#FFFF00", 
+		        							"OrgName":"Org A","OrgColor":"#006633",
+		        							"ClassName":"Enclosed Workstation"},
+		                {"_id":"127817415", "OccupancyStatus":"Occupied","OccupancyColor":"#FFFF00",
+		            						"OrgName":"Org A","OrgColor":"#006633",
+		            						"ClassName":"Open Workstation"},
+		            	{"_id":"127817415", "OccupancyStatus":"Occupied","OccupancyColor":"#FFFF00",
+		            						"OrgName":"Org B","OrgColor":"#CCCC00",
+		            						"ClassName":"Open Workstation"},
+		                {"_id":"127817416",	"OccupancyStatus":"Vacant","OccupancyColor":"#66FF00",
+		            						"OrgName":null,"OrgColor":null,
+		            						"ClassName":"Enclosed Workstation"}
+		            ];
+		            event.target.availableSpaces = [
+		        		{"_id":"127817415"}
+		            ];
+		            event.target.assets = [
+		            	{"_id":"127817416", "label":"Asset A", "space":" Room 03"},
+		                {"_id":"127817415", "label":"Asset B", "space":" Room 02"}
+		            ];
+		            event.target.persons = [
+		            	{"_id":"127817414", "label":"Person One", "space":" Room 01"},
+		                {"_id":"127817415", "label":"Person Two", "space":" Room 02"}
+		            ];
+		        }, 100*i);
+	        });
+	    }
+    </script>
+</body>
+</html>

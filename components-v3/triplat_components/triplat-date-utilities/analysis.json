@@ -1,0 +1,424 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "TriDateUtilities is a date utility component that allows user to convert and get date/datetime in ISO date string format.",
+          "summary": "",
+          "path": "triplat-date-utilities.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "_getCurrentDateString",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 25,
+                  "column": 1
+                },
+                "end": {
+                  "line": 27,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            },
+            {
+              "name": "_getCurrentDatetimeString",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 29,
+                  "column": 1
+                },
+                "end": {
+                  "line": 31,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            },
+            {
+              "name": "_getDateString",
+              "description": "Returns date string.<br/>",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 37,
+                  "column": 1
+                },
+                "end": {
+                  "line": 41,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "date",
+                  "type": "Object",
+                  "description": "The JavaScript Date Object."
+                }
+              ]
+            },
+            {
+              "name": "_getDateTimeString",
+              "description": "Returns datetime string.<br/>",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 47,
+                  "column": 1
+                },
+                "end": {
+                  "line": 51,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "date",
+                  "type": "Object",
+                  "description": "The JavaScript Date Object."
+                }
+              ]
+            },
+            {
+              "name": "getCurrentDate",
+              "description": "Returns current date in ISO date string.<br/>",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 58,
+                  "column": 1
+                },
+                "end": {
+                  "line": 65,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "timeZone",
+                  "type": "String",
+                  "description": "The string representation of the time zone (e.g. US/Eastern).\nNotice: if no time zone parameter is passed in, the method will return the current date that is based on browser time zone."
+                }
+              ]
+            },
+            {
+              "name": "getCurrentDatetime",
+              "description": "Returns current datetime in ISO date string.<br/>",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 71,
+                  "column": 1
+                },
+                "end": {
+                  "line": 78,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "timeZone",
+                  "type": "String",
+                  "description": "The string representation of the time zone (e.g. US/Eastern).\nNotice: if no time zone parameter is passed in, the method will return the current datetime that is based on browser time zone."
+                }
+              ]
+            },
+            {
+              "name": "normalizeToTimezone",
+              "description": "Converts to a given time zone by keeping the exact datetime in ISO date string format.<br/>\nReturns ISO date string.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 85,
+                  "column": 1
+                },
+                "end": {
+                  "line": 101,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "isoString",
+                  "type": "String",
+                  "description": "The string representation of the ISO date string (e.g. 1970-01-15T22:19:41.000-08:00)."
+                },
+                {
+                  "name": "timeZone",
+                  "type": "String",
+                  "description": "The string representation of the time zone (e.g. Canada/Eastern)."
+                }
+              ]
+            },
+            {
+              "name": "toDateIsoString",
+              "description": "Converts unix timestamp (seconds) to ISO date string.<br/>\nReturn ISO date string.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 108,
+                  "column": 1
+                },
+                "end": {
+                  "line": 116,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "milliseconds",
+                  "type": "Number",
+                  "description": "The integer representation of the unix timestamp (seconds) (e.g. 1415467435)."
+                }
+              ]
+            },
+            {
+              "name": "toMilliseconds",
+              "description": "Converts ISO date/datetime string to unix timestamp (seconds).<br/>\nReturn unix timestamp (seconds).",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 123,
+                  "column": 1
+                },
+                "end": {
+                  "line": 134,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "isoString",
+                  "type": "String",
+                  "description": "The string representation of the ISO date string (e.g. 2010-01-20T22:00:10.000-08:00)."
+                }
+              ]
+            },
+            {
+              "name": "getBrowserTimeZone",
+              "description": "Get client time zone from browser.<br/>\nReturn string (e.g. US/Pacific).",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 140,
+                  "column": 1
+                },
+                "end": {
+                  "line": 142,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": []
+            },
+            {
+              "name": "formatDateWithTimeZone",
+              "description": "Formats the ISO date string to a given time zone and a user date format.<br/>",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 151,
+                  "column": 1
+                },
+                "end": {
+                  "line": 163,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "isoString",
+                  "type": "String",
+                  "description": "The string representation of the ISO date string (e.g. 1970-01-15T22:19:41.000-08:00)."
+                },
+                {
+                  "name": "timeZone",
+                  "type": "String",
+                  "description": "The string representation of the time zone (e.g. Canada/Eastern)."
+                },
+                {
+                  "name": "userFormat"
+                },
+                {
+                  "name": "userLanguageCode",
+                  "type": "Strinh",
+                  "description": "The code of the language set in the user's profile.(en-US)"
+                }
+              ]
+            },
+            {
+              "name": "_isIsoDateStringFormat",
+              "description": "To check if a string is a ISO date string format.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 169,
+                  "column": 1
+                },
+                "end": {
+                  "line": 177,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "isoString",
+                  "type": "String",
+                  "description": "The string representation of the ISO date string (e.g. 2010-01-20T22:00:10.000-08:00)."
+                }
+              ]
+            },
+            {
+              "name": "_isDateObject",
+              "description": "To check if the object is a JavaScript date object.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 183,
+                  "column": 1
+                },
+                "end": {
+                  "line": 192,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "dateObj",
+                  "type": "Object",
+                  "description": "The JavaScript Date Object."
+                }
+              ]
+            },
+            {
+              "name": "_toTimeZone",
+              "description": "Converts the ISO date string to a given time zone.<br/>\nReturns ISO date string.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 202,
+                  "column": 1
+                },
+                "end": {
+                  "line": 219,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "isoString",
+                  "type": "String",
+                  "description": "The string representation of the ISO date string (e.g. 1970-01-15T22:19:41.000-08:00)."
+                },
+                {
+                  "name": "timeZone",
+                  "type": "String",
+                  "description": "The string representation of the time zone (e.g. Canada/Eastern)."
+                },
+                {
+                  "name": "format",
+                  "type": "String",
+                  "description": "The format of the return string (e.g. YYYY-MM-DDTHH:mm:ss).\nNotice: The return format is in the ISO date string (YYYY-MM-DDTHH:mm:ss.SSSZ) if no specified format is passed."
+                }
+              ]
+            },
+            {
+              "name": "_toDateObject",
+              "description": "Converts the ISO date string to a JavaScript Date Object.<br/>\nReturn JavaScript Date Object.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 226,
+                  "column": 1
+                },
+                "end": {
+                  "line": 229,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "isoString",
+                  "type": "String",
+                  "description": "The string representation of the ISO date string (e.g. 2010-01-20T22:00:10.000-08:00)."
+                }
+              ]
+            },
+            {
+              "name": "_convertToFixedMomentTzFormat",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 231,
+                  "column": 1
+                },
+                "end": {
+                  "line": 253,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "format"
+                }
+              ]
+            }
+          ],
+          "staticMethods": [],
+          "demos": [
+            {
+              "url": "demo/index.html",
+              "description": "demo"
+            },
+            {
+              "url": "demo/index.html",
+              "description": ""
+            }
+          ],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 23,
+              "column": 13
+            },
+            "end": {
+              "line": 254,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriDateUtilities",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

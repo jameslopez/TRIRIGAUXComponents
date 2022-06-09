@@ -1,0 +1,1417 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "The triplat-select-input is a custom element that is used to display selectable names of STRING_WITH_ID data type fields in the data source.\nIt works with triplat-ds, triplat-query, triplat-query-filter and/or triplat-query-scroll-page to achieve filtering/pagination for selectable names.\n\n### Example of setting up STRING_WITH_ID data type for input in people module\n\nThe following example will use these 3 data sources:\n\n  - <b>people</b> (BO, single) has 2 fields with STRING_WITH_ID\n\t- triFunctionalRoleCL (classification field)\n\t- triDelegateToTX     (locator field)\n  - <b>employees</b> (query, multiple) has single field\n\t- name\n  - <b>functionalRoles</b> (query, multiple) has single field\n\t- roleName\n\t\nIf you assume there are 100+ employee records in the data source, it is unnecessary to immediately display all 100+ records for selection.\nPagination can be set up to control the lazy-loading record size. The following example shows a pagination of only 50 records.\nIt also demonstrates using the \"contains\" operator for filtering.\n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n\t\t<b>Note:</b> If you use pagination, it is important that the dropdown displays a scrollbar so users can scroll to the next set of records. The maximum height of \n\t\tthe dropdown menu is calculated based on its content, position, and screen size. If the pagination size is small and the records fit the screen, \n\t\tthen the scrollbar is not displayed. There are two ways to ensure that the scrollbar is displayed for small pagination sizes: (1) Set the queryScrollPageId \n\t\tproperty and the component will automatically reduce the dropdown height when needed. (2) Or use the custom property --triplat-select-input-dropdown-max-height \n\t\tto set a small dropdown height.\n\t</div>\n</div>\n\t\n\t<triplat-ds name=\"people\" data=\"{{data}}\"></triplat-ds>\n\t<triplat-ds name=\"employees\" data=\"{{allEmployeeData}}\">\n\t\t<triplat-query>\n\t\t\t<triplat-query-scroll-page scroller=\"[[employeeScroller]]\" size=\"50\">\n\t\t\t</triplat-query-scroll-page>\n\t\t\t<triplat-query-filter name=\"name\" operator=\"contains\" \n\t\t\t\t\t\t\t\t  value=\"{{searchEmployee}}\" ignore-if-blank>\n\t\t\t</triplat-query-filter>\n\t\t</triplat-query>\n\t</triplat-ds>\n\t\n\t<triplat-select-input label=\"Delegate To\" \n\t\tselect-src=\"{{allEmployeeData}}\" \n\t\tvalue=\"{{data.triDelegateToTx}}\"\n\t\tsearch-value=\"{{searchEmployee}}\"\n\t\tscroller=\"{{employeeScroller}}\">\n\t</triplat-select-input>\n\nExample of a small pagination size of 10 records. The queryScrollPageId is set to ensure a scrollbar is displayed.\n\n\t<triplat-ds name=\"people\" data=\"{{data}}\"></triplat-ds>\n\t<triplat-ds name=\"employees\" data=\"{{allEmployeeData}}\">\n\t\t<triplat-query>\n\t\t\t<triplat-query-scroll-page \n\t\t\t  id=\"employeeScrollerPage\" \n\t\t\t  scroller=\"[[employeeScroller]]\" size=\"10\">\n\t\t\t</triplat-query-scroll-page>\n\t\t\t<triplat-query-filter name=\"name\" operator=\"contains\" \n\t\t\t\t\t\t\t\t  value=\"{{searchEmployee}}\" ignore-if-blank>\n\t\t\t</triplat-query-filter>\n\t\t</triplat-query>\n\t</triplat-ds>\n\t\n\t<triplat-select-input label=\"Delegate To\" \n\t\tselect-src=\"{{allEmployeeData}}\" \n\t\tvalue=\"{{data.triDelegateToTx}}\"\n\t\tsearch-value=\"{{searchEmployee}}\"\n\t\tscroller=\"{{employeeScroller}}\"\n\t\tquery-scroll-page-id=\"employeeScrollerPage\">\n\t</triplat-select-input>\n\nIf you assume that functional roles have less than 50 records, it is fine to immediately load all the records for selection.\nThe following example shows no setup for triplat-query-scroll-page and it uses the 'filtered-data' attribute instead of the 'data' attribute in triplat-ds. \n\t\n\t<triplat-ds name=\"functionalRoles\" filtered-data=\"{{allFuncRolesData}}\">\n\t\t<triplat-query>\n\t\t\t<triplat-query-filter name=\"roleName\" operator=\"contains\" \n\t\t\t\t\t\t\t\t  value=\"{{searchFuncRole}}\" ignore-if-blank>\n\t\t\t</triplat-query-filter>\n\t\t</triplat-query>\n\t</triplat-ds>\n\t\n\t<triplat-select-input label=\"Functional Role\"\n\t\tselect-src=\"{{allFuncRolesData}}\" \n\t\tvalue=\"{{data.triFunctionalRoleCL}}\" \n\t\tvalue-name=\"roleName\" \n\t\tsearch-value=\"{{searchFuncRole}}\">\n\t</triplat-select-input>\n\ntriplat-select-input also has a clear-icon which is used to clear the value.\n\nExample of using a custom label. In order for an element to be considered as a label, it must have the `label` slot attribute.\n\n\t<triplat-select-input\n\t\tselect-src=\"{{allFuncRolesData}}\" \n\t\tvalue=\"{{data.triFunctionalRoleCL}}\" \n\t\tvalue-name=\"roleName\" \n\t\tsearch-value=\"{{searchFuncRole}}\">\n\t\t<iron-icon slot=\"label\" icon=\"av:recent-actors\"></iron-icon>\n\t\t<span slot=\"label\">Role</span>\n\t</triplat-select-input>\n\n\t<triplat-select-input\n\t\tselect-src=\"{{allFuncRolesData}}\" \n\t\tvalue=\"{{data.triFunctionalRoleCL}}\" \n\t\tvalue-name=\"roleName\" \n\t\tsearch-value=\"{{searchFuncRole}}\">\n\t\t<div slot=\"label\" class=\"span-label\"><span class=\"required-asterisk\">*</span>Role</div>\n\t</triplat-select-input>\n\nThe 'label' property value will be overridden when using a custom label. <br/>\n\n### Accessibility\n\nUser can use keyboard keys to interact with the select dropdown.\n\n  - Press the `Down Arrow` key to navigate to the next item.\n  - Press the `Up Arrow` key to navigate to the previous item.\n  - Press the `Tab` key to navigate from the input, to the Clear icon (if is displayed), to the first item in the dropdown.\n  - Press the `Space` or `Enter` keys to tap on the current item or action.\n  - Press the `Esc` key to close the dropdown.\n\n### Styling\n\n\nThe following custom properties and mixins are also available for styling:\n\nCustom property                                    | Description                                                            | Default\n---------------------------------------------------|------------------------------------------------------------------------|----------\n`--triplat-select-input-dropdown-margin-bottom`    | Margin bottom of the dropdown list                                     | `10px`\n`--triplat-select-input-dropdown-max-height`       | Maximum height of the dropdown list                                    | `none`\n`--triplat-select-input-clear-button`              | Mixin applied to the clear button                                      | `{}`\n`--triplat-select-input-input`                     | Mixin applied to the input field                                       | `{}`\n`--triplat-select-input-paper-item-min-height`     | Minimum height of the item                                             | `48px`\n`--triplat-select-input-paper-item`                | Mixin applied to the item                                              | `{}`\n`--triplat-select-input-paper-item-focused`        | Mixin applied to focused paper items                                   | `{}`\n`--triplat-select-input-margin-bottom-when-opened` | The size of the bottom margin applied when the dropdown is opened and the scrollElementIntoView is true | `0px`\n\n\nSee `Polymer.PaperInputContainer` for a list of custom properties that can be used to style the paper-input element contained within this element.",
+      "summary": "",
+      "path": "triplat-select-input.js",
+      "properties": [
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "Label for input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 2
+            },
+            "end": {
+              "line": 377,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "value",
+          "type": "Object | null | undefined",
+          "description": "STRING_WITH_ID object for the currently selected value for the field.\nIf the dropdown is open. then this value won't change until you select a new value.\nThis value will be null if there is no match.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 384,
+              "column": 2
+            },
+            "end": {
+              "line": 389,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_onValueChanged\"",
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "valueName",
+          "type": "string | null | undefined",
+          "description": "Value name used in the STRING_WITH_ID object. This will specify the property of the STRING_WITH_ID object\nthat you want to set. Typically, STRING_WITH_ID contains 2 properties, \"id\" and \"value\", and you would want\nto set the valueName to \"value\".",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 396,
+              "column": 2
+            },
+            "end": {
+              "line": 400,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "searchValue",
+          "type": "string | null | undefined",
+          "description": "String for filter/search. This is set to the value that is typed in the input field and is updated each\ntime a character is typed or removed. When selectSrc references a data source with a filter, this value can\nbe used in that filter to produce typeahead filtering by data-binding this value with a\ntriplat-query-filter value attribute.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 408,
+              "column": 2
+            },
+            "end": {
+              "line": 412,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "selectSrc",
+          "type": "Array | null | undefined",
+          "description": "Select data source. The values in this array are displayed in the dropdown box.\nThis array is also used to data-bind with the triplat-ds data attribute or filtered-data attribute.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 418,
+              "column": 2
+            },
+            "end": {
+              "line": 423,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "observer": "\"_onSelectSrcChanged\"",
+              "readOnly": false,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "scroller",
+          "type": "Object | null | undefined",
+          "description": "Scroller container element object. This object is also used to data-bind with the triplat-query-scroll-page scroller attribute.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 428,
+              "column": 2
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "queryScrollPageId",
+          "type": "string | null | undefined",
+          "description": "Query scroll page element ID that defines the scroller property. This ID is used to get the\ntriplat-query-scroll-page size attribute to ensure that the scrollbar is displayed for a small pagination size.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 438,
+              "column": 2
+            },
+            "end": {
+              "line": 440,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | null | undefined",
+          "description": "Boolean to indicate that this is a disabled input field. Show\nthe value, but not the clear button. The value will be grayed out and not editable.\nThe value will be underlined to indicate it is an input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 447,
+              "column": 2
+            },
+            "end": {
+              "line": 450,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean | null | undefined",
+          "description": "Boolean to indicate that this is a read-only value. Show\nthe value, but not the clear button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 456,
+              "column": 2
+            },
+            "end": {
+              "line": 459,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to mark the input field as required.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 465,
+              "column": 2
+            },
+            "end": {
+              "line": 468,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "errorMessage",
+          "type": "string | null | undefined",
+          "description": "The error message to display when the input value is invalid.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 473,
+              "column": 2
+            },
+            "end": {
+              "line": 475,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "autoValidate",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to auto-validate the input value when it changes.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 483,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean | null | undefined",
+          "description": "True if the input is invalid. This property is set automatically when the input value changes if auto-validating.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 488,
+              "column": 2
+            },
+            "end": {
+              "line": 491,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "scrollElementIntoView",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to scroll the selected input element into view (on focus). If scroll is available, it will align the element to the top of the browser window (if possible).\nThe scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.\nIf no scroll is available, you can set the size of the bottom margin using the <b>--triplat-select-input-margin-bottom-when-opened</b>\nCSS property to enable the scroll on the screen. That bottom margin will be applied only on mobile devices when the\n<b>scrollElementIntoView</b> is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 500,
+              "column": 2
+            },
+            "end": {
+              "line": 504,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handleScrollElementIntoViewChange\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "alwaysFloatLabel",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to always float the floating label.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 509,
+              "column": 2
+            },
+            "end": {
+              "line": 512,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "noLabelFloat",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to disable the floating label. The label disappears when the input value is not null.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 517,
+              "column": 2
+            },
+            "end": {
+              "line": 520,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "delay",
+          "type": "number | null | undefined",
+          "description": "The delay (in milliseconds) between the time a single letter is typed,\nand the time the dropdown shows results. This delay is needed so we can wait a bit after presenting the results list in\nthe dropdown. This way, we can achieve better performance, skipping searches against single letters.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 527,
+              "column": 2
+            },
+            "end": {
+              "line": 532,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "300"
+        },
+        {
+          "name": "loading",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to indicate when a loading indicator is required",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 537,
+              "column": 2
+            },
+            "end": {
+              "line": 541,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onLoadingChanged\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_openDropDownOnMenuChange",
+          "type": "boolean | null | undefined",
+          "description": "Internally set to true to open the dropdown when the select source change.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 546,
+              "column": 2
+            },
+            "end": {
+              "line": 549,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_skipSetFocusOnClose",
+          "type": "boolean | null | undefined",
+          "description": "Internally set to true to skip focus setting when closing the dropdown.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 554,
+              "column": 3
+            },
+            "end": {
+              "line": 557,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_firstLoading",
+          "type": "boolean | null | undefined",
+          "description": "Internally set to true to to indicate the first time a data was loaded",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 562,
+              "column": 2
+            },
+            "end": {
+              "line": 565,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_intDelay",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 769,
+              "column": 4
+            },
+            "end": {
+              "line": 772,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 579,
+              "column": 4
+            },
+            "end": {
+              "line": 588,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeItemValue",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 590,
+              "column": 4
+            },
+            "end": {
+              "line": 592,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            }
+          ]
+        },
+        {
+          "name": "_onFocusedChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 594,
+              "column": 4
+            },
+            "end": {
+              "line": 612,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "focused"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectItem",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 614,
+              "column": 4
+            },
+            "end": {
+              "line": 631,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "selectedElement"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onIronSelect",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 633,
+              "column": 4
+            },
+            "end": {
+              "line": 639,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onSelectSrcChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 641,
+              "column": 4
+            },
+            "end": {
+              "line": 652,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "selectSrc"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 654,
+              "column": 4
+            },
+            "end": {
+              "line": 663,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onIronOverlayClosed",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 665,
+              "column": 4
+            },
+            "end": {
+              "line": 691,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onIronOverlayOpened",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 693,
+              "column": 4
+            },
+            "end": {
+              "line": 696,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_adjustScrollHeight",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 698,
+              "column": 4
+            },
+            "end": {
+              "line": 713,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_on_searchValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 715,
+              "column": 4
+            },
+            "end": {
+              "line": 754,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "_searchValue"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onLoadingChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 756,
+              "column": 4
+            },
+            "end": {
+              "line": 767,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_keyPressHandler",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 774,
+              "column": 4
+            },
+            "end": {
+              "line": 784,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_keyDownInputHandler",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 786,
+              "column": 4
+            },
+            "end": {
+              "line": 805,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_keyDownMenuHandler",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 807,
+              "column": 4
+            },
+            "end": {
+              "line": 814,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_keyDownClearHandler",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 816,
+              "column": 4
+            },
+            "end": {
+              "line": 826,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_clearValue",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 828,
+              "column": 4
+            },
+            "end": {
+              "line": 836,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setFocus",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 838,
+              "column": 4
+            },
+            "end": {
+              "line": 842,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isDisabledOrReadonly",
+          "description": "Return true if the component is disabled or readonly.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 846,
+              "column": 1
+            },
+            "end": {
+              "line": 848,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_openDropDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 850,
+              "column": 4
+            },
+            "end": {
+              "line": 877,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isMobileDevice",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 879,
+              "column": 4
+            },
+            "end": {
+              "line": 893,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_isAndroidDevice",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 895,
+              "column": 4
+            },
+            "end": {
+              "line": 897,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_handleScrollElementIntoViewChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 899,
+              "column": 4
+            },
+            "end": {
+              "line": 903,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "scrollElementIntoViewNew"
+            },
+            {
+              "name": "scrollElementIntoViewOld"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_fireUserChanged",
+          "description": "This event get fired after user: \n - select dropdown item\n - keypress arrow down to select item.\n - click clear icon\n - keypress clear icon",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 911,
+              "column": 1
+            },
+            "end": {
+              "line": 913,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onTapItem",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 915,
+              "column": 4
+            },
+            "end": {
+              "line": 917,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 169,
+          "column": 8
+        },
+        "end": {
+          "line": 918,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Label for input field.",
+          "sourceRange": {
+            "start": {
+              "line": 373,
+              "column": 2
+            },
+            "end": {
+              "line": 377,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "value",
+          "description": "STRING_WITH_ID object for the currently selected value for the field.\nIf the dropdown is open. then this value won't change until you select a new value.\nThis value will be null if there is no match.",
+          "sourceRange": {
+            "start": {
+              "line": 384,
+              "column": 2
+            },
+            "end": {
+              "line": 389,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "value-name",
+          "description": "Value name used in the STRING_WITH_ID object. This will specify the property of the STRING_WITH_ID object\nthat you want to set. Typically, STRING_WITH_ID contains 2 properties, \"id\" and \"value\", and you would want\nto set the valueName to \"value\".",
+          "sourceRange": {
+            "start": {
+              "line": 396,
+              "column": 2
+            },
+            "end": {
+              "line": 400,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "search-value",
+          "description": "String for filter/search. This is set to the value that is typed in the input field and is updated each\ntime a character is typed or removed. When selectSrc references a data source with a filter, this value can\nbe used in that filter to produce typeahead filtering by data-binding this value with a\ntriplat-query-filter value attribute.",
+          "sourceRange": {
+            "start": {
+              "line": 408,
+              "column": 2
+            },
+            "end": {
+              "line": 412,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "select-src",
+          "description": "Select data source. The values in this array are displayed in the dropdown box.\nThis array is also used to data-bind with the triplat-ds data attribute or filtered-data attribute.",
+          "sourceRange": {
+            "start": {
+              "line": 418,
+              "column": 2
+            },
+            "end": {
+              "line": 423,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "scroller",
+          "description": "Scroller container element object. This object is also used to data-bind with the triplat-query-scroll-page scroller attribute.",
+          "sourceRange": {
+            "start": {
+              "line": 428,
+              "column": 2
+            },
+            "end": {
+              "line": 432,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "query-scroll-page-id",
+          "description": "Query scroll page element ID that defines the scroller property. This ID is used to get the\ntriplat-query-scroll-page size attribute to ensure that the scrollbar is displayed for a small pagination size.",
+          "sourceRange": {
+            "start": {
+              "line": 438,
+              "column": 2
+            },
+            "end": {
+              "line": 440,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "disabled",
+          "description": "Boolean to indicate that this is a disabled input field. Show\nthe value, but not the clear button. The value will be grayed out and not editable.\nThe value will be underlined to indicate it is an input field.",
+          "sourceRange": {
+            "start": {
+              "line": 447,
+              "column": 2
+            },
+            "end": {
+              "line": 450,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "readonly",
+          "description": "Boolean to indicate that this is a read-only value. Show\nthe value, but not the clear button.",
+          "sourceRange": {
+            "start": {
+              "line": 456,
+              "column": 2
+            },
+            "end": {
+              "line": 459,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "required",
+          "description": "Set to true to mark the input field as required.",
+          "sourceRange": {
+            "start": {
+              "line": 465,
+              "column": 2
+            },
+            "end": {
+              "line": 468,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "error-message",
+          "description": "The error message to display when the input value is invalid.",
+          "sourceRange": {
+            "start": {
+              "line": 473,
+              "column": 2
+            },
+            "end": {
+              "line": 475,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "auto-validate",
+          "description": "Set to true to auto-validate the input value when it changes.",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 483,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "invalid",
+          "description": "True if the input is invalid. This property is set automatically when the input value changes if auto-validating.",
+          "sourceRange": {
+            "start": {
+              "line": 488,
+              "column": 2
+            },
+            "end": {
+              "line": 491,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "scroll-element-into-view",
+          "description": "Set to true to scroll the selected input element into view (on focus). If scroll is available, it will align the element to the top of the browser window (if possible).\nThe scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.\nIf no scroll is available, you can set the size of the bottom margin using the <b>--triplat-select-input-margin-bottom-when-opened</b>\nCSS property to enable the scroll on the screen. That bottom margin will be applied only on mobile devices when the\n<b>scrollElementIntoView</b> is true.",
+          "sourceRange": {
+            "start": {
+              "line": 500,
+              "column": 2
+            },
+            "end": {
+              "line": 504,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "always-float-label",
+          "description": "Set to true to always float the floating label.",
+          "sourceRange": {
+            "start": {
+              "line": 509,
+              "column": 2
+            },
+            "end": {
+              "line": 512,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "no-label-float",
+          "description": "Set to true to disable the floating label. The label disappears when the input value is not null.",
+          "sourceRange": {
+            "start": {
+              "line": 517,
+              "column": 2
+            },
+            "end": {
+              "line": 520,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "delay",
+          "description": "The delay (in milliseconds) between the time a single letter is typed,\nand the time the dropdown shows results. This delay is needed so we can wait a bit after presenting the results list in\nthe dropdown. This way, we can achieve better performance, skipping searches against single letters.",
+          "sourceRange": {
+            "start": {
+              "line": 527,
+              "column": 2
+            },
+            "end": {
+              "line": 532,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "loading",
+          "description": "Set to true to indicate when a loading indicator is required",
+          "sourceRange": {
+            "start": {
+              "line": 537,
+              "column": 2
+            },
+            "end": {
+              "line": 541,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "select-input-list-close",
+          "description": "Fired after the dropdown list closes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "select-input-list-open",
+          "description": "Fired after the dropdown list opens.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "select-input-value-change",
+          "description": "Fired after the input value changes. Contains the new value in event.detail.value.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "select-input-value-user-change",
+          "description": "Fired when the input changes due to user interaction. Contains the new value in event.detail.value.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "value-changed",
+          "description": "Fired when the `value` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "search-value-changed",
+          "description": "Fired when the `searchValue` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "scroller-changed",
+          "description": "Fired when the `scroller` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-select-input"
+    }
+  ]
+}

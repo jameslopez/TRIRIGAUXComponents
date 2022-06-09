@@ -1,0 +1,74 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2016-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script>
+	TriBlockPageContainerBehavior = {
+
+		properties: {
+
+			_availableDs: {
+				type: Object,
+				value: {}
+			}
+		},
+
+		_onNavigateTo: function(params){
+			if(this._pageAttached){
+				this._pageAttached(params);
+			}
+
+			this._registerAvailableDs();
+		},
+
+		_onNavigateAway: function(){
+			if(this._pageDetached){
+				this._pageDetached();
+			}
+		
+		},
+
+		_registerAvailableDs: function(){
+			this._availableDs = {};
+			var self = this;
+			var ds = Polymer.dom(this.root).querySelectorAll("triplat-ds");
+			if(ds.length > 0){
+				ds.forEach(function(datasource){
+					if(datasource.refreshOnNavigate){
+						datasource.refresh();
+					}
+					self._availableDs[ds.id] = false;
+					datasource.addEventListener("ds-get-complete", function(){
+						self._availableDs[this.id] = true;
+						self._verifyLoadComplete();
+						this.removeEventListener("ds-get-complete", arguments.callee);
+					});
+				});
+			} else {
+				this._triggerPageLoaded();
+			}
+
+		},
+
+		_verifyLoadComplete: function(){
+			var complete = false;
+			for (var property in this._availableDs) {
+    			if (this._availableDs.hasOwnProperty(property)) {
+    				complete = this._availableDs[property]; 
+	    		}
+			}
+			
+			if(complete){
+				this._triggerPageLoaded();
+			}
+		},
+
+		_triggerPageLoaded: function(){
+			if(this._pageLoaded){
+				this._pageLoaded();
+			}
+		}
+
+	};
+</script>

@@ -1,0 +1,953 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-tab` is a component that can be used to define and configure the navigation items to be rendered inside the `triblock-tabs` component.\r\n\r\nIt can navigate to any combination or all of the following targets:\r\n\t<ul>\r\n\t\t<li>Routing page inside a `triplat-route-selector` component</li>\r\n\t\t<li>Page inside an `iron-pages` component</li>\r\n\t\t<li>Tap handler</li>\r\n\t\t<li>Event handler</li>\r\n\t</ul>\r\n\r\nSee <a href=\"?active=TriBlockNavBehavior\">TriBlockNavBehavior</a> for more information about the properties to set for the different targets that a navigation item can be configured for.\r\n\r\n\t\r\n### Route page\r\n\r\nUse this component to navigate to one of the routing pages inside the `triplat-route-selector` component by setting the `triplat-route-id` and/or `triplat-route-params` properties.  Optionally, you can provide parameters to your target route.\r\n\r\n\tExample: \r\n\r\n\t\t<triplat-route \r\n\t\t\tid=\"activityRoute\" \r\n\t\t\tname=\"activityPage\" \r\n\t\t\tpath=\"/activity\"></triplat-route>\r\n\t\t<triplat-route \r\n\t\t\tid=\"adminRoute\" \r\n\t\t\tname=\"adminPage\" \r\n\t\t\tpath=\"/admin\"></triplat-route>\r\n\t\t<triplat-route \r\n\t\t\tid=\"applicationRoute\" \r\n\t\t\tname=\"applicationPage\" \r\n\t\t\tpath=\"/application\"></triplat-route>\r\n\t\t\r\n\t\t<triblock-tabs>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ttriplat-route-id=\"activityRoute\" \r\n\t\t\t\ticon=\"activity\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Activity\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ttriplat-route-id=\"adminRoute\" \r\n\t\t\t\ttriplat-route-params=\"{{routeParams}}\" \r\n\t\t\t\ticon=\"admin\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Admin\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ttriplat-route-id=\"applicationRoute\" \r\n\t\t\t\ticon=\"applications\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Application\"></triblock-tab>\r\n\t\t</triblock-tabs>\r\n\t\t\r\n\t\t<triplat-route-selector>\r\n\t\t\t<iron-pages>\r\n\t\t\t\t<section route=\"activityPage\" default-route>\r\n\t\t\t\t\t<span>Activity Page</span>\r\n\t\t\t\t</section>\r\n\t\t\t\t<section route=\"adminPage\">\r\n\t\t\t\t\t<span>Administrator Page</span>\r\n\t\t\t\t</section>\r\n\t\t\t\t<section route=\"applicationPage\">\r\n\t\t\t\t\t<span>Application Page</span>\r\n\t\t\t\t</section>\r\n\t\t\t</iron-pages>\r\n\t\t</triplat-route-selector> \r\n\r\n\r\n### Iron page\r\n\r\nUse this component to navigate to one of the iron pages inside the `iron-pages` component by setting the `iron-pages-id` and `iron-page-id` properties.\r\n\r\n\tDefault `id` example: \r\n\r\n\t\t<triblock-tabs>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tiron-pages-id=\"myIronPages\" \r\n\t\t\t\tiron-page-id=\"activityPage\" \r\n\t\t\t\ticon=\"activity\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Activity\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tiron-pages-id=\"myIronPages\" \r\n\t\t\t\tiron-page-id=\"adminPage\" \r\n\t\t\t\ticon=\"admin\" \r\n\t\t\t\tslot=\"tab\" \r\n\t\t\t\tlabel=\"Admin\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tiron-pages-id=\"myIronPages\" \r\n\t\t\t\tiron-page-id=\"applicationPage\" \r\n\t\t\t\ticon=\"applications\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Application\"></triblock-tab>\r\n\t\t</triblock-tabs>\r\n\t\t\r\n\t\t<iron-pages id=\"myIronPages\">\r\n\t\t\t<section id=\"activityPage\">\r\n\t\t\t\t<span>Activity Page</span>\r\n\t\t\t</section>\r\n\t\t\t<section id=\"adminPage\">\r\n\t\t\t\t<span>Administrator Page</span>\r\n\t\t\t</section>\r\n\t\t\t<section id=\"applicationPage\">\r\n\t\t\t\t<span>Application Page</span>\r\n\t\t\t</section>\r\n\t\t</iron-pages>\r\n\r\n\t`attr-for-selected` example: \r\n\r\n\t\t<triblock-tabs>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tiron-pages-id=\"myIronPages\" \r\n\t\t\t\tiron-page-id=\"activityPage\" \r\n\t\t\t\ticon=\"activity\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Activity\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tiron-pages-id=\"myIronPages\" \r\n\t\t\t\tiron-page-id=\"adminPage\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\ticon=\"admin\" label=\"Admin\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tiron-pages-id=\"myIronPages\" \r\n\t\t\t\tiron-page-id=\"applicationPage\" \r\n\t\t\t\ticon=\"applications\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Application\"></triblock-tab>\r\n\t\t</triblock-tabs>\r\n\t\t\r\n\t\t<iron-pages id=\"myIronPages\" attr-for-selected=\"page-id\">\r\n\t\t\t<section page-id=\"activityPage\">\r\n\t\t\t\t<span>Activity Page</span>\r\n\t\t\t</section>\r\n\t\t\t<section page-id=\"adminPage\">\r\n\t\t\t\t<span>Administrator Page</span>\r\n\t\t\t</section>\r\n\t\t\t<section page-id=\"applicationPage\">\r\n\t\t\t\t<span>Application Page</span>\r\n\t\t\t</section>\r\n\t\t</iron-pages>\r\n\r\n### Tap handler\r\n\r\nUse this component to invoke an action through a tap handler by setting the name of the handler to the `tap-handler` property.  The tapped `triblock-tab` will be passed to the handler. \r\n\r\n\tExample: \r\n\r\n\t\t<triblock-tabs>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ttap-handler=\"_myActivityHandler\" \r\n\t\t\t\ticon=\"activity\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Activity\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ttap-handler=\"_myAdminHandler\" \r\n\t\t\t\ticon=\"admin\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Admin\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ttap-handler=\"_myApplicationHandler\" \r\n\t\t\t\ticon=\"applications\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Application\"></triblock-tab>\r\n\t\t</triblock-tabs>\r\n\t\t\r\n\t\t<script>\r\n\t\t\t_myActivityHandler: function(e) {\r\n\t\t\t\talert(\"My activity tap handler is called! Navigation label: \" + e.label);\r\n\t\t\t}, \r\n\t\t\t_myAdminHandler: function(e) {\r\n\t\t\t\talert(\"My admin tap handler is called! Navigation label: \" + e.label);\r\n\t\t\t},\r\n\t\t\t_myApplicationHandler: function(e) {\r\n\t\t\t\talert(\"My application tap handler is called! Navigation label: \" + e.label);\r\n\t\t\t}\r\n\t\t</script>\r\n\r\n### Event handler\r\n\r\nUse this component to invoke an action by listening to a `navigate` event.  The `triblock-tab` element will be passed to the event listener and can be accessed as an item to the event, like `e.detail.item`. \r\n\r\n\tExample: \r\n\r\n\t\t<triblock-tabs>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ton-navigate=\"_myActivityListener\" \r\n\t\t\t\ticon=\"activity\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Activity\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ton-navigate=\"_myAdminListener\" \r\n\t\t\t\ticon=\"admin\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Admin\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\ton-navigate=\"_myApplicationListener\" \r\n\t\t\t\ticon=\"applications\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Application\"></triblock-tab>\r\n\t\t</triblock-tabs>\r\n\t\t\r\n\t\t<script>\r\n\t\t\t_myActivityListener: function(e) {\r\n\t\t\t\talert(\"My activity event listener is called! Navigation label: \" + \r\n\t\t\t\t\t\te.detail.item.label);\r\n\t\t\t},\r\n\t\t\t_myAdminListener: function(e) {\r\n\t\t\t\talert(\"My admin event listener is called! Navigation label: \" + \r\n\t\t\t\t\t\te.detail.item.label);\r\n\t\t\t},\r\n\t\t\t_myApplicationListener: function(e) {\r\n\t\t\t\talert(\"My application event listener is called! Navigation label: \" + \r\n\t\t\t\t\t\te.detail.item.label);\r\n\t\t\t}\r\n\t\t</script>\r\n\r\n\r\n### Badges\r\n\r\nYou can configure the navigation item to have a badge shown by default at the upper right corner of the component.  You can show the badge as an icon or as a label which can be a text or a number.  \tSee <a href=\"?active=TriBlockBadgeBehavior\">TriBlockBadgeBehavior</a> for more information about the properties to set for the different type of badges on the navigation item.\r\n\r\n\tExample: \r\n\r\n\t\t<triblock-tabs>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tbadge-number=\"5\" \r\n\t\t\t\ticon=\"activity\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Activity\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tbadge-label=\"*\" \r\n\t\t\t\ticon=\"admin\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Admin\"></triblock-tab>\r\n\t\t\t<triblock-tab \r\n\t\t\t\tbadge-icon=\"check\" \r\n\t\t\t\ticon=\"applications\" \r\n\t\t\t\tslot=\"tab\"\r\n\t\t\t\tlabel=\"Application\"></triblock-tab>\r\n\t\t</triblock-tabs>\r\n\r\nSee demo page of <a href=\"?active=triblock-tabs\">triblock-tabs</a> for sample usages.",
+      "summary": "",
+      "path": "triblock-tab.js",
+      "properties": [
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the label of the navigation item.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 267,
+              "column": 2
+            },
+            "end": {
+              "line": 267,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "icon",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the name of the icon of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 271,
+              "column": 2
+            },
+            "end": {
+              "line": 271,
+              "column": 14
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "badgeIcon",
+          "type": "string | null | undefined",
+          "description": "Gets or sets the name of the badgeIcon of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 275,
+              "column": 2
+            },
+            "end": {
+              "line": 275,
+              "column": 19
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_handleLabelBadgeIconChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 282,
+              "column": 1
+            },
+            "end": {
+              "line": 284,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "label"
+            },
+            {
+              "name": "badgeIcon"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_refreshTabs",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 286,
+              "column": 1
+            },
+            "end": {
+              "line": 293,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 255,
+          "column": 8
+        },
+        "end": {
+          "line": 294,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Gets or sets the label of the navigation item.",
+          "sourceRange": {
+            "start": {
+              "line": 267,
+              "column": 2
+            },
+            "end": {
+              "line": 267,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "icon",
+          "description": "Gets or sets the name of the icon of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "sourceRange": {
+            "start": {
+              "line": 271,
+              "column": 2
+            },
+            "end": {
+              "line": 271,
+              "column": 14
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "badge-icon",
+          "description": "Gets or sets the name of the badgeIcon of the navigation item.  See demo pages of `triplat-icon` and `iron-icons` to see the list of available icons to use.",
+          "sourceRange": {
+            "start": {
+              "line": 275,
+              "column": 2
+            },
+            "end": {
+              "line": 275,
+              "column": 19
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "update",
+          "description": "Fired when navigation item's properties get updated.  The element is passed to the event listener as item, like `e.detail.item`.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-tab"
+    },
+    {
+      "description": "`triblock-tabs` is a component which provides a group of navigation items that will be rendered horizontally on the page.\r\n  \r\n  Use the `triblock-tab` component to configure the navigation items that will be rendered in the tabs.  This is the only supported component that can be used inside the `triblock-tabs`.  To properly insert `triblock-tab` within `triblock-tabs`, add the `slot` property with a value of `tab`. See <a href=\"?active=triblock-tab\">triblock-tab</a> for more information.\r\n  \r\n  You can define static and dynamic tabs using data binding or mixed of both.\r\n  \r\n  <div style=\"background-color:#FFFFCC\">\r\n\t<div style=\"padding:20px;\">\r\n\t   <b>Note:</b> Currently, only data from the `triplat-ds` and the `iron-ajax` components are supported by dynamic tabs.  You should call `refreshTabs` after the tabs are dynamically changed or updated.\r\n\t</div>\r\n  </div>\r\n  \r\n\r\n  Example:\r\n\r\n\t<triblock-tabs>\r\n\t  <triblock-tab \r\n\t\ticon=\"activity\"\r\n\t\tslot=\"tab\" \r\n\t\tlabel=\"Activity\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\ticon=\"admin\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Admin\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\ticon=\"applications\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Application\"></triblock-tab>\r\n\t</triblock-tabs>\r\n  \r\n  \r\n  ### Default maximum badge number\r\n  \r\n  It implements badge container behavior which propagates its `badge-max-number` value to its navigation items that do not have a value for its `badge-max-number` property.  See <a href=\"?active=TriBlockBadgeContainerBehavior\">TriBlockBadgeContainerBehavior</a> for more information.\r\n  \r\n  Example:\r\n  \r\n\t<triblock-tabs badge-max-number=\"99\">\r\n\t  <triblock-tab \r\n\t\ticon=\"activity\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Activity\" \r\n\t\tbadge-max-number=\"50\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\ticon=\"admin\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Admin\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\ticon=\"applications\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Application\"></triblock-tab>\r\n\t</triblock-tabs>\r\n  \r\n  The `Activity` navigation item above will have a maximum badge number of 50 while the other two navigation items will have 99 as their maximum badge number which comes from the `triblock-side-nav`.\r\n\r\n  \r\n  ### Default id for `iron-pages` \r\n  \r\n  It implements iron pages container behavior which propagates its `iron-pages-id` value to its navigation items that do not have a value for its `iron-pages-id` property.  When the `triblock-side-nav` component is used as a `nav` component inside the `triblock-side-nav-layout` component the `iron-pages-id` property will be automatically assigned a value from the `id` of the `iron-pages` component that is marked as `page` inside the layout component.  In this usage, you do not need to set a value for the `iron-pages-id` property.  See <a href=\"?active=TriBlockNavIronPagesContainerBehavior\">TriBlockNavIronPagesContainerBehavior</a> for more information. \r\n  \r\n  \r\n  ### Selection\r\n  \r\n  It implements navigation selection behavior which maintains the currently selected navigation item based on the `id` or `attr-for-selected` property of its navigation items.  Use the `selected` property to get or set the selected side navigation item.  The index of the navigation item is not supported as a value for the `selected` property.  See <a href=\"?active=TriBlockNavSelectContainerBehavior\">TriBlockNavSelectContainerBehavior</a> for more information.\r\n  \r\n  `id` example:\r\n  \r\n\t<triblock-tabs selected=\"activityNav\">\r\n\t  <triblock-tab \r\n\t\tid=\"activityNav\" \r\n\t\ticon=\"activity\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Activity\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\tid=\"adminNav\" \r\n\t\ticon=\"admin\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Admin\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\tid=\"applicationNav\" \r\n\t\ticon=\"applications\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Application\"></triblock-tab>\r\n\t</triblock-tabs>\r\n\t\r\n  The `Activity` navigation item will be selected by default.\r\n\r\n  `attr-for-selected` example:\r\n  \r\n\t<triblock-tabs selected=\"adminNav\" attr-for-selected=\"route-to\">\r\n\t  <triblock-tab \r\n\t\troute-to=\"activityNav\" \r\n\t\ticon=\"activity\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Activity\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\troute-to=\"adminNav\" \r\n\t\ticon=\"admin\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Admin\"></triblock-tab>\r\n\t  <triblock-tab \r\n\t\troute-to=\"applicationNav\" \r\n\t\ticon=\"applications\" \r\n\t\tslot=\"tab\"\r\n\t\tlabel=\"Application\"></triblock-tab>\r\n\t</triblock-tabs\r\n\t\r\n  The `Admin` navigation item will be selected by default.\r\n  \r\n  \r\n  ### Default styling\r\n  \r\n  The `triblock-tabs` component comes with default TRIRIGA application styling such as:\r\n  <ul>\r\n\t  <li>On hover or focus, a band appears from the bottom of the tab and follows the cursor between tabs.</li>\r\n\t  <li>On hover or focus or selected, the primary tab label and icon change its opacity so that tab appears prominent.</li>\r\n\t  <li>When selected, the primary tab band slides up and the tab color changes.</li>\r\n\t  <li>When unselected, the tab band slides down and returns to its unselected or default state.</li>\r\n\t  <li>Badges are positioned right next to the label with a bold font setting. </li>\r\n  </ul>\r\n\r\n  \r\n  ### Styling\r\n  \r\n  The following custom properties and mixins are available for styling:\r\n\r\n  Custom property | Description | Default\r\n  ----------------|-------------|----------\r\n  `--triblock-tabs-container` | Mixin applied to the tabs container | `{}`\r\n  `--triblock-tabs-height` | Height applied to the tabs  | `50px`\r\n  `--triblock-tabs-min-width` | Minimum width applied to the tabs  | `200px`  \r\n  `--triblock-tabs-background-color` | Background color applied to tabs | `primary --tri-header-background-color, secondary white`\r\n  `--triblock-tabs-color` | Color applied to the tabs | `primary --tri-header-color, secondary --tri-primary-color`\r\n  `--triblock-tabs-tricontent` | Mixin applied to the tabs tri-content container | `{}`\r\n  `--triblock-tabs` | Mixin applied to the tabs | `{}`\r\n  `--triblock-tab` | Mixin applied to the tab | `{}`\r\n  `--triblock-tabs-icon` | Mixin applied to the icon  | `{}`  \r\n  `--triblock-tab-focused` | Mixin applied when a tab is focused or hovered on | `{}`\r\n  `--triblock-tab-focused-band` | Mixin applied to the band when tab is focused or hovered on | `{}`\r\n  `--triblock-tab-focused-band-background-color` | Background color applied to the band when tab is focused or hovered on | `primary --ibm-blue-60, secondary --tri-primary-color`\r\n  `--triblock-tab-focused-band-height` | Height applied to the band when tab is focused or hovered on | `primary 5px, secondary 4px`\r\n  `--triblock-tab-focused-tricontent` | Mixin applied to the tabs tri-content container when the tab is focused | `{}`\r\n  `--triblock-tab-color` | Color applied to the tab | `primary --tri-secondary-content-color, secondary --tri-primary-dark-color`\r\n  `--triblock-tab-unselected-background-color` | Background color applied to the tab when it is not selected | `primary --tri-primary-dark-color`  \r\n  `--triblock-tab-unselected-color` | Color applied to the tab when it is not selected |`primary --tri-secondary-content-color, secondary --tri-primary-color`\r\n  `--triblock-tab-unselected` | Mixin applied to the tab when it is not selected | `{}`\r\n  `--triblock-tab-background-color` | Background color applied to the tab | `secondary white`\r\n  `--triblock-tab-selected-background-color` | Background color applied to the overlay animation of the tab when it is selected | `--ibm-blue-60`\r\n  `--triblock-tab-selected-band-height` | Height applied to the band when the secondary tab is selected | `4px`  \r\n  `--triblock-tab-selected-band-color` | Color applied to the band when the secondary tab is selected | `--tri-primary-dark-color`\r\n  `--triblock-tab-selected-band` | Mixin applied to the band when the secondary tab is selected | `{}`\r\n  `--triblock-tab-selected` | Mixin applied to the tab when it is selected | `{}`\r\n  `--triblock-tab-badge` | Mixin applied to the badge on the tab | `{}`\r\n  `--triblock-tab-paper-badge-icon-width` | Width applied to the iron-icon inside paper-badge on the tab | `16px`\r\n  `--triblock-tab-paper-badge-icon-height` | Height applied to the iron-icon inside paper-badge on the tab | `16px`\r\n  `--triblock-tab-paper-badge-icon` | Mixin applied to the iron-icon inside paper-badge on the tab | `{}`\r\n  `--triblock-tab-paper-badge-icon-color` | Color applied to the icon in paper-badge | `var(--tri-primary-color)`\r\n  `--triblock-tab-paper-badge-background` | Background color applied to the paper-badge | `none`",
+      "summary": "",
+      "path": "triblock-tabs.js",
+      "properties": [
+        {
+          "name": "primary",
+          "type": "boolean | null | undefined",
+          "description": "If true, tabs are created with primary tabs styles.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 465,
+              "column": 2
+            },
+            "end": {
+              "line": 468,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_tabElements",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 469,
+              "column": 2
+            },
+            "end": {
+              "line": 469,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "dir",
+          "type": "string | null | undefined",
+          "description": "Specifies the text direction of the component's content.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 473,
+              "column": 2
+            },
+            "end": {
+              "line": 476,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"ltr\""
+        },
+        {
+          "name": "refreshDelay",
+          "type": "number | null | undefined",
+          "description": "Number of milliseconds until tabs are refreshed on the page.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 483,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "hideScrollButtons",
+          "type": "boolean | null | undefined",
+          "description": "paper-tabs: If true, scroll buttons (left/right arrow) will be hidden for scrollable tabs.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 487,
+              "column": 2
+            },
+            "end": {
+              "line": 490,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "fitContainer",
+          "type": "boolean | null | undefined",
+          "description": "paper-tabs: If true, tabs expand to fit their container. This currently only applies when scrollable is true.\nBy default, triblock-tabs is scrollable.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 495,
+              "column": 2
+            },
+            "end": {
+              "line": 498,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 510,
+              "column": 4
+            },
+            "end": {
+              "line": 521,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 523,
+              "column": 4
+            },
+            "end": {
+              "line": 527,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeBadgeLabelClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 529,
+              "column": 1
+            },
+            "end": {
+              "line": 536,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_handleContentNodesChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 538,
+              "column": 4
+            },
+            "end": {
+              "line": 542,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "info"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getElementsToApplyIronPagesId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 544,
+              "column": 4
+            },
+            "end": {
+              "line": 550,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_retrieveTabs",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 552,
+              "column": 4
+            },
+            "end": {
+              "line": 555,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleBadgeMaxNumberAndTabs",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 557,
+              "column": 4
+            },
+            "end": {
+              "line": 563,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "badgeMaxNumber"
+            },
+            {
+              "name": "_tabElements"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleIronSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 565,
+              "column": 4
+            },
+            "end": {
+              "line": 568,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleIronDeselected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 570,
+              "column": 4
+            },
+            "end": {
+              "line": 572,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computePaperTabsClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 574,
+              "column": 4
+            },
+            "end": {
+              "line": 576,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "primary"
+            }
+          ]
+        },
+        {
+          "name": "_computeId",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 578,
+              "column": 4
+            },
+            "end": {
+              "line": 580,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "index"
+            }
+          ]
+        },
+        {
+          "name": "_computeLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 582,
+              "column": 4
+            },
+            "end": {
+              "line": 588,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeBadgeIcon",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 590,
+              "column": 4
+            },
+            "end": {
+              "line": 596,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_computeBadgeLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 598,
+              "column": 4
+            },
+            "end": {
+              "line": 604,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_tabElementsLoaded",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 606,
+              "column": 4
+            },
+            "end": {
+              "line": 608,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_navigate",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 610,
+              "column": 4
+            },
+            "end": {
+              "line": 613,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_hasBadge",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 615,
+              "column": 4
+            },
+            "end": {
+              "line": 625,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        },
+        {
+          "name": "_tabsUpdated",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 627,
+              "column": 4
+            },
+            "end": {
+              "line": 629,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "refreshTabs",
+          "description": "Refreshes the tabs with the latest configuration.  You should call this after the tabs are dynamically changed or updated.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 634,
+              "column": 1
+            },
+            "end": {
+              "line": 640,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "refreshBadges",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 642,
+              "column": 1
+            },
+            "end": {
+              "line": 649,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeSelectAttr",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 651,
+              "column": 4
+            },
+            "end": {
+              "line": 657,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "attrForSelected"
+            },
+            {
+              "name": "length"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 186,
+          "column": 8
+        },
+        "end": {
+          "line": 658,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "primary",
+          "description": "If true, tabs are created with primary tabs styles.",
+          "sourceRange": {
+            "start": {
+              "line": 465,
+              "column": 2
+            },
+            "end": {
+              "line": 468,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "dir",
+          "description": "Specifies the text direction of the component's content.",
+          "sourceRange": {
+            "start": {
+              "line": 473,
+              "column": 2
+            },
+            "end": {
+              "line": 476,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "refresh-delay",
+          "description": "Number of milliseconds until tabs are refreshed on the page.",
+          "sourceRange": {
+            "start": {
+              "line": 480,
+              "column": 2
+            },
+            "end": {
+              "line": 483,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "hide-scroll-buttons",
+          "description": "paper-tabs: If true, scroll buttons (left/right arrow) will be hidden for scrollable tabs.",
+          "sourceRange": {
+            "start": {
+              "line": 487,
+              "column": 2
+            },
+            "end": {
+              "line": 490,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "fit-container",
+          "description": "paper-tabs: If true, tabs expand to fit their container. This currently only applies when scrollable is true.\nBy default, triblock-tabs is scrollable.",
+          "sourceRange": {
+            "start": {
+              "line": 495,
+              "column": 2
+            },
+            "end": {
+              "line": 498,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-tabs"
+    },
+    {
+      "description": "`triblock-tab-nav-layout` is a container component that positions the tabs navigation and the area for switching pages.  It determines the tabs content if the `nav` attribute is present in one of its child components.  Similarly, it determines the area for pages if the `page` attribute is present in one of its child components.  The `nav` and `page` attributes should not be set to the same child component.  It applies the vertical layout to position the `nav` and `page` components.  The `nav` component does not flex while the `page` does.\r\n  \r\n  Use the `triblock-tabs` component as the `nav` component in the container.  See <a href=\"?active=triblock-tabs\">triblock-tabs</a> for more information.\r\n  \r\n  Example:\r\n\t\r\n\t<triblock-tab-nav-layout>\r\n\t  <triblock-tabs nav>\r\n\t\t<triblock-tab \r\n\t\t  iron-pages-id=\"myIronPages\" \r\n\t\t  iron-page-id=\"activityPage\" \r\n\t\t  icon=\"activity\" \r\n\t\t\tslot=\"tab\"\r\n\t\t  label=\"Activity\"></triblock-tab>\r\n\t\t<triblock-tab \r\n\t\t  iron-pages-id=\"myIronPages\" \r\n\t\t  iron-page-id=\"adminPage\" \r\n\t\t  icon=\"admin\" \r\n\t\t\tslot=\"tab\"\r\n\t\t  label=\"Admin\"></triblock-tab>\r\n\t\t<triblock-tab \r\n\t\t  iron-pages-id=\"myIronPages\" \r\n\t\t  iron-page-id=\"applicationPage\" \r\n\t\t  icon=\"applications\" \r\n\t\t\tslot=\"tab\"\r\n\t\t  label=\"Application\"></triblock-tab>\r\n\t  </triblock-tabs>\r\n\t  \r\n\t   <iron-pages id=\"myIronPages\" page>\r\n\t\t<section id=\"activityPage\">\r\n\t\t  <span>Activity Page</span>\r\n\t\t</section>\r\n\t\t<section id=\"adminPage\">\r\n\t\t  <span>Administrator Page</span>\r\n\t\t</section>\r\n\t\t<section id=\"applicationPage\">\r\n\t\t  <span>Application Page</span>\r\n\t\t</section>\r\n\t  </iron-pages>\r\n\t</triblock-tab-nav-layout>\r\n  \r\n\t\r\n  In the example above, the `nav` content appears on top of the `iron-pages` content which takes up the rest of the vertical space.  \r\n\t\r\n  \r\n  ### Default `iron-pages-id`\r\n  \r\n  If you use the `triblock-tabs` component as the `nav` content in this container, you do not need to specify the `iron-pages-id` in the individual `triblock-tab` but you will need to provide `id` to the `iron-pages` element.  The property will be populated by the container after it is attached to the document.\r\n  \r\n  Example:\r\n\t\r\n\t<triblock-tab-nav-layout>\r\n\t  <triblock-tabs nav>\r\n\t\t<triblock-tab \r\n\t\t  iron-page-id=\"activityPage\" \r\n\t\t\ticon=\"activity\"\r\n\t\t\tslot=\"tab\"\r\n\t\t  label=\"Activity\"></triblock-tab>\r\n\t\t<triblock-tab \r\n\t\t  iron-page-id=\"adminPage\" \r\n\t\t  icon=\"admin\" \r\n\t\t\tslot=\"tab\"\r\n\t\t  label=\"Admin\"></triblock-tab>\r\n\t\t<triblock-tab \r\n\t\t  iron-page-id=\"applicationPage\" \r\n\t\t  icon=\"applications\" \r\n\t\t\tslot=\"tab\"\r\n\t\t  label=\"Application\"></triblock-tab>\r\n\t  </triblock-tabs>\r\n\t  \r\n\t   <iron-pages id=\"myIronPages\" page>\r\n\t\t<section id=\"activityPage\">\r\n\t\t  <span>Activity Page</span>\r\n\t\t</section>\r\n\t\t<section id=\"adminPage\">\r\n\t\t  <span>Administrator Page</span>\r\n\t\t</section>\r\n\t\t<section id=\"applicationPage\">\r\n\t\t  <span>Application Page</span>\r\n\t\t</section>\r\n\t  </iron-pages>\r\n\t</triblock-tab-nav-layout>\r\n\r\n\r\n  ### Styling\r\n  \r\n  The following custom properties and mixins are available for styling:\r\n\r\n  Custom property | Description | Default\r\n  ----------------|-------------|----------\r\n  `--triblock-tab-nav-layout` | Mixin applied to the container | `{}`\r\n  `--triblock-tab-nav-layout-nav` | Mixin applied to the navigation content marked as `nav` | `{}`\r\n  `--triblock-tab-nav-layout-page` | Mixin applied to the navigation content marked as `page` | `{}`",
+      "summary": "",
+      "path": "triblock-tab-nav-layout.js",
+      "properties": [],
+      "methods": [],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/layout.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 107,
+          "column": 8
+        },
+        "end": {
+          "line": 139,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-tab-nav-layout"
+    }
+  ]
+}

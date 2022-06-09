@@ -1,0 +1,341 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-responsive-layout` is a wrapper component that can be used to handle a responsive layout behavior. The component implements `TriBlockViewResponsiveBehavior` behavior. The child components are stacked to display vertically in a small screen width (`smallScreenWidth` is true) and horizontally in a large screen width (`smallScreenWidth` is false). The Boolean value of the `smallScreenWidth` property changes based on the width that is specified in the `smallScreenMaxWidth` property. \n\n  ```html\n  <triblock-responsive-layout>\n\t<tricomp-left-column id=\"left-column\"></tricomp-left-column>\n\t<tricomp-middle-column id=\"middle-column\"></tricomp-middle-column>\n\t<tricomp-right-column id=\"right-column\"></tricomp-right-column>\n  </triblock-responsive-layout>\n  ```\n  Use the `stack-reverse` attribute to reverse the order of the stacked child components in a small screen width. \n\n  Sometimes, stacking the child components in a small screen width is not ideal. This component provides a switch view ability, `switchView`. When this property is set to true, all child components will be hidden except the child component `id` that has been assigned to the `currentViewId` property.\n\n  ```html\n  <triblock-responsive-layout switch-view current-view-id=\"middle-column\">\n\t<tricomp-left-column id=\"left-column\"></tricomp-left-column>\n\t<tricomp-middle-column id=\"middle-column\"></tricomp-middle-column>\n\t<tricomp-right-column id=\"right-column\"></tricomp-right-column>\n  </triblock-responsive-layout>\n  ```\n  In the example above, this component only displays the `tricomp-middle-column` component in a small screen width.\n\n  To switch to a different view (child component), use the `switchToViewId` method by passing the `id` value of the child component (for example, id=\"right-column\")).",
+      "summary": "",
+      "path": "triblock-responsive-layout.js",
+      "properties": [
+        {
+          "name": "switchView",
+          "type": "boolean | null | undefined",
+          "description": "If set to true, all the child components will be hidden when the `smallScreenWidth` property is true. A child component can be displayed by assigning the `currentViewId` property to one of the child components `id` (for example, current-view-id=\"left-column\").",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 94,
+              "column": 2
+            },
+            "end": {
+              "line": 98,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "views",
+          "type": "Array | null | undefined",
+          "description": "The child components.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 103,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "[]"
+        },
+        {
+          "name": "currentViewId",
+          "type": "string | null | undefined",
+          "description": "The child component `id` to display when the `switchView` and `smallScreenWidth` properties are true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 2
+            },
+            "end": {
+              "line": 120,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_currentViewIdChanged\"",
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "currentView",
+          "type": "Object | null | undefined",
+          "description": "Returns the element of the currently displayed view when `switchView` is true.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 125,
+              "column": 2
+            },
+            "end": {
+              "line": 129,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 132,
+              "column": 4
+            },
+            "end": {
+              "line": 134,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "switchToViewId",
+          "description": "Switches to a view based on the given `id`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 142,
+              "column": 1
+            },
+            "end": {
+              "line": 145,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "viewId",
+              "type": "string",
+              "description": "The `id` of the child component to display."
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_updateViews",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 147,
+              "column": 4
+            },
+            "end": {
+              "line": 150,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_currentViewIdChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 152,
+              "column": 4
+            },
+            "end": {
+              "line": 163,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "switchToViewIndex",
+          "description": "Switches to a view based on the given `index`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 171,
+              "column": 1
+            },
+            "end": {
+              "line": 173,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "index",
+              "type": "Number",
+              "description": "The index of the child component to display."
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 39,
+          "column": 8
+        },
+        "end": {
+          "line": 174,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "switch-view",
+          "description": "If set to true, all the child components will be hidden when the `smallScreenWidth` property is true. A child component can be displayed by assigning the `currentViewId` property to one of the child components `id` (for example, current-view-id=\"left-column\").",
+          "sourceRange": {
+            "start": {
+              "line": 94,
+              "column": 2
+            },
+            "end": {
+              "line": 98,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "views",
+          "description": "The child components.",
+          "sourceRange": {
+            "start": {
+              "line": 103,
+              "column": 2
+            },
+            "end": {
+              "line": 110,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "current-view-id",
+          "description": "The child component `id` to display when the `switchView` and `smallScreenWidth` properties are true.",
+          "sourceRange": {
+            "start": {
+              "line": 115,
+              "column": 2
+            },
+            "end": {
+              "line": 120,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "current-view",
+          "description": "Returns the element of the currently displayed view when `switchView` is true.",
+          "sourceRange": {
+            "start": {
+              "line": 125,
+              "column": 2
+            },
+            "end": {
+              "line": 129,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "responsive-layout-switch-view-display",
+          "description": "Fired when a switched view is displayed.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "views-changed",
+          "description": "Fired when the `views` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "current-view-id-changed",
+          "description": "Fired when the `currentViewId` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "current-view-changed",
+          "description": "Fired when the `currentView` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-responsive-layout"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-graphic-legend</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+	<link rel="import" href="../../tricore-demo-url/tricore-demo-url.html">
+	
+	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+		
+	<link rel="import" href="../../triplat-graphic/triplat-graphic.html">
+	<link rel="import" href="../triplat-zoom-slider.html">
+
+	<style is="custom-style" include="demo-pages-shared-styles iron-flex iron-flex-alignment">
+		#container {
+	        max-width: 800px;
+	    }
+
+	    demo-snippet {
+			--demo-snippet-demo: {
+				padding: 0px;
+				height: 500px;
+				@apply(--layout-vertical);
+			};
+	    }
+	</style>
+</head>
+<body dir="ltr">
+	<template is="dom-bind">
+		<tricore-demo-url></tricore-demo-url>
+	</template>
+	<div id="container" class="vertical-section-container centered">
+		<h3>Use zoom slider with floor plan</h3>
+        <demo-snippet>
+        	<template id="template-demo" is="dom-bind">
+        		<div>
+        			<triplat-zoom-slider min="0.01" max="1.5" step="0.1" value="{{_zoomScale}}"></triplat-zoom-slider>
+        		</div>
+				<triplat-graphic class="layout flex" id="triplatGraphic" record-id="10101010">
+					<triplat-graphic-zoomable scale="{{_zoomScale}}" cached></triplat-graphic-zoomable>
+				</triplat-graphic>
+        	</template>
+        </demo-snippet>
+	</div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A utility component for building a URL that will contain a context path.\n\n\t<tricore-url raw-url=\"/p/web/doc\" bind-url=\"{{docUrl}}\"></tricore-url>\n\nIf the context path of the system is /dev then the output for this example will be /dev/p/web/doc",
+      "summary": "",
+      "path": "tricore-url.js",
+      "properties": [
+        {
+          "name": "rawUrl",
+          "type": "string | null | undefined",
+          "description": "The URL without the context path to use to construct the bind URL.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 29,
+              "column": 2
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "bindUrl",
+          "type": "string | null | undefined",
+          "description": "Use this attibute for getting the output of the URL with the context path.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 38,
+              "column": 2
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_demoBaseUrl",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 44,
+              "column": 2
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_getContextPath",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 54,
+              "column": 1
+            },
+            "end": {
+              "line": 60,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_computeUrl",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 62,
+              "column": 1
+            },
+            "end": {
+              "line": 68,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "rawUrl"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "getUrl",
+          "description": "Returns a URL from the given rawUrl that will contain\nthe context path.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 77,
+              "column": 1
+            },
+            "end": {
+              "line": 85,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "rawUrl",
+              "type": "String"
+            }
+          ],
+          "return": {
+            "type": "String",
+            "desc": "The URL with the context path."
+          }
+        },
+        {
+          "name": "_getDemoBasedUrl",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 1
+            },
+            "end": {
+              "line": 94,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 20,
+          "column": 8
+        },
+        "end": {
+          "line": 96,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "raw-url",
+          "description": "The URL without the context path to use to construct the bind URL.",
+          "sourceRange": {
+            "start": {
+              "line": 29,
+              "column": 2
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "bind-url",
+          "description": "Use this attibute for getting the output of the URL with the context path.",
+          "sourceRange": {
+            "start": {
+              "line": 38,
+              "column": 2
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "bind-url-changed",
+          "description": "Fired when the `bindUrl` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "tricore-url"
+    }
+  ]
+}

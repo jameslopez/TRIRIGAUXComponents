@@ -1,0 +1,141 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-collapse/iron-collapse.html">
+
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../triplat-icon/ibm-icons-glyphs.html">
+
+<dom-module id="triplat-graphic-legend-filter-by-section">
+	<template>
+		<style>
+			
+			.filterByContainer {
+				@apply(--layout-vertical);
+			}
+
+			.filterByHeader {
+				border-bottom-width: var(--legend-border-width);
+				border-bottom-style: var(--legend-border-style);	
+				border-bottom-color: var(--legend-primary-border-color);
+				min-height: 44px;
+				font-size: 18px;
+				font-weight: bold;
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+				@apply(--triplat-graphic-legend-section-header);			
+			}
+
+			.filterByList {
+				@apply(--layout-vertical);
+			}
+
+			:host-context([dir="ltr"]) .legendSpacer {
+                padding-right: 20px;
+            }
+
+            :host-context([dir="rtl"]) .legendSpacer {
+                padding-left: 20px;
+            }
+		</style>
+		<div class="filterByContainer">
+			<div class="filterByHeader legendSpacer">Filter By</div>
+			<div class="filterByList">
+				<content id="filterByListContent"></content>
+			</div>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+
+		is: "triplat-graphic-legend-filter-by-section",
+
+		properties: {
+
+			selected: {
+				type: String,
+				notify: true,
+				observer: "_handleSelectedChange"
+			},
+
+			selectedItem: {
+				type: Object,
+				readOnly: true,
+				notify: true
+			}
+		},
+
+		listeners: {
+			"filter-by-change": "_handleFilterByChange"
+		},
+
+		ready: function() {
+			this._observer = Polymer.dom(this).observeNodes(
+				function(info) {
+					this._handleSelectedChange();
+            	}
+        	);
+		},
+
+		_handleFilterByChange: function(event) {
+			var filterBy = event.detail.filterBy;
+			if (filterBy.checked) {
+				if(this.selectedItem != filterBy) {
+					this._setSelectedItem(filterBy);
+					this._uncheckOthers();
+					this.selected = filterBy.label;
+				}
+			} else {
+				this._setSelectedItem(null);
+				this.selected = null;
+			}
+		},
+
+		_uncheckOthers: function(radioButton) {
+			var allCriterias = this.getContentChildren();
+			if (allCriterias && Array.isArray(allCriterias)) {
+				for (var i = 0; i < allCriterias.length; i++) {
+					if (allCriterias[i] != this.selectedItem) {
+						allCriterias[i].checked = false;
+					}
+				}
+			}
+		},
+
+		_handleSelectedChange: function() {
+			if (!this.selected || this.selected.length == 0) {
+				if (this.selectedItem) {
+					this.selectedItem._selectItem(false);
+					this._setSelectedItem(null);
+				}
+			} else if (!this.selectedItem || !this._isEqual(this.selectedItem.label, this.selected)) {
+				var allCriterias = this.getContentChildren();
+				if (allCriterias && Array.isArray(allCriterias)) {
+					var found = false;
+					for (var i = 0; i < allCriterias.length && !found; i++) {
+						if (this._isEqual(allCriterias[i].label, this.selected)) {
+							allCriterias[i]._selectItem(true);
+							this._setSelectedItem(allCriterias[i]);
+							this._uncheckOthers();
+							found = true;
+						}
+					}
+				}
+			}
+		},
+
+		_isEqual: function(stringA, stringB) {
+			if (!stringA || ! stringB) {
+				return false;
+			}
+			return stringA.toUpperCase() === stringB.toUpperCase();
+		}
+	});
+</script>

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "`TriLazyLoadingBehavior` is a utility for lazy-loading Javascript modules.\n\nTo lazy-load a Javascript module, you must do the following:\n\n- Do not import the module using import statement.\n- When you want to load the resource, call the `loadResource` function and pass in the instance of the resource to load in the DOM and its filename.\n\n\nExample:\n\n\t//import \"./module-to-load.js\";\n\timport { getModuleUrl } from \"../tricore-util/tricore-util.js\";\n\n\t<dom-module id=\"my-module\">\n\t\t<template>\n\t\t\t<module-to-load id=\"myResource\"></module-to-load>\n\t\t\t<triplat-graphic id=\"myGraphic\"></triplat-graphic>\n\t\t</template>\n\t</dom-module>\n\t<script>\n\t\t...\n\t    attached: function() {\n\t\t\tRenderStatus.afterNextRender(this, function(){\n\t\t\t\tthis.loadResource(this.$.myModule,\n\t\t\t\t\t\t\t\t\t\"module-to-load.js\");\n\t\t\t\tthis.loadResource(this.$.myGraphic,\n\t\t\t\t\t\t\t\t\t\"../triplat-graphic/triplat-graphic.js\");\n\t\t\t});\n\t\t},\n\n\t\timportMeta: getModuleUrl(\"my-module/my-module.js\")\n\t<script>\n\nThe `module-to-load` and `triplat-graphic` will be loaded after the `my-module` is loaded.",
+          "summary": "",
+          "path": "tricore-lazy-loading-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "loadResource",
+              "description": "Loads the resource by importing it imperatively.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 55,
+                  "column": 2
+                },
+                "end": {
+                  "line": 69,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "resourceInstance",
+                  "type": "HTMLElement",
+                  "description": "The instance of the resource to load in the DOM."
+                },
+                {
+                  "name": "resourceFilename",
+                  "type": "string",
+                  "description": "The filename of the resource to load."
+                }
+              ],
+              "return": {
+                "type": "Object",
+                "desc": "Promise object after the resource is loaded."
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 46,
+              "column": 13
+            },
+            "end": {
+              "line": 70,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriLazyLoadingBehavior",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

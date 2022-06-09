@@ -1,0 +1,79 @@
+[
+  {
+    "_id": 12345,
+    "name": "John Smith",
+    "first": "John",
+    "last": "Smith",
+    "status":  {"id": "1234567", "value": "Active"},
+    "email": "johnsmith@data.com",
+    "phone": "(123) 456-7890",
+    "isManager": false,
+    "dateOfBirth": "1953-03-25T10:52:03.172-07:00"
+  },
+  {
+    "_id": 23456,
+    "name": "Emily Cruz",
+    "first": "Emily",
+    "last": "Cruz",
+    "status":  {"id": "1234567", "value": "Active"},
+    "email": "emilycruz@data.com",
+    "phone": "(234) 567-8901",
+    "isManager": true,
+    "dateOfBirth": "1959-04-15T00:00:00.000-00:00"
+  },
+  {
+    "_id": 34567,
+    "name": "Sofia Mendez",
+    "first": "Sofia",
+    "last": "Mendez",
+    "status":  {"id": "1234567", "value": "Temp"},
+    "email": "",
+    "phone": "(345) 678-9012",
+    "isManager": false,
+    "dateOfBirth": "1987-07-24T00:00:00.000-00:00"
+  },
+  {
+    "_id": 45678,
+    "name": "Christopher Martin",
+    "first": "Christopher",
+    "last": "Martin",
+    "status":  {"id": "1234567", "value": "Active"},
+    "email": "chrismartin@data.com",
+    "phone": "(345) 678-9013",
+    "isManager": true,
+    "dateOfBirth": "1992-08-06T00:00:00.000-00:00"
+  },
+  {
+    "_id": 56789,
+    "name": "Caleb Jones",
+    "first": "Caleb",
+    "last": "Jones",
+    "status":  {"id": "1234567", "value": "Retired"},
+    "email": "calebjones@data.com",
+    "phone": "(345) 678-9014",
+    "isManager": false,
+    "dateOfBirth": "1999-04-04T00:00:00.000-00:00"
+  },
+  {
+    "_id": 67890,
+    "name": "Johnny Deep",
+    "first": "Johnny",
+    "last": "Deep",
+    "status":  {"id": "1234567", "value": "Active"},
+    "email": "",
+    "phone": "(345) 678-9015",
+    "isManager": false,
+    "dateOfBirth": "1983-05-05T00:00:00.000-00:00"
+  },
+  {
+    "_id": 78901,
+    "name": "Richard Burton",
+    "first": "Richard",
+    "last": "Burton",
+    "status":  {"id": "1234567", "value": "Active"},
+    "email": "richardburton@data.com",
+    "phone": "(345) 678-9016",
+    "isManager": true,
+    "dateOfBirth": "1977-10-31T00:00:00.000-00:00"
+  }
+]

@@ -1,0 +1,435 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that provides a toast box with a message.\n\nExample of a simple usage:\n```html\n<triblock-toast \n  type=\"error\" \n  title=\"Error title\"\n  text=\"Error message\"\n  duration=\"10000\">\n</triblock-toast>\n```\n\nThe following custom properties and mixins are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-toast-paper-toast` | Mixin applied to the `paper-toast` component | `{}`\n`--triblock-toast-icon` | Mixin applied to the icon | `{}`\n`--triblock-toast-message-container` | Mixin applied to the message container | `{}`\n`--triblock-toast-title` | Mixin applied to the title text | `{}`\n`--triblock-toast-message` | Mixin applied to the message text | `{}`",
+      "summary": "",
+      "path": "triblock-toast.js",
+      "properties": [
+        {
+          "name": "type",
+          "type": "string | null | undefined",
+          "description": "The types of the toast.\nThe valid values are:\n - success\n - warning\n - major-warning\n - error\n - info",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 140,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"info\""
+        },
+        {
+          "name": "fitInto",
+          "type": "Object | null | undefined",
+          "description": "The element to fit `this` into. For more details, see paper-toast.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 149,
+              "column": 2
+            },
+            "end": {
+              "line": 152,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "duration",
+          "type": "number | null | undefined",
+          "description": "The duration in milliseconds to show the toast.\nTo disable the toast auto-closing, set to `0`, a negative number, or `Infinity`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 158,
+              "column": 2
+            },
+            "end": {
+              "line": 161,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "5000"
+        },
+        {
+          "name": "horizontalAlign",
+          "type": "string | null | undefined",
+          "description": "The orientation against which to align the toast content\nhorizontally relative to `positionTarget`. For more details, see paper-toast.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 2
+            },
+            "end": {
+              "line": 170,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"left\""
+        },
+        {
+          "name": "text",
+          "type": "string | null | undefined",
+          "description": "The message to display in the toast.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 175,
+              "column": 2
+            },
+            "end": {
+              "line": 178,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "title",
+          "type": "string | null | undefined",
+          "description": "The title to display in the toast.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 183,
+              "column": 2
+            },
+            "end": {
+              "line": 187,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "opened",
+          "type": "boolean | null | undefined",
+          "description": "True if the toast is currently displayed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 192,
+              "column": 2
+            },
+            "end": {
+              "line": 196,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "allowClickThrough",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to allow clicks outside this toast message to\nclose the overlay below.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 2
+            },
+            "end": {
+              "line": 204,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          }
+        },
+        {
+          "name": "_icon",
+          "type": "string | null | undefined",
+          "description": "The icon to display in the toast.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 209,
+              "column": 2
+            },
+            "end": {
+              "line": 211,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "open",
+          "description": "Opens the toast box.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 217,
+              "column": 1
+            },
+            "end": {
+              "line": 219,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "close",
+          "description": "Closes the toast box.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 224,
+              "column": 1
+            },
+            "end": {
+              "line": 226,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getIcon",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 228,
+              "column": 4
+            },
+            "end": {
+              "line": 253,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "type"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 37,
+          "column": 8
+        },
+        "end": {
+          "line": 254,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "The types of the toast.\nThe valid values are:\n - success\n - warning\n - major-warning\n - error\n - info",
+          "sourceRange": {
+            "start": {
+              "line": 140,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "fit-into",
+          "description": "The element to fit `this` into. For more details, see paper-toast.",
+          "sourceRange": {
+            "start": {
+              "line": 149,
+              "column": 2
+            },
+            "end": {
+              "line": 152,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "duration",
+          "description": "The duration in milliseconds to show the toast.\nTo disable the toast auto-closing, set to `0`, a negative number, or `Infinity`.",
+          "sourceRange": {
+            "start": {
+              "line": 158,
+              "column": 2
+            },
+            "end": {
+              "line": 161,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "horizontal-align",
+          "description": "The orientation against which to align the toast content\nhorizontally relative to `positionTarget`. For more details, see paper-toast.",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 2
+            },
+            "end": {
+              "line": 170,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "text",
+          "description": "The message to display in the toast.",
+          "sourceRange": {
+            "start": {
+              "line": 175,
+              "column": 2
+            },
+            "end": {
+              "line": 178,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "title",
+          "description": "The title to display in the toast.",
+          "sourceRange": {
+            "start": {
+              "line": 183,
+              "column": 2
+            },
+            "end": {
+              "line": 187,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "opened",
+          "description": "True if the toast is currently displayed.",
+          "sourceRange": {
+            "start": {
+              "line": 192,
+              "column": 2
+            },
+            "end": {
+              "line": 196,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "allow-click-through",
+          "description": "Set to true to allow clicks outside this toast message to\nclose the overlay below.",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 2
+            },
+            "end": {
+              "line": 204,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "opened-changed",
+          "description": "Fired when the `opened` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-toast"
+    }
+  ]
+}

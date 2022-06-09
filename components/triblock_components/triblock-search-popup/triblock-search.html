@@ -1,0 +1,753 @@
+<!-- IBM Confidential‌ - OCO Source Materials‌ - (C) COPYRIGHT IBM CORP. 2017-2018 - The source code for this program is not published or otherwise‌ divested of its trade secrets, irrespective of what has been‌ deposited with the U.S. Copyright Office. -->
+
+<link rel="import" href="../triplat-icon/ibm-icons.html">
+<link rel="import" href="../triplat-input-container-behavior/triplat-input-container-behavior.html">
+
+<link rel="import" href="../triblock-responsive-layout/triblock-view-responsive-behavior.html">
+<link rel="import" href="../triblock-table/triblock-table.html">
+
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-input-container.html">
+
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../iron-dropdown/iron-dropdown.html">
+
+<link rel="import" href="triblock-search-loading-no-matches.html">
+
+<!--
+`triblock-search` is the search component used by `triblock-search-popup`.
+
+Example:
+```html
+<triblock-search>
+</triblock-search>
+```
+
+The `placeholder` property can be used to set a placeholder message for the input field:
+```html
+<triblock-search placeholder="Placeholder">
+</triblock-search>
+```
+
+The `scroller` property can be used to set a scrollable container for a data source. It must be used with a two-way binding:
+```html
+<triblock-search scroller="{{scroller}}">
+</triblock-search>
+```
+
+The `searchValue` property is the value of the input field that will be used to filter a data source. It must be used with a two-way binding:
+```html
+<triblock-search search-value="{{value}}">
+</triblock-search>
+```
+
+The `searchResult` property is the list of results after a data source is filtered:
+```html
+<triblock-search search-result="[[result]]">
+</triblock-search>
+```
+
+The `loading` property can be used to display a loading indicator in the list of results:
+```html
+<triblock-search loading="[[loading]]">
+</triblock-search>
+```
+
+The search results can be displayed inside a dropdown by setting the `dropdown` property to true:
+```html
+<triblock-search dropdown>
+</triblock-search>
+```
+
+
+### Accessibility
+
+The user can press keyboard keys to interact with the list of results:
+- Press the `Down Arrow` key to unfocus the search input field and navigate to the next item.
+- Press the `Up Arrow` key to navigate to the previous item.
+- Press the `Tab` key to focus on the search input field.
+
+
+### Events
+
+Event Name | Description
+-----------|------------
+`item-selected` | Fired when an item in the list of results is selected.
+
+
+### Styling
+
+The following custom properties and mixins are also available for styling:
+
+Custom property                                          | Description                                                                                             | Default
+---------------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------
+`--triblock-search-paper-input`                          | Mixin applied to the `paper-input-container` element                                                    | `{}`
+`--triblock-search-paper-input-container`                | Mixin applied to the `paper-input-container` container                                                  | `{}`
+`--triblock-search-paper-input-container-input`          | Mixin applied to the `paper-input-container` input field                                                | `{}`
+`--triblock-search-paper-input-container-label`          | Mixin applied to the `paper-input-container` label                                                      | `{}`
+`--triblock-search-paper-input-container-label-floating` | Mixin applied to the `paper-input-container` label when floating                                        | `{}`
+`--triblock-search-margin-bottom-when-opened`            | The size of the bottom margin applied when the dropdown is opened and the scrollElementIntoView is true | `0px`
+
+-->
+
+
+<dom-module id="triblock-search">
+	<template>
+		<style include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning">
+			:host {
+				flex: 1;
+				overflow: hidden;
+			}
+			:host:not([dropdown]) {
+				@apply(--layout-vertical);
+			}
+
+			.search-content {
+				@apply(--layout-vertical);
+				@apply(--layout-flex);
+				overflow: hidden;
+			}
+			:host:not([dropdown]) .search-content {
+				overflow: hidden;
+			}
+
+			paper-input-container {
+				--paper-input-container: {
+					padding-top: 8px;
+					padding-bottom: 8px;
+					@apply(--triblock-search-paper-input-container);
+				};
+
+				--paper-input-container-input: {
+					font-size: 14px;
+					font-family: var(--tri-font-family);
+
+					@apply(--triblock-search-paper-input-container-input);
+				};
+
+				--paper-input-container-label: {
+					font-size: 14px;
+
+					@apply(--triblock-search-paper-input-container-label);
+				};
+
+				--paper-input-container-label-floating: {
+					font-size: 14px;
+
+					@apply(--triblock-search-paper-input-container-label-floating);
+				};
+
+				--paper-input-container-underline: {
+					height: 2px;
+				};
+
+				--paper-input-container-color: var(--ibm-gray-30);
+				
+				@apply(--triblock-search-paper-input);
+			}
+			:host[dropdown] paper-input-container {
+				--paper-input-container: {
+					padding-bottom: 1px;
+					padding-top: 1px;
+				};
+			}
+			paper-input-container iron-icon {
+				margin: 10px;
+			}
+			paper-input-container paper-icon-button {
+				font-family: initial;
+				font-size: initial;
+				line-height: initial;
+			}
+			paper-input-container paper-icon-button.icon-clear {
+				color: var(--ibm-gray-30);
+				--paper-icon-button: {
+					height: 30px;
+					padding: 5px;
+					width: 30px;
+				};
+			}
+			paper-input-container paper-icon-button.icon-select {
+				color: var(--ibm-blue-50);
+				margin-top: -12px;
+				transform: rotate(45deg);
+				--paper-icon-button: {
+					height: 35px;
+					padding: 10px;
+					width: 35px;
+				};
+			}
+			paper-input-container input {
+				font-family: var(--tri-font-family);
+				font-size: 14px;
+			}
+			paper-input-container input::-webkit-contacts-auto-fill-button {
+				display: none !important;
+				pointer-events: none;
+				position: absolute;
+				right: 0;
+				visibility: hidden;
+			}
+			paper-input-container input::-ms-clear {
+				display: none;
+			}
+
+			.container-results {
+				flex: 1;
+				margin-top: 1em;
+				overflow: auto;
+			}
+
+			triblock-table {
+				--triblock-table-header: {
+					display: none;
+				};
+				--triblock-table-cell: {
+					height: auto !important;
+				};
+			}
+
+			iron-dropdown {
+				border: 1px solid var(--ibm-gray-30);
+				border-top: 0;
+				box-sizing: border-box;
+				position: absolute !important;
+			}
+
+			.dropdown-content {
+				@apply(--layout);
+				@apply(--layout-vertical);
+				background-color: white;
+			}
+
+			.aux-container {
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+				bottom: 0;
+				height: 100%;
+				position: absolute;
+				width: 100%;
+			}
+			
+			.spacer-when-opened {
+				margin-bottom: var(--triblock-search-margin-bottom-when-opened, 0px);
+			}
+		</style>
+
+		<div class="search-content">
+			<iron-a11y-keys id="searchFieldKeys" target="[[_searchFieldEl]]" keys="down" on-keys-pressed="_onNavigateResults"></iron-a11y-keys>
+
+			<paper-input-container id="searchField" 
+								focused="{{focused}}" 
+								disabled$="[[disabled]]" 
+								aria-label="{{label}}" 
+								no-label-float>
+				<iron-icon icon="ibm:search" prefix hidden="[[noSearchIcon]]"></iron-icon>
+				<label id="[[_labelId]]" for$="[[_inputId]]">
+					[[label]]<content id="labelContent" select="[label]"></content>
+				</label>
+				<input id="[[_inputId]]" 
+						placeholder="[[_computePlaceHolder(placeholder)]]" 
+						aria-labelledby="[[_labelId]]" 
+						is="iron-input" 
+						bind-value="{{_searchValue}}" 
+						disabled$="[[disabled]]" 
+						aria-label$="{{label}}"
+						on-tap="_onInputTapped">
+				<paper-icon-button class="icon-clear" icon="ibm-glyphs:clear-input" suffix on-tap="_clearSearch" hidden="[[_hideClearBtn]]" alt$="[[altClearButton]]"></paper-icon-button>
+				<paper-icon-button class="icon-select" icon="ibm-glyphs:expand-close" suffix on-tap="_onIconSelectTapped" hidden="[[!selectBox]]" alt$="[[altDropdownButton]]"></paper-icon-button>
+			</paper-input-container>
+
+			<div id="dropdownAnchor"></div>
+
+			<template is="dom-if" if="[[!dropdown]]">
+				<div id="listContainer" class="container-results">
+					<triblock-table id="resultsTable"
+									data="{{searchResult}}"
+									disable-default-tooltips
+									on-row-tap="_selectItem"
+									on-dom-change="_onResultsTableChanged"
+									on-keydown="_onTableTabPressed"
+									tabindex="-1"
+									row-aria-label-callback="[[rowAriaLabelCallback]]">
+						<triblock-table-column>
+							<content></content>
+						</triblock-table-column>
+					</triblock-table>
+					<triblock-search-loading-no-matches
+						loading="[[loading]]"
+						no-matches="[[_noMatches]]"
+						no-results="[[_displayNoResults]]"
+						no-results-text="[[noResults]]"></triblock-search-loading-no-matches>
+				</div>
+			</template>
+
+			<template is="dom-if" if="[[dropdown]]">
+				<iron-dropdown id="dropdown" 
+							horizontal-align="left" 
+							vertical-align="top" 
+							vertical-offset="0"
+							position-target=[[_targetEl]]
+							scroller="{{scroller}}">
+					<div id="dropdownContent" class="dropdown-content">
+						<triblock-table id="resultsTable"
+										data="{{searchResult}}"
+										disable-default-tooltips
+										on-row-tap="_selectItem"
+										on-dom-change="_onResultsTableChanged"
+										on-keydown="_onTableTabPressed"
+										tabindex="-1"
+										row-aria-label-callback="[[rowAriaLabelCallback]]">
+							<triblock-table-column>
+								<content></content>
+							</triblock-table-column>
+						</triblock-table>
+						<div class="aux-container">
+							<triblock-search-loading-no-matches
+								loading="[[loading]]"
+								no-matches="[[_noMatches]]"
+								no-results="[[_displayNoResults]]"
+								no-results-text="[[noResults]]"></triblock-search-loading-no-matches>
+						</div>
+					</div>
+				</iron-dropdown>
+			</template>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+
+		is: "triblock-search",
+
+		behaviors: [
+			TriBlockViewResponsiveBehavior,
+			TriplatInputContainerBehavior,
+			Polymer.IronResizableBehavior
+		],
+
+		properties: {
+			// Alternate text for the clear icon button.
+			altClearButton: {
+				type: String,
+				value: "Clear search"
+			},
+
+			// Alternate text for the dropdown icon button.
+			altDropdownButton: {
+				type: String,
+				value: "Select"
+			},
+
+			// Placeholder message for the search input field.
+			placeholder: {
+				type: String,
+				value: null
+			},
+
+			// Scrollable container.
+			scroller: {
+				type: Object,
+				notify: true
+			},
+
+			// Value of the search field. It will be used by an external data source to filter.
+			searchValue: {
+				type: String,
+				notify: true
+			},
+
+			// Array of results from the search.
+			searchResult: {
+				type: Array,
+				value: [],
+				observer: "_observeSearchResult"
+			},
+
+			// Loading from the data source.
+			loading: {
+				type: Boolean,
+				value: false
+			},
+
+			// If true, the table of results will be displayed inside a dropdown.
+			dropdown: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
+
+			// If true, the search icon will be hidden.
+			noSearchIcon: {
+				type: Boolean,
+				value: false
+			},
+
+			// Label for input field. When setting a label, the placeholder text will not be displayed.
+			label: {
+				type: String,
+				value: ""
+			},
+
+			// Boolean to indicate that this is a disabled input field.
+			disabled: {
+				type: Boolean,
+				value: false
+			},
+
+			// Value name of the selected item object that will be displayed in the input field when one of the items is selected.
+			valueName: String,
+
+			/*
+			 * If true, the component will act like a select box, opening the dropdown even when the input field is empty.
+			 */
+			selectBox: {
+				type: Boolean,
+				value: false
+			},
+
+			/*
+			 * Text displayed when there are no results to display in the dropdown.
+			 * The text will be displayed only when the `selectBox` property is true, and when the input field is empty.
+			 */
+			noResults: {
+				type: String,
+				value: ""
+			},
+
+			/*
+			 * This property will only work when the `dropdown` property is true.
+			 * Set to true to scroll the selected input element into view (on focus). 
+			 * If scroll is available, it will align the element to the top of the browser window (if possible).
+			 * The scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.
+			 */
+			scrollElementIntoView: {
+				type: Boolean,
+				value: false
+			},
+
+			// Value from the search field.
+			_searchValue: {
+				type: String,
+				observer: '_observeSearchValue'
+			},
+
+			// Hide search clear buttons.
+			_hideClearBtn: {
+				type: Boolean,
+				value: true
+			},
+
+			// Search input field object.
+			_searchFieldEl: {
+				type: Object,
+				value: function() {
+					return this.$.searchField;
+				}
+			},
+
+			// Target element for `iron-dropdown`.
+			_targetEl: Object,
+
+			// True when "no matches" container should be displayed.
+			_noMatches: {
+				type: Boolean,
+				value: true
+			},
+			
+			// True when an item is selected from the table of results.
+			_isItemSelected: {
+				type: Boolean,
+				value: false
+			},
+
+			// True when "no results" should be displayed.
+			_displayNoResults: {
+				type: Boolean,
+				value: false,
+				computed: "_computeNoResults(noResults, searchResult, searchValue)"
+			},
+
+			/**
+			 * Callback function used to determine the aria-label value of each row from the table of results.
+			 */
+			rowAriaLabelCallback: {
+				type: Object
+			}
+		},
+
+		observers: [
+			"_observeLabel(label)",
+			"_observeFocused(focused)",
+			"_setTableHeight(_searchValue, searchResult)",
+			"_setNoMatches(searchValue, searchResult, loading)",
+			"_displayAuxContainer(dropdown, loading, _noMatches, _displayNoResults)"
+		],
+
+		listeners: {
+			"iron-resize": "_screenResize"
+		},
+
+		attached: function() {
+			// Set the scroller container
+			this.async(function() {
+				if (this.dropdown) {
+					this.set('_targetEl', this.$$("#dropdownAnchor"));
+					this.set('scroller', this.$$("triblock-table").scroller);
+					this._setDropdownWidth();
+				} else {
+					this.set('scroller', this.$$("#listContainer"));
+				}
+			}, 500);
+		},
+
+		// Clear search field.
+		clearSearch: function(e) {
+			this.set("_searchValue", "");
+		},
+
+		// Clear search field.
+		_clearSearch: function(e) {
+			e.stopPropagation();
+
+			this.focusSearchField();
+			this.clearSearch();
+		},
+
+		// Compute the default placeholder message.
+		_computePlaceHolder: function(placeholder) {
+			var __dictionary__placeholder = "Search by building name or city";
+			return placeholder ? placeholder : __dictionary__placeholder; 
+		},
+
+		// Set "_noMatches" container.
+		_setNoMatches: function(searchValue, results, loading) {
+			this.debounce(
+				"setNoMatches",
+				function() {
+					var hideNoMatches = loading || ((searchValue === "") || (searchValue !== "" && results && results.length > 0));
+
+					this._noMatches = !hideNoMatches;
+				},
+				200
+			);
+		},
+
+		// Observer for `searchResult`.
+		_observeSearchResult: function(result) {
+			if (!result || (this._searchValue === "" && result.length > 0 && !this.selectBox)) {
+				this.searchResult = [];
+			} else if (this._searchValue === "" && result && result.length > 0 && this.selectBox) {
+				// Indicate that the `searchResult` needs to be refreshed.
+				// Fix for iOS, that doesn't refresh `triblock-table` inside a closed dropdown.
+				// Only required when `selectBox` is true, because it allows the dropdown to open with an empty `_searchValue`.e
+				this._refreshSearchResultRequired = true;
+			}
+		},
+
+		// Enable the label in the search field.
+		_observeLabel: function(label) {
+			if (label && label !== "") {
+				this.$.searchField.querySelector("input").placeholder = "";
+				this.$.searchField.noLabelFloat = false;
+			}
+		},
+
+		// Observe for _searchValue - Use debounce.
+		_observeSearchValue: function(value) {
+			if (!this.selectBox) {
+				this._hideClearBtn = (value == "") ? true : false;
+			}
+
+			this.debounce(
+				"refreshSearchValue",
+				function() {
+					this.set("searchValue", value);
+
+					if (this.dropdown && value !== "" && !this._isItemSelected && this.focused) {
+						this._openDropdown();
+					} else if (this.dropdown && (value === "" || this._isItemSelected)) {
+						if (this._isItemSelected) { this._isItemSelected = false; }
+						this._closeDropdown();
+					}
+				},
+				300
+			);
+		},
+
+		// Handle select item from the list.
+		_selectItem: function(e) {
+			e.stopPropagation();
+
+			// Selected Data
+			var selectedData = e.detail.item;
+
+			// Fire the selected item
+			this.fire("item-selected", selectedData);
+
+			if (this.valueName && this.valueName !== "") {
+				this._searchValue = selectedData[this.valueName];
+			} else {
+				this._searchValue = "";
+			}
+
+			if (this.dropdown && !this._isItemSelected) { this._isItemSelected = true; }
+			this._closeDropdown();
+		},
+
+		// Handle notify resize, that is required for dynamic table.
+		_onResultsTableChanged: function() {
+			this.debounce("tableChanged", this.notifyResize, 300);
+		},
+
+		// Focus on the search field when the popup opened.
+		focusSearchField: function() {
+			this.$$("#" + this._inputId).focus();
+		},
+
+		// Navigate through the results.
+		_onNavigateResults: function() {
+			this.$$("#resultsTable").querySelector("div[row-container]").focus();
+		},
+
+		// Callback listener for screen resize.
+		_screenResize: function() {
+			this._setDropdownWidth();
+			this._setTableHeight(this._searchValue, this.searchResult);
+		},
+
+		// Check if the dropdown is opened.
+		_isDropdownOpened: function() {
+			var dropdownEl = this.$$("#dropdown");
+			return (dropdownEl) ? dropdownEl.opened : false;
+		},
+
+		// Open dropdown.
+		_openDropdown: function() {
+			if (!this._isDropdownOpened()) {
+				this.$$("#dropdown").open();
+
+				// Reset the value for `searchResult` when the popup opens.
+				if (this._refreshSearchResultRequired) {
+					// Set visibility hidden, so the previous results will not be seem before the new table is rendered.
+					this.$$("#resultsTable").style.visibility = "hidden";
+
+					this.async(function() {
+						var results = this.searchResult;
+						this.set("searchResult", []);
+						this.set("searchResult", results);
+						this.$$("#resultsTable").style.visibility = "visible";
+						this.notifyResize();
+					}, 300);
+
+					this._refreshSearchResultRequired = false;
+				}
+			}
+		},
+
+		// Close dropdown.
+		_closeDropdown: function() {
+			if (this._isDropdownOpened()) {
+				this.$$("#dropdown").close();
+			}
+		},
+
+		// Set the dropdown width.
+		_setDropdownWidth: function() {
+			if (this.$$("#dropdown")) {
+				this.$$("#dropdown").style.width = this.$.dropdownAnchor.offsetWidth + "px";
+			}
+		},
+
+		// Set the triblock-table height.
+		_setTableHeight: function(searchValue, searchResult) {
+			if (this.dropdown && this.$$("triblock-table")) {
+				// Async is required to wait for table to render the rows
+				this.async(function() {
+					var tableHeight = 0;
+					var validSearchResults = searchResult && searchResult.length > 0;
+
+					// Calc to check the remaing space between the element and the bottom of the screen
+					var windowHeight = window.innerHeight;
+					var inputHeigh = this.$.searchField.offsetHeight;
+					var anchorPosition = this.$.dropdownAnchor.getBoundingClientRect().top;
+					var calcHeigh = calcHeigh = windowHeight - inputHeigh - anchorPosition;
+
+					// The height of the table list
+					var listHeight = this.$$("triblock-table").$.tableBodyList.getBoundingClientRect().height;
+
+					// Check if the list height is greater than the calculated height
+					tableHeight = (listHeight > calcHeigh) ? calcHeigh : listHeight;
+
+					// Table should have a min-height of 47px
+					tableHeight = (tableHeight < 47) ? 47 : tableHeight;
+
+					// Set table height
+					this.$$("triblock-table").style.height = tableHeight + "px";
+
+					this.async(function() { this.$$("#dropdown").refit(); });
+				}, 200);
+			}
+		},
+
+		// Observer for `focused`.
+		_observeFocused: function(focused) {
+			// Handle scroll element into view
+			if (this.scrollElementIntoView && this.smallScreenWidth) {
+				if (focused) {
+					this.toggleClass("spacer-when-opened", true, this.$.dropdownAnchor);
+					this.$.searchField.scrollIntoView(true); //On mobile devices, scrolls the page, if possible, and bring the current input element into a higher area of the screen.
+				} else if (!focused) {
+					this.toggleClass("spacer-when-opened", false, this.$.dropdownAnchor);
+				}
+			}
+		},
+
+		// Determine when to show and hide the ".aux-container".
+		_displayAuxContainer: function(dropdown, loading, noMatches, displayNoResults) {
+			if (dropdown && this.$$(".aux-container")) {
+				if (loading || noMatches || displayNoResults) {
+					this.$$(".aux-container").style.display = "flex";
+				} else {
+					this.$$(".aux-container").style.display = "none";
+				}
+			}
+		},
+
+		// On input field tapped: Open the dropdown if there's a value in the field.
+		_onInputTapped: function() {
+			if (this.dropdown && (this._searchValue !== "" || this.selectBox)) {
+				this._openDropdown();
+			}
+		},
+
+		// On icon select tapped.
+		_onIconSelectTapped: function() {
+			var input = this.$.searchField.querySelector("input");
+			this.fire("tap", {}, {node: input});
+		},
+
+		// Determine when to display the "no results" text.
+		_computeNoResults: function(noResults, searchResult, searchValue) {
+			return (noResults !== "") && (!searchResult || searchResult.length == 0) && (searchValue === "");
+		},
+
+		get table() {
+			return this.$$("#resultsTable");
+		},
+
+		_onTableTabPressed: function(e) {
+			if (e.key == "Tab" && !e.shiftKey && e.target != this.table) {
+				e.preventDefault();
+				this.table.focus();
+			} else if (e.key == "Tab" && e.shiftKey && e.target == this.table) {
+				e.preventDefault();
+				this.$$("#resultsTable").querySelector("div[row-container]").focus();
+			}
+		}
+
+	});
+</script>

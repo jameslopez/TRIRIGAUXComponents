@@ -1,0 +1,133 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../triplat-view-behavior/triplat-view-behavior.html">
+
+<link rel="import" href="../paper-material/paper-material.html">
+
+<link rel="import" href="../triplat-ds/triplat-ds.html">
+
+<link rel="import" href="../triplat-bim/triplat-bim-model.html">
+<link rel="import" href="../triplat-bim/triplat-bim-viewer.html">
+<link rel="import" href="../triplat-bim/triplat-bim-thumbnail.html">
+<link rel="import" href="../triplat-bim/triplat-bim-viewer-popup.html">
+
+<dom-module id="triplat-bim-model-demo">
+	<style>
+	    html, body {
+			margin           : 0;
+			padding          : 0;
+			height           : 100%;
+			width            : 100%;
+			font-family      : arial; 
+	    }
+		.item {
+			cursor           : pointer;
+		}
+		.viewer {
+			height : 1000px;
+			width  : 100%;
+		}
+	</style>
+	<template> 
+		<triplat-ds id="model" name="lookupBuilding" data="{{building}}"></triplat-ds>
+		<triplat-bim-viewer-popup id="popup"></triplat-bim-viewer-popup>
+
+		<triplat-bim-model buildingid="{{selectedRow.buildingId}}" hasmodel="{{hasModel}}" model="{{model}}" recordkey="[[recordId]]">
+		</triplat-bim-model>
+
+		<div> 
+			<h1>Buildings</h1>
+		</div>
+
+    	<div>
+			<table style="width:480px; " >
+			    <template id="repeat" is="dom-repeat" items="[[building]]">
+			    	<tr>
+						<td on-click="_selectRow" class="item">{{item._id}}</td>
+						<td on-click="_selectRow" class="item">{{item.nane}}</td>
+			    		<td colspan="2">[[item.building]]</td>
+			    		<td colspan="2">[[item.address]]</td>
+			    		<td rowspan="5" >
+							<triplat-bim-thumbnail buildingid="{{item.buildingId}}" height="96px" width="96px" recordkey="popup"
+							                       on-select="_onModelSelect">
+							</triplat-bim-thumbnail>
+			    		</td>
+			    	</tr><tr>
+		    			<td colspan="2">[[item.city]]</td>
+			    	</tr><tr>
+		    			<td>[[item.state]]</td>
+		    			<td>[[item.ZipPostalCode]]</td>
+		    		</tr><tr>
+		    			<td colspan="2">[[item.country]]</td>
+		    		</tr>
+		    		</tr><tr>
+		    			<td colspan="2" style="height:100%;"></td>
+		    		</tr>
+				</template>
+			</table>
+    	</div>
+    	<div style="display:inline-flex;">
+			<paper-input label="Asset Id" floating-label value="{{assetId}}"></paper-input>
+			<paper-button raised on-click="_selectAsset">Select</paper-button>
+    	</div>
+        <div id="viewerTab" class="viewer">
+            <template is="dom-if" if="{{hasModel}}">
+                <triplat-bim-viewer id="viewer" recordkey="[[recordId]]" model="{{model}}" class="viewer"
+                                    on-asset-changed="_onAsset"> 
+                </triplat-bim-viewer>
+            </template>
+        </div>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "triplat-bim-model-demo",
+
+	    ready: function() 
+	    {
+    		this.tab=0;
+    		this.hasModel = false;
+    		this.URL = "";
+    		this.selectedRow = {
+    			buildingId:  "",
+    			_id        : ""
+    		};
+	    },
+
+		_selectRow : function(
+			event
+		) {
+			this.set( "selectedRow", event.model.item );
+		},
+
+		_onAsset : function(
+            event
+        ) {
+		    this.assetId = event.detail._id;
+		},
+
+		_onModelSelect : function(
+			event
+		) {
+			this.$.popup.title = event.detail.name;
+			if( event.detail.urn )
+			{
+				this.$.popup.openPopup( event.detail ); 
+			}
+			else
+			{
+				this.$.popup.openPopup( event.detail.buildingId ); 
+			}
+		},
+
+		_selectAsset : function(
+			event
+		) {
+			var viewer = this.$$("#viewer")
+			viewer.assetid = this.assetId;
+		}
+	});
+</script>

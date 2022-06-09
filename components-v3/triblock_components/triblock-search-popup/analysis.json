@@ -1,0 +1,2503 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-search-loading-no-matches` displays the loading and \"no-matches\" items from the `triblock-search` component.",
+      "summary": "",
+      "path": "triblock-search-loading-no-matches.js",
+      "properties": [
+        {
+          "name": "loading",
+          "type": "boolean | null | undefined",
+          "description": "Loading from the data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 42,
+              "column": 2
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "noMatches",
+          "type": "boolean | null | undefined",
+          "description": "True when the \"no matches\" container is displayed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 2
+            },
+            "end": {
+              "line": 51,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "noResults",
+          "type": "boolean | null | undefined",
+          "description": "True when the \"no results\" container is displayed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 54,
+              "column": 2
+            },
+            "end": {
+              "line": 57,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "noResultsText",
+          "type": "string | null | undefined",
+          "description": "Text displayed inside the \"no results\" container.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 60,
+              "column": 2
+            },
+            "end": {
+              "line": 60,
+              "column": 23
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_hideNoMatches",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 63,
+              "column": 4
+            },
+            "end": {
+              "line": 69,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "noMatches"
+            },
+            {
+              "name": "loading"
+            }
+          ]
+        },
+        {
+          "name": "_hideNoResults",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 71,
+              "column": 4
+            },
+            "end": {
+              "line": 77,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "noResults"
+            },
+            {
+              "name": "loading"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 78,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "loading",
+          "description": "Loading from the data source.",
+          "sourceRange": {
+            "start": {
+              "line": 42,
+              "column": 2
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "no-matches",
+          "description": "True when the \"no matches\" container is displayed.",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 2
+            },
+            "end": {
+              "line": 51,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "no-results",
+          "description": "True when the \"no results\" container is displayed.",
+          "sourceRange": {
+            "start": {
+              "line": 54,
+              "column": 2
+            },
+            "end": {
+              "line": 57,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "no-results-text",
+          "description": "Text displayed inside the \"no results\" container.",
+          "sourceRange": {
+            "start": {
+              "line": 60,
+              "column": 2
+            },
+            "end": {
+              "line": 60,
+              "column": 23
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-search-loading-no-matches"
+    },
+    {
+      "description": "`triblock-search` is the search component used by `triblock-search-popup`.\n\nExample:\n```html\n<triblock-search>\n</triblock-search>\n```\n\nThe `placeholder` property can be used to set a placeholder message for the input field:\n```html\n<triblock-search placeholder=\"Placeholder\">\n</triblock-search>\n```\n\nThe `scroller` property can be used to set a scrollable container for a data source. It must be used with a two-way binding:\n```html\n<triblock-search scroller=\"{{scroller}}\">\n</triblock-search>\n```\n\nThe `searchValue` property is the value of the input field that will be used to filter a data source. It must be used with a two-way binding:\n```html\n<triblock-search search-value=\"{{value}}\">\n</triblock-search>\n```\n\nThe `searchResult` property is the list of results after a data source is filtered:\n```html\n<triblock-search search-result=\"[[result]]\">\n</triblock-search>\n```\n\nThe `loading` property can be used to display a loading indicator in the list of results:\n```html\n<triblock-search loading=\"[[loading]]\">\n</triblock-search>\n```\n\nThe search results can be displayed inside a dropdown by setting the `dropdown` property to true:\n```html\n<triblock-search dropdown>\n</triblock-search>\n```\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Info:</b> The children within triblock-search cannot be styled from the the host. They should be styled using the style attribute if it’s an element or within the component itself.\n  </div>\n</div>\n\n### Accessibility\n\nThe user can press keyboard keys to interact with the list of results:\n- Press the `Down Arrow` key to unfocus the search input field and navigate to the next item.\n- Press the `Up Arrow` key to navigate to the previous item.\n- Press the `Tab` key to focus on the search input field.\n\n\n### Events\n\nEvent Name | Description\n-----------|------------\n`item-selected` | Fired when an item in the list of results is selected.\n\n\n### Styling\n\nThe following custom properties and mixins are also available for styling:\n\nCustom property                                          | Description                                                                                             | Default\n---------------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------\n`--triblock-search-paper-input`                          | Mixin applied to the `paper-input-container` element                                                    | `{}`\n`--triblock-search-paper-input-container`                | Mixin applied to the `paper-input-container` container                                                  | `{}`\n`--triblock-search-paper-input-container-input`          | Mixin applied to the `paper-input-container` input field                                                | `{}`\n`--triblock-search-paper-input-container-label`          | Mixin applied to the `paper-input-container` label                                                      | `{}`\n`--triblock-search-paper-input-container-label-floating` | Mixin applied to the `paper-input-container` label when floating                                        | `{}`\n`--triblock-search-margin-bottom-when-opened`            | The size of the bottom margin applied when the dropdown is opened and the scrollElementIntoView is true | `0px`",
+      "summary": "",
+      "path": "triblock-search.js",
+      "properties": [
+        {
+          "name": "altClearButton",
+          "type": "string | null | undefined",
+          "description": "Alternate text for the clear icon button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 294,
+              "column": 2
+            },
+            "end": {
+              "line": 297,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"Clear search\""
+        },
+        {
+          "name": "altDropdownButton",
+          "type": "string | null | undefined",
+          "description": "Alternate text for the dropdown icon button.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 300,
+              "column": 2
+            },
+            "end": {
+              "line": 303,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"Select\""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | null | undefined",
+          "description": "Placeholder message for the search input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 306,
+              "column": 2
+            },
+            "end": {
+              "line": 309,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "scroller",
+          "type": "Object | null | undefined",
+          "description": "Scrollable container.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 312,
+              "column": 2
+            },
+            "end": {
+              "line": 315,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "searchValue",
+          "type": "string | null | undefined",
+          "description": "Value of the search field. It will be used by an external data source to filter.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 318,
+              "column": 2
+            },
+            "end": {
+              "line": 321,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "searchResult",
+          "type": "Array | null | undefined",
+          "description": "Array of results from the search.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 324,
+              "column": 2
+            },
+            "end": {
+              "line": 328,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_observeSearchResult\"",
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "[]"
+        },
+        {
+          "name": "loading",
+          "type": "boolean | null | undefined",
+          "description": "Loading from the data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 331,
+              "column": 2
+            },
+            "end": {
+              "line": 334,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "dropdown",
+          "type": "boolean | null | undefined",
+          "description": "If true, the table of results will be displayed inside a dropdown.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 337,
+              "column": 2
+            },
+            "end": {
+              "line": 341,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "noSearchIcon",
+          "type": "boolean | null | undefined",
+          "description": "If true, the search icon will be hidden.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 344,
+              "column": 2
+            },
+            "end": {
+              "line": 347,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "Label for input field. When setting a label, the placeholder text will not be displayed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 350,
+              "column": 2
+            },
+            "end": {
+              "line": 353,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | null | undefined",
+          "description": "Boolean to indicate that this is a disabled input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 356,
+              "column": 2
+            },
+            "end": {
+              "line": 359,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "valueName",
+          "type": "string | null | undefined",
+          "description": "Value name of the selected item object that will be displayed in the input field when one of the items is selected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 362,
+              "column": 2
+            },
+            "end": {
+              "line": 362,
+              "column": 19
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "selectBox",
+          "type": "boolean | null | undefined",
+          "description": "If true, the component will act like a select box, opening the dropdown even when the input field is empty.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 367,
+              "column": 2
+            },
+            "end": {
+              "line": 370,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "noResults",
+          "type": "string | null | undefined",
+          "description": "Text displayed when there are no results to display in the dropdown.\nThe text will be displayed only when the `selectBox` property is true, and when the input field is empty.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 376,
+              "column": 2
+            },
+            "end": {
+              "line": 379,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "scrollElementIntoView",
+          "type": "boolean | null | undefined",
+          "description": "This property will only work when the `dropdown` property is true.\nSet to true to scroll the selected input element into view (on focus).\nIf scroll is available, it will align the element to the top of the browser window (if possible).\nThe scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 387,
+              "column": 2
+            },
+            "end": {
+              "line": 390,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_searchValue",
+          "type": "string | null | undefined",
+          "description": "Value from the search field.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 393,
+              "column": 2
+            },
+            "end": {
+              "line": 396,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_observeSearchValue\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_hideClearBtn",
+          "type": "boolean | null | undefined",
+          "description": "Hide search clear buttons.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 399,
+              "column": 2
+            },
+            "end": {
+              "line": 402,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_searchFieldEl",
+          "type": "Object | null | undefined",
+          "description": "Search input field object.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 405,
+              "column": 2
+            },
+            "end": {
+              "line": 407,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_targetEl",
+          "type": "Object | null | undefined",
+          "description": "Target element for `iron-dropdown`.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 2
+            },
+            "end": {
+              "line": 410,
+              "column": 19
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_noMatches",
+          "type": "boolean | null | undefined",
+          "description": "True when \"no matches\" container should be displayed.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 413,
+              "column": 2
+            },
+            "end": {
+              "line": 416,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "true"
+        },
+        {
+          "name": "_isItemSelected",
+          "type": "boolean | null | undefined",
+          "description": "True when an item is selected from the table of results.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 419,
+              "column": 2
+            },
+            "end": {
+              "line": 422,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_displayNoResults",
+          "type": "boolean | null | undefined",
+          "description": "True when \"no results\" should be displayed.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 425,
+              "column": 2
+            },
+            "end": {
+              "line": 429,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "rowAriaLabelCallback",
+          "type": "Object | null | undefined",
+          "description": "Callback function used to determine the aria-label value of each row from the table of results.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 434,
+              "column": 2
+            },
+            "end": {
+              "line": 436,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "table",
+          "type": "?",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 723,
+              "column": 4
+            },
+            "end": {
+              "line": 725,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 451,
+              "column": 4
+            },
+            "end": {
+              "line": 462,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clearSearch",
+          "description": "Clear search field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 465,
+              "column": 1
+            },
+            "end": {
+              "line": 467,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_clearSearch",
+          "description": "Clear search field.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 470,
+              "column": 1
+            },
+            "end": {
+              "line": 475,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computePlaceHolder",
+          "description": "Compute the default placeholder message.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 478,
+              "column": 1
+            },
+            "end": {
+              "line": 485,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "placeholder"
+            }
+          ]
+        },
+        {
+          "name": "_setNoMatches",
+          "description": "Set \"_noMatches\" container.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 488,
+              "column": 1
+            },
+            "end": {
+              "line": 502,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "searchValue"
+            },
+            {
+              "name": "results"
+            },
+            {
+              "name": "loading"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_observeSearchResult",
+          "description": "Observer for `searchResult`.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 505,
+              "column": 1
+            },
+            "end": {
+              "line": 514,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "result"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_observeLabel",
+          "description": "Enable the label in the search field.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 517,
+              "column": 1
+            },
+            "end": {
+              "line": 526,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "label"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_observeSearchValue",
+          "description": "Observe for _searchValue - Use debounce.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 529,
+              "column": 1
+            },
+            "end": {
+              "line": 548,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectItem",
+          "description": "Handle select item from the list.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 551,
+              "column": 1
+            },
+            "end": {
+              "line": 568,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onResultsTableChanged",
+          "description": "Handle notify resize, that is required for dynamic table.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 571,
+              "column": 1
+            },
+            "end": {
+              "line": 573,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "focusSearchField",
+          "description": "Focus on the search field when the popup opened.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 576,
+              "column": 1
+            },
+            "end": {
+              "line": 578,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onNavigateResults",
+          "description": "Navigate through the results.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 581,
+              "column": 1
+            },
+            "end": {
+              "line": 583,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_screenResize",
+          "description": "Callback listener for screen resize.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 586,
+              "column": 1
+            },
+            "end": {
+              "line": 589,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isDropdownOpened",
+          "description": "Check if the dropdown is opened.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 592,
+              "column": 1
+            },
+            "end": {
+              "line": 595,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_openDropdown",
+          "description": "Open dropdown.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 598,
+              "column": 1
+            },
+            "end": {
+              "line": 618,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_closeDropdown",
+          "description": "Close dropdown.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 621,
+              "column": 1
+            },
+            "end": {
+              "line": 625,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setDropdownWidth",
+          "description": "Set the dropdown width.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 628,
+              "column": 1
+            },
+            "end": {
+              "line": 632,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setTableHeight",
+          "description": "Set the triblock-table height.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 635,
+              "column": 1
+            },
+            "end": {
+              "line": 667,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "searchValue"
+            },
+            {
+              "name": "searchResult"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_observeFocused",
+          "description": "Observer for `focused`.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 670,
+              "column": 1
+            },
+            "end": {
+              "line": 684,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "focused"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_displayAuxContainer",
+          "description": "Determine when to show and hide the \".aux-container\".",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 687,
+              "column": 1
+            },
+            "end": {
+              "line": 699,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "dropdown"
+            },
+            {
+              "name": "loading"
+            },
+            {
+              "name": "noMatches"
+            },
+            {
+              "name": "displayNoResults"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onInputTapped",
+          "description": "On input field tapped: Open the dropdown if there's a value in the field.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 702,
+              "column": 1
+            },
+            "end": {
+              "line": 706,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onIconSelectTapped",
+          "description": "On icon select tapped.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 709,
+              "column": 1
+            },
+            "end": {
+              "line": 712,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeNoResults",
+          "description": "Determine when to display the \"no results\" text.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 715,
+              "column": 1
+            },
+            "end": {
+              "line": 721,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "noResults"
+            },
+            {
+              "name": "searchResult"
+            },
+            {
+              "name": "searchValue"
+            }
+          ]
+        },
+        {
+          "name": "_onTableTabPressed",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 727,
+              "column": 4
+            },
+            "end": {
+              "line": 735,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 737,
+              "column": 4
+            },
+            "end": {
+              "line": 739,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 96,
+          "column": 8
+        },
+        "end": {
+          "line": 740,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "alt-clear-button",
+          "description": "Alternate text for the clear icon button.",
+          "sourceRange": {
+            "start": {
+              "line": 294,
+              "column": 2
+            },
+            "end": {
+              "line": 297,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "alt-dropdown-button",
+          "description": "Alternate text for the dropdown icon button.",
+          "sourceRange": {
+            "start": {
+              "line": 300,
+              "column": 2
+            },
+            "end": {
+              "line": 303,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder message for the search input field.",
+          "sourceRange": {
+            "start": {
+              "line": 306,
+              "column": 2
+            },
+            "end": {
+              "line": 309,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "scroller",
+          "description": "Scrollable container.",
+          "sourceRange": {
+            "start": {
+              "line": 312,
+              "column": 2
+            },
+            "end": {
+              "line": 315,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "search-value",
+          "description": "Value of the search field. It will be used by an external data source to filter.",
+          "sourceRange": {
+            "start": {
+              "line": 318,
+              "column": 2
+            },
+            "end": {
+              "line": 321,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "search-result",
+          "description": "Array of results from the search.",
+          "sourceRange": {
+            "start": {
+              "line": 324,
+              "column": 2
+            },
+            "end": {
+              "line": 328,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "loading",
+          "description": "Loading from the data source.",
+          "sourceRange": {
+            "start": {
+              "line": 331,
+              "column": 2
+            },
+            "end": {
+              "line": 334,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "dropdown",
+          "description": "If true, the table of results will be displayed inside a dropdown.",
+          "sourceRange": {
+            "start": {
+              "line": 337,
+              "column": 2
+            },
+            "end": {
+              "line": 341,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "no-search-icon",
+          "description": "If true, the search icon will be hidden.",
+          "sourceRange": {
+            "start": {
+              "line": 344,
+              "column": 2
+            },
+            "end": {
+              "line": 347,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "label",
+          "description": "Label for input field. When setting a label, the placeholder text will not be displayed.",
+          "sourceRange": {
+            "start": {
+              "line": 350,
+              "column": 2
+            },
+            "end": {
+              "line": 353,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "disabled",
+          "description": "Boolean to indicate that this is a disabled input field.",
+          "sourceRange": {
+            "start": {
+              "line": 356,
+              "column": 2
+            },
+            "end": {
+              "line": 359,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "value-name",
+          "description": "Value name of the selected item object that will be displayed in the input field when one of the items is selected.",
+          "sourceRange": {
+            "start": {
+              "line": 362,
+              "column": 2
+            },
+            "end": {
+              "line": 362,
+              "column": 19
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "select-box",
+          "description": "If true, the component will act like a select box, opening the dropdown even when the input field is empty.",
+          "sourceRange": {
+            "start": {
+              "line": 367,
+              "column": 2
+            },
+            "end": {
+              "line": 370,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "no-results",
+          "description": "Text displayed when there are no results to display in the dropdown.\nThe text will be displayed only when the `selectBox` property is true, and when the input field is empty.",
+          "sourceRange": {
+            "start": {
+              "line": 376,
+              "column": 2
+            },
+            "end": {
+              "line": 379,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "scroll-element-into-view",
+          "description": "This property will only work when the `dropdown` property is true.\nSet to true to scroll the selected input element into view (on focus).\nIf scroll is available, it will align the element to the top of the browser window (if possible).\nThe scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.",
+          "sourceRange": {
+            "start": {
+              "line": 387,
+              "column": 2
+            },
+            "end": {
+              "line": 390,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "row-aria-label-callback",
+          "description": "Callback function used to determine the aria-label value of each row from the table of results.",
+          "sourceRange": {
+            "start": {
+              "line": 434,
+              "column": 2
+            },
+            "end": {
+              "line": 436,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "scroller-changed",
+          "description": "Fired when the `scroller` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "search-value-changed",
+          "description": "Fired when the `searchValue` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-search"
+    },
+    {
+      "description": "`triblock-search-popup` is similar to a `triblock-popup` with a search component.\n\nExample:\n```html\n<triblock-search-popup>\n</triblock-search-popup>\n```\n\nThe `title` property can be used to set a title for the popup:\n```html\n<triblock-search-popup title=\"Title\">\n</triblock-search-popup>\n```\n\nThe `placeholder` property can be used to set a placeholder message for the input field:\n```html\n<triblock-search-popup placeholder=\"Placeholder\">\n</triblock-search-popup>\n```\n\nThe `scroller` property can be used to set a scrollable container for a data source. It must be used with a two-way binding:\n```html\n<triblock-search-popup scroller=\"{{scroller}}\">\n</triblock-search-popup>\n```\n\nThe `searchValue` property is the value of the input field that will be used to filter a data source. It must be used with a two-way binding:\n```html\n<triblock-search-popup search-value=\"{{value}}\">\n</triblock-search-popup>\n```\n\nThe `searchResult` property is the list of results after a data source is filtered:\n```html\n<triblock-search-popup search-result=\"[[result]]\">\n</triblock-search-popup>\n```\n\nThe `loading` property can be used to display a loading indicator in the list of results:\n```html\n<triblock-search-popup loading=\"[[loading]]\">\n</triblock-search-popup>\n```\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n    <b>Info:</b> The children within triblock-search cannot be styled from the the host. They should be styled using the style attribute if it’s an element or within the component itself.\n  </div>\n</div>\n\n### Accessibility\n\nThe user can press keyboard keys to interact with the list of results:\n- Press the `Down Arrow` key to unfocus the search input field and navigate to the next item.\n- Press the `Up Arrow` key to navigate to the previous item.\n- Press the `Tab` key to focus on the search input field.\n\n\n### Events\n\nEvent Name | Description\n-----------|------------\n`search-item-selected` | Fired when an item in the list of results is selected.\n\n\n### Styling\n\nThe following custom properties and mixins are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--search-popup-small-screen-width` | Mixin applied to the popup for small screen widths (such as smartphones) | `{}`\n`--search-popup-not-small-screen-width` | Mixin applied to the popup for medium and larger screen widths (such as tablets and desktop monitors) | `{}`",
+      "summary": "",
+      "path": "triblock-search-popup.js",
+      "properties": [
+        {
+          "name": "title",
+          "type": "string | null | undefined",
+          "description": "Title message of the popup.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "placeholder",
+          "type": "string | null | undefined",
+          "description": "Placeholder message for the search input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 145,
+              "column": 2
+            },
+            "end": {
+              "line": 148,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "null"
+        },
+        {
+          "name": "scroller",
+          "type": "Object | null | undefined",
+          "description": "Scrollable container.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 151,
+              "column": 2
+            },
+            "end": {
+              "line": 154,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "searchValue",
+          "type": "string | null | undefined",
+          "description": "Value of the search field. It will be used by an external data source to filter.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 157,
+              "column": 2
+            },
+            "end": {
+              "line": 160,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "searchResult",
+          "type": "Array | null | undefined",
+          "description": "Array of results from the search.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 163,
+              "column": 2
+            },
+            "end": {
+              "line": 163,
+              "column": 21
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "loading",
+          "type": "boolean | null | undefined",
+          "description": "Loading from the data source.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 166,
+              "column": 2
+            },
+            "end": {
+              "line": 169,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "searchOnly",
+          "type": "boolean | null | undefined",
+          "description": "If true it will only provide the search, without the popup.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 172,
+              "column": 2
+            },
+            "end": {
+              "line": 175,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "rowAriaLabelCallback",
+          "type": "Object | null | undefined",
+          "description": "Callback function used to determine the aria-label value of each row from the table of results.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 180,
+              "column": 2
+            },
+            "end": {
+              "line": 182,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "open",
+          "description": "Open triblock-search-popup.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 191,
+              "column": 1
+            },
+            "end": {
+              "line": 194,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "close",
+          "description": "Close triblock-search-popup.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 197,
+              "column": 1
+            },
+            "end": {
+              "line": 199,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clearSearch",
+          "description": "Clear search field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 1
+            },
+            "end": {
+              "line": 204,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeTitle",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 206,
+              "column": 4
+            },
+            "end": {
+              "line": 213,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "title"
+            }
+          ]
+        },
+        {
+          "name": "_popupOpen",
+          "description": "Listen for popup open.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 216,
+              "column": 1
+            },
+            "end": {
+              "line": 218,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_popupClose",
+          "description": "Listen for popup close.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 221,
+              "column": 1
+            },
+            "end": {
+              "line": 223,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_selectItem",
+          "description": "Handle select item from the list.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 226,
+              "column": 1
+            },
+            "end": {
+              "line": 239,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onPopupOpen",
+          "description": "Focus on the search field when the popup opened.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 242,
+              "column": 1
+            },
+            "end": {
+              "line": 244,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 84,
+          "column": 8
+        },
+        "end": {
+          "line": 245,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "Title message of the popup.",
+          "sourceRange": {
+            "start": {
+              "line": 138,
+              "column": 2
+            },
+            "end": {
+              "line": 142,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder message for the search input field.",
+          "sourceRange": {
+            "start": {
+              "line": 145,
+              "column": 2
+            },
+            "end": {
+              "line": 148,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "scroller",
+          "description": "Scrollable container.",
+          "sourceRange": {
+            "start": {
+              "line": 151,
+              "column": 2
+            },
+            "end": {
+              "line": 154,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "search-value",
+          "description": "Value of the search field. It will be used by an external data source to filter.",
+          "sourceRange": {
+            "start": {
+              "line": 157,
+              "column": 2
+            },
+            "end": {
+              "line": 160,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "search-result",
+          "description": "Array of results from the search.",
+          "sourceRange": {
+            "start": {
+              "line": 163,
+              "column": 2
+            },
+            "end": {
+              "line": 163,
+              "column": 21
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "loading",
+          "description": "Loading from the data source.",
+          "sourceRange": {
+            "start": {
+              "line": 166,
+              "column": 2
+            },
+            "end": {
+              "line": 169,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "search-only",
+          "description": "If true it will only provide the search, without the popup.",
+          "sourceRange": {
+            "start": {
+              "line": 172,
+              "column": 2
+            },
+            "end": {
+              "line": 175,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "row-aria-label-callback",
+          "description": "Callback function used to determine the aria-label value of each row from the table of results.",
+          "sourceRange": {
+            "start": {
+              "line": 180,
+              "column": 2
+            },
+            "end": {
+              "line": 182,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "scroller-changed",
+          "description": "Fired when the `scroller` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "search-value-changed",
+          "description": "Fired when the `searchValue` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-search-popup"
+    },
+    {
+      "description": "`triblock-image-info-card` is a card with an image on the left side and a customizable information section on the right side.\n\nExample:\n```html\n<triblock-image-info-card\n  data=\"[[data]]\" \n  placeholder-icon=\"icon\" \n  image-width=\"[[imageWidth]]\" \n  image-height=\"[[imageHeight]]\">\n</triblock-image-info-card>\n```\n\n### Styling\n\nThe following custom properties and mixins are also available for styling:\n\nCustom property                               | Description                                         | Default\n----------------------------------------------|-----------------------------------------------------|----------\n`--triblock-image-info-card-image-container`  | Mixin applied to the image container                | `{}`\n`--triblock-image-info-card-placeholder-icon` | Mixin applied to the triplat-image placeholder icon | `{}`\n`--triblock-image-info-card-detail-container` | Mixin applied to the detail container               | `{}`",
+      "summary": "",
+      "path": "triblock-image-info-card.js",
+      "properties": [
+        {
+          "name": "data",
+          "type": "Object | null | undefined",
+          "description": "Data object that should have a `picture` property with an image URL path.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 2
+            },
+            "end": {
+              "line": 108,
+              "column": 14
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "placeholderIcon",
+          "type": "string | null | undefined",
+          "description": "Placeholder icon that is displayed when no user-defined image is provided.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 111,
+              "column": 2
+            },
+            "end": {
+              "line": 111,
+              "column": 25
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "imageHeight",
+          "type": "number | null | undefined",
+          "description": "Height in pixels.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 114,
+              "column": 2
+            },
+            "end": {
+              "line": 117,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "44"
+        },
+        {
+          "name": "imageWidth",
+          "type": "number | null | undefined",
+          "description": "Width in pixels.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 120,
+              "column": 2
+            },
+            "end": {
+              "line": 123,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "44"
+        },
+        {
+          "name": "circularImage",
+          "type": "boolean | null | undefined",
+          "description": "If true, the image will be displayed in a circular container.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 126,
+              "column": 2
+            },
+            "end": {
+              "line": 129,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "imageAlignTop",
+          "type": "boolean | null | undefined",
+          "description": "If true, the image will be aligned at the top of the card.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 132,
+              "column": 2
+            },
+            "end": {
+              "line": 136,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "cacheImage",
+          "type": "boolean | null | undefined",
+          "description": "If true, the images displayed by this component will be saved to the offline cache.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 141,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "thumbnail",
+          "type": "boolean | null | undefined",
+          "description": "If true, it will display a thumbnail version of the images.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 149,
+              "column": 2
+            },
+            "end": {
+              "line": 152,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_computeImageClass",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 4
+            },
+            "end": {
+              "line": 158,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "image"
+            },
+            {
+              "name": "circularImage"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 30,
+          "column": 8
+        },
+        "end": {
+          "line": 159,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "data",
+          "description": "Data object that should have a `picture` property with an image URL path.",
+          "sourceRange": {
+            "start": {
+              "line": 108,
+              "column": 2
+            },
+            "end": {
+              "line": 108,
+              "column": 14
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "placeholder-icon",
+          "description": "Placeholder icon that is displayed when no user-defined image is provided.",
+          "sourceRange": {
+            "start": {
+              "line": 111,
+              "column": 2
+            },
+            "end": {
+              "line": 111,
+              "column": 25
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "image-height",
+          "description": "Height in pixels.",
+          "sourceRange": {
+            "start": {
+              "line": 114,
+              "column": 2
+            },
+            "end": {
+              "line": 117,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "image-width",
+          "description": "Width in pixels.",
+          "sourceRange": {
+            "start": {
+              "line": 120,
+              "column": 2
+            },
+            "end": {
+              "line": 123,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "circular-image",
+          "description": "If true, the image will be displayed in a circular container.",
+          "sourceRange": {
+            "start": {
+              "line": 126,
+              "column": 2
+            },
+            "end": {
+              "line": 129,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "image-align-top",
+          "description": "If true, the image will be aligned at the top of the card.",
+          "sourceRange": {
+            "start": {
+              "line": 132,
+              "column": 2
+            },
+            "end": {
+              "line": 136,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "cache-image",
+          "description": "If true, the images displayed by this component will be saved to the offline cache.",
+          "sourceRange": {
+            "start": {
+              "line": 141,
+              "column": 2
+            },
+            "end": {
+              "line": 144,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "thumbnail",
+          "description": "If true, it will display a thumbnail version of the images.",
+          "sourceRange": {
+            "start": {
+              "line": 149,
+              "column": 2
+            },
+            "end": {
+              "line": 152,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-image-info-card"
+    }
+  ]
+}

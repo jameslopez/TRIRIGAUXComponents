@@ -1,0 +1,81 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../tricore-url/tricore-url.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+
+<dom-module id="tricore-view-link-fix-page">
+	<style>
+		paper-button {
+			background-color: #5596E6;
+			color: white;
+		}
+	</style>
+	<template>
+		<tricore-url raw-url="/p/components/fix" bind-url="{{url}}"></tricore-url>
+		<iron-ajax id="ajax" method="PUT" url="{{url}}" on-response="_handleResponse" on-error="_handleError"></iron-ajax>
+		<template is="dom-if" if="{{_computeShowButton(state)}}">
+			<paper-button on-tap="_handleClick">Perform Fix</paper-button>
+		</template>
+		<template is="dom-if" if="{{_computeShowSpinner(state)}}">
+			<paper-spinner active></paper-spinner>
+		</template>
+		<template is="dom-if" if="{{_computeShowComplete(state)}}">
+			<div>Complete!</div>
+		</template>
+		<template is="dom-if" if="{{_computeShowError(state)}}">
+			<div>Error!</div>
+		</template>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "tricore-view-link-fix-page",
+
+		properties: {
+
+			state: {
+				type: String,
+				notify: true,
+				readOnly: true,
+				value: "ready"
+			}
+
+		},
+
+		_computeShowButton: function(state) {
+			return state == "ready";
+		},
+
+		_computeShowSpinner: function(state) {
+			return state == "waiting";
+		},
+
+		_computeShowComplete: function(state) {
+			return state == "complete";	
+		},
+
+		_computeShowError: function(state) {
+			return state == "error";
+		},
+
+		_handleClick: function() {
+			this._setState("waiting");
+			this.$.ajax.generateRequest();
+		},
+
+		_handleResponse: function() {
+			this._setState("complete");
+		},
+
+		_handleError: function() {
+			this._setState("error");	
+		}
+
+	});
+</script>

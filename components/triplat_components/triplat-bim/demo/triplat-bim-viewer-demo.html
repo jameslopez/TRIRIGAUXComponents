@@ -1,0 +1,83 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../../triplat-view-behavior/triplat-view-behavior.html">
+
+<link rel="import" href="../../triplat-bim/triplat-bim-thumbnail.html">
+<link rel="import" href="../../triplat-bim/triplat-bim-viewer-popup.html">
+<link rel="import" href="../../triplat-ds/triplat-ds.html">
+
+
+<dom-module id="triplat-bim-viewer-demo">
+	<style>
+	    html, body {
+			margin           : 0;
+			padding          : 0;
+			height           : 100%;
+			width            : 100%;
+			font-family      : arial; 
+	    }
+		.fullPage {
+			height           : 100%;
+			width            : 100%;
+		}
+	</style>
+
+	<template>
+		<div class="fullPage">
+	    	<triplat-bim-viewer buildingid="[[buildingid]]" 
+                                buildingspec="[[buildingspec]]"
+	    	                    spaceid="[[spaceid]]" 
+	    	                    value="{{GUID}}" 
+                                features ="[[viewerfeatures]]"
+                                recordkey="[[recordkey]]"
+	    	                    class="fullPage"></triplat-bim-viewer>
+		</div>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "triplat-bim-viewer-demo",
+
+		behaviors: [TriPlatViewBehavior],
+
+	    ready: function()
+	    {
+	    	this.buildingid = "";
+	    	this.buildingspec = "";
+	    	this.recordkey = "";
+	    	this.viewerfeatures = { views : true };
+	    	var search = location.search; 
+	    	if( search.startsWith( "?") )
+	    	{
+	    		search = search.substring( 1 );
+	    	}
+	    	var vars = search.split('&');
+	    	for( i in vars )
+	    	{
+    			var values = vars[i].split( "=" );
+    			switch( values[0] )
+    			{
+    			    case "buildingspec":
+    			        this.buildingspec = values[1];
+    			        break;
+    			    case "buildingid":
+		    			this.buildingid = values[1];
+    					break;
+    			    case "recordkey":
+    			        this.recordkey = values[1];
+    			        this.viewerfeatures = { views: true, markup: true };
+    			        break;
+    			    case "spaceid":
+    					this.spaceid = values[1];
+    					break;
+    				case "GUID":
+    					this.GUID = values[1];
+    					break;
+    			} 
+	    	}
+	    },
+	});
+</script>

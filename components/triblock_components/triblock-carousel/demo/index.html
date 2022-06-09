@@ -1,0 +1,83 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<!doctype html>
+<html>
+<head>
+
+	<title>triblock-carousel Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../paper-styles/demo-pages.html">
+	<link rel="import" href="../../triplat-theme/triplat-theme.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../triblock-carousel.html">
+	
+	<style is="custom-style" include="demo-pages-shared-styles">
+		#container {
+	        max-width: 500px;
+	    }
+	    
+	    demo-snippet {
+	    	--demo-snippet-demo: {
+	    		position: relative;
+	    		height: 400px;
+	    	};
+	    }
+	    
+	    
+	    .box {
+	    	min-width: 450px;
+	    	min-height: 350px;
+	    	@apply(--layout);
+	    	@apply(--layout-center-center);
+	    	border: solid black;
+	    }
+
+	    .box-1 {
+	    	background-color: var(--tri-info-color);
+	    }
+
+	    .box-2 {
+	    	background-color: var(--tri-primary-light-color);
+	    }
+
+	    .box-3 {
+	    	background-color: var(--tri-success-color);
+	    }
+	    
+	</style>
+</head>
+<body unresolved>
+	<div id="container" class="vertical-section-container centered">
+		<h2>Sample <code>triblock-carousel</code></h2>
+    	<demo-snippet>
+        	<template> 
+				<triblock-carousel>
+					<div class="box box-1">1</div>
+					<div class="box box-2">2</div>
+					<div class="box box-3">3</div>
+				</triblock-carousel>   	
+			</template>
+		</demo-snippet>
+
+		<h2>Custom <code>triblock-carousel</code></h2>
+    	<demo-snippet>
+        	<template> 
+				<triblock-carousel disable-auto-slide show-scroll-buttons slide-duration="1000">
+					<div class="box box-1">1</div>
+					<div class="box box-2">2</div>
+					<div class="box box-3">3</div>
+				</triblock-carousel>   	
+			</template>
+		</demo-snippet>
+	</div>
+</body>
+</html>

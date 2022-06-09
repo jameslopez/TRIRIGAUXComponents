@@ -1,0 +1,88 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../tricore-url/tricore-url.html">
+
+<dom-module id="tricore-view-container">
+	<style>
+		:host {
+			display: block;
+		}
+	</style>
+	<template>
+		<tricore-url id="url"></tricore-url>
+		<div id="content"></div>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "tricore-view-container",
+
+		properties: {
+
+			modelAndViewName: {
+				type: String,
+				readOnly: false,
+				notify: true
+			},
+
+			viewName: {
+				type: String,
+				notify: false,
+				readOnly: false
+			},
+
+			instanceId: {
+				type: String,
+				readOnly: false,
+				notify: true
+			},
+
+			applyDefaultTheme: {
+				type: Boolean,
+				notify: false,
+				readOnly: false	
+			},
+
+			scroller: {
+				type: Object,
+				readOnly: false,
+				notify: true
+			}
+
+		},
+
+		viewInfo: null,
+
+		observers: [
+			"_init(modelAndViewName, viewName, instanceId)"
+		],
+
+		_init: function(modelAndViewName, viewName, instanceId) {
+			this.importHref([this._getTagUrl()], function() {
+				var element = document.createElement(this.viewName);
+				element.modelAndView = this.modelAndViewName;
+				element.instanceId = this.instanceId;
+				element.contextUrl = this._getContextUrl();
+				element.scroller = this.scroller;
+				if (this.applyDefaultTheme) {
+					Polymer.dom(element).classList.add("tri-theme");
+				}
+				Polymer.dom(this.$.content).appendChild(element);
+			}.bind(this));
+		},
+
+		_getTagUrl: function() {
+			return this._getContextUrl() +
+					"/" + this.viewName + ".html";
+		},
+
+		_getContextUrl: function() {
+			return this.$.url.getUrl("/p/components/r" +
+					"/" + this.viewName);
+		}
+
+	});
+</script>

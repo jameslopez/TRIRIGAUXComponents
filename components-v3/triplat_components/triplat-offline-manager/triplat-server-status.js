@@ -1,0 +1,66 @@
+import { html } from "../@polymer/polymer/lib/utils/html-tag.js";
+import { Polymer } from "../@polymer/polymer/lib/legacy/polymer-fn.js";
+import "../@polymer/polymer/polymer-legacy.js";
+import "../tricore-context-path/tricore-context-path.js";
+var singleton = null;
+var serverOnline = true;
+var instances = [];
+
+export const TriplatServerStatus = Polymer({
+	is: 'triplat-server-status',
+	
+	properties: {
+		
+		/**
+		 * Returns the online status of the TRIRIGA Server.
+		 */
+		online: {
+			type: Boolean,
+			notify: true,
+			readOnly: true,
+			value: true
+		}
+	},
+	
+	attached: function() {
+		this._register();
+		this._notifyServerStatusChanged();
+	},
+	
+	detached: function() {
+		this._unregister();
+	},
+	
+	isServerOnline: function() {
+		return serverOnline;
+	},
+	
+	_register: function () {
+		instances.push(this);
+	},
+
+	_unregister: function () {
+		var index = instances.indexOf(this);
+		if (index > -1) {
+			instances.splice(index, 1);
+		}
+	},
+	
+	_notifyServerStatusChanged: function() {
+		this._setOnline(this.isServerOnline());
+	}
+});
+
+TriplatServerStatus.getInstance = function () {
+	if (singleton === null) {
+		singleton = new TriplatServerStatus();
+	}
+	return singleton;
+};
+
+TriplatServerStatus.notifyServerStatusChanged = function (online) {
+	serverOnline = online;
+	instances.forEach(function(instance) {
+		instance._notifyServerStatusChanged();
+	});
+};

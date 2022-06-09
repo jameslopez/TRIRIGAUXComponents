@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "`TriPlatAccessibilityBehavior` can be used to improve accessibility of some elements.",
+          "summary": "",
+          "path": "triplat-accessibility-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "setAriaProperty",
+              "description": "This function will set to \"true\" or \"false\" the ARIA property for a given element.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 19,
+                  "column": 1
+                },
+                "end": {
+                  "line": 25,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "element",
+                  "type": "Object",
+                  "description": "Element that will receive the ARIA property"
+                },
+                {
+                  "name": "value",
+                  "type": "Boolean",
+                  "description": "Either \"true\" or \"false\""
+                },
+                {
+                  "name": "ariaProperty",
+                  "type": "String",
+                  "description": "The Name of the ARIA property"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "setAriaLiveContainer",
+              "description": "Creates an HTML element with an `aria-live` attribute, to set a live area for screen readers.\nThis live container will not be visible on the page, so it should only be used to improve the accessibility of screen readers.\nIt returns the live element.",
+              "privacy": "public",
+              "sourceRange": {
+                "start": {
+                  "line": 36,
+                  "column": 1
+                },
+                "end": {
+                  "line": 51,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "parentElement",
+                  "type": "Object",
+                  "description": "Element where the ARIA live container will be appended."
+                },
+                {
+                  "name": "containerId",
+                  "type": "String",
+                  "description": "The ID of the live container. If blank, the default value will be \"liveArea\"."
+                },
+                {
+                  "name": "ariaLiveValue",
+                  "type": "String",
+                  "description": "The value for the **aria-live** attribute. Can be set to \"assertive\" or \"polite\". If blank, the default value will be \"polite\"."
+                }
+              ],
+              "return": {
+                "type": "Element"
+              }
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 11,
+              "column": 13
+            },
+            "end": {
+              "line": 53,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriPlatAccessibilityBehavior",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

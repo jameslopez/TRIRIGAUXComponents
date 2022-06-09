@@ -1,0 +1,100 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-routing Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../../iron-pages/iron-pages.html">
+	<link rel="import" href="../../iron-icons/iron-icons.html">
+	<link rel="import" href="../../paper-fab/paper-fab.html">
+
+	<link rel="import" href="../triplat-routing.html">	
+
+	<link rel="import" href="people-data.html">
+	<link rel="import" href="x-people.html">
+	<link rel="import" href="x-person.html">
+	<link rel="import" href="x-new-person.html">
+
+</head>
+<body class="fullbleed">
+	<dom-module id="x-routing-demo">
+		<style>
+			a {
+				position: fixed;
+				top: 50px;
+				right: 50px;
+			}
+		</style>
+		<template>
+			<triplat-route name="people" path="/"></triplat-route>
+			<triplat-route id="personRoute" name="person" path="/:personId" params="{{personParams}}"></triplat-route>
+			<triplat-route id="newPersonRoute" name="newPerson" path="/new"></triplat-route>
+
+			<triplat-route-selector>
+				<iron-pages>
+					<x-people default-route route="people" people="{{people}}" on-person-selected="_handlePersonSelected" on-new-person="_handleNewPerson"></x-people>
+					<x-person route="person" person="{{_selectedPerson}}"></x-person>
+					<x-new-person route="newPerson"></x-new-person>
+				</iron-pages>
+			</triplat-route-selector>
+			<a href="index.html" target="_blank"><paper-fab icon="icons:open-in-browser"></paper-fab></a>
+		</template>
+	</dom-module>
+	<script>
+    HTMLImports.whenReady(function() {
+		Polymer({
+
+			is: "x-routing-demo",
+
+			properties: {
+
+				people: {
+					type: Array,
+					value: function() {
+						return TriRouteDemoData;
+					}
+				}
+
+			},
+
+			observers: [
+				"_onPersonLoad(personParams.personId)"
+			],
+
+			_handlePersonSelected: function(e) {
+				this.$.personRoute.navigate({personId: e.detail});
+			},
+
+			_onPersonLoad: function(personId) {
+				var foundPerson = null;
+				this.people.forEach(function(person) {
+					if (person.id == personId) {
+						foundPerson = person;
+						return false;
+					}
+				});
+				this._selectedPerson = foundPerson;
+			},
+
+			_handleNewPerson: function() {
+				this.$.newPersonRoute.navigate();
+			}
+
+		});
+    });
+	</script>
+	<x-routing-demo></x-routing-demo>
+</body>
+</html>

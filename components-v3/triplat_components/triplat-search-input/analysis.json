@@ -1,0 +1,1288 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A styled input box that has a search icon and a clear button.\n\n\t <triplat-search-input value=\"{{searchValue}}\" placeholder=\"Search people\">\n\t </triplat-search-input>\n\nThere is also an enhanced search input, which provides new functionalities. In order to use it, refer to this following code. Make sure you are defining proper \"data\", \"aliases\" and \"append-filters\" properties. They are required for the enhanced search input. The \"max-header-children\" property is optional (Default is 3).\n\n\t <triplat-search-input value=\"{{searchValue}}\" placeholder=\"Search people\"\n\t\tdata=\"{{searchData}}\" aliases=\"{{aliases}}\" append-filters=\"{{appendFilters}}\" \n\t\tmax-header-children=\"2\"></triplat-search-input>\n\n### Best Practices\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n  <b>Note:</b> You may want to refer to the `triplat-ds` and `triplat-query` documentation pages if you're not sure how to differentiate client-side and server-side filtering. The following best practices assume that you have some prior knowledge of data sources, queries and filters.\n  </div>\n</div>\n#### 1. Think about the way you want to manage data.\nAssigning data directly from `triplat-ds` to `triplat-search-input` is fine. However, handling large data sets (100k+) will become slow if you use <b>client-side</b> filtering since it is the <b>only filtering method supported</b> by `triplat-search-input`. If that is the case, you should try rethinking your design to make sure you really need that much data loaded at once and <b>you are willing to accept a slower performance</b>.\n\nExample:\n\t\n\t<triplat-ds id=\"peopleDs\" name=\"people\"\n\t\tdata=\"{{people}}\"\n\t\tfiltered-data=\"{{filteredPeople}}\">\n\t\t<triplat-query append-filters=\"{{appendFilters}}\">\n\t\t</triplat-query>\n\t</triplat-ds>\n\n\t<triplat-search-input\n\t\tplaceholder=\"Search Employee\"\n\t\tdata=\"{{people}}\"\n\t\taliases=\"{{aliases}}\"\n\t\tappend-filters=\"{{appendFilters}}\"\n\t\tmax-header-children=\"3\">\n\t</triplat-search-input>\n\n\t<template is=\"dom-repeat\" items=\"{{filteredPeople}}\">\n\t\t<div>Name: {{item.firstName}}</div>\n\t</template>\n\n#### 2. <b>Server-side filters</b> can help you.\nIf your data is big enough, you should consider using <b>server-side</b> filters to paginate the data and perform initial filtering. Then, you need to create `triplat-query` outside of `triplat-ds` to consume the data from `triplat-ds` and handle <b>client-side</b> filtering. This way, `triplat-query` will provide the filtered data you want to show while `triplat-ds` will provide the input data (filtered on the server side already) for `triplat-search-input`.\n\nExample:\n\t\n\t<triplat-ds id=\"peopleDs\" name=\"people\"\n\t\tdata=\"{{people}}\">\n\t\t<triplat-query>\n\t\t\t<triplat-query-page id=\"peopleDsPage\" \n\t\t\t\tsize=\"50\"\n\t\t\t\tcurrent-page=\"{{currentPage}}\"\n\t\t\t\ttotal-pages=\"[[totalPages]]\">\n\t\t\t</triplat-query-page>\n\t\t\t<triplat-query-filter \n\t\t\t\tname=\"title\"\n\t\t\t\toperator=\"contains\"\n\t\t\t\tvalue=\"Software Engineer\"\n\t\t\t\tignore-if-blank>\n\t\t\t</triplat-query-filter>\n\t\t\t<triplat-query-sort name=\"firstName\"></triplat-query-sort>\n\t\t</triplat-query>\n\t</triplat-ds>\n\n\t<triplat-query append-filters=\"{{appendFilters}}\"\n\t\tdata=\"{{people}}\" filtered-data-out=\"{{filteredPeopleClientSide}}\">\n\t</triplat-query>\n\n\t<triplat-search-input\n\t\tplaceholder=\"Search Employee\"\n\t\tdata=\"{{people}}\"\n\t\taliases=\"{{aliases}}\"\n\t\tappend-filters=\"{{appendFilters}}\"\n\t\tmax-header-children=\"3\">\n\t</triplat-search-input>\n\n\t<template is=\"dom-repeat\" items=\"{{filteredPeopleClientSide}}\">\n\t\t<div>Name: {{item.firstName}}</div>\n\t</template>\n\n#### 3. Use <b>aliases</b> wisely for fine-tuned user search.\nSometimes, you don't need all of the fields in the data source to be used during the search. Make sure the <b>aliases</b> object contains only the properties/columns you would like to search against. This way, you will create useful headers for the user and increase performance significantly.\n\n#### 4. Identify the best <b>max-header-children</b> number for your use case.\nEnsure you're using the property according to your needs, taking into account the most common screen size so that you can provide a friendly user experience, with minimal user scroll actions. Also, defining a smaller number will give a faster performance when searching. Keep in mind that you will always have the <b>Show More</b> option if there are more records than the number you define for <b>max-header-children</b> so that the user will still have control over all records for a header.\n\n### Styling\n\nThe following custom properties and mixins are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-search-input-primary-text-color` | Primary text color | `white`\n`--triplat-search-input-border-color` | Input border bottom color | `--tri-primary-color`\n`--triplat-search-input-border-height` | Input border bottom height | `2px`\n`--triplat-search-input-search-icon-color` | Input search icon color | `--tri-primary-content-label-color`\n`--triplat-search-input-clear-icon-color` | Input clear icon color | `--tri-primary-content-label-color`\n`--triplat-search-input-filter-background-color` | Background color of a filter element | `--ibm-neutral-2`\n`--triplat-search-input-filter-text-color` | Text color of a filter element | `--tri-primary-content-color`\n`--triplat-search-input-operator-equals-icon-color` | Operator equals color | `--tri-primary-color`\n`--triplat-search-input-filter-operator-background-color` | Operator background color of a filter element | `--tri-primary-color`\n`--triplat-search-input-filter-remove-icon-color` | Remove icon color of a filter element | `--tri-primary-content-label-color`\n`--triplat-search-input-dropdown-header-background-color` | Background color of a header in the dropdown | `--tri-primary-color-60`\n`--triplat-search-input-dropdown-header-text-color` | Text color of a header in the dropdown | `--tri-primary-light-color`\n`--triplat-search-input-dropdown-item-background-color` | Background color of an item in the dropdown | `--tri-primary-color`\n`--triplat-search-input-dropdown-item-border-color` | Border color of an item in the dropdown | `--tri-primary-color-40`\n`--triplat-search-input-hover-border-color` | Border color when hovering over an item in the dropdown | `white`\n`--triplat-search-input-dropdown-footer-background-color` | Background color of the footer in the dropdown | `--tri-primary-dark-color`\n`--triplat-search-input-dropdown-footer-deselect-text-color` | Text color of the 'deselect all' option in the dropdown | `--tri-primary-light-color`\n`--triplat-search-input-filters-icon-color` | Filters icon color | `--tri-primary-color`\n`--triplat-search-input-expand-filters-number-color` | Filters number color | `--ibm-orange-50`\n`--triplat-search-input-expand-filters-icon-color` | Expand filters icon color | `--tri-primary-color`\n`--triplat-search-input-close-filters-icon-color` | Close filters icon color | `--tri-primary-color`\n`--triplat-search-input-expand-filters-remove-icon-color` | Remove filter icon color | `--tri-primary-color`\n`--triplat-search-input-expand-filters-background-color` | Background color of a filter in the expand filters container | `--tri-primary-color-10`\n`--triplat-search-input-dropdown-footer-deselect-text-color` | Text color of the 'deselect all' option in the dropdown | `--tri-primary-light-color`\n`--triplat-search-input` | Mixin applied to the search input | `{}`\n`--triplat-search-input-filter-elements-container` | Mixin applied to the filter elements container | `{}`\n`--triplat-search-input-dropdown-header` | Mixin applied to a header in the dropdown | `{}`\n`--triplat-search-input-dropdown-item` | Mixin applied to an item in the dropdown | `{}`\n`--triplat-search-input-dropdown-footer-container` | Mixin applied to the footer container in the dropdown | `{}`\n`--triplat-search-input-expand-filters-container` | Mixin applied to the expand filters container | `{}`\n`--triplat-search-input-input` | Mixin applied to the input field | `{}`\n`--triplat-search-input-placeholder` | Mixin applied to the placeholder | `{}`\n\nStyling the button in the dropdown footer is also possible. Refer to the 3rd party `--paper-button` mixin.",
+      "summary": "",
+      "path": "triplat-search-input.js",
+      "properties": [
+        {
+          "name": "value",
+          "type": "string | null | undefined",
+          "description": "Value of the search box.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 405,
+              "column": 2
+            },
+            "end": {
+              "line": 409,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "placeholder",
+          "type": "string | null | undefined",
+          "description": "Label to display when no search value has been entered. The default value is 'Type to search'",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 2
+            },
+            "end": {
+              "line": 416,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "searchIconPrecede",
+          "type": "boolean | null | undefined",
+          "description": "Flag to indicate that you want the search icon precede the input field.\nIf not specified, the icon will succeed the input field.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 422,
+              "column": 2
+            },
+            "end": {
+              "line": 425,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "data",
+          "type": "Object | null | undefined",
+          "description": "Object containing the data you would like to filter against. It is the\n\"filtered-data\" returned by \"triplat-ds\" or the \"data\" returned by \"triplat-query\".",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 431,
+              "column": 2
+            },
+            "end": {
+              "line": 431,
+              "column": 14
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "aliases",
+          "type": "Object | null | undefined",
+          "description": "This object holds information about the headers in the\nsearch menu. If an alias is not provided for any of the\navailable fields in a data source, that field will be skipped\nfrom the display.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 439,
+              "column": 2
+            },
+            "end": {
+              "line": 443,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": false,
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "{}"
+        },
+        {
+          "name": "appendFilters",
+          "type": "Array | null | undefined",
+          "description": "This array represents all filters that will be\nautomatically created into the \"triplat-ds\" or\n\"triplat-query\". The same binding should exist in the\n\"triplat-query\" element associated to this search.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 451,
+              "column": 2
+            },
+            "end": {
+              "line": 455,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "[]"
+        },
+        {
+          "name": "maxHeaderChildren",
+          "type": "number | null | undefined",
+          "description": "Number of maximum children under each header in\nthe search input dropdown.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 461,
+              "column": 2
+            },
+            "end": {
+              "line": 464,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "3"
+        },
+        {
+          "name": "delay",
+          "type": "number | null | undefined",
+          "description": "The amount of delay between the time (milliseconds) a single letter is typed,\nand the time the dropdown show results.\n\nThis delay is needed so we can wait a bit after presenting the results list in\nthe dropdown. This way we can achieve better performance, skipping searchs against\nsingle letters.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 474,
+              "column": 2
+            },
+            "end": {
+              "line": 479,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": false,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "200"
+        },
+        {
+          "name": "scrollElementIntoView",
+          "type": "boolean | null | undefined",
+          "description": "Set to true to scroll the search input element into view (on focus). If scroll is available, it will align the element to the top of the browser window (if possible).\nThe scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 485,
+              "column": 3
+            },
+            "end": {
+              "line": 488,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_value",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 490,
+              "column": 2
+            },
+            "end": {
+              "line": 494,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handleInternalValueChanged\"",
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_placeholder",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 496,
+              "column": 2
+            },
+            "end": {
+              "line": 499,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "_filters",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 501,
+              "column": 2
+            },
+            "end": {
+              "line": 504,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          },
+          "defaultValue": "[]"
+        },
+        {
+          "name": "_showClear",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 506,
+              "column": 2
+            },
+            "end": {
+              "line": 510,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_mobileView",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 512,
+              "column": 2
+            },
+            "end": {
+              "line": 516,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_filtersOpen",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 518,
+              "column": 2
+            },
+            "end": {
+              "line": 522,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_selectedTotal",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 524,
+              "column": 2
+            },
+            "end": {
+              "line": 528,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "0"
+        },
+        {
+          "name": "_focusedByKeyboard",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 530,
+              "column": 2
+            },
+            "end": {
+              "line": 534,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_focused",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 536,
+              "column": 2
+            },
+            "end": {
+              "line": 539,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_boundOnFocus",
+          "type": "Function | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 541,
+              "column": 2
+            },
+            "end": {
+              "line": 546,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Function"
+            }
+          }
+        },
+        {
+          "name": "_boundOnBlur",
+          "type": "Function | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 548,
+              "column": 2
+            },
+            "end": {
+              "line": 553,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Function"
+            }
+          }
+        },
+        {
+          "name": "_universalFilterIndex",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 817,
+              "column": 4
+            },
+            "end": {
+              "line": 824,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 568,
+              "column": 4
+            },
+            "end": {
+              "line": 578,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeHidden",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 580,
+              "column": 4
+            },
+            "end": {
+              "line": 582,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "index"
+            }
+          ]
+        },
+        {
+          "name": "_handleInputKeyDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 584,
+              "column": 4
+            },
+            "end": {
+              "line": 595,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleActionKeyDown",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 597,
+              "column": 4
+            },
+            "end": {
+              "line": 603,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleUserTyped",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 605,
+              "column": 4
+            },
+            "end": {
+              "line": 607,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clearSearch",
+          "description": "Clears all filters and values in the search input. It will also refresh\nthe list of records associated to this component.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 613,
+              "column": 1
+            },
+            "end": {
+              "line": 615,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_clearSearch",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 617,
+              "column": 4
+            },
+            "end": {
+              "line": 625,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 627,
+              "column": 4
+            },
+            "end": {
+              "line": 632,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleInternalValueChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 634,
+              "column": 4
+            },
+            "end": {
+              "line": 646,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "value"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleItemsSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 648,
+              "column": 4
+            },
+            "end": {
+              "line": 666,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_controlView",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 668,
+              "column": 4
+            },
+            "end": {
+              "line": 688,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isMobileDevice",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 690,
+              "column": 1
+            },
+            "end": {
+              "line": 695,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_handleMobileView",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 697,
+              "column": 4
+            },
+            "end": {
+              "line": 709,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_resetFiltersState",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 711,
+              "column": 4
+            },
+            "end": {
+              "line": 715,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "placeholder"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFilterDelete",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 717,
+              "column": 4
+            },
+            "end": {
+              "line": 720,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFilterDeleteFromOverlay",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 722,
+              "column": 4
+            },
+            "end": {
+              "line": 730,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_doFilterDelete",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 732,
+              "column": 4
+            },
+            "end": {
+              "line": 743,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filter"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_filtersChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 745,
+              "column": 4
+            },
+            "end": {
+              "line": 769,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "change"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_addFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 771,
+              "column": 4
+            },
+            "end": {
+              "line": 773,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filter"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 775,
+              "column": 4
+            },
+            "end": {
+              "line": 787,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filterOut"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleUniversalSearch",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 789,
+              "column": 4
+            },
+            "end": {
+              "line": 808,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeUniversalFilter",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 810,
+              "column": 4
+            },
+            "end": {
+              "line": 815,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_openFiltersMenu",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 826,
+              "column": 4
+            },
+            "end": {
+              "line": 832,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_closeFiltersMenu",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 834,
+              "column": 4
+            },
+            "end": {
+              "line": 839,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleFiltersOverlayCancel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 841,
+              "column": 4
+            },
+            "end": {
+              "line": 843,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "restoreFilters",
+          "description": "Restores a previous state of the search input. It will create filter containers in the field again\nand will refresh the list of records.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 852,
+              "column": 1
+            },
+            "end": {
+              "line": 870,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filters",
+              "type": "Array",
+              "description": "The filters we want to restore in this component.\nUsually, it is the \"append-filters\" value stored before we clear the search."
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onFocus",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 872,
+              "column": 1
+            },
+            "end": {
+              "line": 874,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onBlur",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 876,
+              "column": 1
+            },
+            "end": {
+              "line": 878,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 149,
+          "column": 8
+        },
+        "end": {
+          "line": 879,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Value of the search box.",
+          "sourceRange": {
+            "start": {
+              "line": 405,
+              "column": 2
+            },
+            "end": {
+              "line": 409,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "placeholder",
+          "description": "Label to display when no search value has been entered. The default value is 'Type to search'",
+          "sourceRange": {
+            "start": {
+              "line": 414,
+              "column": 2
+            },
+            "end": {
+              "line": 416,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "search-icon-precede",
+          "description": "Flag to indicate that you want the search icon precede the input field.\nIf not specified, the icon will succeed the input field.",
+          "sourceRange": {
+            "start": {
+              "line": 422,
+              "column": 2
+            },
+            "end": {
+              "line": 425,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "data",
+          "description": "Object containing the data you would like to filter against. It is the\n\"filtered-data\" returned by \"triplat-ds\" or the \"data\" returned by \"triplat-query\".",
+          "sourceRange": {
+            "start": {
+              "line": 431,
+              "column": 2
+            },
+            "end": {
+              "line": 431,
+              "column": 14
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "aliases",
+          "description": "This object holds information about the headers in the\nsearch menu. If an alias is not provided for any of the\navailable fields in a data source, that field will be skipped\nfrom the display.",
+          "sourceRange": {
+            "start": {
+              "line": 439,
+              "column": 2
+            },
+            "end": {
+              "line": 443,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "append-filters",
+          "description": "This array represents all filters that will be\nautomatically created into the \"triplat-ds\" or\n\"triplat-query\". The same binding should exist in the\n\"triplat-query\" element associated to this search.",
+          "sourceRange": {
+            "start": {
+              "line": 451,
+              "column": 2
+            },
+            "end": {
+              "line": 455,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "max-header-children",
+          "description": "Number of maximum children under each header in\nthe search input dropdown.",
+          "sourceRange": {
+            "start": {
+              "line": 461,
+              "column": 2
+            },
+            "end": {
+              "line": 464,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "delay",
+          "description": "The amount of delay between the time (milliseconds) a single letter is typed,\nand the time the dropdown show results.\n\nThis delay is needed so we can wait a bit after presenting the results list in\nthe dropdown. This way we can achieve better performance, skipping searchs against\nsingle letters.",
+          "sourceRange": {
+            "start": {
+              "line": 474,
+              "column": 2
+            },
+            "end": {
+              "line": 479,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "scroll-element-into-view",
+          "description": "Set to true to scroll the search input element into view (on focus). If scroll is available, it will align the element to the top of the browser window (if possible).\nThe scroll into view is applied on mobile devices only, where screens are small and the virtual keyboard takes much of the screen area.",
+          "sourceRange": {
+            "start": {
+              "line": 485,
+              "column": 3
+            },
+            "end": {
+              "line": 488,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "value-changed",
+          "description": "Fired when the `value` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "append-filters-changed",
+          "description": "Fired when the `appendFilters` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-search-input"
+    }
+  ]
+}

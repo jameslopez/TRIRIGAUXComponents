@@ -1,0 +1,27 @@
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="tricore-sso-no-user-page">
+	<template>
+		<style include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning">
+			:host {
+				@apply(--layout-fit);
+				@apply(--layout-vertical);
+				@apply(--layout-center);
+				@apply(--layout-center-justified);
+			}
+			h1 {
+				text-align: center;
+				padding: 20px;
+			}
+		</style>
+		<h1>Cannot sign into IBM TRIRIGA as you do not have a valid user.</h1>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "tricore-sso-no-user-page"
+
+	});
+</script>

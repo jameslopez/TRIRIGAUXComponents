@@ -1,0 +1,2393 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-table-column` defines the metadata necessary to create the column content inside of the table.  At minimum, it displays the specified `property` value for each `data` item.  It also displays the `title` as the column header, but this setting is optional.\n\nExample:\n\n```html\n<triblock-table data=\"{{data}}\">\n  <triblock-table-column title=\"Employee ID\" property=\"_id\"></triblock-table-column>\n  <triblock-table-column title=\"Name\" property=\"name\"></triblock-table-column>\n  <triblock-table-column title=\"Status\" property=\"status\" type=\"STRING_WITH_ID\"></triblock-table-column>\n</triblock-table>\n```\n\nTo customize cell content in the column, provide a `template` inside `triblock-table-column`.\n\nExample:\n\n```html\n<triblock-table data=\"{{data}}\">\n  <triblock-table-column title=\"Employee ID\" property=\"_id\">\n\t<template>\n\t  <a target=\"_blank\" href=\"data/employees.json\">{{value}}</a>\n\t</template>\n  </triblock-table-column>\n  <triblock-table-column title=\"Name\" property=\"name\">\n\t<template>\n\t  <div>{{item.last}}, {{item.first}}</div>\n\t</template>\n  </triblock-table-column>\n  <triblock-table-column title=\"Status\" property=\"status\"></triblock-table-column>\n</triblock-table>\n```\n\nColumn templates should bind to template models of the following structure:\n\n```js\n{\n  item: {},        // user data corresponding to data[index]\n  value: {},       // user data corresponding to this column's \"property\"\n\t\t\t\t   // value at data[index]\n  index: 0,        // index in the data array\n  tabIndex: -1,    // a dynamically generated tabIndex \n\t\t\t\t   // for focus management (managed by internal iron-list)\n}\n```\n\nSee the <a href=\"#triblock-table\">`triblock-table`</a> Demo page for more examples of the various properties and settings that are available for `triblock-table-column`.\n\n\n### Styling\n\nThe following CSS variables can be applied directly on `triblock-table-column` in order to style the generated column:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-table-column-flex` | `flex` applied to the column | `1`\n`--triblock-table-column-body-flex-alignment` | `justify-content` applied to the body cells in the column | `flex-start`\n`--triblock-table-column-header-flex-alignment` | `justify-content` applied to the header cells in the column | `flex-start`\n`--triblock-table-column-fixed-width` | `width` applied to the column to override the `--triblock-table-column-flex` setting | none\n\nExample:\n\n```html\n<style>\n  .fixed-width-column {\n\t// column will always be 200px\n\t--triblock-table-column-fixed-width: 200px;  \n  }\n  .custom-column-1 {\n\t// column header center-aligned\n\t--triblock-table-column-header-flex-alignment: center;\n\t  \n\t// column body cells right-aligned\n\t--triblock-table-column-body-flex-alignment: flex-end;  \n  }\n  .custom-column-2 {\n\t// column will be twice as wide as default columns\n\t--triblock-table-column-flex: 2;  \n  }\n</style>\n\n<triblock-table data=\"{{data}}\">\n  <triblock-table-column \n\ttitle=\"Employee ID\" \n\tproperty=\"_id\" \n\tclass=\"fixed-width-column\">\n  </triblock-table-column>\n  <triblock-table-column \n\ttitle=\"Name\" \n\tproperty=\"name\" \n\tclass=\"custom-column-1\">\n  </triblock-table-column>\n  <triblock-table-column \n\ttitle=\"Status\" \n\tproperty=\"status\"\n\ttype=\"STRING_WITH_ID\" \n\tclass=\"custom-column-2\">\n  </triblock-table-column>\n</triblock-table>\n```\n\nAs a convenience, the following predefined classes can be applied for common column-styling scenarios:\n<ul>\n  <li>\n\tnarrow\n\t<ul>\n\t  <li>`--triblock-table-column-flex: 0.5;`</li>\n\t</ul>\n  </li>\n  <li>\n\twide\n\t<ul>\n\t  <li>`--triblock-table-column-flex: 2;`</li>\n\t</ul>\n  </li>\n  <li>\n\textra-wide\n\t<ul>\n\t  <li>`--triblock-table-column-flex: 3;`</li>\n\t</ul>\n  </li>\n  <li>\n\tcentered\n\t<ul>\n\t  <li>`--triblock-table-column-header-flex-alignment: center;`</li>\n\t  <li>`--triblock-table-column-body-flex-alignment: center;`</li>\n\t</ul>\n  </li>\n  <li>\n\tright-aligned\n\t<ul>\n\t  <li>`--triblock-table-column-header-flex-alignment: flex-end;`</li>\n\t  <li>`--triblock-table-column-body-flex-alignment: flex-end;`</li>\n\t</ul>\n  </li>\n</ul>",
+      "summary": "",
+      "path": "triblock-table-column.js",
+      "properties": [
+        {
+          "name": "_bodyCellStyle",
+          "type": "?",
+          "description": "Return style attribute value for table body cell elements\n\t ",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 375,
+              "column": 1
+            },
+            "end": {
+              "line": 377,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_columnStyle",
+          "type": "?",
+          "description": "Return style attribute value for column wrapper elements\n\t ",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 382,
+              "column": 1
+            },
+            "end": {
+              "line": 384,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_headerCellStyle",
+          "type": "?",
+          "description": "Return style attribute value for table header cell elements\n\t ",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 389,
+              "column": 1
+            },
+            "end": {
+              "line": 391,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_columnTemplate",
+          "type": "?",
+          "description": "Return the template to be used for each cell in this column\n\t ",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 396,
+              "column": 1
+            },
+            "end": {
+              "line": 429,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_hasUserProvidedTemplate",
+          "type": "?",
+          "description": "Return flag indicating if the user has provided a template for this column\n\t ",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 434,
+              "column": 1
+            },
+            "end": {
+              "line": 437,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "bindIndexAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row index. For columns using user-provided templates, the name is overwritten by the value passed by the user via triblock-table.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 216,
+              "column": 3
+            },
+            "end": {
+              "line": 220,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"index\""
+        },
+        {
+          "name": "bindItemAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row data object. For columns using user-provided templates, the name is overwritten by the value passed by the user via triblock-table.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 225,
+              "column": 3
+            },
+            "end": {
+              "line": 229,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"item\""
+        },
+        {
+          "name": "bindValueAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row data value that corresponds to the `property` of the context column. For columns using user-provided templates, the name is overwritten by the value passed by the user via triblock-table.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 234,
+              "column": 3
+            },
+            "end": {
+              "line": 238,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"value\""
+        },
+        {
+          "name": "columnId",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 240,
+              "column": 3
+            },
+            "end": {
+              "line": 244,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "defaultSortDescending",
+          "type": "boolean | null | undefined",
+          "description": "Indicate that the default sort direction for this column is descending.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 249,
+              "column": 3
+            },
+            "end": {
+              "line": 252,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "defaultText",
+          "type": "string | null | undefined",
+          "description": "Default text to display whenever the cell value is empty.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 3
+            },
+            "end": {
+              "line": 260,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "defaultValue",
+          "type": "Object | null | undefined",
+          "description": "Default value to replace any empty cell values in this column. If a custom template is being used for this column, note that `defaultValue` is applied only on empty `{{value}}` bindings. This property is applied only whenever `defaultText` is empty.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 265,
+              "column": 3
+            },
+            "end": {
+              "line": 268,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "headerTooltip",
+          "type": "string | null | undefined",
+          "description": "Tooltip displayed when hovering over column header.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 273,
+              "column": 3
+            },
+            "end": {
+              "line": 276,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "hide",
+          "type": "boolean | null | undefined",
+          "description": "Updatable property to show or hide the column.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 281,
+              "column": 3
+            },
+            "end": {
+              "line": 285,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onHideChange\"",
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "hideOnScreenWidth",
+          "type": "string | null | undefined",
+          "description": "Hide this column if the screen width is less-than-or-equal-to the value.  Accepts any valid value for CSS width.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 290,
+              "column": 3
+            },
+            "end": {
+              "line": 293,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "initialSort",
+          "type": "boolean | null | undefined",
+          "description": "Indicate that the property of this column should be the initial sort property.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 298,
+              "column": 3
+            },
+            "end": {
+              "line": 301,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "mergeWithPreviousColumn",
+          "type": "boolean | null | undefined",
+          "description": "Remove the column divider in the table header between this column and the previous column, and add a divider between the columns' row cells.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 306,
+              "column": 3
+            },
+            "end": {
+              "line": 309,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "property",
+          "type": "string | null | undefined",
+          "description": "Property name from `data` to be used in this column.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 314,
+              "column": 3
+            },
+            "end": {
+              "line": 318,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "removeDefaultCellPadding",
+          "type": "boolean | null | undefined",
+          "description": "Remove the default cell padding for this column (excluding the header row).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 323,
+              "column": 3
+            },
+            "end": {
+              "line": 326,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "sortable",
+          "type": "boolean | null | undefined",
+          "description": "Indicate that this column is sortable.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 331,
+              "column": 3
+            },
+            "end": {
+              "line": 334,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "title",
+          "type": "string | null | undefined",
+          "description": "Column title.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 339,
+              "column": 3
+            },
+            "end": {
+              "line": 343,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "titleIcon",
+          "type": "string | null | undefined",
+          "description": "The `iron-icon` to display instead of `title`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 348,
+              "column": 3
+            },
+            "end": {
+              "line": 351,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "type",
+          "type": "string | null | undefined",
+          "description": "The type of the property (case-insensitive): \"STRING\", \"BOOLEAN\", \"DATE\", \"DATETIME\", \"STRING_WITH_ID\".\nUsed to determine the default display.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 357,
+              "column": 3
+            },
+            "end": {
+              "line": 360,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"string\""
+        },
+        {
+          "name": "reverseSort",
+          "type": "boolean | null | undefined",
+          "description": "Indicates that this column will sort in reverse order, e.g. where a lower number has a higher value.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 365,
+              "column": 3
+            },
+            "end": {
+              "line": 368,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_computeBodyCellStyleString",
+          "description": "Generate `_bodyCellStyle` property by examining the CSS variables for `<triblock-table-column>`",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 442,
+              "column": 1
+            },
+            "end": {
+              "line": 453,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_computeColumnStyleString",
+          "description": "Generate `_columnStyle` property by examining the CSS variables for `<triblock-table-column>`",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 458,
+              "column": 1
+            },
+            "end": {
+              "line": 474,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_computeHeaderCellStyleString",
+          "description": "Generate `_headerCellStyle` property by examining the CSS variables for `<triblock-table-column>`",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 479,
+              "column": 1
+            },
+            "end": {
+              "line": 490,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_createTemplateInstance",
+          "description": "Stamp a new template instance for the given stampBindingKey. (See templatize Module)",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 495,
+              "column": 1
+            },
+            "end": {
+              "line": 536,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "stampBindingKey"
+            }
+          ]
+        },
+        {
+          "name": "_onHideChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 538,
+              "column": 1
+            },
+            "end": {
+              "line": 544,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "hide"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 149,
+          "column": 0
+        },
+        "end": {
+          "line": 545,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "TriblockTableColumn",
+      "attributes": [
+        {
+          "name": "bind-index-as",
+          "description": "The name of the data-binding variable representing the row index. For columns using user-provided templates, the name is overwritten by the value passed by the user via triblock-table.",
+          "sourceRange": {
+            "start": {
+              "line": 216,
+              "column": 3
+            },
+            "end": {
+              "line": 220,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "bind-item-as",
+          "description": "The name of the data-binding variable representing the row data object. For columns using user-provided templates, the name is overwritten by the value passed by the user via triblock-table.",
+          "sourceRange": {
+            "start": {
+              "line": 225,
+              "column": 3
+            },
+            "end": {
+              "line": 229,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "bind-value-as",
+          "description": "The name of the data-binding variable representing the row data value that corresponds to the `property` of the context column. For columns using user-provided templates, the name is overwritten by the value passed by the user via triblock-table.",
+          "sourceRange": {
+            "start": {
+              "line": 234,
+              "column": 3
+            },
+            "end": {
+              "line": 238,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "column-id",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 240,
+              "column": 3
+            },
+            "end": {
+              "line": 244,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "default-sort-descending",
+          "description": "Indicate that the default sort direction for this column is descending.",
+          "sourceRange": {
+            "start": {
+              "line": 249,
+              "column": 3
+            },
+            "end": {
+              "line": 252,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "default-text",
+          "description": "Default text to display whenever the cell value is empty.",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 3
+            },
+            "end": {
+              "line": 260,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "default-value",
+          "description": "Default value to replace any empty cell values in this column. If a custom template is being used for this column, note that `defaultValue` is applied only on empty `{{value}}` bindings. This property is applied only whenever `defaultText` is empty.",
+          "sourceRange": {
+            "start": {
+              "line": 265,
+              "column": 3
+            },
+            "end": {
+              "line": 268,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "header-tooltip",
+          "description": "Tooltip displayed when hovering over column header.",
+          "sourceRange": {
+            "start": {
+              "line": 273,
+              "column": 3
+            },
+            "end": {
+              "line": 276,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "hide",
+          "description": "Updatable property to show or hide the column.",
+          "sourceRange": {
+            "start": {
+              "line": 281,
+              "column": 3
+            },
+            "end": {
+              "line": 285,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "hide-on-screen-width",
+          "description": "Hide this column if the screen width is less-than-or-equal-to the value.  Accepts any valid value for CSS width.",
+          "sourceRange": {
+            "start": {
+              "line": 290,
+              "column": 3
+            },
+            "end": {
+              "line": 293,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "initial-sort",
+          "description": "Indicate that the property of this column should be the initial sort property.",
+          "sourceRange": {
+            "start": {
+              "line": 298,
+              "column": 3
+            },
+            "end": {
+              "line": 301,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "merge-with-previous-column",
+          "description": "Remove the column divider in the table header between this column and the previous column, and add a divider between the columns' row cells.",
+          "sourceRange": {
+            "start": {
+              "line": 306,
+              "column": 3
+            },
+            "end": {
+              "line": 309,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "property",
+          "description": "Property name from `data` to be used in this column.",
+          "sourceRange": {
+            "start": {
+              "line": 314,
+              "column": 3
+            },
+            "end": {
+              "line": 318,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "remove-default-cell-padding",
+          "description": "Remove the default cell padding for this column (excluding the header row).",
+          "sourceRange": {
+            "start": {
+              "line": 323,
+              "column": 3
+            },
+            "end": {
+              "line": 326,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "sortable",
+          "description": "Indicate that this column is sortable.",
+          "sourceRange": {
+            "start": {
+              "line": 331,
+              "column": 3
+            },
+            "end": {
+              "line": 334,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "title",
+          "description": "Column title.",
+          "sourceRange": {
+            "start": {
+              "line": 339,
+              "column": 3
+            },
+            "end": {
+              "line": 343,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "title-icon",
+          "description": "The `iron-icon` to display instead of `title`.",
+          "sourceRange": {
+            "start": {
+              "line": 348,
+              "column": 3
+            },
+            "end": {
+              "line": 351,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "type",
+          "description": "The type of the property (case-insensitive): \"STRING\", \"BOOLEAN\", \"DATE\", \"DATETIME\", \"STRING_WITH_ID\".\nUsed to determine the default display.",
+          "sourceRange": {
+            "start": {
+              "line": 357,
+              "column": 3
+            },
+            "end": {
+              "line": 360,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "reverse-sort",
+          "description": "Indicates that this column will sort in reverse order, e.g. where a lower number has a higher value.",
+          "sourceRange": {
+            "start": {
+              "line": 365,
+              "column": 3
+            },
+            "end": {
+              "line": 368,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "column-id-changed",
+          "description": "Fired when the `columnId` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-table-column"
+    },
+    {
+      "description": "`triblock-table-row-detail` defines the metadata necessary to create an expandable detail section beneath each row in the table.  Including `triblock-table-row-detail` is optional.  When included, an icon will appear on each row allowing the user to expand and collapse the detail section.\n\nTo add a row-detail section, provide a `template` inside `triblock-table-row-detail`.\n\nExample:\n\n```html\n<triblock-table data=\"{{data}}\">\n\t<triblock-table-column title=\"Employee ID\" property=\"_id\"></triblock-table-column>\n\t<triblock-table-column title=\"Name\" property=\"name\"></triblock-table-column>\n\t<triblock-table-column title=\"Status\" property=\"status\" type=\"STRING_WITH_ID\"></triblock-table-column>\n\t<triblock-table-row-detail>\n\t\t<template>\n\t\t\t<div>First name: {{item.first}}</div>\n\t\t\t<div>Last name: {{item.last}}</div>\n\t\t\t<div>Contact information:</div>\n\t\t\t<div>E-mail: {{item.email}}</div>\n\t\t\t<div>Phone #: {{item.phone}}</div>\n\t\t</template>\n\t</triblock-table-row-detail>\n</triblock-table>\n```\n\nRow-detail templates should bind to template models of the following structure:\n\n```js\n{\n\titem: {},        // user data corresponding to data[index]\n\tindex: 0,        // index in the data array\n\ttabIndex: -1,    // a dynamically generated tabIndex \n\t\t\t\t\t\t\t\t\t // for focus management (managed by internal iron-list)\n}\n```",
+      "summary": "",
+      "path": "triblock-table-row-detail.js",
+      "properties": [
+        {
+          "name": "_rowDetailTemplate",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 75,
+              "column": 1
+            },
+            "end": {
+              "line": 85,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_hasUserProvidedTemplate",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 1
+            },
+            "end": {
+              "line": 89,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "bindIndexAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row index (that is passed in from `triblock-table`).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 52,
+              "column": 3
+            },
+            "end": {
+              "line": 56,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"index\""
+        },
+        {
+          "name": "bindItemAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row data object (that is passed in from `triblock-table`).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 61,
+              "column": 3
+            },
+            "end": {
+              "line": 65,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"item\""
+        },
+        {
+          "name": "detailId",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 67,
+              "column": 3
+            },
+            "end": {
+              "line": 71,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_createTemplateInstance",
+          "description": "Stamp a new template instance for the given stampBindingKey. (See Polymer.Templatizer)",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 94,
+              "column": 1
+            },
+            "end": {
+              "line": 130,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "stampBindingKey"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 131,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "TriblockTableRowDetail",
+      "attributes": [
+        {
+          "name": "bind-index-as",
+          "description": "The name of the data-binding variable representing the row index (that is passed in from `triblock-table`).",
+          "sourceRange": {
+            "start": {
+              "line": 52,
+              "column": 3
+            },
+            "end": {
+              "line": 56,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "bind-item-as",
+          "description": "The name of the data-binding variable representing the row data object (that is passed in from `triblock-table`).",
+          "sourceRange": {
+            "start": {
+              "line": 61,
+              "column": 3
+            },
+            "end": {
+              "line": 65,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "detail-id",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 67,
+              "column": 3
+            },
+            "end": {
+              "line": 71,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "detail-id-changed",
+          "description": "Fired when the `detailId` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-table-row-detail"
+    },
+    {
+      "description": "`triblock-table` displays an array of data, specified by the `data` property, in a tabular layout.  \n\n<div style=\"background-color:#FFFFCC\">\n\t<div style=\"padding:20px;\">\n\t <b>Note:</b> It internally uses the `iron-list` component to manage the display of the rows in the table, so be aware of any known issues and limitations related to `iron-list` when implementing the `triblock-table`.\n   </div>\n</div>\n\n\nUse <a href=\"#triblock-table-column\">`triblock-table-column`</a> to configure the displayed columns in the table.\n\nUse <a href=\"#triblock-table-row-detail\">`triblock-table-row-detail`</a> to add an expandable section beneath each row.\n\nExample:\n\n```html\n<triblock-table data=\"{{data}}\">\n  <triblock-table-column title=\"ID\" property=\"_id\"></triblock-table-column>\n  <triblock-table-column title=\"Name\">\n\t<template>\n\t  <div>{{item.last}}, {{item.first}}</div>\n\t</template>\n  </triblock-table-column>\n  <triblock-table-column title=\"Status\" property=\"status\" type=\"STRING_WITH_ID\"></triblock-table-column>\n  <triblock-table-row-detail>\n\t<template>\n\t  <div>First name: {{item.first}}</div>\n\t  <div>Last name: {{item.last}}</div>\n\t  <div>Contact information:</div>\n\t  <div>E-mail: {{item.email}}</div>\n\t  <div>Phone #: {{item.phone}}</div>\n\t</template>\n  </triblock-table-row-detail>\n</triblock-table>\n```\n\nThis example renders a table with 3 columns, a row for each object in `data`, and an expandable section beneath each row.\n\nSee the Demo page for more examples of the various properties and settings that are available.\n  \n  \n### Sizing triblock-table\n\nSince `triblock-table` is the `scrollTarget` for the internal `iron-list`, it must be explicitly sized. By \"explicitly sized\", we mean it either has an explicit CSS `height` property set via a class or inline style, or else is sized by other layout means (e.g. the `flex` or `fit` classes). See the `iron-list` documentation for further details.\n\n\n### Resizing\n\nWhen dynamically showing, hiding, or resizing a `triblock-table` (e.g. applying or removing `display: none;` on the element's CSS), the internal `iron-list` requires notification of this resize so it can recalculate the layout of the rows in the table.\n\nThis notification is achieved by implementing `IronResizableBehavior` on the component hosting the `triblock-table` in question and calling `this.notifyResize();` after showing, hiding, or resizing the table. See the `iron-resizable-behavior` documentation for further details.\n\n\n### Accessibility\n\nThe internal `iron-list` automatically manages the focus state for the rows in the table. It also provides a `tabIndex` property within the template scope that can be used for keyboard navigation. This `tabIndex` binding property is propagated into both `triblock-table-column` and `triblock-table-row-detail` templates for defining accessibility. See the `iron-list` documentation for further details.\n\nExample:\n\n```html\n<triblock-table data=\"{{data}}\">\n  <triblock-table-column title=\"ID\" property=\"_id\"></triblock-table-column>\n  <triblock-table-column title=\"Name\" property=\"name\"></triblock-table-column>\n  <triblock-table-column title=\"Administrator?\" property=\"isAdministrator\">\n\t<template>\n\t  <paper-checkbox \n\t\ttabindex$=\"[[tabIndex]]\" \n\t\tchecked=\"{{value}}\">\n\t  </paper-checkbox>\n\t</template>\n  </triblock-table-column>\n  <triblock-table-row-detail>\n\t<template>\n\t  <div>Give [[item.name]] administrator privileges: \n\t\t<paper-checkbox \n\t\t  tabindex$=\"[[tabIndex]]\" \n\t\t  checked=\"{{item.isAdministrator}}\">\n\t\t</paper-checkbox>\n\t  </div>\n\t</template>\n  </triblock-table-row-detail>\n</triblock-table>\n```\n\nAdditionally, the column headers of sortable columns are keyboard accessible, so keyboard-only users can modify the `sortProperty` and `sortDescending` of the table.\n  \n\n### Styling\n\nThe following custom properties and mixins are available for styling:\n\n#### Table styles\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-table-background-color` | Background color applied to the table | `--tri-primary-content-background-color`\n`--triblock-table-color` | Color applied to the table | `--tri-primary-content-color`\n`--triblock-table-font-size` | Font size applied to the table | `14px`\n`--triblock-table-focus-outline-color` | Outline color when sortable header cell or row is focused | `--tri-primary-color-20`\n`--triblock-table` | Mixin applied to the host component | `{}`\n\n#### Header row styles\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-table-header-background-color` | Background color applied to the table header | `--tri-primary-content-background-color`\n`--triblock-table-header-color` | Color applied to the table header | `--ibm-gray-50`\n`--triblock-table-header-sortable-color` | Color applied to sortable header cells | `--tri-primary-color`\n`--triblock-table-header-row-border-bottom-color` | Color applied to the bottom border of the header row | `--ibm-gray-30`\n`--triblock-table-header` | Mixin applied to the table header | `{}`\n`--triblock-table-header-sort-icon` | Mixin applied to the sort-icon in sortable columns | `{}`\n`--triblock-table-header-cell` | Mixin applied to each header cell | `{}`\n`--triblock-table-header-cell-label` | Mixin applied to the label in each header cell | `{}`\n\n#### Body row styles\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-table-even-row-background-color` | Background color applied to even rows | `white`\n`--triblock-table-odd-row-background-color` | Background color applied to odd rows | `--ibm-neutral-2`\n`--triblock-table-row-hover-background-color` | Background color applied to rows when hovered | `--ibm-neutral-4`\n`--triblock-table-row-selected-background-color` | Background color applied to rows when selected | `--tri-primary-light-color`\n`--triblock-table-row-detail-divider-color` | Color applied to the border above the row-detail section when it is expanded | `--tri-primary-content-accent-color`\n`--triblock-table-row-container` | Mixin applied to the row and row-detail section container | `{}`\n`--triblock-table-row` | Mixin applied to the row | `{}`\n`--triblock-table-row-detail` | Mixin applied to the row-detail section | `{}`\n`--triblock-table-row-hover` | Mixin applied to the row when hovered | `{}`\n`--triblock-table-row-selected` | Mixin applied to the row when it is selected | `{}`\n`--triblock-table-cell` | Mixin applied to every table body cell | `{}`\n\n#### Column styles\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-table-column-divider-color` | Color applied to column dividers | `--tri-primary-content-accent-color`\n`--triblock-table-column-divider` | Mixin applied to column dividers | `{}`\n`--triblock-table-column` | Mixin applied to each cell's column wrapper (including the header) | `{}`\n\nGo to <a href=\"#triblock-table-column\">`triblock-table-column`</a> to see CSS variables for styling individual columns.\n\n#### Miscellaneous styles\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triblock-table-row-collapse-icon` | Mixin applied to each row expand/collapse icon | `{}`\n`--triblock-table-selection-checkbox` | Mixin applied to each multi-select checkbox | `{}`\n`--triblock-table-selection-radio-button` | Mixin applied to each single-select radio button | `{}`",
+      "summary": "",
+      "path": "triblock-table.js",
+      "properties": [
+        {
+          "name": "tableHeader",
+          "type": "?",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 464,
+              "column": 1
+            },
+            "end": {
+              "line": 466,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "tableBody",
+          "type": "?",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 468,
+              "column": 1
+            },
+            "end": {
+              "line": 470,
+              "column": 2
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "alwaysShowRowDetail",
+          "type": "boolean | null | undefined",
+          "description": "Always show the expandable row section in a table row, hide the row expand icon column.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 253,
+              "column": 3
+            },
+            "end": {
+              "line": 256,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "bindIndexAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row index.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 261,
+              "column": 3
+            },
+            "end": {
+              "line": 264,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"index\""
+        },
+        {
+          "name": "bindItemAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row data object.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 269,
+              "column": 3
+            },
+            "end": {
+              "line": 272,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"item\""
+        },
+        {
+          "name": "bindValueAs",
+          "type": "string | null | undefined",
+          "description": "The name of the data-binding variable representing the row data value corresponding to the context column's `property`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 277,
+              "column": 3
+            },
+            "end": {
+              "line": 280,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"value\""
+        },
+        {
+          "name": "boldRowProperty",
+          "type": "string | null | undefined",
+          "description": "Boolean data property name that determines whether the row text should have bolded text. To negate the property value, prefix the property name with '!'.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 285,
+              "column": 3
+            },
+            "end": {
+              "line": 288,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "data",
+          "type": "Array | null | undefined",
+          "description": "Array containing tabular data to display in the table.  Tabular means each object in the array must have the same set of properties.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 293,
+              "column": 3
+            },
+            "end": {
+              "line": 296,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "disableDefaultTooltips",
+          "type": "boolean | null | undefined",
+          "description": "Disable the default behavior of the column titles being used as the tooltip values for the column headers.  Regardless of this setting, the tooltip can be overwritten by specifying a `header-tooltip` on the individual column headers.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 301,
+              "column": 3
+            },
+            "end": {
+              "line": 304,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "disableRowHoverStyling",
+          "type": "boolean | null | undefined",
+          "description": "Disable the row hover styling.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 309,
+              "column": 3
+            },
+            "end": {
+              "line": 312,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "expandOnRowTap",
+          "type": "boolean | null | undefined",
+          "description": "Automatically expand the row on a row-tap event, if `triblock-table-row-detail` is present.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 317,
+              "column": 3
+            },
+            "end": {
+              "line": 320,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "fixedHeader",
+          "type": "boolean | null | undefined",
+          "description": "Fix the header row, but make the table body scrollable. When dynamically showing, hiding, or resizing a `triblock-table`, it is necessary to notify the resize, so it can recalculate the table layout. For more details, see the `Resizing` section above.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 325,
+              "column": 3
+            },
+            "end": {
+              "line": 329,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "indexed",
+          "type": "boolean | null | undefined",
+          "description": "Add a numerical index to each row.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 334,
+              "column": 3
+            },
+            "end": {
+              "line": 337,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "multiSelect",
+          "type": "boolean | null | undefined",
+          "description": "When `true`, multiple items may be selected at once.  In this case, `selected` is an array of currently selected items.  When `false`, only one item may be selected at a time.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 342,
+              "column": 3
+            },
+            "end": {
+              "line": 345,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "removeRowFocusAndHover",
+          "type": "boolean | null | undefined",
+          "description": "Remove the row focusability and `:hover` styling.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 350,
+              "column": 3
+            },
+            "end": {
+              "line": 353,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "scroller",
+          "type": "Object | null | undefined",
+          "description": "The DOM element that scrolls the content to be used for scrolling pagination.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 358,
+              "column": 3
+            },
+            "end": {
+              "line": 365,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "selectable",
+          "type": "boolean | null | undefined",
+          "description": "Show checkboxes on the left of each row to allow selection.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 370,
+              "column": 3
+            },
+            "end": {
+              "line": 373,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "selected",
+          "type": "Object | null | undefined",
+          "description": "The selected item for a single-select-enabled table, or selected items for a multi-select-enabled table.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 378,
+              "column": 3
+            },
+            "end": {
+              "line": 381,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "selectedProperty",
+          "type": "string | null | undefined",
+          "description": "Boolean data property name that determines whether the row is selected.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 3
+            },
+            "end": {
+              "line": 389,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"selected\""
+        },
+        {
+          "name": "selectOnRowTap",
+          "type": "boolean | null | undefined",
+          "description": "Automatically select the row on a row-tap event, if `selectable` is specified.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 394,
+              "column": 3
+            },
+            "end": {
+              "line": 397,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "sortable",
+          "type": "boolean | null | undefined",
+          "description": "Indicate that every column is sortable.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 402,
+              "column": 3
+            },
+            "end": {
+              "line": 405,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "sortDescending",
+          "type": "boolean | null | undefined",
+          "description": "Get/set the sorting direction.  Intended to be bound to the `desc` property of the `data` array in `triplat-query-sort`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 3
+            },
+            "end": {
+              "line": 414,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "sortProperty",
+          "type": "string | null | undefined",
+          "description": "Get/set the data property name whose value determines the sorting order for the table.  Intended to be bound to the `name` property of the `data` array in `triplat-query-sort`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 419,
+              "column": 3
+            },
+            "end": {
+              "line": 423,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "sortType",
+          "type": "string | null | undefined",
+          "description": "Get/set the data property type whose value determines the type of value being sorted.  Intended to be bound to the `type` property of the `data` array in `triplat-query-sort`.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 428,
+              "column": 3
+            },
+            "end": {
+              "line": 432,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "_columns",
+          "type": "Array | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 434,
+              "column": 3
+            },
+            "end": {
+              "line": 436,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "_rowDetail",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 438,
+              "column": 3
+            },
+            "end": {
+              "line": 441,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_showExpandIcon",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 443,
+              "column": 3
+            },
+            "end": {
+              "line": 447,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_headerBodyInstance",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 449,
+              "column": 3
+            },
+            "end": {
+              "line": 451,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "tableId",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 453,
+              "column": 3
+            },
+            "end": {
+              "line": 460,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "attributeType": "Number"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "connectedCallback",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 472,
+              "column": 1
+            },
+            "end": {
+              "line": 527,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleHideChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 529,
+              "column": 1
+            },
+            "end": {
+              "line": 540,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleUpdateHeaderPosition",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 542,
+              "column": 1
+            },
+            "end": {
+              "line": 546,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_generateTableBinding",
+          "description": "Create the `<iron-list>` template by combining the `triblock-table-column` templates with some additional mark-up",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 551,
+              "column": 1
+            },
+            "end": {
+              "line": 575,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "columns"
+            },
+            {
+              "name": "rowDetail"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_isZero",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 577,
+              "column": 4
+            },
+            "end": {
+              "line": 579,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "val"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 175,
+          "column": 0
+        },
+        "end": {
+          "line": 580,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "PolymerElement",
+      "name": "TriblockTable",
+      "attributes": [
+        {
+          "name": "always-show-row-detail",
+          "description": "Always show the expandable row section in a table row, hide the row expand icon column.",
+          "sourceRange": {
+            "start": {
+              "line": 253,
+              "column": 3
+            },
+            "end": {
+              "line": 256,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "bind-index-as",
+          "description": "The name of the data-binding variable representing the row index.",
+          "sourceRange": {
+            "start": {
+              "line": 261,
+              "column": 3
+            },
+            "end": {
+              "line": 264,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "bind-item-as",
+          "description": "The name of the data-binding variable representing the row data object.",
+          "sourceRange": {
+            "start": {
+              "line": 269,
+              "column": 3
+            },
+            "end": {
+              "line": 272,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "bind-value-as",
+          "description": "The name of the data-binding variable representing the row data value corresponding to the context column's `property`.",
+          "sourceRange": {
+            "start": {
+              "line": 277,
+              "column": 3
+            },
+            "end": {
+              "line": 280,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "bold-row-property",
+          "description": "Boolean data property name that determines whether the row text should have bolded text. To negate the property value, prefix the property name with '!'.",
+          "sourceRange": {
+            "start": {
+              "line": 285,
+              "column": 3
+            },
+            "end": {
+              "line": 288,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "data",
+          "description": "Array containing tabular data to display in the table.  Tabular means each object in the array must have the same set of properties.",
+          "sourceRange": {
+            "start": {
+              "line": 293,
+              "column": 3
+            },
+            "end": {
+              "line": 296,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Array | null | undefined"
+        },
+        {
+          "name": "disable-default-tooltips",
+          "description": "Disable the default behavior of the column titles being used as the tooltip values for the column headers.  Regardless of this setting, the tooltip can be overwritten by specifying a `header-tooltip` on the individual column headers.",
+          "sourceRange": {
+            "start": {
+              "line": 301,
+              "column": 3
+            },
+            "end": {
+              "line": 304,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "disable-row-hover-styling",
+          "description": "Disable the row hover styling.",
+          "sourceRange": {
+            "start": {
+              "line": 309,
+              "column": 3
+            },
+            "end": {
+              "line": 312,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "expand-on-row-tap",
+          "description": "Automatically expand the row on a row-tap event, if `triblock-table-row-detail` is present.",
+          "sourceRange": {
+            "start": {
+              "line": 317,
+              "column": 3
+            },
+            "end": {
+              "line": 320,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "fixed-header",
+          "description": "Fix the header row, but make the table body scrollable. When dynamically showing, hiding, or resizing a `triblock-table`, it is necessary to notify the resize, so it can recalculate the table layout. For more details, see the `Resizing` section above.",
+          "sourceRange": {
+            "start": {
+              "line": 325,
+              "column": 3
+            },
+            "end": {
+              "line": 329,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "indexed",
+          "description": "Add a numerical index to each row.",
+          "sourceRange": {
+            "start": {
+              "line": 334,
+              "column": 3
+            },
+            "end": {
+              "line": 337,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "multi-select",
+          "description": "When `true`, multiple items may be selected at once.  In this case, `selected` is an array of currently selected items.  When `false`, only one item may be selected at a time.",
+          "sourceRange": {
+            "start": {
+              "line": 342,
+              "column": 3
+            },
+            "end": {
+              "line": 345,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "remove-row-focus-and-hover",
+          "description": "Remove the row focusability and `:hover` styling.",
+          "sourceRange": {
+            "start": {
+              "line": 350,
+              "column": 3
+            },
+            "end": {
+              "line": 353,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "scroller",
+          "description": "The DOM element that scrolls the content to be used for scrolling pagination.",
+          "sourceRange": {
+            "start": {
+              "line": 358,
+              "column": 3
+            },
+            "end": {
+              "line": 365,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "selectable",
+          "description": "Show checkboxes on the left of each row to allow selection.",
+          "sourceRange": {
+            "start": {
+              "line": 370,
+              "column": 3
+            },
+            "end": {
+              "line": 373,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "selected",
+          "description": "The selected item for a single-select-enabled table, or selected items for a multi-select-enabled table.",
+          "sourceRange": {
+            "start": {
+              "line": 378,
+              "column": 3
+            },
+            "end": {
+              "line": 381,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "selected-property",
+          "description": "Boolean data property name that determines whether the row is selected.",
+          "sourceRange": {
+            "start": {
+              "line": 386,
+              "column": 3
+            },
+            "end": {
+              "line": 389,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "select-on-row-tap",
+          "description": "Automatically select the row on a row-tap event, if `selectable` is specified.",
+          "sourceRange": {
+            "start": {
+              "line": 394,
+              "column": 3
+            },
+            "end": {
+              "line": 397,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "sortable",
+          "description": "Indicate that every column is sortable.",
+          "sourceRange": {
+            "start": {
+              "line": 402,
+              "column": 3
+            },
+            "end": {
+              "line": 405,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "sort-descending",
+          "description": "Get/set the sorting direction.  Intended to be bound to the `desc` property of the `data` array in `triplat-query-sort`.",
+          "sourceRange": {
+            "start": {
+              "line": 410,
+              "column": 3
+            },
+            "end": {
+              "line": 414,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "sort-property",
+          "description": "Get/set the data property name whose value determines the sorting order for the table.  Intended to be bound to the `name` property of the `data` array in `triplat-query-sort`.",
+          "sourceRange": {
+            "start": {
+              "line": 419,
+              "column": 3
+            },
+            "end": {
+              "line": 423,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "sort-type",
+          "description": "Get/set the data property type whose value determines the type of value being sorted.  Intended to be bound to the `type` property of the `data` array in `triplat-query-sort`.",
+          "sourceRange": {
+            "start": {
+              "line": 428,
+              "column": 3
+            },
+            "end": {
+              "line": 432,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "table-id",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 453,
+              "column": 3
+            },
+            "end": {
+              "line": 460,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "data-changed",
+          "description": "Fired when the `data` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "scroller-changed",
+          "description": "Fired when the `scroller` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "selected-changed",
+          "description": "Fired when the `selected` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "sort-descending-changed",
+          "description": "Fired when the `sortDescending` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "sort-property-changed",
+          "description": "Fired when the `sortProperty` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "sort-type-changed",
+          "description": "Fired when the `sortType` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "table-id-changed",
+          "description": "Fired when the `tableId` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-table"
+    }
+  ]
+}

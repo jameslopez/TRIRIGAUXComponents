@@ -1,0 +1,184 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2017 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../tricore-url/tricore-url.html">
+<link rel="import" href="../triplat-signout-button/triplat-signout-button.html">
+
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="tricore-mock-view-switch.html">
+<link rel="import" href="tricore-automation-switch.html">
+<link rel="import" href="tricore-dev-mode-switch.html">
+
+<dom-module id="tricore-entry">
+	<style>
+		:host {
+			font-family: "Helvetica Neue";
+		}
+		.menu {
+			background-color: white;
+			padding-bottom: 5px;
+		}
+		
+		tricore-dev-mode-switch,
+		tricore-mock-view-switch,
+		tricore-automation-switch  { 
+			@apply(--layout-flex);
+			@apply(--layout);
+			@apply(--layout-vertical);
+		}
+		
+		.modes {
+			background: #CDCED2;
+			color: #444;
+			font-weight: bold;
+			@apply(--layout-flex);
+			@apply(--layout);
+		}
+		.page-content {
+			overflow-y: auto;
+			@apply(--layout-flex);
+			@apply(--layout);
+			@apply(--layout-horizontal);
+			@apply(--layout-wrap);
+		}
+		.app-card {
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-center-center);
+			margin: 10px;
+			border: 1px solid #C7C7C7;
+			height: 150px;
+			background-color: white;
+			padding: 10px;
+		}
+
+		.content>div {
+			min-height: 48px;
+			padding: 0px 16px;
+			@apply(--layout);
+			@apply(--layout-vertical);
+			@apply(--layout-center-justified);
+		}
+
+		.app-card:link,
+		.app-card:visited,
+		.app-card:active,
+		.app-card:hover {
+			color: black;
+			text-decoration: none;
+		}
+
+		@media (min-width: 1501px) {
+			.app-card {
+				width: calc(25% - 42px);
+			}
+		}
+
+		@media (max-width: 1500px) and (min-width: 1001px) {
+			.app-card {
+				width: calc(33.3333% - 42px);
+			}
+		}
+
+		@media (max-width: 1000px) and (min-width: 651px) {
+			.app-card {
+				width: calc(50% - 42px);
+			}
+		}
+
+		@media (max-width: 650px) {
+			.app-card {
+				width: calc(100% - 42px);
+			}
+		}
+
+	</style>
+	<template>
+		<tricore-url raw-url="/p/resources/web/webviewsync/WebViewSync.jar" bind-url="{{webViewSyncUrl}}"></tricore-url>
+		<tricore-url raw-url="/p/web/doc" bind-url="{{docUrl}}"></tricore-url>
+		<tricore-url raw-url="/p/components/fix" bind-url="{{fixUrl}}"></tricore-url>
+		<tricore-url raw-url="/p/components/dclear" bind-url="{{dclearUrl}}"></tricore-url>
+		<tricore-url raw-url="/p/components/cclear" bind-url="{{cclearUrl}}"></tricore-url>
+		<tricore-url raw-url="/p/web/" bind-url="{{baseAppUrl}}"></tricore-url>
+		<paper-drawer-panel class="layout vertical flex">
+		  
+			<paper-header-panel drawer>
+				<paper-toolbar>
+					<div class="flex layout horizontal center">
+						<div class="flex layout vertical center-justified"><span>UX Framework</span></div>
+					</div>
+				</paper-toolbar>
+				<div class="content menu layout vertical">
+					<div>
+						<a href="{{docUrl}}" target="_blank">Component Doc Page</a>
+					</div>
+					<div>
+						<a id="jarLink" 
+								href="{{webViewSyncUrl}}" 
+								download>Download WebViewSync</a>
+					</div>
+					<div>
+						<a href="{{fixUrl}}" target="_blank">Component Link Fix</a>
+					</div>
+					<div>
+						<a href="{{dclearUrl}}" target="_blank">Clear Dictionary Cache</a> 
+					</div>
+					<div>
+						<a href="{{cclearUrl}}" target="_blank">Clear Translated File Cache</a>
+					</div>
+					<paper-item class="modes">
+						Modes
+					</paper-item>
+					<paper-item>
+						<tricore-mock-view-switch></tricore-mock-view-switch>
+					</paper-item>
+					<paper-item>
+						<tricore-automation-switch></tricore-automation-switch>
+					</paper-item>
+					<paper-item>
+						<tricore-dev-mode-switch></tricore-dev-mode-switch>
+					</paper-item>
+				</div>
+			</paper-header-panel>
+			
+			<paper-header-panel main>
+				<paper-toolbar>
+					<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+					<div class="flex">UX Framework</div>
+					<triplat-signout-button></tricore-signon-button>
+				</paper-toolbar>
+				<div class="content page-content">
+					<template is="dom-repeat" items="{{role.apps}}">
+						<a class="app-card" href="{{_calculateAppHref(baseAppUrl, item.name)}}" target="_blank">
+							<div>{{item.label}}</div>
+						</a>
+					</template>
+				</div>
+			</paper-header-panel>
+
+		</paper-drawer-panel>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+		
+		is: "tricore-entry",
+
+		_calculateAppHref: function(baseAppUrl, name) {
+			return baseAppUrl + name;
+		}
+		
+	});
+</script>

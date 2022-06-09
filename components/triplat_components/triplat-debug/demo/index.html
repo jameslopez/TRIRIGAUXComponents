@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>tri-controller Demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+
+	<link rel="import" href="../triplat-debug.html">
+
+	<link rel="import" href="../../paper-button/paper-button.html">
+
+</head>
+<body>
+	<dom-module id="x-custom">
+		<style>
+		paper-button {
+			background-color: #4178BE;
+			color: white;
+		}
+		</style>
+		<template>
+			<triplat-debug message="Look at this!" value="{{data}}"></triplat-debug>
+			<h1>Check the console!!!</h1>
+			<paper-button on-tap="_handleChangeValue" raised>Increment Value</paper-button>
+		</template>
+	</dom-module>
+	<script>
+    HTMLImports.whenReady(function() {
+		Polymer({
+
+			is: "x-custom",
+
+			ready: function() {
+				this.data = {
+					foo: "bar",
+					counter: 0
+				};
+			},
+
+			_handleChangeValue: function() {
+				this.set("data.counter", this.data.counter + 1);
+			}
+
+		});
+    });
+	</script>
+	<x-custom></x-custom>
+</body>
+</html>

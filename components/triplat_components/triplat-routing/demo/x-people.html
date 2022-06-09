@@ -1,0 +1,72 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../../paper-menu/paper-menu.html">
+<link rel="import" href="../../paper-item/paper-item.html">
+<link rel="import" href="../../iron-icons/iron-icons.html">
+<link rel="import" href="../../paper-fab/paper-fab.html">
+
+<dom-module id="x-people">
+	<style>
+		.scroll-container {
+			@apply(--layout-fit);
+			overflow-y: auto;
+		}
+		paper-fab {
+			position: fixed;
+			bottom: 100px;
+			right: 100px;
+			color: white;
+			background-color: red;
+		}
+	</style>
+	<template>
+		<div class="scroll-container">
+			<paper-menu selected-item="{{selectedPersonItem}}">
+				<template is="dom-repeat" items="{{people}}">
+					<paper-item>{{item.first}}</paper-item>
+				</template>
+			</paper-menu>
+		</div>
+		<paper-fab icon="icons:add" on-tap="_handleNewPerson"></paper-fab>
+	</template>
+</dom-module>
+<script>
+	Polymer({
+
+		is: "x-people",
+
+		properties: {
+
+			people: {
+				type: Array,
+				notify: false,
+				readOnly: false
+			},
+
+			selectedPerson: {
+				type: Object,
+				notify: true,
+				readOnly: true
+			}
+
+		},
+
+		observers: [
+			"_handleSelectPerson(selectedPersonItem)"
+		],
+
+		_handleSelectPerson: function(selectedPersonItem) {
+			if (!selectedPersonItem) {
+				return;
+			}
+			this.fire("person-selected", selectedPersonItem.dataHost.get("item").id);
+		},
+
+		_handleNewPerson: function() {
+			this.fire("new-person");
+		}
+
+	});
+</script>

@@ -1,0 +1,1754 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A custom element for displaying an image that provides useful image sizing. It works similar to iron-image element in Polymer.\nThe sizing option allows the image to be either cropped (cover) or letterboxed (contain) to fill a fixed user-size placed on the element.\n\n\t <triplat-image height=\"250px\" width=\"150px\" sizing=\"contain\"></triplat-image>\n\nThe image can be editable and user can upload a new image.\n\t\n\t<triplat-image label=\"Building\" src=\"{{data.buildingImage}}\" \n\t  editable \n\t  height=\"250px\" width=\"250px\" sizing=\"cover\"></triplat-image>\n\nDefault placeholder icon can be set. In that case, if there is no URL image, the specified icon will be displayed as a placeholder.\n\t\n\t<triplat-image class=\"person\" src=\"{{data.personImage}}\" \n\t  placeholder-icon=\"user-profile\"\n\t  height=\"30px\" width=\"30px\" sizing=\"cover\"></triplat-image>\n\n\t<triplat-image class=\"asset\" src=\"{{data.assetImage}}\" \n\t  placeholder-icon=\"hardware:laptop-mac\"\n\t  height=\"30px\" width=\"30px\" sizing=\"cover\"></triplat-image>\n\nPlacholder icon mixin style example:\n\t\n\t.person {\n\t--triplat-image-placeholder-icon: {\n\t  color: blue;\n\t  height: 30px;\n\t  width: 30px;\n\t};\n  }\n\nExample of using custom label. In order for an element to be considered as a label, it must have the `label` attribute.\n\n\t<triplat-image editable>\n\t  <iron-icon label icon=\"image:photo\"></iron-icon>\n\t  <span label>Building</span>\n\t</triplat-image>\n\nNote: The 'label' property value will be overridden when using a custom 'label'. <br/>\n\nThe <b>triplat-image</b> element rotates the images according to the orientation of the camera relative to the scene, when the image was captured. \nIt will rotate only JPEG files that contain the orientation metadata in its header.\nThe rotation of JPEG file occurs before the file is uploaded to the TRIRIGA server.\n\n### Styling\n\n\nThe following custom properties and mixins are also available for styling:\n\nCustom property                       | Description                                                | Default\n--------------------------------------|------------------------------------------------------------|----------------------------------------------\n`--triplat-image-wrap`                | Mixin applied to the div that wraps the image components        | `{--layout-vertical; --layout-center-center}`\n`--triplat-image-label`               | Mixin applied to the label                                      | `padding-bottom: 2px`\n`--triplat-image-iron-image`          | Mixin applied to the iron-image contained within this component | `{}`\n`--triplat-image-placeholder-icon`    | Mixin applied to the placeholder icon                           | `{}`\n`--triplat-image-action-icons`        | Mixin applied to the action-icons section                       | `{margin-left: 4px; margin-right: 4px;}`\n`--triplat-image-upload-icon`         | Mixin applied to the upload icon                                | `{color: var(--tri-primary-color); background-color: white; cursor: pointer;}`\n`--triplat-image-clear-icon`          | Mixin applied to the clear icon                                 | `{color: var(--tri-primary-color); background-color: white; cursor: pointer;}`\n`--triplat-image-focused-action-icon` | Mixin applied to the action icon when it is in focus            | `{outline: 1px dotted var(--tri-primary-color)}`\n`--tri-actionable-color`              | Color for the upload and clear icons                            | `--tri-primary-color`\n`--tri-actionable-color-contrast`     | Color for the background of the upload and clear icons          | `white`",
+      "summary": "",
+      "path": "triplat-image.js",
+      "properties": [
+        {
+          "name": "height",
+          "type": "Object | null | undefined",
+          "description": "Height in pixels.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 4
+            },
+            "end": {
+              "line": 204,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "width",
+          "type": "Object | null | undefined",
+          "description": "Width in pixels.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 209,
+              "column": 4
+            },
+            "end": {
+              "line": 211,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "sizing",
+          "type": "string | null | undefined",
+          "description": "Sizing can be either contain or cover.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 216,
+              "column": 4
+            },
+            "end": {
+              "line": 218,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "style",
+          "type": "string | null | undefined",
+          "description": "Set style of the image.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 223,
+              "column": 4
+            },
+            "end": {
+              "line": 225,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "src",
+          "type": "string | null | undefined",
+          "description": "URL of the image.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 230,
+              "column": 4
+            },
+            "end": {
+              "line": 235,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "observer": "\"_handleImageChange\"",
+              "readOnly": false,
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "label",
+          "type": "string | null | undefined",
+          "description": "Label of the image.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 240,
+              "column": 4
+            },
+            "end": {
+              "line": 242,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "position",
+          "type": "string | null | undefined",
+          "description": "When a sizing option is used (`cover` or `contain`), this determines\nhow the image is aligned within the element bounds.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 248,
+              "column": 4
+            },
+            "end": {
+              "line": 251,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"center\""
+        },
+        {
+          "name": "editable",
+          "type": "boolean | null | undefined",
+          "description": "Make the image editable. User can upload new image or delete the image.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 256,
+              "column": 4
+            },
+            "end": {
+              "line": 259,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "thumbnail",
+          "type": "boolean | null | undefined",
+          "description": "If true, it displays a thumbnail version of the image (a smaller file size).",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 264,
+              "column": 4
+            },
+            "end": {
+              "line": 267,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "placeholderIcon",
+          "type": "string | null | undefined",
+          "description": "This icon will be used as a placeholder until URL image is provided.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 272,
+              "column": 4
+            },
+            "end": {
+              "line": 275,
+              "column": 4
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_handleImageChange\"",
+              "attributeType": "String"
+            }
+          }
+        },
+        {
+          "name": "uploading",
+          "type": "boolean | null | undefined",
+          "description": "It indicates if uploading is in progress.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 280,
+              "column": 4
+            },
+            "end": {
+              "line": 285,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "postponeUpload",
+          "type": "boolean | null | undefined",
+          "description": "If true, the image will be uploaded only when the record that contains this image is saved or updated.\nWhen running in offline mode, this property is ignored and the image upload is always postponed.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 291,
+              "column": 4
+            },
+            "end": {
+              "line": 294,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "cache",
+          "type": "boolean | null | undefined",
+          "description": "If true, the images displayed by this component will be saved to the offline cache.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 299,
+              "column": 4
+            },
+            "end": {
+              "line": 302,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_showPlaceholder",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 304,
+              "column": 4
+            },
+            "end": {
+              "line": 307,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_showClearIcon",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 309,
+              "column": 4
+            },
+            "end": {
+              "line": 312,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "_validImageExtensionsUrl",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 314,
+              "column": 4
+            },
+            "end": {
+              "line": 316,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_fixImageOrientation",
+          "description": "If the file parameter is a jpeg and if it has an orientation metadata then\nthis method returns a promise resolved to the image rotated according to its orientation.\nOtherwise returned a rejected promise.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 24,
+              "column": 1
+            },
+            "end": {
+              "line": 32,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "file"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_readImageHeader",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 34,
+              "column": 1
+            },
+            "end": {
+              "line": 49,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "file"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_readImage",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 51,
+              "column": 1
+            },
+            "end": {
+              "line": 67,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "file"
+            },
+            {
+              "name": "orientation"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_readOrientation",
+          "description": "Read the orientation of the image from the EXIF metadata.\nIt will return rejected promise if the image is not a JPEG.\nIt Will return rejected promise if cannot find the EXIF marker.\nRef: https://www.media.mit.edu/pia/Research/deepview/exif.html",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 75,
+              "column": 1
+            },
+            "end": {
+              "line": 105,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "arrayBuffer"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_readOrientationFromEXIF",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 107,
+              "column": 1
+            },
+            "end": {
+              "line": 114,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "exif"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_isValidEXIFHeader",
+          "description": "Exif data is starts by an EXIF header composed by ASCII characters \"Exif\" and 2 bytes of 0x00.\nWhich gives a 6 byte sequence: 0x45786966 + 0x0000",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 120,
+              "column": 1
+            },
+            "end": {
+              "line": 125,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "exif"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_readByteAlignment",
+          "description": "Read the byte alignment for the TIFF data.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 130,
+              "column": 1
+            },
+            "end": {
+              "line": 147,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "exif"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_moveToFirstIFDOffset",
+          "description": "Move the EXIF offset to the first Image File Directory.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 152,
+              "column": 1
+            },
+            "end": {
+              "line": 161,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "exif"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_readNumberOfDirectoryEntries",
+          "description": "Read the number of directory entries",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 166,
+              "column": 1
+            },
+            "end": {
+              "line": 170,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "exif"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_getOrientationTagData",
+          "description": "Get the orientation tag from the exif metadata",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 175,
+              "column": 1
+            },
+            "end": {
+              "line": 186,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "exif"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_rotateImage",
+          "description": "Rotate the image occording to its orientation.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 191,
+              "column": 1
+            },
+            "end": {
+              "line": 257,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "image"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_convertDataURLtoBlob",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "triplat-image-orientation-behavior.js",
+            "start": {
+              "line": 259,
+              "column": 1
+            },
+            "end": {
+              "line": 269,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "dataURL"
+            }
+          ],
+          "inheritedFrom": "TriplatImageOrientationBehavior"
+        },
+        {
+          "name": "_handleImageChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 319,
+              "column": 4
+            },
+            "end": {
+              "line": 336,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_setImageStyle",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 338,
+              "column": 4
+            },
+            "end": {
+              "line": 344,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "style"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeImageSrc",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 346,
+              "column": 4
+            },
+            "end": {
+              "line": 361,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "src"
+            },
+            {
+              "name": "thumbnail"
+            },
+            {
+              "name": "cache"
+            }
+          ]
+        },
+        {
+          "name": "attached",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 363,
+              "column": 4
+            },
+            "end": {
+              "line": 374,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "ready",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 376,
+              "column": 4
+            },
+            "end": {
+              "line": 378,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "openFileSelection",
+          "description": "Shows a file selection dialog box to the user, so that the user can search and select an image to upload.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 383,
+              "column": 1
+            },
+            "end": {
+              "line": 390,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_fileSelected",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 392,
+              "column": 4
+            },
+            "end": {
+              "line": 398,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "clearImage",
+          "description": "Clears the value of the image field bound to this element.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 403,
+              "column": 1
+            },
+            "end": {
+              "line": 411,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "cacheImage",
+          "description": "Cache an image field to the local browser storage.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 417,
+              "column": 1
+            },
+            "end": {
+              "line": 422,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "src"
+            },
+            {
+              "name": "cacheThumbnail"
+            },
+            {
+              "name": "cacheFullImage"
+            }
+          ]
+        },
+        {
+          "name": "_doCacheImage",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 424,
+              "column": 4
+            },
+            "end": {
+              "line": 441,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "imageSrc"
+            },
+            {
+              "name": "cache"
+            }
+          ]
+        },
+        {
+          "name": "_handleGetFileUploadResponse",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 443,
+              "column": 4
+            },
+            "end": {
+              "line": 452,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleGetFileUploadError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 454,
+              "column": 4
+            },
+            "end": {
+              "line": 456,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_fireError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 458,
+              "column": 4
+            },
+            "end": {
+              "line": 469,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "errorMessage"
+            },
+            {
+              "name": "fileSelected"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_uploadFile",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 471,
+              "column": 4
+            },
+            "end": {
+              "line": 486,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "file"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_doUploadFile",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 488,
+              "column": 4
+            },
+            "end": {
+              "line": 514,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "filename"
+            },
+            {
+              "name": "image"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_readImageAsDataURL",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 516,
+              "column": 4
+            },
+            "end": {
+              "line": 530,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "image"
+            }
+          ]
+        },
+        {
+          "name": "_hasValue",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 532,
+              "column": 4
+            },
+            "end": {
+              "line": 534,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "elem"
+            }
+          ]
+        },
+        {
+          "name": "_showLabel",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 536,
+              "column": 4
+            },
+            "end": {
+              "line": 542,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "label"
+            }
+          ]
+        },
+        {
+          "name": "_keyPressHandlerUpload",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 544,
+              "column": 4
+            },
+            "end": {
+              "line": 550,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_keyPressHandlerClear",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 552,
+              "column": 4
+            },
+            "end": {
+              "line": 558,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "event"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_getValidImageExtensions",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 560,
+              "column": 4
+            },
+            "end": {
+              "line": 576,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_checkFileExtension",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 578,
+              "column": 4
+            },
+            "end": {
+              "line": 594,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "fileName"
+            }
+          ]
+        },
+        {
+          "name": "_checkImageFileSize",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 596,
+              "column": 4
+            },
+            "end": {
+              "line": 600,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "file"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 84,
+          "column": 8
+        },
+        "end": {
+          "line": 601,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "height",
+          "description": "Height in pixels.",
+          "sourceRange": {
+            "start": {
+              "line": 202,
+              "column": 4
+            },
+            "end": {
+              "line": 204,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "width",
+          "description": "Width in pixels.",
+          "sourceRange": {
+            "start": {
+              "line": 209,
+              "column": 4
+            },
+            "end": {
+              "line": 211,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "sizing",
+          "description": "Sizing can be either contain or cover.",
+          "sourceRange": {
+            "start": {
+              "line": 216,
+              "column": 4
+            },
+            "end": {
+              "line": 218,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "style",
+          "description": "Set style of the image.",
+          "sourceRange": {
+            "start": {
+              "line": 223,
+              "column": 4
+            },
+            "end": {
+              "line": 225,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "src",
+          "description": "URL of the image.",
+          "sourceRange": {
+            "start": {
+              "line": 230,
+              "column": 4
+            },
+            "end": {
+              "line": 235,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "label",
+          "description": "Label of the image.",
+          "sourceRange": {
+            "start": {
+              "line": 240,
+              "column": 4
+            },
+            "end": {
+              "line": 242,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "position",
+          "description": "When a sizing option is used (`cover` or `contain`), this determines\nhow the image is aligned within the element bounds.",
+          "sourceRange": {
+            "start": {
+              "line": 248,
+              "column": 4
+            },
+            "end": {
+              "line": 251,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "editable",
+          "description": "Make the image editable. User can upload new image or delete the image.",
+          "sourceRange": {
+            "start": {
+              "line": 256,
+              "column": 4
+            },
+            "end": {
+              "line": 259,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "thumbnail",
+          "description": "If true, it displays a thumbnail version of the image (a smaller file size).",
+          "sourceRange": {
+            "start": {
+              "line": 264,
+              "column": 4
+            },
+            "end": {
+              "line": 267,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "placeholder-icon",
+          "description": "This icon will be used as a placeholder until URL image is provided.",
+          "sourceRange": {
+            "start": {
+              "line": 272,
+              "column": 4
+            },
+            "end": {
+              "line": 275,
+              "column": 4
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "uploading",
+          "description": "It indicates if uploading is in progress.",
+          "sourceRange": {
+            "start": {
+              "line": 280,
+              "column": 4
+            },
+            "end": {
+              "line": 285,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "postpone-upload",
+          "description": "If true, the image will be uploaded only when the record that contains this image is saved or updated.\nWhen running in offline mode, this property is ignored and the image upload is always postponed.",
+          "sourceRange": {
+            "start": {
+              "line": 291,
+              "column": 4
+            },
+            "end": {
+              "line": 294,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "cache",
+          "description": "If true, the images displayed by this component will be saved to the offline cache.",
+          "sourceRange": {
+            "start": {
+              "line": 299,
+              "column": 4
+            },
+            "end": {
+              "line": 302,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "image-uploadfile-response",
+          "description": "Fired after the upload file is submitted and a response is received.<br>\nError Messages:<br>\n<b>invalidExcludeExtension</b> - Selected file has an extension that is not allowed (as defined in the TRIRIGAWEB.properties file).<br>\n<b>invalidIncludeExtension</b> - Selected file has an extension that is not listed in the restricted included extension list (as defined in the TRIRIGAWEB.properties file).<br>\n <b>invalidEmptyExtension</b> - Selected file has an empty extension.\n<b>invalidToSaveFile</b> - Selected file is not valid for saving (hard-coded restriction).<br>\n<b>failAntiVirusScanResult</b> - Selected file fail on antivirus Scan.<br>\n<b>fileNotFound</b> - Fail to load the selected file for unknown reason.<br>\n<b>invalidImageSize</b> - The size of the image file exceeds the maximum allowed by the MAXIMUM_UPLOAD_FILE_SIZE_MEGABYTES parameter.<br>\n <b>uploadFailed</b> - The upload request failed.<br>",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "src-changed",
+          "description": "Fired when the `src` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "uploading-changed",
+          "description": "Fired when the `uploading` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-image"
+    }
+  ],
+  "functions": [
+    {
+      "name": "TriplatImageOrientation",
+      "description": "",
+      "summary": "",
+      "sourceRange": {
+        "file": "triplat-image-orientation-behavior.js",
+        "start": {
+          "line": 272,
+          "column": 39
+        },
+        "end": {
+          "line": 272,
+          "column": 51
+        }
+      },
+      "privacy": "public",
+      "params": [],
+      "return": {
+        "type": "void"
+      }
+    }
+  ],
+  "metadata": {
+    "polymer": {
+      "behaviors": [
+        {
+          "description": "A behavior to fix the orientation of jpeg images.\nThe camera does not rotate the image according to the camera position/orientation.\nThe camera just adds an EXIF header that indicates the orientation of the image on the moment it was taken.\nThe program showing the image is responsible to rotate the image according to the orientation field.\nThe HTML img element does not read this orientation field.\nSo the solution is to read the image before uploading, and if it has an orientation field then\nrotate the image before sending to the server.",
+          "summary": "",
+          "path": "triplat-image-orientation-behavior.js",
+          "properties": [],
+          "methods": [
+            {
+              "name": "_fixImageOrientation",
+              "description": "If the file parameter is a jpeg and if it has an orientation metadata then\nthis method returns a promise resolved to the image rotated according to its orientation.\nOtherwise returned a rejected promise.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 24,
+                  "column": 1
+                },
+                "end": {
+                  "line": 32,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "file"
+                }
+              ]
+            },
+            {
+              "name": "_readImageHeader",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 34,
+                  "column": 1
+                },
+                "end": {
+                  "line": 49,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "file"
+                }
+              ]
+            },
+            {
+              "name": "_readImage",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 51,
+                  "column": 1
+                },
+                "end": {
+                  "line": 67,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "file"
+                },
+                {
+                  "name": "orientation"
+                }
+              ]
+            },
+            {
+              "name": "_readOrientation",
+              "description": "Read the orientation of the image from the EXIF metadata.\nIt will return rejected promise if the image is not a JPEG.\nIt Will return rejected promise if cannot find the EXIF marker.\nRef: https://www.media.mit.edu/pia/Research/deepview/exif.html",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 75,
+                  "column": 1
+                },
+                "end": {
+                  "line": 105,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "arrayBuffer"
+                }
+              ]
+            },
+            {
+              "name": "_readOrientationFromEXIF",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 107,
+                  "column": 1
+                },
+                "end": {
+                  "line": 114,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "exif"
+                }
+              ]
+            },
+            {
+              "name": "_isValidEXIFHeader",
+              "description": "Exif data is starts by an EXIF header composed by ASCII characters \"Exif\" and 2 bytes of 0x00.\nWhich gives a 6 byte sequence: 0x45786966 + 0x0000",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 120,
+                  "column": 1
+                },
+                "end": {
+                  "line": 125,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "exif"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_readByteAlignment",
+              "description": "Read the byte alignment for the TIFF data.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 130,
+                  "column": 1
+                },
+                "end": {
+                  "line": 147,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "exif"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_moveToFirstIFDOffset",
+              "description": "Move the EXIF offset to the first Image File Directory.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 152,
+                  "column": 1
+                },
+                "end": {
+                  "line": 161,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "exif"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_readNumberOfDirectoryEntries",
+              "description": "Read the number of directory entries",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 166,
+                  "column": 1
+                },
+                "end": {
+                  "line": 170,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "exif"
+                }
+              ],
+              "return": {
+                "type": "void"
+              }
+            },
+            {
+              "name": "_getOrientationTagData",
+              "description": "Get the orientation tag from the exif metadata",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 175,
+                  "column": 1
+                },
+                "end": {
+                  "line": 186,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "exif"
+                }
+              ]
+            },
+            {
+              "name": "_rotateImage",
+              "description": "Rotate the image occording to its orientation.",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 191,
+                  "column": 1
+                },
+                "end": {
+                  "line": 257,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "image"
+                }
+              ]
+            },
+            {
+              "name": "_convertDataURLtoBlob",
+              "description": "",
+              "privacy": "protected",
+              "sourceRange": {
+                "start": {
+                  "line": 259,
+                  "column": 1
+                },
+                "end": {
+                  "line": 269,
+                  "column": 2
+                }
+              },
+              "metadata": {},
+              "params": [
+                {
+                  "name": "dataURL"
+                }
+              ]
+            }
+          ],
+          "staticMethods": [],
+          "demos": [],
+          "metadata": {},
+          "sourceRange": {
+            "start": {
+              "line": 17,
+              "column": 13
+            },
+            "end": {
+              "line": 270,
+              "column": 1
+            }
+          },
+          "privacy": "public",
+          "name": "TriplatImageOrientationBehavior",
+          "attributes": [],
+          "events": [],
+          "styling": {
+            "cssVariables": [],
+            "selectors": []
+          },
+          "slots": []
+        }
+      ]
+    }
+  }
+}

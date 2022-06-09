@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "A component that dims the screen and displays a `paper-spinner` at the center whenever `show` is true. The component uses \"position: absolute; top: 0; right: 0; bottom: 0; left: 0;\" to \n  expand itself to the nearest container with \"position: relative;\". The ancestor CSS style affects the position and layout of the triplat-loading-indicator.\n  \n\n  <div style=\"background-color:#FFFFCC\">\n\t  <div style=\"padding:20px;\">\n\t\t  <b>Note:</b> Avoid visible or scrollable overflowing content in the container with \"position: relative;\", \n\t\t\t\tbecause the loading indicator will not expand to cover the exposed overflow. \n\t\t\t\tThis is a known side-effect of \"position: absolute; top: 0; right: 0; bottom: 0; left: 0;\".\n\t  </div>\n  </div>\n\n\n  ### Example of showing the loading indicator\n\n\t<triplat-loading-indicator show></triplat-loading-indicator>\n\t\n  The loading indicator is shown on the page and the page is shown by default in the background.\n\n  ### Example of showing the loading indicator but hiding the page in the background\n\n\t<triplat-loading-indicator show hide-background></triplat-loading-indicator>\n\t\n  The loading indicator is shown on the page and the page is hidden in the background.\n\n\n### Styling\n\n`@apply(--layout-fit)` is used to expand to the nearest containing element.\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--triplat-loading-indicator-clear-background`  | The background color when `hide-background` is not set | `rgba(0, 0, 0, .65)`\n`--triplat-loading-indicator-opaque-background` | The background color when `hide-background` is set     | `--tri-body-background-color`\n`--triplat-loading-indicator-container`         | Mixin applied to the loading indicator container       | {}",
+      "summary": "",
+      "path": "triplat-loading-indicator.js",
+      "properties": [
+        {
+          "name": "show",
+          "type": "boolean | null | undefined",
+          "description": "If true, the screen is dimmed and a loading indicator is shown on the screen.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "hideBackground",
+          "type": "boolean | null | undefined",
+          "description": "If true, hides the content of the page when the loading indicator is activated.  Otherwise, it shows the content of the page in the background.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 2
+            },
+            "end": {
+              "line": 101,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 49,
+          "column": 8
+        },
+        "end": {
+          "line": 103,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "show",
+          "description": "If true, the screen is dimmed and a loading indicator is shown on the screen.",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 2
+            },
+            "end": {
+              "line": 94,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        },
+        {
+          "name": "hide-background",
+          "description": "If true, hides the content of the page when the loading indicator is activated.  Otherwise, it shows the content of the page in the background.",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 2
+            },
+            "end": {
+              "line": 101,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-loading-indicator"
+    }
+  ]
+}

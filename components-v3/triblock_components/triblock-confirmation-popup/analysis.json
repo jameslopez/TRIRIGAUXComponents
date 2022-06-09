@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triblock-confirmation-popup` is a component that provides a confirmation popup.\n\nExample:\n```html\n<triblock-confirmation-popup id=\"confirmationPopup\" on-confirm-tapped=\"confirmTapped\">\n  <p slot=\"text\">Your changes were not saved. Are you sure you want to discard them?</p>\n</triblock-confirmation-popup>\n```\n\nSince this is a confirmation dialog box, it displays two buttons: **Yes** and **No**. If **Yes** is tapped the `confirm-tapped` event is fired.\n\nThe text content displayed inside the popup should be inside an HTML element containing a slot property with `text` as the value:\n```html\n<triblock-confirmation-popup>\n  <div slot=\"text\">\n\t<p>The text goes here.</p>\n  </div>\n</triblock-confirmation-popup>\n```\n\n\n### Events\n\nEvent Name | Description\n-----------|------------\n`confirm-tapped` | Fired when the Confirm button is tapped.",
+      "summary": "",
+      "path": "triblock-confirmation-popup.js",
+      "properties": [
+        {
+          "name": "ariaLabel",
+          "type": "string | null | undefined",
+          "description": "Specifies the aria-label text for accessibility.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 72,
+              "column": 2
+            },
+            "end": {
+              "line": 74,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "openPopup",
+          "description": "Open the confirmation popup.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 80,
+              "column": 1
+            },
+            "end": {
+              "line": 82,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "closePopup",
+          "description": "Close the confirmation popup.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 87,
+              "column": 1
+            },
+            "end": {
+              "line": 89,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_confirm",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 91,
+              "column": 4
+            },
+            "end": {
+              "line": 93,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 39,
+          "column": 8
+        },
+        "end": {
+          "line": 94,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "aria-label",
+          "description": "Specifies the aria-label text for accessibility.",
+          "sourceRange": {
+            "start": {
+              "line": 72,
+              "column": 2
+            },
+            "end": {
+              "line": 74,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triblock-confirmation-popup"
+    }
+  ]
+}

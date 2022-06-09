@@ -1,0 +1,456 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`triplat-auth-check` is a component that is used to find out which licenses and permissions (via security groups) are held by a user to access certain UX apps or models.\n\n### Declaring Examples\n\nThe following example will get the licenses and permissions for the logged-in user to access\nthe **app** named \"roomReservation\":\n\n```\n  <triplat-auth-check app-name=\"roomReservation\"\n\tauth=\"{{auth}}\"\n\ton-check-complete=\"_doSomething\">\n  </triplat-auth-check>\n```\n\nThe following example will get the licenses and permissions for the logged-in user to access\nthe **model** named \"triReservationManager\":\n\n```\n  <triplat-auth-check model-name=\"triReservationManager\"\n\tauth=\"{{auth}}\"\n\ton-check-complete=\"_doSomething\">\n  </triplat-auth-check>\n```\n\n<div style=\"background-color:#FFFFCC\">\n  <div style=\"padding:20px;\">\n\t<b>Note:</b> The `app-name` refers to the <b>Exposed Name</b> defined in the <b>Application Designer</b>, \n\tand the `model-name` refers to the <b>Exposed Name</b> defined in the <b>Model Designer</b>.\n  </div>\n</div>\n\n\n### Model name has priority over App name\n\nIf both <b>app-name</b> and <b>model-name</b> are set, the component will prioritize the model, \nso it will check the permissions for the model, not the app.\n\n### Get Permission for an Action\n\nIt's possible to get an action permission by using the method `getActionPermission` and setting parameters for the \nexposed name of the model, action, action group, and data sources path. \nIf the action is in a parent data source, then set the data source exposed name as the \"data sources path\" parameter:\n\n```\n  this.$.authChecker.getActionPermission(\"triModel\", \"create\", \"defaultActions\", \"buildings\");\n```\n\nIf the action is in a child data source, then the \"data sources path\" parameter should be set in the following format: \n\"parent_datasource/child_datasource\".\n\n```\n  this.$.authChecker.getActionPermission(\"triModel\", \"create\", \"defaultActions\", \"buildings/floors\");\n```\n\nIf the action is in a grandchild data source, then follow the same logic to set the \"data sources path\" parameter: \n\"parent_datasource/child_datasource/grandchild_datasource\".\n\n```\n  this.$.authChecker.getActionPermission(\"triModel\", \"create\", \"defaultActions\", \"buildings/floors/spaces\");\n```",
+      "summary": "",
+      "path": "triplat-auth-check.js",
+      "properties": [
+        {
+          "name": "appName",
+          "type": "string | null | undefined",
+          "description": "The name of the app whose authorization will be checked.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 2
+            },
+            "end": {
+              "line": 101,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "auth",
+          "type": "Object | null | undefined",
+          "description": "Holds the current authorization result for the user.\nIt has the following format:<br>\n<b>{hasLicense: true/false, canRead: true/false,\ncanCreate: true/false, canDelete: true/false,\ncanUpdate: true/false}</b>",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 110,
+              "column": 2
+            },
+            "end": {
+              "line": 114,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "modelName",
+          "type": "string | null | undefined",
+          "description": "The name of the model whose authorization will be checked.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 119,
+              "column": 2
+            },
+            "end": {
+              "line": 122,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "_authAjax",
+          "type": "Object | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 124,
+              "column": 2
+            },
+            "end": {
+              "line": 128,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": false,
+              "readOnly": true,
+              "attributeType": "Object"
+            }
+          }
+        },
+        {
+          "name": "_authUrl",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 130,
+              "column": 2
+            },
+            "end": {
+              "line": 132,
+              "column": 3
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "getActionPermission",
+          "description": "Returns the permission for the specified action.\nIt's necessary to provide the exposed name of the model, action, action group, and data sources path.\nThe data sources path is the hierarchy of data sources where the action was defined.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 150,
+              "column": 1
+            },
+            "end": {
+              "line": 153,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "modelName",
+              "type": "String",
+              "description": "The model exposed name where the action was created."
+            },
+            {
+              "name": "actionName",
+              "type": "String",
+              "description": "The action exposed name."
+            },
+            {
+              "name": "actionGroup",
+              "type": "String",
+              "description": "The action group exposed name where the action was created."
+            },
+            {
+              "name": "dataSourcesPath",
+              "type": "String",
+              "description": "The data sources path. It has the following format: \"parent_datasource/child_datasource\"."
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_checkActionPermission",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 4
+            },
+            "end": {
+              "line": 171,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "modelName"
+            },
+            {
+              "name": "actionName"
+            },
+            {
+              "name": "actionGroup"
+            },
+            {
+              "name": "dataSourcesPath"
+            }
+          ]
+        },
+        {
+          "name": "getModelPermission",
+          "description": "Returns the authorization result for the specified model.\nIt's necessary to provide the exposed name of the model.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 180,
+              "column": 1
+            },
+            "end": {
+              "line": 184,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "modelName",
+              "type": "String",
+              "description": "The model exposed name."
+            }
+          ],
+          "return": {
+            "type": "Promise"
+          }
+        },
+        {
+          "name": "_triggerRequestForAuth",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 186,
+              "column": 4
+            },
+            "end": {
+              "line": 230,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "appName"
+            },
+            {
+              "name": "modelName"
+            },
+            {
+              "name": "url"
+            }
+          ]
+        },
+        {
+          "name": "_createAuthRequest",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 232,
+              "column": 4
+            },
+            "end": {
+              "line": 236,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "params"
+            },
+            {
+              "name": "url"
+            }
+          ]
+        },
+        {
+          "name": "_doAuthRequest",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 238,
+              "column": 4
+            },
+            "end": {
+              "line": 255,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "params"
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "resolve"
+            },
+            {
+              "name": "reject"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_handleAuthResponse",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 4
+            },
+            "end": {
+              "line": 260,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_onError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 262,
+              "column": 4
+            },
+            "end": {
+              "line": 265,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e"
+            }
+          ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_cache",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 267,
+              "column": 4
+            },
+            "end": {
+              "line": 270,
+              "column": 2
+            }
+          },
+          "metadata": {},
+          "params": []
+        }
+      ],
+      "staticMethods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 74,
+          "column": 8
+        },
+        "end": {
+          "line": 271,
+          "column": 1
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "attributes": [
+        {
+          "name": "app-name",
+          "description": "The name of the app whose authorization will be checked.",
+          "sourceRange": {
+            "start": {
+              "line": 98,
+              "column": 2
+            },
+            "end": {
+              "line": 101,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "auth",
+          "description": "Holds the current authorization result for the user.\nIt has the following format:<br>\n<b>{hasLicense: true/false, canRead: true/false,\ncanCreate: true/false, canDelete: true/false,\ncanUpdate: true/false}</b>",
+          "sourceRange": {
+            "start": {
+              "line": 110,
+              "column": 2
+            },
+            "end": {
+              "line": 114,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "Object | null | undefined"
+        },
+        {
+          "name": "model-name",
+          "description": "The name of the model whose authorization will be checked.",
+          "sourceRange": {
+            "start": {
+              "line": 119,
+              "column": 2
+            },
+            "end": {
+              "line": 122,
+              "column": 3
+            }
+          },
+          "metadata": {},
+          "type": "string | null | undefined"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "check-complete",
+          "description": "Fired after checking the authorization.\n<br>The event detail is the auth object\nand follows the same format.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "auth-changed",
+          "description": "Fired when the `auth` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "triplat-auth-check"
+    }
+  ]
+}

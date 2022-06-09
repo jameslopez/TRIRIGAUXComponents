@@ -1,0 +1,76 @@
+<!doctype html>
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<html>
+<head>
+
+	<title>triplat-icon</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="../triplat-icon.html">
+	<link rel="import" href="../ibm-icons.html">
+	<link rel="import" href="../ibm-icons-medium.html">
+	<link rel="import" href="../ibm-icons-large.html">
+	<link rel="import" href="../ibm-icons-glyphs.html">
+
+	<style is="custom-style" include="iron-flex iron-flex-alignment">
+
+    	.set {
+      		margin: auto;
+      		padding: 1em 0;
+      		border-bottom: 1px solid silver;
+    	}
+
+     	.container {
+      		min-width: 10em;
+      		padding: 1em 0.5em;
+      		text-align: center;
+    	}
+
+    	.container > div {
+      		margin-top: 0.5em;
+      		color: black;
+      		font-size: 12px;
+    	}
+	</style>
+</head>
+<body>
+	<template is="dom-bind">
+		<iron-meta type="iconset" list="{{iconsets}}"></iron-meta>
+
+	   <template is="dom-repeat" items="{{iconsets}}">
+
+    	  <h2>Icon Set (prefix): {{item.name}}</h2>
+    	  <h3>This prefix is not needed when triplat-icon is used except for when the same icon exists in multiple icon sets.</h3>
+    	  <div><b>Note:</b> CSS can be used to size these icons as needed, but their native size is {{item.size}}px.</div>
+
+				<div class="set horizontal wrap layout">
+					<template is="dom-repeat" items="{{getIconNames(item)}}">
+						<span class="container vertical center layout flex-1">
+							<triplat-icon tab-index="0" icon="{{item}}"></triplat-icon>
+							<div>{{removePrefix(item)}}</div>
+						</span>
+					</template>
+				</div>
+		</template>
+	</template>
+	<script>
+   		document.querySelector('[is=dom-bind]').removePrefix = function(item) {
+				return item.substring(item.indexOf(":")+1);
+		}
+
+		document.querySelector('[is=dom-bind]').getIconNames = function(iconset) {
+			var fullset = iconset.getIconNames();
+			return fullset;
+		}
+
+
+	</script>
+
+</body>
+</html>

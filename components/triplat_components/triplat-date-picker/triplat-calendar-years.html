@@ -1,0 +1,382 @@
+<!--
+@license
+IBM Confidential - OCO Source Materials - (C) COPYRIGHT IBM CORP. 2015-2016 - The source code for this program is not published or otherwise divested of its trade secrets, irrespective of what has been deposited with the U.S. Copyright Office.
+-->
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../triplat-theme/triplat-theme.html">
+<link rel="import" href="triplat-calendar-behavior.html">
+<link rel="import" href="../triplat-icon/ibm-icons-glyphs.html">
+
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../neon-animation/animations/slide-from-left-animation.html">
+<link rel="import" href="../neon-animation/animations/slide-from-right-animation.html">
+<link rel="import" href="../neon-animation/animations/fade-in-animation.html">
+
+
+<dom-module id="triplat-calendar-years">
+<style include="iron-flex iron-flex-alignment">
+#header {
+  position: relative;
+  overflow: hidden;
+} 
+#years {
+  box-sizing: border-box;
+  height: 200px;
+  max-width: 100%;
+  padding: 6px;
+  overflow: auto; 
+}
+.year {
+  width: 33.333%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 36px;
+}
+.year paper-button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  font-size: 16px;
+  font-family: var(--tri-font-family);
+}
+.year paper-button:hover {
+  background-color: var(--ibm-gray-10);
+}
+#viewingMonthYear {
+  overflow: hidden;
+}
+.viewingMonthYear {
+  margin: 0;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 48px;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.selectedYear:after {
+  content: '';
+  /*border-radius: 50%;*/
+  /*border-radius: 5px;*/
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  bottom: 3px;
+  left: 3px;
+  z-index: 0;
+  background-color: var(--triplat-date-picker-selected-bg-color, --tri-primary-color-10);
+  opacity: 0.5;
+}
+
+.selectedYear {
+  font-weight: bold;
+}
+
+.actionButton{
+  color: var(--triplat-date-picker-button-color, --tri-primary-button-background-color);
+  background-color: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+paper-button.actionButton {
+  color: var(--triplat-date-picker-button-color, --tri-primary-button-background-color);
+  background-color: rgb(255, 255, 255);
+      --paper-button-flat-keyboard-focus: {
+      border-style: solid;
+      border-color: var(--triplat-date-picker-button-color, --tri-primary-button-background-color);
+      border-width: 1px;
+    }
+
+}
+
+paper-button:not([raised]).paper-button-2.keyboard-focus{
+    color: var(--triplat-date-picker-button-color, --tri-primary-button-background-color);
+    background-color: rgb(255, 255, 255);
+    --paper-button-flat-keyboard-focus: {
+      border-width: 1px;
+      border-style: solid;
+      border-color: black;
+    }
+}
+
+paper-button[year] {
+  background-color: rgb(255, 255, 255);
+  color: black;
+  --paper-button-flat-keyboard-focus: {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+  }
+}
+
+.paper-icon-button-rtl {
+	transform: scaleX(-1);
+}
+
+#nextYearArrow, #previousYearArrow {
+  --iron-icon-fill-color: var(--triplat-date-picker-icon-color, --tri-primary-icon-button-color);
+}
+
+</style>
+
+<template> 
+  <div id="header" class="layout horizontal">
+    <paper-icon-button id="previousYearArrow" icon="ibm-glyphs:backward" title="previous years" on-tap="_prevAction"></paper-icon-button>
+    <div class="flex relative" id="viewingMonthYear">
+      <h4 class="viewingMonthYear">
+        <span>Year</span>
+      </h4>
+    </div>
+    <paper-icon-button id="nextYearArrow" icon="ibm-glyphs:forward" title="next years" on-tap="_nextAction"></paper-icon-button>
+  </div>
+
+  <div id="years" class="layout horizontal wrap">
+    <template is="dom-repeat" items="{{yearsArray}}" as="year" >
+      <div class="year layout horizontal center center-justified" year="{{year}}">
+          <paper-button year$="{{year}}" class$="{{_currentlySelectedYear(year)}}" on-tap="_yearSelected" recenteringTouch>{{year}}</paper-button>
+      </div>  
+    </template>
+  </div>
+<template is="dom-if" if="{{confirmButtons}}">
+ <template is="dom-if" if="{{!triplatCalendarContainer}}">
+  <div class="buttons layout horizontal end-justified">
+    <paper-button class="actionButton" on-tap="_handleOk">OK</paper-button>
+    <paper-button class="actionButton" on-tap="_handleCancel">Cancel</paper-button>
+  </div>
+   </template>
+</template>
+
+</template>
+
+</dom-module>
+<script>
+Polymer({
+
+  is: "triplat-calendar-years",
+ 
+  behaviors: [ Polymer.TriPlatCalendarBehavior,
+               Polymer.NeonAnimationRunnerBehavior
+   ],
+
+  listeners: {
+    'track': '_handleTrack',
+  },
+
+  properties : {
+    
+    startYear: {
+      type: String
+    },
+  
+    /* number of years to display simultaneously in the panel where you can select a year
+     */
+    years: {
+      type: String
+    },
+  
+    yearsArray: {
+      type: Array,
+      notify: true,
+      value: []
+    },
+  
+    viewingYear: {
+      type: String,
+      observer: "currentYearChanged"
+    },
+
+    selectedYear: {
+      type: String
+    },
+
+    prevSelectedElement: {
+      type: Object,
+      value: null
+    },
+
+    selectedElement: {
+      type: Object,
+      value: null
+    },
+
+    triplatCalendarContainer: {
+      type: Boolean,
+      value: false
+    },
+
+    confirmButtons: {
+      type: Boolean,
+      value: false
+    },
+
+    animationConfig: {
+        value: function() {
+          return {
+            'previous': [
+              {
+                name: 'slide-from-left-animation',
+                node: this.$.years,
+              },
+              {
+                name: 'fade-in-animation',
+                node: this.$.years,
+              }
+            ],
+            'next': [ 
+              {
+                name: 'slide-from-right-animation',
+                node: this.$.years,
+              },
+              {
+                name: 'fade-in-animation',
+                node: this.$.years,
+              }
+            ]
+          }
+        }
+    }
+
+  },
+
+
+_prevAction: function() {
+  this.startYear = this.startYear - this.years;
+  this._buildYearsArray(this.startYear);
+  this.playAnimation('previous'); 
+},
+
+_nextAction: function() {
+  this.startYear = this.startYear + this.years;
+  this._buildYearsArray(this.startYear);
+  this.playAnimation('next'); 
+},
+
+_returnAction: function() {
+  this.fire('triplat-calendar-date-selected');
+},
+
+_handleCancel: function() {
+  this.fire('triplat-calendar-date-selected', {view: 'dateView'});
+  this.startYear = this.viewingYear - 2;
+  this._buildYearsArray(this.startYear);
+ },
+
+_handleOk: function() {
+  this.fire('triplat-calendar-year-selected', {year: this.selectedYear});
+},
+
+_buildYearsArray: function(firstYear) {
+  for (var i = 0; i < this.years; i++) {
+      this.pop('yearsArray');
+  }
+  for (var i = 0; i < this.years; i++) {
+    this.push('yearsArray', firstYear + i);
+  }
+  this._setSelectedYear(this.selectedElement, this.viewingYear);
+},
+
+ready: function(){
+ var now = this.viewingYear || new Date().getFullYear();
+ this.startYear = this.startYear || now - 2;
+ this.years = this.years || 9;
+ this._buildYearsArray(this.startYear);
+},
+
+attached: function(){
+  var _tempYearsArray = this.yearsArray;
+  this.yearsArray = [];
+  this.yearsArray = _tempYearsArray;
+  var textDirectionValue = document.querySelector('body').getAttribute('dir');
+  if(textDirectionValue==="rtl"){
+		this.$.previousYearArrow.classList.add('paper-icon-button-rtl');
+		this.$.nextYearArrow.classList.add('paper-icon-button-rtl');
+	}
+},
+
+yearsChanged: function() {
+ this.yearsArray = Array(this.years);
+},
+
+_setSelectedYear: function(newElement, newYear) {
+  this.prevSelectedElement =  this.$$(".selectedYear");
+  this.selectedElement = newElement;
+  if (this.prevSelectedElement != null) {
+    this.prevSelectedElement.classList.remove("selectedYear");
+  }
+  if (this.selectedElement != null) {
+    if(Number(newYear) === Number(this.selectedElement.getAttribute('year'))){
+       this.selectedElement.classList.add("selectedYear");
+    }
+  }
+  this.selectedYear = newYear;
+},
+
+/* function is called when the user selects a year
+ */
+_yearSelected: function(e) {
+  var yr = e.currentTarget.getAttribute("year");
+  var element = this.$$('[year="' + yr + '"]');
+  if(this.triplatCalendarContainer || !this.confirmButtons){
+    if(Number(element.getAttribute("year")) === this.selectedYear){
+      this._handleCancel();
+      return false;
+    }else{
+        
+      this._setSelectedYear(element, yr);
+      this._handleOk();
+    }
+    
+  }
+
+  this._setSelectedYear(element, yr);
+
+},
+
+/* function is used to determine whether the value input is the year currently selected
+ */
+_currentlySelectedYear: function(val) {
+  if (val == this.viewingYear) {
+    return "selectedYear tri-disable-theme";
+  } 
+  return "tri-disable-theme";
+},
+
+currentYearChanged: function() {
+  var newElement = this.$$('[year="' + this.viewingYear + '"]');
+  if(!this.selectedYear){
+    this.selectedYear = new Date().getFullYear();
+  }
+  this.startYear = this.selectedYear - 2;
+  this._buildYearsArray(this.startYear);
+  this._setSelectedYear(newElement, this.viewingYear);
+
+
+},
+_resetToCurrentYear: function(year){
+  this.selectedYear = year;
+  this.viewingYear = year;
+  this.fire('triplat-calendar-year-selected', {year: this.selectedYear});
+  this.startYear = year - 2;
+  this._buildYearsArray(this.startYear);
+
+},
+
+_handleTrack: function(e){
+  this.debounce('_handleTrack', function() {
+    switch(e.detail.state) {
+      case 'start':
+      case 'end':
+          var direction = e.detail.dx > 0 ? 1 : -1;
+          if (direction >= 0) {
+            this._prevAction();
+          } else {
+            this._nextAction();
+          }
+          break;
+  }}, 100);
+} 
+
+});
+</script>
